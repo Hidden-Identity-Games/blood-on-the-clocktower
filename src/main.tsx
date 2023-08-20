@@ -12,6 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       accentColor="red"
       panelBackground="solid"
       hasBackground
+      style={{ "--scaling": 2 }}
     >
       <App />
     </Theme>
