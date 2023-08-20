@@ -1,14 +1,22 @@
 import { Character } from "./types/script";
 import "./PlayerRole.css";
+import { useSecretKey } from "./store/secretKey";
+import { usePlayers, useSelf } from "./store/useStore";
 
-interface PlayerRoleProps {
-  role: Character;
-}
+interface PlayerRoleProps {}
 
-function PlayerRole({ role }: PlayerRoleProps) {
+function PlayerRole(props: PlayerRoleProps) {
+  const self = useSelf("test-game");
+  const secretKey = useSecretKey();
+
   return (
     <>
-      <div className="role">You are the {role.name}</div>
+      <div>
+        {secretKey}
+        Hello {self.name}, welcome to the game! Please press the screen to see
+        your role.
+      </div>
+      <div className="role">You are the {self.role}</div>
     </>
   );
 }

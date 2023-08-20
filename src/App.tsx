@@ -2,34 +2,40 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import CharacterSelectList from "./CharacterSelectList";
 import PlayerMap from "./PlayerMap";
 import TroubleBrewingScript from "./assets/trouble-brewing.json";
-import { Character } from "./types/script";
 import PlayerLanding from "./PlayerLanding";
 import PlayerRole from "./PlayerRole";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const testPlayers: Record<string, Character> = { Alex: { name: "Spy" } };
-
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <CharacterSelectList
           scriptJson={TroubleBrewingScript}
-          handleFormSubmit={console.log}
+          handleFormSubmit={() => {
+            router.navigate("/players");
+          }}
         />
       ),
     },
     {
       path: "/players",
-      element: <PlayerMap playersAndCharacters={testPlayers} />,
+      element: <PlayerMap />,
     },
     {
       path: "/playerLanding",
-      element: <PlayerLanding handleFormSubmit={console.log} />,
+      element: (
+        <PlayerLanding
+          handleFormSubmit={() => {
+            router.navigate("/playerRole");
+          }}
+        />
+      ),
     },
     {
       path: "/playerRole",
-      element: <PlayerRole role={testPlayers["Alex"]} />,
+      element: <PlayerRole />,
     },
   ]);
 
