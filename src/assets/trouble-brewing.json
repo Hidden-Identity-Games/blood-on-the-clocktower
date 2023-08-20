@@ -1,0 +1,26 @@
+{
+  "characters": [
+    { "name": "Washerwoman" },
+    { "name": "Librarian" },
+    { "name": "Investigator" },
+    { "name": "Chef" },
+    { "name": "Empath" },
+    { "name": "Fortune Teller" },
+    { "name": "Undertaker" },
+    { "name": "Monk" },
+    { "name": "Ravenkeeper" },
+    { "name": "Virgin" },
+    { "name": "Slayer" },
+    { "name": "Soldier" },
+    { "name": "Mayor" },
+    { "name": "Butler" },
+    { "name": "Drunk" },
+    { "name": "Recluse" },
+    { "name": "Saint" },
+    { "name": "Poisoner" },
+    { "name": "Spy" },
+    { "name": "Scarlet Woman" },
+    { "name": "Baron" },
+    { "name": "Imp" }
+  ]
+}
