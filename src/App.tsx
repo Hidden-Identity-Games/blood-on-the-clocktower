@@ -4,6 +4,7 @@ import PlayerMap from "./PlayerMap";
 import TroubleBrewingScript from "./assets/trouble-brewing.json";
 import { Character } from "./types/script";
 import PlayerLanding from "./PlayerLanding";
+import PlayerRole from "./PlayerRole";
 
 function App() {
   const testPlayers: Record<string, Character> = { Alex: { name: "Spy" } };
@@ -25,6 +26,10 @@ function App() {
     {
       path: "/playerLanding",
       element: <PlayerLanding handleFormSubmit={console.log} />,
+    },
+    {
+      path: "/playerRole",
+      element: <PlayerRole role={testPlayers["Alex"]} />,
     },
   ]);
 
