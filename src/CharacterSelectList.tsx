@@ -1,4 +1,10 @@
-import { Button, Checkbox, Flex, Text } from "@radix-ui/themes";
+import {
+  Button,
+  Checkbox,
+  Flex,
+  IconButton,
+  TextField,
+} from "@radix-ui/themes";
 import { Script } from "./types/script";
 import React from "react";
 
@@ -12,6 +18,26 @@ function CharacterSelectList({
   handleFormSubmit,
 }: CharacterSelectListProps) {
   const [state, setState] = React.useState<Record<string, boolean>>({});
+  const [characters, setCharacters] = React.useState(
+    scriptJson.characters.map(({ name }) => name),
+  );
+  const [newCharacterName, setNewCharacterName] = React.useState<string>("");
+
+  //
+  function addNewCharacter() {
+    if (characters.includes(newCharacterName) || !newCharacterName) {
+      return;
+    }
+
+    setCharacters((oldCharacters) => [...oldCharacters, newCharacterName]);
+
+    setState((oldState) => ({
+      ...oldState,
+      [newCharacterName]: true,
+    }));
+
+    setNewCharacterName("");
+  }
 
   return (
     <form
@@ -21,7 +47,7 @@ function CharacterSelectList({
       }}
     >
       <Flex gap="2" direction="column">
-        {scriptJson.characters.map(({ name }) => (
+        {characters.map((name) => (
           <Flex gap="2" align={"center"} key={name}>
             <Checkbox
               id={name}
@@ -38,6 +64,23 @@ function CharacterSelectList({
             </label>
           </Flex>
         ))}
+
+        <Flex align={"center"} gap="2">
+          <IconButton type="button" size="1" onClick={addNewCharacter}>
+            +
+          </IconButton>
+          <TextField.Input
+            placeholder="Additional role"
+            value={newCharacterName}
+            onChange={(event) => setNewCharacterName(event.currentTarget.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                addNewCharacter();
+              }
+            }}
+          ></TextField.Input>
+        </Flex>
 
         <Button type="submit">Submit</Button>
       </Flex>
