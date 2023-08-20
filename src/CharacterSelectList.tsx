@@ -79,7 +79,7 @@ function CharacterSelectList({
                 addNewCharacter();
               }
             }}
-          ></TextField.Input>
+          />
         </Flex>
 
         <Button type="submit">Submit</Button>
