@@ -1,26 +1,114 @@
 {
   "characters": [
-    { "name": "Washerwoman", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_washerwoman.png" },
-    { "name": "Librarian", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_librarian.png" },
-    { "name": "Investigator", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_investigator.png" },
-    { "name": "Chef", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_chef.png" },
-    { "name": "Empath", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_empath.png" },
-    { "name": "Fortune Teller", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_fortune_teller.png" },
-    { "name": "Undertaker", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_undertaker.png" },
-    { "name": "Monk", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_monk.png" },
-    { "name": "Ravenkeeper", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_ravenkeeper.png" },
-    { "name": "Virgin", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_virgin.png" },
-    { "name": "Slayer", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_slayer.png" },
-    { "name": "Soldier", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_soldier.png" },
-    { "name": "Mayor", "team": "Townsfolk", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_mayor.png" },
-    { "name": "Butler", "team": "Outsider", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_butler.png" },
-    { "name": "Drunk", "team": "Outsider", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_drunk.png" },
-    { "name": "Recluse", "team": "Outsider", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_recluse.png" },
-    { "name": "Saint", "team": "Outsider", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_saint.png" },
-    { "name": "Poisoner", "team": "Minion", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_saint.png" },
-    { "name": "Spy", "team": "Minion", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_spy.png" },
-    { "name": "Scarlet Woman", "team": "Minion", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_scarlet_woman.png" },
-    { "name": "Baron", "team": "Minion", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_baron.png" },
-    { "name": "Imp", "team": "Demon", "imageSrc": "https://wiki.bloodontheclocktower.com/File:Icon_imp.png" }
+    {
+      "name": "Washerwoman",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/8/85/Icon_washerwoman.png"
+    },
+    {
+      "name": "Librarian",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/e0/Icon_librarian.png"
+    },
+    {
+      "name": "Investigator",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/ad/Icon_investigator.png"
+    },
+    {
+      "name": "Chef",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d5/Icon_chef.png"
+    },
+    {
+      "name": "Empath",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/13/Icon_empath.png"
+    },
+    {
+      "name": "Fortune Teller",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c3/Icon_fortune_teller.png"
+    },
+    {
+      "name": "Undertaker",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/0/05/Icon_undertaker.png"
+    },
+    {
+      "name": "Monk",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/7/7c/Icon_monk.png"
+    },
+    {
+      "name": "Ravenkeeper",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/ef/Icon_ravenkeeper.png"
+    },
+    {
+      "name": "Virgin",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d3/Icon_virgin.png"
+    },
+    {
+      "name": "Slayer",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d3/Icon_slayer.png"
+    },
+    {
+      "name": "Soldier",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c3/Icon_soldier.png"
+    },
+    {
+      "name": "Mayor",
+      "team": "Townsfolk",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/a1/Icon_mayor.png"
+    },
+    {
+      "name": "Butler",
+      "team": "Outsider",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/19/Icon_butler.png"
+    },
+    {
+      "name": "Drunk",
+      "team": "Outsider",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/4/4a/Icon_drunk.png"
+    },
+    {
+      "name": "Recluse",
+      "team": "Outsider",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/60/Icon_recluse.png"
+    },
+    {
+      "name": "Saint",
+      "team": "Outsider",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c9/Icon_saint.png"
+    },
+    {
+      "name": "Poisoner",
+      "team": "Minion",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/b/b1/Icon_poisoner.png"
+    },
+    {
+      "name": "Spy",
+      "team": "Minion",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/54/Icon_spy.png"
+    },
+    {
+      "name": "Scarlet Woman",
+      "team": "Minion",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/54/Icon_scarlet_woman.png"
+    },
+    {
+      "name": "Baron",
+      "team": "Minion",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/6d/Icon_baron.png"
+    },
+    {
+      "name": "Imp",
+      "team": "Demon",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/5c/Icon_imp.png"
+    }
   ]
 }

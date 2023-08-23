@@ -5,7 +5,7 @@ import {
   IconButton,
   TextField,
 } from "@radix-ui/themes";
-import { Script } from "./types/script";
+import { Character, Script } from "./types/script";
 import React from "react";
 
 interface CharacterSelectListProps {
@@ -18,18 +18,24 @@ function CharacterSelectList({
   handleFormSubmit,
 }: CharacterSelectListProps) {
   const [state, setState] = React.useState<Record<string, boolean>>({});
-  const [characters, setCharacters] = React.useState(
-    scriptJson.characters.map(({ name }) => name),
+  const [characters, setCharacters] = React.useState<Character[]>(
+    scriptJson.characters,
   );
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
 
   //
   function addNewCharacter() {
-    if (characters.includes(newCharacterName) || !newCharacterName) {
+    if (
+      characters.map((char) => char.name).includes(newCharacterName) ||
+      !newCharacterName
+    ) {
       return;
     }
 
-    setCharacters((oldCharacters) => [...oldCharacters, newCharacterName]);
+    setCharacters((oldCharacters) => [
+      ...oldCharacters,
+      { name: newCharacterName } as Character,
+    ]);
 
     setState((oldState) => ({
       ...oldState,
@@ -47,21 +53,26 @@ function CharacterSelectList({
       }}
     >
       <Flex gap="2" direction="column">
-        {characters.map((name) => (
-          <Flex gap="2" align={"center"} key={name}>
+        {characters.map((char) => (
+          <Flex gap="2" align={"center"} key={char.name}>
             <Checkbox
-              id={name}
-              checked={!!state[name]}
+              id={char.name}
+              checked={!!state[char.name]}
               onClick={() => {
                 setState((oldState) => ({
                   ...oldState,
-                  [name]: !oldState[name],
+                  [char.name]: !oldState[char.name],
                 }));
               }}
             />
-            <label style={{ flex: 1 }} htmlFor={name}>
-              {name}
-            </label>
+            <Flex gap="1" align={"center"} key={char.name} asChild>
+              <label style={{ flex: 1 }} htmlFor={char.name}>
+                {char.imageSrc && (
+                  <img src={char.imageSrc} height={"70px"} width={"70px"} />
+                )}
+                {char.name}
+              </label>
+            </Flex>
           </Flex>
         ))}
 

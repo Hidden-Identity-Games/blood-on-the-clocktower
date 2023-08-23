@@ -1,7 +1,7 @@
 import { Button, TextField } from "@radix-ui/themes";
 import React, { useEffect } from "react";
 import { useAddPlayer } from "./store/useStore";
-import { useNavigate } from "react-router-dom";
+import { useSecretKey } from "./store/secretKey";
 
 interface PlayerLandingProps {
   handleFormSubmit: (playerName: string) => void;

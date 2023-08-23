@@ -8,6 +8,7 @@ interface PlayerRoleProps {}
 function PlayerRole(props: PlayerRoleProps) {
   const self = useSelf("test-game");
   const secretKey = useSecretKey();
+  console.log(self);
 
   return (
     <>

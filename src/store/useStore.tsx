@@ -49,9 +49,10 @@ const availableRolesCollection = collection(db, "availableRoles");
 export function useDoc<DocumentType>(docToUse: DocumentReference) {
   const [data, setData] = useState<DocumentType | null>(null);
   useEffect(() => {
-    return onSnapshot(docToUse, (snapshot) => {
+    const unsubscribe = onSnapshot(docToUse, (snapshot) => {
       setData(snapshot.data() as unknown as DocumentType);
     });
+    return () => unsubscribe();
   }, []);
   return data;
 }
@@ -99,7 +100,7 @@ export function useAddPlayer(gameId: string) {
         await setDoc(
           doc(playerListCollection, gameId),
           { [secretKey]: playerName },
-          { merge: true }
+          { merge: true },
         );
         setSucceeded(true);
       } catch (e) {
@@ -133,7 +134,7 @@ export function useDistributeRoles(gameId: string) {
           ...acc,
           [rolesEntries[idx]]: item,
         }),
-        {} as Record<string, string>
+        {} as Record<string, string>,
       );
 
     setDoc(doc(rolesCollection, gameId), randomRoleSet);
