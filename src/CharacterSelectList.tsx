@@ -19,14 +19,14 @@ function CharacterSelectList({
 }: CharacterSelectListProps) {
   const [state, setState] = React.useState<Record<string, boolean>>({});
   const [characters, setCharacters] = React.useState<Character[]>(
-    scriptJson.characters,
+    scriptJson.characters
   );
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
 
   //
   function addNewCharacter() {
     if (
-      characters.map((char) => char.name).includes(newCharacterName) ||
+      characters.map(({ name }) => name).includes(newCharacterName) ||
       !newCharacterName
     ) {
       return;
@@ -53,30 +53,26 @@ function CharacterSelectList({
       }}
     >
       <Flex gap="2" direction="column">
-        {characters.map((char) => (
-          <Flex gap="2" align={"center"} key={char.name}>
+        {characters.map(({ name, imageSrc }) => (
+          <Flex gap="2" align={"center"} key={name}>
             <Checkbox
-              id={char.name}
-              checked={!!state[char.name]}
+              id={name}
+              checked={!!state[name]}
               onClick={() => {
                 setState((oldState) => ({
                   ...oldState,
-                  [char.name]: !oldState[char.name],
+                  [name]: !oldState[name],
                 }));
               }}
             />
-            <Flex gap="1" align={"center"} key={char.name} asChild>
-              <label style={{ flex: 1 }} htmlFor={char.name}>
+            <Flex gap="1" align={"center"} key={name} asChild>
+              <label style={{ flex: 1 }} htmlFor={name}>
                 <img
-                  src={
-                    char.imageSrc
-                      ? char.imageSrc
-                      : "./src/assets/default_role.svg"
-                  }
+                  src={imageSrc ? imageSrc : "./src/assets/default_role.svg"}
                   height={"70px"}
                   width={"70px"}
                 />
-                {char.name}
+                {name}
               </label>
             </Flex>
           </Flex>
