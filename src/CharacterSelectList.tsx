@@ -5,7 +5,7 @@ import {
   IconButton,
   TextField,
 } from "@radix-ui/themes";
-import { Script } from "./types/script";
+import { Character, Script } from "./types/script";
 import React from "react";
 
 interface CharacterSelectListProps {
@@ -18,18 +18,24 @@ function CharacterSelectList({
   handleFormSubmit,
 }: CharacterSelectListProps) {
   const [state, setState] = React.useState<Record<string, boolean>>({});
-  const [characters, setCharacters] = React.useState(
-    scriptJson.characters.map(({ name }) => name),
+  const [characters, setCharacters] = React.useState<Character[]>(
+    scriptJson.characters
   );
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
 
   //
   function addNewCharacter() {
-    if (characters.includes(newCharacterName) || !newCharacterName) {
+    if (
+      characters.map(({ name }) => name).includes(newCharacterName) ||
+      !newCharacterName
+    ) {
       return;
     }
 
-    setCharacters((oldCharacters) => [...oldCharacters, newCharacterName]);
+    setCharacters((oldCharacters) => [
+      ...oldCharacters,
+      { name: newCharacterName } as Character,
+    ]);
 
     setState((oldState) => ({
       ...oldState,
@@ -47,7 +53,7 @@ function CharacterSelectList({
       }}
     >
       <Flex gap="2" direction="column">
-        {characters.map((name) => (
+        {characters.map(({ name, imageSrc }) => (
           <Flex gap="2" align={"center"} key={name}>
             <Checkbox
               id={name}
@@ -59,9 +65,16 @@ function CharacterSelectList({
                 }));
               }}
             />
-            <label style={{ flex: 1 }} htmlFor={name}>
-              {name}
-            </label>
+            <Flex gap="1" align={"center"} key={name} asChild>
+              <label style={{ flex: 1 }} htmlFor={name}>
+                <img
+                  src={imageSrc ? imageSrc : "./src/assets/default_role.svg"}
+                  height={"70px"}
+                  width={"70px"}
+                />
+                {name}
+              </label>
+            </Flex>
           </Flex>
         ))}
 

@@ -99,7 +99,7 @@ export function useAddPlayer(gameId: string) {
         await setDoc(
           doc(playerListCollection, gameId),
           { [secretKey]: playerName },
-          { merge: true }
+          { merge: true },
         );
         setSucceeded(true);
       } catch (e) {
@@ -133,7 +133,7 @@ export function useDistributeRoles(gameId: string) {
           ...acc,
           [rolesEntries[idx]]: item,
         }),
-        {} as Record<string, string>
+        {} as Record<string, string>,
       );
 
     setDoc(doc(rolesCollection, gameId), randomRoleSet);

@@ -1,7 +1,6 @@
 import { Button, TextField } from "@radix-ui/themes";
-import React, { useEffect } from "react";
 import { useAddPlayer } from "./store/useStore";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
 interface PlayerLandingProps {
   handleFormSubmit: (playerName: string) => void;
@@ -9,13 +8,8 @@ interface PlayerLandingProps {
 
 function PlayerLanding({ handleFormSubmit }: PlayerLandingProps) {
   const [name, setName] = React.useState("");
-  const [error, isLoading, succeeded, addPlayer] = useAddPlayer("test-game");
-  const secretKey = useSecretKey();
+  const [error, isLoading, , addPlayer] = useAddPlayer("test-game");
 
-  useEffect(() => {
-    if (succeeded) {
-    }
-  }, [succeeded]);
   return (
     <form
       onSubmit={async (event) => {
@@ -24,7 +18,6 @@ function PlayerLanding({ handleFormSubmit }: PlayerLandingProps) {
         handleFormSubmit(name);
       }}
     >
-      {secretKey}
       <label htmlFor="name-input">NAME:</label>
       <TextField.Input
         id="name-input"

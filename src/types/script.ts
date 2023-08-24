@@ -4,4 +4,6 @@ export interface Script {
 
 export interface Character {
   name: string;
+  team: string;
+  imageSrc: string;
 }
