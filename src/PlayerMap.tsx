@@ -1,13 +1,27 @@
-import { Button, Table } from "@radix-ui/themes";
-import { useRoles, useDistributeRoles } from "./store/useStore";
+import { Button, Callout, Table } from "@radix-ui/themes";
+import { useRoles, useDistributeRoles, usePlayers } from "./store/useStore";
 
 interface PlayerMapProps {}
 
 function PlayerMap(props: PlayerMapProps) {
-  const players = useRoles("test-game");
+  const roles = useRoles("test-game");
+  const players = usePlayers("test-game");
   const distributeRoles = useDistributeRoles("test-game");
+
   return players ? (
     <>
+      {Object.entries(players).length > Object.entries(roles).length && (
+        <Callout.Root>
+          <Callout.Text>Too many players.</Callout.Text>
+        </Callout.Root>
+      )}
+
+      {Object.entries(players).length < Object.entries(roles).length && (
+        <Callout.Root>
+          <Callout.Text>Waiting for players...</Callout.Text>
+        </Callout.Root>
+      )}
+
       <Table.Root>
         <Table.Header>
           <Table.Row>
@@ -16,9 +30,9 @@ function PlayerMap(props: PlayerMapProps) {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {Object.entries(players).map(([name, roleDesc]) => (
+          {Object.entries(roles).map(([name, roleDesc]) => (
             <Table.Row key={name}>
-              <Table.Cell>{name}</Table.Cell>
+              <Table.Cell>{players[name]}</Table.Cell>
               <Table.Cell>{roleDesc}</Table.Cell>
             </Table.Row>
           ))}

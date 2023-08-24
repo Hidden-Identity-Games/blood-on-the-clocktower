@@ -49,10 +49,9 @@ const availableRolesCollection = collection(db, "availableRoles");
 export function useDoc<DocumentType>(docToUse: DocumentReference) {
   const [data, setData] = useState<DocumentType | null>(null);
   useEffect(() => {
-    const unsubscribe = onSnapshot(docToUse, (snapshot) => {
+    return onSnapshot(docToUse, (snapshot) => {
       setData(snapshot.data() as unknown as DocumentType);
     });
-    return () => unsubscribe();
   }, []);
   return data;
 }
