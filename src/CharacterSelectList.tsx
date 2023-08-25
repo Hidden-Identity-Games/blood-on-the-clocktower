@@ -7,10 +7,11 @@ import {
 } from "@radix-ui/themes";
 import { Character, Script } from "./types/script";
 import React from "react";
+import { useSetAvailableRoles } from "./store/useStore";
 
 interface CharacterSelectListProps {
   scriptJson: Script;
-  handleFormSubmit: (formData: Record<string, boolean>) => void;
+  handleFormSubmit: () => void;
 }
 
 function CharacterSelectList({
@@ -22,6 +23,7 @@ function CharacterSelectList({
     scriptJson.characters
   );
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
+  const [error, isLoading, , setRoles] = useSetAvailableRoles("test-game");
 
   //
   function addNewCharacter() {
@@ -47,9 +49,14 @@ function CharacterSelectList({
 
   return (
     <form
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
-        handleFormSubmit(state);
+        await setRoles(
+          Object.entries(state)
+            .filter(([, active]) => active)
+            .map(([name]) => name)
+        );
+        handleFormSubmit();
       }}
     >
       <Flex gap="2" direction="column">
