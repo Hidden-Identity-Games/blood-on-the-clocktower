@@ -1,8 +1,8 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import CharacterSelectList from "./CharacterSelectList";
 import PlayerMap from "./PlayerMap";
-import TroubleBrewingScript from "./assets/trouble-brewing.json";
+import TroubleBrewingScript from "./assets/gameScripts/trouble-brewing.json";
 import PlayerLanding from "./PlayerLanding";
+import GamemasterLanding from "./GamemasterLanding";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,7 +19,7 @@ function App() {
     {
       path: "/secret-gm-toolbox",
       element: (
-        <CharacterSelectList
+        <GamemasterLanding
           scriptJson={TroubleBrewingScript}
           handleFormSubmit={() => {
             router.navigate("/players");

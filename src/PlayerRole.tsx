@@ -9,9 +9,7 @@ function PlayerRole({ self }: PlayerRoleProps) {
   if (!self.role)
     return (
       <Callout.Root>
-        <Callout.Text>
-          Sorry {self.name}, this game has started without you :(
-        </Callout.Text>
+        <Callout.Text>Waiting for game to begin...</Callout.Text>
       </Callout.Root>
     );
 

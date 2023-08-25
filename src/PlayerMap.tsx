@@ -1,5 +1,6 @@
-import { Button, Callout, Table } from "@radix-ui/themes";
+import { Callout, Table } from "@radix-ui/themes";
 import { useRoles, useDistributeRoles, usePlayers } from "./store/useStore";
+import ConfirmButton from "./ConfirmButton";
 
 function PlayerMap() {
   const roles = useRoles("test-game");
@@ -36,7 +37,9 @@ function PlayerMap() {
           ))}
         </Table.Body>
       </Table.Root>
-      <Button onClick={() => distributeRoles()}>Distribute Roles</Button>
+      <ConfirmButton handleConfirm={() => distributeRoles()}>
+        Distribute Roles
+      </ConfirmButton>
     </>
   ) : (
     <div>Loading...</div>

@@ -1,5 +1,5 @@
 import { Button, TextField } from "@radix-ui/themes";
-import { useAddPlayer, usePlayers, useSelf } from "./store/useStore";
+import { useAddPlayer, useSelf } from "./store/useStore";
 import React from "react";
 import PlayerRole from "./PlayerRole";
 
