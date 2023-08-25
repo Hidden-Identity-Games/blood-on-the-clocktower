@@ -68,7 +68,7 @@ function CharacterSelectList({
             <Flex gap="1" align={"center"} key={name} asChild>
               <label style={{ flex: 1 }} htmlFor={name}>
                 <img
-                  src={imageSrc ? imageSrc : "./src/assets/default_role.svg"}
+                  src={imageSrc ?? "./src/assets/default_role.svg"}
                   height={"70px"}
                   width={"70px"}
                 />

@@ -1,12 +1,23 @@
 import { Button, TextField } from "@radix-ui/themes";
-import { useAddPlayer } from "./store/useStore";
+import { useAddPlayer, usePlayers, useSelf } from "./store/useStore";
 import React from "react";
+import PlayerRole from "./PlayerRole";
 
 interface PlayerLandingProps {
   handleFormSubmit: (playerName: string) => void;
 }
 
 function PlayerLanding({ handleFormSubmit }: PlayerLandingProps) {
+  const self = useSelf("test-game");
+
+  if (!self) return <div>Loading...</div>;
+
+  if (!self.name) return <AddPlayer handleFormSubmit={handleFormSubmit} />;
+
+  return <PlayerRole self={self} />;
+}
+
+function AddPlayer({ handleFormSubmit }: PlayerLandingProps) {
   const [name, setName] = React.useState("");
   const [error, isLoading, , addPlayer] = useAddPlayer("test-game");
 
@@ -28,7 +39,7 @@ function PlayerLanding({ handleFormSubmit }: PlayerLandingProps) {
       {error && (
         <div>
           {error.match(/taken/)
-            ? "Your name was taken, please add your last initial"
+            ? "Try another name, cause someone took yours."
             : "There was an error, please try again."}
         </div>
       )}

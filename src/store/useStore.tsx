@@ -71,10 +71,14 @@ export function useSelf(gameId: string) {
   const secretKey = useSecretKey();
   const players = usePlayers(gameId);
   const roles = useRoles(gameId);
-  return {
-    name: players?.[secretKey],
-    role: roles?.[secretKey],
-  };
+  return (
+    secretKey &&
+    players &&
+    roles && {
+      name: players?.[secretKey],
+      role: roles?.[secretKey],
+    }
+  );
 }
 
 export function useAddPlayer(gameId: string) {
@@ -99,7 +103,7 @@ export function useAddPlayer(gameId: string) {
         await setDoc(
           doc(playerListCollection, gameId),
           { [secretKey]: playerName },
-          { merge: true },
+          { merge: true }
         );
         setSucceeded(true);
       } catch (e) {
@@ -133,7 +137,7 @@ export function useDistributeRoles(gameId: string) {
           ...acc,
           [rolesEntries[idx]]: item,
         }),
-        {} as Record<string, string>,
+        {} as Record<string, string>
       );
 
     setDoc(doc(rolesCollection, gameId), randomRoleSet);

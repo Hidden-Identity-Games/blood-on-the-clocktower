@@ -1,16 +1,25 @@
+import { Callout } from "@radix-ui/themes";
 import "./PlayerRole.css";
-import { useSelf } from "./store/useStore";
 
-interface PlayerRoleProps {}
+interface PlayerRoleProps {
+  self;
+}
 
-function PlayerRole(props: PlayerRoleProps) {
-  const self = useSelf("test-game");
+function PlayerRole({ self }: PlayerRoleProps) {
+  if (!self.role)
+    return (
+      <Callout.Root>
+        <Callout.Text>
+          Sorry {self.name}, this game has started without you :(
+        </Callout.Text>
+      </Callout.Root>
+    );
 
   return (
     <>
       <div>
-        Hello {self.name}, welcome to the game! Please press the screen to see
-        your role.
+        Hello {self.name}, welcome to the game! Tap the screen to reveal your
+        role.
       </div>
       <div className="role">You are the {self.role}</div>
     </>

@@ -1,9 +1,7 @@
 import { Button, Callout, Table } from "@radix-ui/themes";
 import { useRoles, useDistributeRoles, usePlayers } from "./store/useStore";
 
-interface PlayerMapProps {}
-
-function PlayerMap(props: PlayerMapProps) {
+function PlayerMap() {
   const roles = useRoles("test-game");
   const players = usePlayers("test-game");
   const distributeRoles = useDistributeRoles("test-game");
@@ -41,7 +39,7 @@ function PlayerMap(props: PlayerMapProps) {
       <Button onClick={() => distributeRoles()}>Distribute Roles</Button>
     </>
   ) : (
-    <div>Loading</div>
+    <div>Loading...</div>
   );
 }
 
