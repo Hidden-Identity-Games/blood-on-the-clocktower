@@ -4,11 +4,12 @@ import ConfirmButton from "./ConfirmButton";
 import CharacterSelectList from "./CharacterSelectList";
 import TroubleBrewingScript from "./assets/gameScripts/trouble-brewing.json";
 import React from "react";
-import { useClearPlayersList } from "./store/useStore";
+import { useClearPlayersList, useClearRoles } from "./store/useStore";
 
 function GamemasterLanding() {
   const [showCharSelect, setShowCharSelect] = React.useState(false);
-  const [error, isLoading, , clearPlayers] = useClearPlayersList("test-game");
+  const [, , , clearPlayers] = useClearPlayersList("test-game");
+  const [, , , clearRoles] = useClearRoles("test-game");
 
   if (showCharSelect)
     return (
@@ -25,6 +26,7 @@ function GamemasterLanding() {
       <ConfirmButton
         handleConfirm={() => {
           clearPlayers();
+          clearRoles();
           setShowCharSelect(true);
         }}
       >

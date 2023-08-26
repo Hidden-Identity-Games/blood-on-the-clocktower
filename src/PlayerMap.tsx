@@ -1,21 +1,29 @@
 import { Callout, Table } from "@radix-ui/themes";
-import { useRoles, useDistributeRoles, usePlayers } from "./store/useStore";
+import {
+  useRoles,
+  useDistributeRoles,
+  usePlayers,
+  useAvailableRoles,
+} from "./store/useStore";
 import ConfirmButton from "./ConfirmButton";
 
 function PlayerMap() {
-  const roles = useRoles("test-game");
+  const availableRoles = useAvailableRoles("test-game");
   const players = usePlayers("test-game");
+  const assignedRoles = useRoles("test-game");
   const distributeRoles = useDistributeRoles("test-game");
 
   return players ? (
     <>
-      {Object.entries(players).length > Object.entries(roles).length && (
+      {Object.entries(players).length > availableRoles?.roles.length && (
         <Callout.Root>
-          <Callout.Text>Too many players.</Callout.Text>
+          <Callout.Text>
+            More players have joined this game then there are available roles.
+          </Callout.Text>
         </Callout.Root>
       )}
 
-      {Object.entries(players).length < Object.entries(roles).length && (
+      {Object.entries(players).length < availableRoles?.roles.length && (
         <Callout.Root>
           <Callout.Text>Waiting for players...</Callout.Text>
         </Callout.Root>
@@ -29,7 +37,7 @@ function PlayerMap() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {Object.entries(roles).map(([name, roleDesc]) => (
+          {Object.entries(assignedRoles).map(([name, roleDesc]) => (
             <Table.Row key={name}>
               <Table.Cell>{players[name]}</Table.Cell>
               <Table.Cell>{roleDesc}</Table.Cell>
