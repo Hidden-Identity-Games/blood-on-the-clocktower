@@ -1,11 +1,22 @@
 import { Button } from "@radix-ui/themes";
-import React from "react";
+import React, { ReactNode } from "react";
 
-function ConfirmButton({ children, handleConfirm }) {
+interface ConfirmButtonProps {
+  children: ReactNode;
+  handleConfirm: () => void;
+  disabled?: boolean;
+}
+
+function ConfirmButton({
+  children,
+  handleConfirm,
+  disabled = false,
+}: ConfirmButtonProps) {
   const [confirm, setConfirm] = React.useState(false);
 
   return confirm ? (
     <Button
+      disabled={disabled}
       onBlur={() => setConfirm(false)}
       onClick={() => {
         setConfirm(false);
@@ -15,7 +26,9 @@ function ConfirmButton({ children, handleConfirm }) {
       Confirm?
     </Button>
   ) : (
-    <Button onClick={() => setConfirm(true)}>{children}</Button>
+    <Button disabled={disabled} onClick={() => setConfirm(true)}>
+      {children}
+    </Button>
   );
 }
 

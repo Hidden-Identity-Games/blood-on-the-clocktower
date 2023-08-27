@@ -1,3 +1,4 @@
+import { Callout } from "@radix-ui/themes";
 import AddPlayer from "./AddPlayer";
 import PlayerRole from "./PlayerRole";
 import { useSelf } from "./store/useStore";
@@ -9,6 +10,13 @@ function PlayerLanding() {
   if (!self) return <div>Loading...</div>;
 
   if (!self.name) return <AddPlayer handleFormSubmit={() => {}} />;
+
+  if (!self.role)
+    return (
+      <Callout.Root>
+        <Callout.Text>Waiting for game to begin...</Callout.Text>
+      </Callout.Root>
+    );
 
   return <PlayerRole self={self} characters={AvailableCharacters.characters} />;
 }

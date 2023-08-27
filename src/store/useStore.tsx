@@ -103,7 +103,7 @@ export function useAddPlayer(gameId: string) {
         await setDoc(
           doc(playerListCollection, gameId),
           { [secretKey]: playerName },
-          { merge: true },
+          { merge: true }
         );
         setSucceeded(true);
       } catch (e) {
@@ -140,7 +140,7 @@ export function useClearPlayersList(gameId: string) {
   ] as const;
 }
 
-export function useClearRoles(gameId: string) {
+export function useClearPlayerRoles(gameId: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
   const [succeeded, setSucceeded] = useState<boolean>(false);
@@ -184,7 +184,7 @@ export function useSetAvailableRoles(gameId: string) {
           {
             roles: roleNames,
           },
-          { merge: false },
+          { merge: false }
         );
         setSucceeded(true);
       } catch (e) {
@@ -218,7 +218,7 @@ export function useDistributeRoles(gameId: string) {
           ...acc,
           [rolesEntries[idx]]: item,
         }),
-        {} as Record<string, string>,
+        {} as Record<string, string>
       );
 
     setDoc(doc(rolesCollection, gameId), randomRoleSet);

@@ -1,4 +1,4 @@
-import { Callout, Flex } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import "./PlayerRole.css";
 import { Character } from "./types/script";
 
@@ -8,13 +8,6 @@ interface PlayerRoleProps {
 }
 
 function PlayerRole({ self, characters }: PlayerRoleProps) {
-  if (!self.role)
-    return (
-      <Callout.Root>
-        <Callout.Text>Waiting for game to begin...</Callout.Text>
-      </Callout.Root>
-    );
-
   return (
     <>
       <div>Hello {self.name}, welcome to the game!</div>
