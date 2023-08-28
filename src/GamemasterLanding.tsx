@@ -1,4 +1,4 @@
-import { Callout, Flex } from "@radix-ui/themes";
+import { Button, Callout, Flex } from "@radix-ui/themes";
 import PlayerRoleMap from "./PlayerRoleMap";
 import ConfirmButton from "./ConfirmButton";
 import CharacterSelectList from "./CharacterSelectList";
@@ -23,6 +23,20 @@ function GamemasterLanding() {
   const [, , , clearPlayerRoles] = useClearPlayerRoles("test-game");
   const distributeRoles = useDistributeRoles("test-game");
 
+  function NewGameButton() {
+    return (
+      <ConfirmButton
+        handleConfirm={() => {
+          clearPlayerRoles();
+          clearPlayers();
+          setShowCharSelect(true);
+        }}
+      >
+        New Game
+      </ConfirmButton>
+    );
+  }
+
   if (showCharSelect)
     return (
       <CharacterSelectList
@@ -39,42 +53,26 @@ function GamemasterLanding() {
 
     return (
       <Flex direction={"column"}>
-        <ConfirmButton
-          handleConfirm={() => {
-            clearPlayerRoles();
-            clearPlayers();
-            setShowCharSelect(true);
-          }}
-        >
-          New Game
-        </ConfirmButton>
+        <NewGameButton />
         <PlayerList players={players} />
         <Callout.Root>
           <Callout.Text>
             {playersJoinedCount} / {expectedPlayerCount} players joined.
           </Callout.Text>
         </Callout.Root>
-        <ConfirmButton
-          handleConfirm={distributeRoles}
+        <Button
+          onClick={distributeRoles}
           disabled={playersJoinedCount !== expectedPlayerCount}
         >
           Distribute Roles
-        </ConfirmButton>
+        </Button>
       </Flex>
     );
   }
 
   return (
     <Flex direction="column">
-      <ConfirmButton
-        handleConfirm={() => {
-          clearPlayerRoles();
-          clearPlayers();
-          setShowCharSelect(true);
-        }}
-      >
-        New Game
-      </ConfirmButton>
+      <NewGameButton />
       <PlayerRoleMap players={players} roles={rolesMap} />
     </Flex>
   );

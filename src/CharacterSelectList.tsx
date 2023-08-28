@@ -4,6 +4,7 @@ import {
   Flex,
   IconButton,
   TextField,
+  Text,
 } from "@radix-ui/themes";
 import { Character, Script } from "./types/script";
 import React from "react";
@@ -23,7 +24,7 @@ function CharacterSelectList({
     scriptJson.characters
   );
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
-  const [error, isLoading, , setRoles] = useSetAvailableRoles("test-game");
+  const [, , , setAvailableRoles] = useSetAvailableRoles("test-game");
 
   //
   function addNewCharacter() {
@@ -47,11 +48,39 @@ function CharacterSelectList({
     setNewCharacterName("");
   }
 
+  function TeamDistribution() {
+    const charsSelected = scriptJson.characters.filter(
+      (char) => state[char.name]
+    );
+
+    return (
+      <Flex>
+        <Text as="span" style={{ flex: 1 }} color="blue">
+          Townsfolk:{"  "}
+          {charsSelected.filter((char) => char.team === "Townsfolk").length}
+        </Text>
+        <Text as="span" style={{ flex: 1 }} color="teal">
+          Outsiders:{"  "}
+          {charsSelected.filter((char) => char.team === "Outsider").length}
+        </Text>
+        <Text as="span" style={{ flex: 1 }} color="crimson">
+          Minions:{"  "}
+          {charsSelected.filter((char) => char.team === "Minion").length}
+        </Text>
+        <Text as="span" style={{ flex: 1 }} color="tomato">
+          Demons:{"  "}
+          {charsSelected.filter((char) => char.team === "Demon").length}
+        </Text>
+      </Flex>
+    );
+  }
+
+  //
   return (
     <form
       onSubmit={async (event) => {
         event.preventDefault();
-        await setRoles(
+        await setAvailableRoles(
           Object.entries(state)
             .filter(([, active]) => active)
             .map(([name]) => name)
@@ -102,7 +131,9 @@ function CharacterSelectList({
           />
         </Flex>
 
-        <Button type="submit">Submit</Button>
+        <TeamDistribution />
+
+        <Button type="submit">BEGIN</Button>
       </Flex>
     </form>
   );
