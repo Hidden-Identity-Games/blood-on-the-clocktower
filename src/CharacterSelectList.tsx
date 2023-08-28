@@ -50,26 +50,26 @@ function CharacterSelectList({
 
   function TeamDistribution() {
     const charsSelected = scriptJson.characters.filter(
-      (char) => state[char.name]
+      ({ name }) => state[name]
     );
 
     return (
       <Flex>
         <Text as="span" style={{ flex: 1 }} color="blue">
           Townsfolk:{"  "}
-          {charsSelected.filter((char) => char.team === "Townsfolk").length}
+          {charsSelected.filter(({ team }) => team === "Townsfolk").length}
         </Text>
         <Text as="span" style={{ flex: 1 }} color="teal">
           Outsiders:{"  "}
-          {charsSelected.filter((char) => char.team === "Outsider").length}
+          {charsSelected.filter(({ team }) => team === "Outsider").length}
         </Text>
         <Text as="span" style={{ flex: 1 }} color="crimson">
           Minions:{"  "}
-          {charsSelected.filter((char) => char.team === "Minion").length}
+          {charsSelected.filter(({ team }) => team === "Minion").length}
         </Text>
         <Text as="span" style={{ flex: 1 }} color="tomato">
           Demons:{"  "}
-          {charsSelected.filter((char) => char.team === "Demon").length}
+          {charsSelected.filter(({ team }) => team === "Demon").length}
         </Text>
       </Flex>
     );

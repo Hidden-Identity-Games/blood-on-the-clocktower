@@ -9,9 +9,8 @@ interface PlayerRoleProps {
 
 function PlayerRole({ self, characters }: PlayerRoleProps) {
   return (
-    <>
-      <div>Hello {self.name}, welcome to the game!</div>
-      <div>Tap to reveal your role.</div>
+    <Flex direction="column" align="center">
+      <span>Tap to reveal your role.</span>
       <Flex direction="column" align="center" className="role">
         <img
           src={
@@ -23,9 +22,9 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
             event.stopPropagation();
           }}
         />
-        <div>{self.role}</div>
+        <span>{self.role}</span>
       </Flex>
-    </>
+    </Flex>
   );
 }
 
