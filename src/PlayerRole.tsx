@@ -1,9 +1,10 @@
 import { Flex } from "@radix-ui/themes";
 import "./PlayerRole.css";
 import { Character } from "./types/script";
+import { Self } from "./types/self";
 
 interface PlayerRoleProps {
-  self;
+  self: Self;
   characters: Character[];
 }
 

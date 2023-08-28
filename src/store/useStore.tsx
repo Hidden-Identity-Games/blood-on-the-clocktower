@@ -24,11 +24,11 @@ import {
   setDoc,
   DocumentReference,
   getDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Game, PlayerSet } from "./Game";
 import { useSecretKey } from "./secretKey";
+import { Self } from "../types/self";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -74,10 +74,11 @@ export function useSelf(gameId: string) {
   const roles = useRoles(gameId);
   return (
     secretKey &&
-    players && {
+    players &&
+    ({
       name: players?.[secretKey],
       role: roles?.[secretKey],
-    }
+    } as Self)
   );
 }
 
