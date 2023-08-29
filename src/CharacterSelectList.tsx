@@ -5,23 +5,33 @@ import {
   IconButton,
   TextField,
   Text,
-  Separator,
 } from "@radix-ui/themes";
 import { Character } from "./types/script";
 import React from "react";
 import { useSetAvailableRoles } from "./store/useStore";
 import GameData from "./assets/game_scripts.json";
-import ScriptSelectList from "./ScriptSelectList";
 
 interface CharacterSelectListProps {
+  selectedScripts: string[];
   handleFormSubmit: () => void;
 }
 
-function CharacterSelectList({ handleFormSubmit }: CharacterSelectListProps) {
+function CharacterSelectList({
+  selectedScripts,
+  handleFormSubmit,
+}: CharacterSelectListProps) {
   const [state, setState] = React.useState<Record<string, boolean>>({});
-  const [characters, setCharacters] = React.useState<Character[]>([]);
+  const [additionalCharacters, setAdditionalCharacters] = React.useState<
+    Character[]
+  >([]);
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
   const [, , , setAvailableRoles] = useSetAvailableRoles("test-game");
+  const characters = GameData.scripts
+    .filter((script) => selectedScripts.includes(script.name))
+    .reduce<Character[]>((acc, { characters }) => {
+      acc = [...acc, ...characters];
+      return acc;
+    }, []);
 
   //
   function addNewCharacter() {
@@ -32,7 +42,7 @@ function CharacterSelectList({ handleFormSubmit }: CharacterSelectListProps) {
       return;
     }
 
-    setCharacters((oldCharacters) => [
+    setAdditionalCharacters((oldCharacters) => [
       ...oldCharacters,
       { name: newCharacterName } as Character,
     ]);
@@ -77,21 +87,19 @@ function CharacterSelectList({ handleFormSubmit }: CharacterSelectListProps) {
 
   //
   return (
-    <Flex gap="2" direction="column">
-      <ScriptSelectList setCharacters={setCharacters} />
-      <Separator size="4" color="tomato" />
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-          await setAvailableRoles(
-            Object.entries(state)
-              .filter(([, active]) => active)
-              .map(([name]) => name)
-          );
-          handleFormSubmit();
-        }}
-      >
-        {characters.map(({ name, imageSrc }) => (
+    <form
+      onSubmit={async (event) => {
+        event.preventDefault();
+        await setAvailableRoles(
+          Object.entries(state)
+            .filter(([, active]) => active)
+            .map(([name]) => name)
+        );
+        handleFormSubmit();
+      }}
+    >
+      <Flex gap="2" direction="column">
+        {[...characters, ...additionalCharacters].map(({ name, imageSrc }) => (
           <Flex gap="2" align={"center"} key={name}>
             <Checkbox
               id={name}
@@ -136,8 +144,8 @@ function CharacterSelectList({ handleFormSubmit }: CharacterSelectListProps) {
         <TeamDistribution />
 
         <Button type="submit">BEGIN</Button>
-      </form>
-    </Flex>
+      </Flex>
+    </form>
   );
 }
 
