@@ -1,8 +1,7 @@
-import { Button, Callout, Flex } from "@radix-ui/themes";
+import { Button, Callout, Flex, Heading, Separator } from "@radix-ui/themes";
 import PlayerRoleMap from "./PlayerRoleMap";
 import ConfirmButton from "./ConfirmButton";
 import CharacterSelectList from "./CharacterSelectList";
-import TroubleBrewingScript from "./assets/gameScripts/trouble-brewing.json";
 import React from "react";
 import {
   useAvailableRoles,
@@ -13,9 +12,12 @@ import {
   useRoles,
 } from "./store/useStore";
 import PlayerList from "./PlayerList";
+import ScriptSelectList from "./ScriptSelectList";
 
 function GamemasterLanding() {
   const [showCharSelect, setShowCharSelect] = React.useState(false);
+  const [scriptsSelected, setScriptsSelected] = React.useState<string[]>([]);
+
   const players = usePlayers("test-game");
   const availableRoles = useAvailableRoles("test-game");
   const rolesMap = useRoles("test-game");
@@ -30,6 +32,7 @@ function GamemasterLanding() {
           clearPlayerRoles();
           clearPlayers();
           setShowCharSelect(true);
+          setScriptsSelected([]);
         }}
       >
         New Game
@@ -39,12 +42,28 @@ function GamemasterLanding() {
 
   if (showCharSelect)
     return (
-      <CharacterSelectList
-        scriptJson={TroubleBrewingScript}
-        handleFormSubmit={() => {
-          setShowCharSelect(false);
-        }}
-      />
+      <Flex direction="column" gap="3">
+        <Heading size={"4"} align={"center"} color="tomato">
+          Scripts
+        </Heading>
+        <ScriptSelectList
+          handleChange={(selected) =>
+            setScriptsSelected(
+              Object.keys(selected).filter((script) => selected[script])
+            )
+          }
+        />
+        <Separator size="4" color="tomato" />
+        <Heading size={"4"} align={"center"} color="tomato">
+          Roles
+        </Heading>
+        <CharacterSelectList
+          selectedScripts={scriptsSelected}
+          handleFormSubmit={() => {
+            setShowCharSelect(false);
+          }}
+        />
+      </Flex>
     );
 
   if (Object.keys(rolesMap ?? {}).length === 0) {
@@ -73,7 +92,11 @@ function GamemasterLanding() {
   return (
     <Flex direction="column">
       <NewGameButton />
-      <PlayerRoleMap players={players} roles={rolesMap} />
+      {players && rolesMap ? (
+        <PlayerRoleMap players={players} roles={rolesMap} />
+      ) : (
+        <span>Loading...</span>
+      )}
     </Flex>
   );
 }

@@ -73,8 +73,9 @@ export function useSelf(gameId: string) {
   const roles = useRoles(gameId);
   return (
     secretKey &&
+    players &&
     ({
-      name: players?.[secretKey] ?? null,
+      name: players?.[secretKey],
       role: roles?.[secretKey],
     } as Self)
   );
