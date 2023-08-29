@@ -2,12 +2,12 @@ import { Table } from "@radix-ui/themes";
 import { PlayerSet } from "./store/Game";
 
 interface PlayerRoleMapProps {
-  players: PlayerSet | null;
-  roles: Record<string, string> | null;
+  players: PlayerSet;
+  roles: Record<string, string>;
 }
 
 function PlayerRoleMap({ players, roles }: PlayerRoleMapProps) {
-  return players ? (
+  return (
     <Table.Root>
       <Table.Header>
         <Table.Row>
@@ -24,8 +24,6 @@ function PlayerRoleMap({ players, roles }: PlayerRoleMapProps) {
         ))}
       </Table.Body>
     </Table.Root>
-  ) : (
-    <div>Loading...</div>
   );
 }
 

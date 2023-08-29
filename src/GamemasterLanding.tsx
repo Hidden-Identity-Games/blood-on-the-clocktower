@@ -92,7 +92,11 @@ function GamemasterLanding() {
   return (
     <Flex direction="column">
       <NewGameButton />
-      <PlayerRoleMap players={players} roles={rolesMap} />
+      {players && rolesMap ? (
+        <PlayerRoleMap players={players} roles={rolesMap} />
+      ) : (
+        <span>Loading...</span>
+      )}
     </Flex>
   );
 }
