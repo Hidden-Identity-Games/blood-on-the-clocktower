@@ -2,7 +2,6 @@ import { Button, Callout, Flex } from "@radix-ui/themes";
 import PlayerRoleMap from "./PlayerRoleMap";
 import ConfirmButton from "./ConfirmButton";
 import CharacterSelectList from "./CharacterSelectList";
-import TroubleBrewingScript from "./assets/gameScripts/trouble-brewing.json";
 import React from "react";
 import {
   useAvailableRoles,
@@ -40,7 +39,6 @@ function GamemasterLanding() {
   if (showCharSelect)
     return (
       <CharacterSelectList
-        scriptJson={TroubleBrewingScript}
         handleFormSubmit={() => {
           setShowCharSelect(false);
         }}
