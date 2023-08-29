@@ -4,24 +4,34 @@ import {
   Flex,
   IconButton,
   TextField,
+  Text,
 } from "@radix-ui/themes";
-import { Character, Script } from "./types/script";
+import { Character } from "./types/script";
 import React from "react";
+import { useSetAvailableRoles } from "./store/useStore";
+import GameData from "./assets/game_scripts.json";
 
 interface CharacterSelectListProps {
-  scriptJson: Script;
-  handleFormSubmit: (formData: Record<string, boolean>) => void;
+  selectedScripts: string[];
+  handleFormSubmit: () => void;
 }
 
 function CharacterSelectList({
-  scriptJson,
+  selectedScripts,
   handleFormSubmit,
 }: CharacterSelectListProps) {
   const [state, setState] = React.useState<Record<string, boolean>>({});
-  const [characters, setCharacters] = React.useState<Character[]>(
-    scriptJson.characters
-  );
+  const [additionalCharacters, setAdditionalCharacters] = React.useState<
+    Character[]
+  >([]);
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
+  const [, , , setAvailableRoles] = useSetAvailableRoles("test-game");
+  const characters = GameData.scripts
+    .filter((script) => selectedScripts.includes(script.name))
+    .reduce<Character[]>((acc, { characters }) => {
+      acc = [...acc, ...characters];
+      return acc;
+    }, []);
 
   //
   function addNewCharacter() {
@@ -32,7 +42,7 @@ function CharacterSelectList({
       return;
     }
 
-    setCharacters((oldCharacters) => [
+    setAdditionalCharacters((oldCharacters) => [
       ...oldCharacters,
       { name: newCharacterName } as Character,
     ]);
@@ -45,15 +55,51 @@ function CharacterSelectList({
     setNewCharacterName("");
   }
 
+  function TeamDistribution() {
+    const charsSelected = GameData.scripts
+      .reduce<Character[]>((acc, { characters }) => {
+        acc = [...acc, ...characters];
+        return acc;
+      }, [])
+      .filter(({ name }) => state[name]);
+
+    return (
+      <Flex>
+        <Text as="span" style={{ flex: 1 }} color="blue">
+          Townsfolk:{"  "}
+          {charsSelected.filter(({ team }) => team === "Townsfolk").length}
+        </Text>
+        <Text as="span" style={{ flex: 1 }} color="teal">
+          Outsiders:{"  "}
+          {charsSelected.filter(({ team }) => team === "Outsider").length}
+        </Text>
+        <Text as="span" style={{ flex: 1 }} color="crimson">
+          Minions:{"  "}
+          {charsSelected.filter(({ team }) => team === "Minion").length}
+        </Text>
+        <Text as="span" style={{ flex: 1 }} color="tomato">
+          Demons:{"  "}
+          {charsSelected.filter(({ team }) => team === "Demon").length}
+        </Text>
+      </Flex>
+    );
+  }
+
+  //
   return (
     <form
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
-        handleFormSubmit(state);
+        await setAvailableRoles(
+          Object.entries(state)
+            .filter(([, active]) => active)
+            .map(([name]) => name)
+        );
+        handleFormSubmit();
       }}
     >
       <Flex gap="2" direction="column">
-        {characters.map(({ name, imageSrc }) => (
+        {[...characters, ...additionalCharacters].map(({ name, imageSrc }) => (
           <Flex gap="2" align={"center"} key={name}>
             <Checkbox
               id={name}
@@ -68,7 +114,7 @@ function CharacterSelectList({
             <Flex gap="1" align={"center"} key={name} asChild>
               <label style={{ flex: 1 }} htmlFor={name}>
                 <img
-                  src={imageSrc ? imageSrc : "./src/assets/default_role.svg"}
+                  src={imageSrc ?? "./src/assets/default_role.svg"}
                   height={"70px"}
                   width={"70px"}
                 />
@@ -95,7 +141,9 @@ function CharacterSelectList({
           />
         </Flex>
 
-        <Button type="submit">Submit</Button>
+        <TeamDistribution />
+
+        <Button type="submit">BEGIN</Button>
       </Flex>
     </form>
   );

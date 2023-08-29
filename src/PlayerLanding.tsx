@@ -1,45 +1,35 @@
-import { Button, TextField } from "@radix-ui/themes";
-import { useAddPlayer } from "./store/useStore";
-import React from "react";
+import { Callout } from "@radix-ui/themes";
+import AddPlayer from "./AddPlayer";
+import PlayerRole from "./PlayerRole";
+import { useSelf } from "./store/useStore";
+import { Character } from "./types/script";
+import AvailableCharacters from "./assets/game_scripts.json";
 
-interface PlayerLandingProps {
-  handleFormSubmit: (playerName: string) => void;
-}
+function PlayerLanding() {
+  const self = useSelf("test-game");
 
-function PlayerLanding({ handleFormSubmit }: PlayerLandingProps) {
-  const [name, setName] = React.useState("");
-  const [error, isLoading, , addPlayer] = useAddPlayer("test-game");
+  if (!self) return <div>Loading...</div>;
+
+  if (!self.name) return <AddPlayer handleFormSubmit={() => {}} />;
+
+  if (!self.role)
+    return (
+      <Callout.Root>
+        <Callout.Text>Waiting for game to begin...</Callout.Text>
+      </Callout.Root>
+    );
 
   return (
-    <form
-      onSubmit={async (event) => {
-        event.preventDefault();
-        await addPlayer(name);
-        handleFormSubmit(name);
-      }}
-    >
-      <label htmlFor="name-input">NAME:</label>
-      <TextField.Input
-        id="name-input"
-        placeholder="Player name..."
-        value={name}
-        onChange={(event) => setName(event.currentTarget.value)}
-      />
-      {error && (
-        <div>
-          {error.match(/taken/)
-            ? "Your name was taken, please add your last initial"
-            : "There was an error, please try again."}
-        </div>
+    <PlayerRole
+      self={self}
+      characters={AvailableCharacters.scripts.reduce<Character[]>(
+        (acc, { characters }) => {
+          acc = [...acc, ...characters];
+          return acc;
+        },
+        []
       )}
-      {isLoading ? (
-        <div>Loading</div>
-      ) : (
-        <Button type="submit" mt="2">
-          Join
-        </Button>
-      )}
-    </form>
+    />
   );
 }
 
