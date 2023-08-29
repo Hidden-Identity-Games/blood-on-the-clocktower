@@ -1,6 +1,5 @@
 {
   "name": "blood-on-the-clocktower-app",
-  "homepage": "https://vermentor.github.io/blood-on-the-clocktower-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -34,7 +33,6 @@
     "eslint": "^8.47.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "gh-pages": "^6.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   }

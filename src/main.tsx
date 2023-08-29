@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { Theme } from "@radix-ui/themes";
@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       accentColor="red"
       panelBackground="solid"
       hasBackground
-      //style={{ "--scaling": 2 }}
+      style={{ "--scaling": 2 } as CSSProperties}
     >
       <App />
     </Theme>
