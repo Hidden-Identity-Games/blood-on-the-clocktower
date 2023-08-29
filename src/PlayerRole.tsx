@@ -1,7 +1,7 @@
 import { Flex } from "@radix-ui/themes";
 import "./PlayerRole.css";
 import { Character } from "./types/script";
-import { Self } from "./types/self";
+import { Self } from "./store/Game";
 
 interface PlayerRoleProps {
   self: Self;

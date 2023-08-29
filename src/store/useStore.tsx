@@ -26,9 +26,8 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Game, PlayerSet } from "./Game";
+import { Game, PlayerSet, Self } from "./Game";
 import { useSecretKey } from "./secretKey";
-import { Self } from "../types/self";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
