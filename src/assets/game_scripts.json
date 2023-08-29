@@ -1,0 +1,240 @@
+{
+  "Trouble Brewing": {
+    "characters": [
+      {
+        "name": "Washerwoman",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/8/85/Icon_washerwoman.png"
+      },
+      {
+        "name": "Librarian",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/e0/Icon_librarian.png"
+      },
+      {
+        "name": "Investigator",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/ad/Icon_investigator.png"
+      },
+      {
+        "name": "Chef",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d5/Icon_chef.png"
+      },
+      {
+        "name": "Empath",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/13/Icon_empath.png"
+      },
+      {
+        "name": "Fortune Teller",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c3/Icon_fortune_teller.png"
+      },
+      {
+        "name": "Undertaker",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/0/05/Icon_undertaker.png"
+      },
+      {
+        "name": "Monk",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/7/7c/Icon_monk.png"
+      },
+      {
+        "name": "Ravenkeeper",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/ef/Icon_ravenkeeper.png"
+      },
+      {
+        "name": "Virgin",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d3/Icon_virgin.png"
+      },
+      {
+        "name": "Slayer",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d3/Icon_slayer.png"
+      },
+      {
+        "name": "Soldier",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c3/Icon_soldier.png"
+      },
+      {
+        "name": "Mayor",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/a1/Icon_mayor.png"
+      },
+      {
+        "name": "Butler",
+        "team": "Outsider",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/19/Icon_butler.png"
+      },
+      {
+        "name": "Recluse",
+        "team": "Outsider",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/60/Icon_recluse.png"
+      },
+      {
+        "name": "Saint",
+        "team": "Outsider",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c9/Icon_saint.png"
+      },
+      {
+        "name": "Poisoner",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/b/b1/Icon_poisoner.png"
+      },
+      {
+        "name": "Spy",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/54/Icon_spy.png"
+      },
+      {
+        "name": "Scarlet Woman",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/54/Icon_scarlet_woman.png"
+      },
+      {
+        "name": "Baron",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/6d/Icon_baron.png"
+      },
+      {
+        "name": "Imp",
+        "team": "Demon",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/5c/Icon_imp.png"
+      }
+    ]
+  },
+  "Sects & Violets": {
+    "characters": [
+      {
+        "name": "Clockmaker",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/3/3d/Icon_clockmaker.png"
+      },
+      {
+        "name": "Dreamer",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/f/f2/Icon_dreamer.png"
+      },
+      {
+        "name": "Snake Charmer",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/0/08/Icon_snakecharmer.png"
+      },
+      {
+        "name": "Mathematician",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/f/f1/Icon_mathematician.png"
+      },
+      {
+        "name": "Flowergirl",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/ac/Icon_flowergirl.png"
+      },
+      {
+        "name": "Town Crier",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/ef/Icon_towncrier.png"
+      },
+      {
+        "name": "Oracle",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/b/bb/Icon_oracle.png"
+      },
+      {
+        "name": "Savant",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d5/Icon_savant.png"
+      },
+      {
+        "name": "Seamstress",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/53/Icon_seamstress.png"
+      },
+      {
+        "name": "Philosopher",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/5d/Icon_philosopher.png"
+      },
+      {
+        "name": "Artist",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/1a/Icon_artist.png"
+      },
+      {
+        "name": "Juggler",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/4/42/Icon_juggler.png"
+      },
+      {
+        "name": "Sage",
+        "team": "Townsfolk",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/a0/Icon_sage.png"
+      },
+      {
+        "name": "Mutant",
+        "team": "Outsider",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/2/2e/Icon_mutant.png"
+      },
+      {
+        "name": "Sweetheart",
+        "team": "Outsider",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/6a/Icon_sweetheart.png"
+      },
+      {
+        "name": "Barber",
+        "team": "Outsider",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/16/Icon_barber.png"
+      },
+      {
+        "name": "Klutz",
+        "team": "Outsider",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/b/bc/Icon_klutz.png"
+      },
+      {
+        "name": "Evil Twin",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/f/f4/Icon_eviltwin.png"
+      },
+      {
+        "name": "Witch",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/7/7b/Icon_witch.png"
+      },
+      {
+        "name": "Cerenovus",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/4/45/Icon_cerenovus.png"
+      },
+      {
+        "name": "Pit-Hag",
+        "team": "Minion",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/6b/Icon_pithag.png"
+      },
+      {
+        "name": "Fang Gu",
+        "team": "Demon",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/0/0e/Icon_fanggu.png"
+      },
+      {
+        "name": "Vigormortis",
+        "team": "Demon",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/1a/Icon_vigormortis.png"
+      },
+      {
+        "name": "No Dashii",
+        "team": "Demon",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/eb/Icon_nodashii.png"
+      },
+      {
+        "name": "Vortox",
+        "team": "Demon",
+        "imageSrc": "https://wiki.bloodontheclocktower.com/images/8/89/Icon_vortox.png"
+      }
+    ]
+  }
+}

@@ -15,11 +15,11 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
       <Flex direction="column" align="center" className="role">
         <img
           src={
-            characters.filter(({ name }) => name === self.role)[0]?.imageSrc ??
+            characters.find(({ name }) => name === self.role)?.imageSrc ??
             "./src/assets/default_role.svg"
           }
           onContextMenu={(event) => {
-            event.preventDefault;
+            event.preventDefault();
             event.stopPropagation();
           }}
         />
