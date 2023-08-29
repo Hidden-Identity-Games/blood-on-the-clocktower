@@ -47,7 +47,7 @@ function GamemasterLanding() {
           Scripts
         </Heading>
         <ScriptSelectList
-          handleSubmit={(selected) =>
+          handleChange={(selected) =>
             setScriptsSelected(
               Object.keys(selected).filter((script) => selected[script])
             )

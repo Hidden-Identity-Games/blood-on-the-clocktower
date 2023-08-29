@@ -3,17 +3,17 @@ import GameData from "./assets/game_scripts.json";
 import React from "react";
 
 interface ScriptSelectListProps {
-  handleSubmit: (a: Record<string, boolean>) => void;
+  handleChange: (a: Record<string, boolean>) => void;
 }
 
-function ScriptSelectList({ handleSubmit }: ScriptSelectListProps) {
+function ScriptSelectList({ handleChange }: ScriptSelectListProps) {
   const [selectedScripts, setSelectedScripts] = React.useState<
     Record<string, boolean>
   >({});
 
   React.useEffect(
-    () => handleSubmit(selectedScripts),
-    [selectedScripts, handleSubmit]
+    () => handleChange(selectedScripts),
+    [selectedScripts, handleChange]
   );
 
   return (
