@@ -239,6 +239,136 @@
           "imageSrc": "https://wiki.bloodontheclocktower.com/images/8/89/Icon_vortox.png"
         }
       ]
+    },
+    {
+      "name": "Bad Moon Rising",
+      "characters": [
+        {
+          "name": "Grandmother",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/2/26/Icon_grandmother.png"
+        },
+        {
+          "name": "Sailor",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/16/Icon_sailor.png"
+        },
+        {
+          "name": "Chambermaid",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/8/87/Icon_chambermaid.png"
+        },
+        {
+          "name": "Exorcist",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c2/Icon_exorcist.png"
+        },
+        {
+          "name": "Innkeeper",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/0/0c/Icon_innkeeper.png"
+        },
+        {
+          "name": "Gambler",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/f/fd/Icon_gambler.png"
+        },
+        {
+          "name": "Gossip",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/c/c7/Icon_gossip.png"
+        },
+        {
+          "name": "Courtier",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/e0/Icon_courtier.png"
+        },
+        {
+          "name": "Professor",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/65/Icon_professor.png"
+        },
+        {
+          "name": "Minstrel",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/2/24/Icon_minstrel.png"
+        },
+        {
+          "name": "Tea Lady",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/16/Icon_tealady.png"
+        },
+        {
+          "name": "Pacifist",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/5d/Icon_pacifist.png"
+        },
+        {
+          "name": "Fool",
+          "team": "Townsfolk",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d9/Icon_fool.png"
+        },
+        {
+          "name": "Goon",
+          "team": "Outsider",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/6f/Icon_goon.png"
+        },
+        {
+          "name": "Lunatic",
+          "team": "Outsider",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/64/Icon_lunatic.png"
+        },
+        {
+          "name": "Tinker",
+          "team": "Outsider",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/9/98/Icon_tinker.png"
+        },
+        {
+          "name": "Moonchild",
+          "team": "Outsider",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/dc/Icon_moonchild.png"
+        },
+        {
+          "name": "Godfather",
+          "team": "Minion",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d0/Icon_godfather.png"
+        },
+        {
+          "name": "Devil's Advocate",
+          "team": "Minion",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/0/09/Icon_devilsadvocate.png"
+        },
+        {
+          "name": "Assassin",
+          "team": "Minion",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/4/49/Icon_assassin.png"
+        },
+        {
+          "name": "Mastermind",
+          "team": "Minion",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/d/d5/Icon_mastermind.png"
+        },
+        {
+          "name": "Zombuul",
+          "team": "Demon",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/15/Icon_zombuul.png"
+        },
+        {
+          "name": "Pukka",
+          "team": "Demon",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/f/f4/Icon_pukka.png"
+        },
+        {
+          "name": "Shabaloth",
+          "team": "Demon",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/1f/Icon_shabaloth.png"
+        },
+        {
+          "name": "Po",
+          "team": "Demon",
+          "imageSrc": "https://wiki.bloodontheclocktower.com/images/b/b2/Icon_po.png"
+        }
+      ]
     }
   ]
 }
