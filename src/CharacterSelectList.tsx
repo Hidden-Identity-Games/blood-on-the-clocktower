@@ -63,23 +63,33 @@ function CharacterSelectList({
       }, [])
       .filter(({ name }) => state[name]);
 
+    function uniqueCharsByTeam(team: string) {
+      return [
+        ...new Set(
+          charsSelected
+            .filter((char) => char.team === team)
+            .map(({ name }) => name)
+        ),
+      ].length;
+    }
+
     return (
       <Flex>
         <Text as="span" style={{ flex: 1 }} color="blue">
           Townsfolk:{"  "}
-          {charsSelected.filter(({ team }) => team === "Townsfolk").length}
+          {uniqueCharsByTeam("Townsfolk")}
         </Text>
         <Text as="span" style={{ flex: 1 }} color="teal">
           Outsiders:{"  "}
-          {charsSelected.filter(({ team }) => team === "Outsider").length}
+          {uniqueCharsByTeam("Outsider")}
         </Text>
         <Text as="span" style={{ flex: 1 }} color="crimson">
           Minions:{"  "}
-          {charsSelected.filter(({ team }) => team === "Minion").length}
+          {uniqueCharsByTeam("Minion")}
         </Text>
         <Text as="span" style={{ flex: 1 }} color="tomato">
           Demons:{"  "}
-          {charsSelected.filter(({ team }) => team === "Demon").length}
+          {uniqueCharsByTeam("Demon")}
         </Text>
       </Flex>
     );
