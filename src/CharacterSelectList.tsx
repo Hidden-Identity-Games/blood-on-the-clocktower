@@ -4,12 +4,12 @@ import {
   Flex,
   IconButton,
   TextField,
-  Text,
 } from "@radix-ui/themes";
 import { Character } from "./types/script";
 import React from "react";
 import { useSetAvailableRoles } from "./store/useStore";
 import GameData from "./assets/game_scripts.json";
+import TeamDistributionBar from "./TeamDistributionBar";
 
 interface CharacterSelectListProps {
   selectedScripts: string[];
@@ -55,46 +55,6 @@ function CharacterSelectList({
     setNewCharacterName("");
   }
 
-  function TeamDistribution() {
-    const charsSelected = GameData.scripts
-      .reduce<Character[]>((acc, { characters }) => {
-        acc = [...acc, ...characters];
-        return acc;
-      }, [])
-      .filter(({ name }) => state[name]);
-
-    function uniqueCharsByTeam(team: string) {
-      return [
-        ...new Set(
-          charsSelected
-            .filter((char) => char.team === team)
-            .map(({ name }) => name)
-        ),
-      ].length;
-    }
-
-    return (
-      <Flex>
-        <Text as="span" style={{ flex: 1 }} color="blue">
-          Townsfolk:{"  "}
-          {uniqueCharsByTeam("Townsfolk")}
-        </Text>
-        <Text as="span" style={{ flex: 1 }} color="teal">
-          Outsiders:{"  "}
-          {uniqueCharsByTeam("Outsider")}
-        </Text>
-        <Text as="span" style={{ flex: 1 }} color="crimson">
-          Minions:{"  "}
-          {uniqueCharsByTeam("Minion")}
-        </Text>
-        <Text as="span" style={{ flex: 1 }} color="tomato">
-          Demons:{"  "}
-          {uniqueCharsByTeam("Demon")}
-        </Text>
-      </Flex>
-    );
-  }
-
   //
   return (
     <form
@@ -103,7 +63,7 @@ function CharacterSelectList({
         await setAvailableRoles(
           Object.entries(state)
             .filter(([, active]) => active)
-            .map(([name]) => name)
+            .map(([name]) => name),
         );
         handleFormSubmit();
       }}
@@ -151,7 +111,7 @@ function CharacterSelectList({
           />
         </Flex>
 
-        <TeamDistribution />
+        <TeamDistributionBar charsSelected={characters} />
 
         <Button type="submit">BEGIN</Button>
       </Flex>
