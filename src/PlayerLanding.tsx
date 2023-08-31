@@ -2,8 +2,7 @@ import { Callout } from "@radix-ui/themes";
 import AddPlayer from "./AddPlayer";
 import PlayerRole from "./PlayerRole";
 import { useSelf } from "./store/useStore";
-import { Character } from "./types/script";
-import AvailableCharacters from "./assets/game_scripts.json";
+import AvailableCharacters from "./assets/game_data/roles.json";
 
 function PlayerLanding() {
   const self = useSelf("test-game");
@@ -19,18 +18,7 @@ function PlayerLanding() {
       </Callout.Root>
     );
 
-  return (
-    <PlayerRole
-      self={self}
-      characters={AvailableCharacters.scripts.reduce<Character[]>(
-        (acc, { characters }) => {
-          acc = [...acc, ...characters];
-          return acc;
-        },
-        []
-      )}
-    />
-  );
+  return <PlayerRole self={self} characters={AvailableCharacters.characters} />;
 }
 
 export default PlayerLanding;

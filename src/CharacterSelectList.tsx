@@ -8,7 +8,8 @@ import {
 import { Character } from "./types/script";
 import React from "react";
 import { useSetAvailableRoles } from "./store/useStore";
-import GameData from "./assets/game_scripts.json";
+import GameScripts from "./assets/game_data/scripts.json";
+import CharacterRoles from "./assets/game_data/roles.json";
 import TeamDistributionBar from "./TeamDistributionBar";
 
 interface CharacterSelectListProps {
@@ -26,12 +27,14 @@ function CharacterSelectList({
   >([]);
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
   const [, , , setAvailableRoles] = useSetAvailableRoles("test-game");
-  const characters = GameData.scripts
-    .filter((script) => selectedScripts.includes(script.name))
-    .reduce<Character[]>((acc, { characters }) => {
-      acc = [...acc, ...characters];
-      return acc;
-    }, []);
+  const scriptRoles = GameScripts.scripts
+    .filter(({ name }) => selectedScripts.includes(name))
+    .map((script) => script.characters)
+    .flat()
+    .map(({ id }) => id);
+  const characters = CharacterRoles.characters.filter(({ id }) =>
+    scriptRoles.includes(id),
+  );
 
   //
   function addNewCharacter() {
@@ -111,7 +114,9 @@ function CharacterSelectList({
           />
         </Flex>
 
-        <TeamDistributionBar charsSelected={characters} />
+        <TeamDistributionBar
+          charsSelected={characters.filter(({ name }) => state[name])}
+        />
 
         <Button type="submit">BEGIN</Button>
       </Flex>
