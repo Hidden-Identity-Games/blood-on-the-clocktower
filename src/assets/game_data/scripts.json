@@ -1,0 +1,90 @@
+{
+  "scripts": [
+    {
+      "name": "Trouble Brewing",
+      "characters": [
+        { "id": "washerwoman" },
+        { "id": "librarian" },
+        { "id": "investigator" },
+        { "id": "chef" },
+        { "id": "empath" },
+        { "id": "fortune_teller" },
+        { "id": "undertaker" },
+        { "id": "monk" },
+        { "id": "ravenkeeper" },
+        { "id": "virgin" },
+        { "id": "slayer" },
+        { "id": "soldier" },
+        { "id": "mayor" },
+        { "id": "butler" },
+        { "id": "recluse" },
+        { "id": "saint" },
+        { "id": "poisoner" },
+        { "id": "spy" },
+        { "id": "scarlet_woman" },
+        { "id": "baron" },
+        { "id": "imp" }
+      ]
+    },
+    {
+      "name": "Sects & Violets",
+      "characters": [
+        { "id": "clockmaker" },
+        { "id": "dreamer" },
+        { "id": "snake_charmer" },
+        { "id": "mathematician" },
+        { "id": "flowergirl" },
+        { "id": "town_crier" },
+        { "id": "oracle" },
+        { "id": "savant" },
+        { "id": "seamstress" },
+        { "id": "philosopher" },
+        { "id": "artist" },
+        { "id": "juggler" },
+        { "id": "sage" },
+        { "id": "mutant" },
+        { "id": "sweetheart" },
+        { "id": "barber" },
+        { "id": "klutz" },
+        { "id": "evil_twin" },
+        { "id": "witch" },
+        { "id": "cerenovus" },
+        { "id": "pit-hag" },
+        { "id": "fang_gu" },
+        { "id": "vigormortis" },
+        { "id": "no_dashii" },
+        { "id": "vortox" }
+      ]
+    },
+    {
+      "name": "Bad Moon Rising",
+      "characters": [
+        { "id": "grandmother" },
+        { "id": "sailor" },
+        { "id": "chambermaid" },
+        { "id": "exorcist" },
+        { "id": "innkeeper" },
+        { "id": "gambler" },
+        { "id": "gossip" },
+        { "id": "courtier" },
+        { "id": "professor" },
+        { "id": "minstrel" },
+        { "id": "tea_lady" },
+        { "id": "pacifist" },
+        { "id": "fool" },
+        { "id": "goon" },
+        { "id": "lunatic" },
+        { "id": "tinker" },
+        { "id": "moonchild" },
+        { "id": "godfather" },
+        { "id": "devils_advocate" },
+        { "id": "assassin" },
+        { "id": "mastermind" },
+        { "id": "zombuul" },
+        { "id": "pukka" },
+        { "id": "shabaloth" },
+        { "id": "po" }
+      ]
+    }
+  ]
+}

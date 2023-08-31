@@ -1,5 +1,5 @@
 import { Checkbox, Flex } from "@radix-ui/themes";
-import GameData from "./assets/game_scripts.json";
+import GameData from "./assets/game_data/scripts.json";
 import React from "react";
 
 interface ScriptSelectListProps {
@@ -13,7 +13,7 @@ function ScriptSelectList({ handleChange }: ScriptSelectListProps) {
 
   React.useEffect(
     () => handleChange(selectedScripts),
-    [selectedScripts, handleChange]
+    [selectedScripts, handleChange],
   );
 
   return (
