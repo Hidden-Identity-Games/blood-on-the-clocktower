@@ -1,6 +1,6 @@
 import { Button, TextField } from "@radix-ui/themes";
 import React from "react";
-import { useAddPlayer } from "./store/useStore";
+import { useAddPlayer } from "../store/useStore";
 
 interface AddPlayerProps {
   handleFormSubmit: (playerName: string) => void;

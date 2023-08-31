@@ -13,6 +13,8 @@ const firebaseConfig = {
   appId: "1:631934890755:web:0a01be45e7b7c83fdeaf36",
 };
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 
@@ -52,7 +54,7 @@ export function useDoc<DocumentType>(docToUse: DocumentReference) {
     return onSnapshot(docToUse, (snapshot) => {
       setData(snapshot.data() as unknown as DocumentType);
     });
-  }, []);
+  }, [docToUse]);
   return data;
 }
 
@@ -81,119 +83,78 @@ export function useSelf(gameId: string) {
   );
 }
 
-export function useAddPlayer(gameId: string) {
+export function useAction<Args extends Array<unknown>>(
+  action: (...args: Args) => Promise<void>,
+): [
+  error: string | null,
+  isLoading: boolean,
+  succeeded: boolean,
+  action: (...args: Args) => void,
+] {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
   const [succeeded, setSucceeded] = useState<boolean>(false);
-  const secretKey = useSecretKey();
 
   return [
     error,
     isLoading,
     succeeded,
-    async (playerName: string) => {
+    async (...args: Args) => {
       setIsLoading(true);
       setError(null);
       setSucceeded(false);
       try {
-        const currentDoc = await getDoc(doc(playerListCollection, gameId));
-        if (Object.values(currentDoc.data() as any).includes(playerName)) {
-          throw new Error("Player name taken");
+        if (args !== null) {
+          await action(...args);
+          setSucceeded(true);
         }
-        await setDoc(
-          doc(playerListCollection, gameId),
-          { [secretKey]: playerName },
-          { merge: true }
-        );
-        setSucceeded(true);
       } catch (e) {
         setError((e as Error).message);
       } finally {
         setIsLoading(false);
       }
     },
-  ] as const;
+  ];
+}
+export function useCreateGame() {}
+
+export function useAddPlayer(gameId: string) {
+  const secretKey = useSecretKey();
+  return useAction(async (playerName: string) => {
+    const currentDoc = await getDoc(doc(playerListCollection, gameId));
+    if (Object.values(currentDoc.data() as any).includes(playerName)) {
+      throw new Error("Player name taken");
+    }
+    await setDoc(
+      doc(playerListCollection, gameId),
+      { [secretKey]: playerName },
+      { merge: true },
+    );
+  });
 }
 
 export function useClearPlayersList(gameId: string) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>("");
-  const [succeeded, setSucceeded] = useState<boolean>(false);
-
-  return [
-    error,
-    isLoading,
-    succeeded,
-    async () => {
-      setIsLoading(true);
-      setError(null);
-      setSucceeded(false);
-      try {
-        await setDoc(doc(playerListCollection, gameId), {}, { merge: false });
-        setSucceeded(true);
-      } catch (e) {
-        setError((e as Error).message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-  ] as const;
+  return useAction(async () => {
+    await setDoc(doc(playerListCollection, gameId), {}, { merge: false });
+  });
 }
 
 export function useClearPlayerRoles(gameId: string) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>("");
-  const [succeeded, setSucceeded] = useState<boolean>(false);
-
-  return [
-    error,
-    isLoading,
-    succeeded,
-    async () => {
-      setIsLoading(true);
-      setError(null);
-      setSucceeded(false);
-      try {
-        await setDoc(doc(rolesCollection, gameId), {}, { merge: false });
-        setSucceeded(true);
-      } catch (e) {
-        setError((e as Error).message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-  ] as const;
+  return useAction(async () => {
+    await setDoc(doc(rolesCollection, gameId), {}, { merge: false });
+  });
 }
 
 export function useSetAvailableRoles(gameId: string) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>("");
-  const [succeeded, setSucceeded] = useState<boolean>(false);
-
-  return [
-    error,
-    isLoading,
-    succeeded,
-    async (roleNames: string[]) => {
-      setIsLoading(true);
-      setError(null);
-      setSucceeded(false);
-      try {
-        await setDoc(
-          doc(availableRolesCollection, gameId),
-          {
-            roles: roleNames,
-          },
-          { merge: false }
-        );
-        setSucceeded(true);
-      } catch (e) {
-        setError((e as Error).message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-  ] as const;
+  return useAction(async (roleNames: string[]) => {
+    await setDoc(
+      doc(availableRolesCollection, gameId),
+      {
+        roles: roleNames,
+      },
+      { merge: false },
+    );
+  });
 }
 
 export function useAvailableRoles(gameId: string) {
@@ -218,7 +179,7 @@ export function useDistributeRoles(gameId: string) {
           ...acc,
           [rolesEntries[idx]]: item,
         }),
-        {} as Record<string, string>
+        {} as Record<string, string>,
       );
 
     setDoc(doc(rolesCollection, gameId), randomRoleSet);

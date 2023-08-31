@@ -1,5 +1,5 @@
 import { Box, Grid, Heading } from "@radix-ui/themes";
-import { PlayerSet } from "./store/Game";
+import { PlayerSet } from "../store/Game";
 
 interface PlayerListProps {
   players: PlayerSet | null;

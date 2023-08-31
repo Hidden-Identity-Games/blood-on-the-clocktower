@@ -1,5 +1,5 @@
 import { Checkbox, Flex } from "@radix-ui/themes";
-import GameData from "./assets/game_data/scripts.json";
+import GameData from "../assets/game_data/scripts.json";
 import React from "react";
 
 interface ScriptSelectListProps {

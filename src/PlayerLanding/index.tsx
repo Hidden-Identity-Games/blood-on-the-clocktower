@@ -1,10 +1,10 @@
 import { Callout } from "@radix-ui/themes";
 import AddPlayer from "./AddPlayer";
 import PlayerRole from "./PlayerRole";
-import { useSelf } from "./store/useStore";
-import AvailableCharacters from "./assets/game_data/roles.json";
+import { useSelf } from "../store/useStore";
+import AvailableCharacters from "../assets/game_data/roles.json";
 
-function PlayerLanding() {
+export function Landing() {
   const self = useSelf("test-game");
 
   if (!self) return <div>Loading...</div>;
@@ -20,5 +20,3 @@ function PlayerLanding() {
 
   return <PlayerRole self={self} characters={AvailableCharacters.characters} />;
 }
-
-export default PlayerLanding;

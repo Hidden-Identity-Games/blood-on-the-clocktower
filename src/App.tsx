@@ -1,16 +1,19 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import PlayerLanding from "./PlayerLanding";
-import GamemasterLanding from "./GamemasterLanding";
+import { Landing as PlayerLanding } from "./PlayerLanding";
+import GamemasterLanding from "./GamemasterInGame/GamemasterLanding";
+// import { Landing as GamemasterInGame } from "./GamemasterInGame";
+import { NewGameLanding } from "./NewGamePage";
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/:id",
       element: <PlayerLanding />,
     },
+    { path: "/gm/:gmid", element: <GamemasterLanding /> },
     {
-      path: "/secret-gm-toolbox",
-      element: <GamemasterLanding />,
+      path: "/",
+      element: <NewGameLanding />,
     },
   ]);
 

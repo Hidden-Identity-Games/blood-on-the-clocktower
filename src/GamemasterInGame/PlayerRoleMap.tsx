@@ -1,5 +1,5 @@
 import { Table } from "@radix-ui/themes";
-import { PlayerSet } from "./store/Game";
+import { PlayerSet } from "../store/Game";
 
 interface PlayerRoleMapProps {
   players: PlayerSet;

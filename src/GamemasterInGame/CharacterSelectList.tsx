@@ -5,11 +5,11 @@ import {
   IconButton,
   TextField,
 } from "@radix-ui/themes";
-import { Character } from "./types/script";
+import { Character } from "../types/script";
 import React from "react";
-import { useSetAvailableRoles } from "./store/useStore";
-import GameScripts from "./assets/game_data/scripts.json";
-import CharacterRoles from "./assets/game_data/roles.json";
+import { useSetAvailableRoles } from "../store/useStore";
+import GameScripts from "../assets/game_data/scripts.json";
+import CharacterRoles from "../assets/game_data/roles.json";
 import TeamDistributionBar from "./TeamDistributionBar";
 
 interface CharacterSelectListProps {

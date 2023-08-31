@@ -10,7 +10,7 @@ import {
   useDistributeRoles,
   usePlayers,
   useRoles,
-} from "./store/useStore";
+} from "../store/useStore";
 import PlayerList from "./PlayerList";
 import ScriptSelectList from "./ScriptSelectList";
 
@@ -49,7 +49,7 @@ function GamemasterLanding() {
         <ScriptSelectList
           handleChange={(selected) =>
             setScriptsSelected(
-              Object.keys(selected).filter((script) => selected[script])
+              Object.keys(selected).filter((script) => selected[script]),
             )
           }
         />

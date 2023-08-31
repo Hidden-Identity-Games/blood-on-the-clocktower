@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 
 export function useSecretKey() {
   const currentSecretKey = useRef<string | null>(
-    localStorage.getItem("secretKey")
+    localStorage.getItem("secretKey"),
   );
   if (!currentSecretKey.current) {
     currentSecretKey.current = v4();
