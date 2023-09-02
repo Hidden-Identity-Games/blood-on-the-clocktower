@@ -7,7 +7,7 @@ import {
 } from "@radix-ui/themes";
 import { Character } from "../types/script";
 import React from "react";
-import { useSetAvailableRoles } from "../store/useStore";
+import { useGameId, useSetAvailableRoles } from "../store/useStore";
 import GameScripts from "../assets/game_data/scripts.json";
 import CharacterRoles from "../assets/game_data/roles.json";
 import TeamDistributionBar from "./TeamDistributionBar";
@@ -26,7 +26,6 @@ function CharacterSelectList({
     Character[]
   >([]);
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
-  const [, , , setAvailableRoles] = useSetAvailableRoles("test-game");
   const scriptRoles = GameScripts.scripts
     .filter(({ name }) => selectedScripts.includes(name))
     .map((script) => script.characters)
@@ -63,12 +62,8 @@ function CharacterSelectList({
     <form
       onSubmit={async (event) => {
         event.preventDefault();
-        await setAvailableRoles(
-          Object.entries(state)
-            .filter(([, active]) => active)
-            .map(([name]) => name),
-        );
         handleFormSubmit();
+        throw new Error("I broke roles, reimplement");
       }}
     >
       <Flex gap="2" direction="column">

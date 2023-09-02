@@ -1,43 +1,57 @@
-import { Button, Callout, Flex, Heading, Separator } from "@radix-ui/themes";
+import {
+  Button,
+  Callout,
+  Flex,
+  Heading,
+  Link,
+  Separator,
+} from "@radix-ui/themes";
 import PlayerRoleMap from "./PlayerRoleMap";
 import ConfirmButton from "./ConfirmButton";
 import CharacterSelectList from "./CharacterSelectList";
 import React from "react";
-import {
-  useAvailableRoles,
-  useClearPlayerRoles,
-  useClearPlayersList,
-  useDistributeRoles,
-  usePlayers,
-  useRoles,
-} from "../store/useStore";
+import { useCreateGame, useDistributeRoles, useGame } from "../store/useStore";
 import PlayerList from "./PlayerList";
 import ScriptSelectList from "./ScriptSelectList";
+import { useParams } from "react-router-dom";
+import { GameProvider } from "../store/GameContextProvider";
 
-function GamemasterLanding() {
+function NewGameButton() {
+  const [, , , createGame] = useCreateGame();
+
+  return (
+    <ConfirmButton
+      handleConfirm={() => {
+        createGame();
+      }}
+    >
+      New Game
+    </ConfirmButton>
+  );
+}
+
+export function GameMasterRoot() {
+  const { gameId, gmHash } = useParams();
+  return (
+    <GameProvider gameId={gameId!}>
+      <GamemasterLanding providedGMHash={gmHash!} />
+    </GameProvider>
+  );
+}
+function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   const [showCharSelect, setShowCharSelect] = React.useState(false);
   const [scriptsSelected, setScriptsSelected] = React.useState<string[]>([]);
+  const { gameId, game } = useGame();
 
-  const players = usePlayers("test-game");
-  const availableRoles = useAvailableRoles("test-game");
-  const rolesMap = useRoles("test-game");
-  const [, , , clearPlayers] = useClearPlayersList("test-game");
-  const [, , , clearPlayerRoles] = useClearPlayerRoles("test-game");
-  const distributeRoles = useDistributeRoles("test-game");
+  const availableRoles = [];
+  const distributeRoles = useDistributeRoles();
 
-  function NewGameButton() {
-    return (
-      <ConfirmButton
-        handleConfirm={() => {
-          clearPlayerRoles();
-          clearPlayers();
-          setShowCharSelect(true);
-          setScriptsSelected([]);
-        }}
-      >
-        New Game
-      </ConfirmButton>
-    );
+  if (!game) {
+    return <div>Loading...</div>;
+  }
+  const { players, playersToRoles } = game;
+  if (providedGMHash !== game.gmSecretHash) {
+    return <div>You are in the wrong place</div>;
   }
 
   if (showCharSelect)
@@ -66,9 +80,9 @@ function GamemasterLanding() {
       </Flex>
     );
 
-  if (Object.keys(rolesMap ?? {}).length === 0) {
+  if (Object.keys(playersToRoles ?? {}).length === 0) {
     const playersJoinedCount = Object.keys(players ?? {}).length;
-    const expectedPlayerCount = availableRoles?.roles.length ?? "X";
+    const expectedPlayerCount = availableRoles?.length ?? "X";
 
     return (
       <Flex direction={"column"}>
@@ -85,6 +99,7 @@ function GamemasterLanding() {
         >
           Distribute Roles
         </Button>
+        <Link href={`/${gameId}`}>Join game</Link>
       </Flex>
     );
   }
@@ -92,11 +107,12 @@ function GamemasterLanding() {
   return (
     <Flex direction="column">
       <NewGameButton />
-      {players && rolesMap ? (
-        <PlayerRoleMap players={players} roles={rolesMap} />
+      {players && playersToRoles ? (
+        <PlayerRoleMap players={players} roles={playersToRoles} />
       ) : (
         <span>Loading...</span>
       )}
+      <Link href={`/${gameId}`}>Join game</Link>
     </Flex>
   );
 }

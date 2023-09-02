@@ -1,6 +1,7 @@
 import { Button, TextField } from "@radix-ui/themes";
 import React from "react";
 import { useAddPlayer } from "../store/useStore";
+import { useGame } from "../store/GameContext";
 
 interface AddPlayerProps {
   handleFormSubmit: (playerName: string) => void;
@@ -8,7 +9,7 @@ interface AddPlayerProps {
 
 function AddPlayer({ handleFormSubmit }: AddPlayerProps) {
   const [name, setName] = React.useState("");
-  const [error, isLoading, , addPlayer] = useAddPlayer("test-game");
+  const [error, isLoading, , addPlayer] = useAddPlayer();
 
   return (
     <form

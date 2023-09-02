@@ -1,16 +1,19 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Landing as PlayerLanding } from "./PlayerLanding";
-import GamemasterLanding from "./GamemasterInGame/GamemasterLanding";
+import { PlayerRoot } from "./PlayerLanding";
+import { GameMasterRoot } from "./GamemasterInGame/GamemasterLanding";
 // import { Landing as GamemasterInGame } from "./GamemasterInGame";
 import { NewGameLanding } from "./NewGamePage";
 
-function App() {
+function MainRouter() {
   const router = createBrowserRouter([
     {
-      path: "/:id",
-      element: <PlayerLanding />,
+      path: "/:gameId",
+      element: <PlayerRoot />,
     },
-    { path: "/gm/:gmid", element: <GamemasterLanding /> },
+    {
+      path: "/:gameId/gm/:gmHash",
+      element: <GameMasterRoot />,
+    },
     {
       path: "/",
       element: <NewGameLanding />,
@@ -20,4 +23,4 @@ function App() {
   return <RouterProvider router={router} />;
 }
 
-export default App;
+export default MainRouter;
