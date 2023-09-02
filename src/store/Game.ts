@@ -1,5 +1,7 @@
-export interface Game {
-  players: string[];
+export interface UnifiedGame {
+  players: Record<string, string>;
+  playersToRoles: PlayerSet;
+  gmSecretHash: string;
 }
 
 export interface PlayerSet {

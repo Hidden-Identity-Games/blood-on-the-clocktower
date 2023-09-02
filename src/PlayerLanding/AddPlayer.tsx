@@ -8,7 +8,7 @@ interface AddPlayerProps {
 
 function AddPlayer({ handleFormSubmit }: AddPlayerProps) {
   const [name, setName] = React.useState("");
-  const [error, isLoading, , addPlayer] = useAddPlayer("test-game");
+  const [error, isLoading, , addPlayer] = useAddPlayer();
 
   return (
     <form

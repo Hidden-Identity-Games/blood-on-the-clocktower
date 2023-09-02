@@ -1,5 +1,5 @@
 import { Flex, Text } from "@radix-ui/themes";
-import { Character } from "./types/script";
+import { Character } from "../types/script";
 
 interface TeamDistributionBarProps {
   charsSelected: Character[];
