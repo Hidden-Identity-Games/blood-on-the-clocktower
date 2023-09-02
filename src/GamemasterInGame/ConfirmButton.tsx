@@ -1,5 +1,5 @@
 import { Button } from "@radix-ui/themes";
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 
 interface ConfirmButtonProps {
   children: ReactNode;

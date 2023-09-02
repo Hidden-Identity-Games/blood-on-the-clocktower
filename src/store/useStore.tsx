@@ -4,7 +4,7 @@ import { generate } from "random-words";
 import { useNavigate } from "react-router-dom";
 
 import { useMemo } from "react";
-import { Game, Self, UnifiedGame } from "./Game";
+import { Self, UnifiedGame } from "./Game";
 import { useSecretKey } from "./secretKey";
 import { unifiedGamesCollection } from "./firebaseStore";
 import { useAction, useChangeGame, useGame } from "./GameContext";

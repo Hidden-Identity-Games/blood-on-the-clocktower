@@ -44,7 +44,7 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   const { gameId, game } = useGame();
 
   const availableRoles = [];
-  const distributeRoles = useDistributeRoles();
+  const [, , , distributeRoles] = useDistributeRoles();
 
   if (!game) {
     return <div>Loading...</div>;
@@ -94,7 +94,7 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
           </Callout.Text>
         </Callout.Root>
         <Button
-          onClick={distributeRoles}
+          onClick={() => distributeRoles([])}
           disabled={playersJoinedCount !== expectedPlayerCount}
         >
           Distribute Roles
