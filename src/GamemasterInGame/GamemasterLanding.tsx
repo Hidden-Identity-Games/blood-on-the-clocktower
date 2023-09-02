@@ -9,12 +9,14 @@ import {
 import PlayerRoleMap from "./PlayerRoleMap";
 import ConfirmButton from "./ConfirmButton";
 import CharacterSelectList from "./CharacterSelectList";
-import React from "react";
+import React, { useState } from "react";
 import { useCreateGame, useDistributeRoles, useGame } from "../store/useStore";
 import PlayerList from "./PlayerList";
 import ScriptSelectList from "./ScriptSelectList";
 import { useParams } from "react-router-dom";
 import { GameProvider } from "../store/GameContextProvider";
+import { Lobby } from "./Lobby";
+import { ScriptSelect } from "./ScriptSelect";
 
 function NewGameButton() {
   const [, , , createGame] = useCreateGame();
@@ -39,6 +41,9 @@ export function GameMasterRoot() {
   );
 }
 function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
+  const [mode, _setMode] = useState<"lobby" | "scriptSelect" | "other">(
+    "lobby",
+  );
   const [showCharSelect, setShowCharSelect] = React.useState(false);
   const [scriptsSelected, setScriptsSelected] = React.useState<string[]>([]);
   const { gameId, game } = useGame();
@@ -54,6 +59,13 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
     return <div>You are in the wrong place</div>;
   }
 
+  if (mode === "lobby") {
+    return <Lobby />;
+  }
+
+  if (mode === "scriptSelect") {
+    return <ScriptSelect handleSubmit={() => {}} />;
+  }
   if (showCharSelect)
     return (
       <Flex direction="column" gap="3">
