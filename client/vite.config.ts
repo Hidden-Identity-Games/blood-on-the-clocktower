@@ -1,11 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import basicSsl from "@vitejs/plugin-basic-ssl";
-
+const PORT = 3000;
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig((env) => ({
   plugins: [react(), basicSsl()],
   server: {
+    port: 3000,
     proxy: {
       "/api": {
         target: "http://localhost:6001",
@@ -16,6 +17,10 @@ export default defineConfig({
     },
   },
   define: {
-    SERVER_URL: '"localhost:6001"',
+    x: console.log(env),
+    WS_URL:
+      env.command === "build"
+        ? '"wss://blood-on-the-clocktower.onrender.com/socket"'
+        : `"wss://localhost:${PORT}/api/socket"`,
   },
-});
+}));

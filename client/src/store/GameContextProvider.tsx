@@ -28,7 +28,7 @@ export function GameProvider({
       return;
     }
 
-    const socket = new WebSocket(apiUrl("/socket", { websocket: true }));
+    const socket = new WebSocket(WS_URL);
     socket.onopen = () => {
       socket.send(
         createMessage({
