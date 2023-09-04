@@ -16,7 +16,7 @@ export function usePlayerNamesToRoles() {
     throw new Error("ASDFASDF");
   }
   const { playersToNames, playersToRoles } = game;
-  return mapObject(playersToNames, (hash, name) => [
+  return mapObject(playersToNames, (hash, name: string) => [
     name,
     playersToRoles[hash],
   ]);

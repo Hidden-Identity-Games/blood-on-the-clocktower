@@ -7,6 +7,9 @@ import { useGame } from "../store/GameContext";
 import { useDistributeRoles, usePlayerNamesToRoles } from "../store/useStore";
 import TeamDistributionBar from "./TeamDistributionBar";
 import { useState } from "react";
+import { ShareButton } from "./ShareButton";
+import { useParams } from "react-router-dom";
+import { Share1Icon } from "@radix-ui/react-icons";
 
 function StartGameButton({
   onClick,
@@ -30,6 +33,7 @@ function StartGameButton({
 }
 export function Lobby() {
   const { game } = useGame();
+  const { gameId } = useParams();
   const playersToRoles = usePlayerNamesToRoles();
   const [selectedTab, setSelectedTab] = useState<"roles" | "players">("roles");
   const [distributeRolesError, isLoading, , distributeRoles, clear] =
@@ -82,13 +86,23 @@ export function Lobby() {
             )}
           />
         </Flex>
-
-        <StartGameButton
-          disabled={!gameStartable}
-          gameStarted={game.gameStarted}
-          isLoading={isLoading}
-          onClick={() => distributeRoles(availableRolesList)}
-        />
+        <Flex gap="4">
+          <StartGameButton
+            disabled={!gameStartable}
+            gameStarted={game.gameStarted}
+            isLoading={isLoading}
+            onClick={() => distributeRoles(availableRolesList)}
+          />
+          <ShareButton
+            url={`${document.location.protocol}//${document.location.hostname}${
+              document.location.port ? `:${document.location.port}` : ""
+            }/${gameId}`}
+            title="Join Game: Blood on the Clocktower"
+            text="Join game: Blood on the Clocktower"
+          >
+            <Share1Icon /> Invite Players
+          </ShareButton>
+        </Flex>
       </Tabs.Content>
       <Tabs.Content value="players">
         <Flex direction="column" py="3" style={{ overflowY: "auto" }}>
