@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Character, CharacterType, CharacterTypes } from "../types/script";
+import DefaultRoleImageSrc from "../assets/default_role.svg";
 import {
   Checkbox,
   Flex,
@@ -12,15 +13,19 @@ interface StateContainer<T> {
   value: T;
   set: (newValue: T | ((prevState: T) => T)) => void;
 }
+
 export interface CharacterSelectState {
   selectedRoles: StateContainer<Record<string, boolean>>;
   additionalCharacters: StateContainer<Character[]>;
   characters: Character[];
 }
+
 // doing some wonky shit because we cannot elave the tab mounted when we switch.
 // so if we don't hoist state we lose data when switching tabs.
-export function useCharacterSelectState(): CharacterSelectState {
-  const characters: Character[] = [];
+export function useCharacterSelectState(
+  availableCharacters?: Character[],
+): CharacterSelectState {
+  const characters: Character[] = availableCharacters ?? [];
   const [selectedRoles, setSelectedRoles] = useState<Record<string, boolean>>(
     {},
   );
@@ -49,18 +54,30 @@ export function CharacterSelectList({
   const [newCharacterName, setNewCharacterName] = useState("");
   const [newCharacterTeam, setNewCharacterTeam] =
     useState<CharacterType>("Townsfolk");
+
   function addNewCharacter() {
+    if (
+      state.additionalCharacters.value.find(({ id }) => id === newCharacterName)
+    ) {
+      return;
+    }
+
     state.additionalCharacters.set((curr) => [
       ...curr,
-      // TODO: prevent duplicates
-      { imageSrc: "", name: newCharacterName, team: newCharacterTeam },
+      {
+        id: newCharacterName,
+        name: newCharacterName,
+        team: newCharacterTeam,
+        imageSrc: undefined,
+      },
     ]);
-    setNewCharacterName("");
-    state.selectedRoles.set((curr) => ({
-      ...curr,
+    state.selectedRoles.set((selectedroles) => ({
+      ...selectedroles,
       [newCharacterName]: true,
     }));
+    setNewCharacterName("");
   }
+
   return (
     <Flex gap="2" direction="column">
       {[...state.characters, ...state.additionalCharacters.value].map(
@@ -79,7 +96,7 @@ export function CharacterSelectList({
             <Flex gap="1" align={"center"} key={name} asChild>
               <label style={{ flex: 1 }} htmlFor={name}>
                 <img
-                  src={imageSrc ?? "./src/assets/default_role.svg"}
+                  src={imageSrc ?? DefaultRoleImageSrc}
                   height={"70px"}
                   width={"70px"}
                 />

@@ -2,6 +2,7 @@
   "scripts": [
     {
       "name": "Trouble Brewing",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/a1/Logo_trouble_brewing.png",
       "characters": [
         { "id": "washerwoman" },
         { "id": "librarian" },
@@ -28,6 +29,7 @@
     },
     {
       "name": "Sects & Violets",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/4/43/Logo_sects_and_violets.png",
       "characters": [
         { "id": "clockmaker" },
         { "id": "dreamer" },
@@ -58,6 +60,7 @@
     },
     {
       "name": "Bad Moon Rising",
+      "imageSrc": "https://wiki.bloodontheclocktower.com/images/1/10/Logo_bad_moon_rising.png",
       "characters": [
         { "id": "grandmother" },
         { "id": "sailor" },
