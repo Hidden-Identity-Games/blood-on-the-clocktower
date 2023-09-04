@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm run -r --parallel dev",
-    "build-client": "pnpm run -r --parallel build-client",
-    "build-server": "pnpm run -r --parallel build-server",
-    "start": "pnpm run -r --parallel start-prod"
+    "build-client": "pnpm run -r build-client",
+    "build-server": "pnpm run -r build-server",
+    "start": "pnpm run -r start-prod"
   },
   "keywords": [],
   "author": "",
