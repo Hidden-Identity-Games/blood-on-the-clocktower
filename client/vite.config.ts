@@ -5,6 +5,11 @@ const PORT = 3000;
 // https://vitejs.dev/config/
 export default defineConfig((env) => ({
   plugins: [react(), basicSsl()],
+  build: {
+    minify: false,
+    sourcemap: true,
+    rollupOptions: {},
+  },
   server: {
     port: 3000,
     proxy: {
@@ -17,7 +22,6 @@ export default defineConfig((env) => ({
     },
   },
   define: {
-    x: console.log(env),
     WS_URL:
       env.command === "build"
         ? '"wss://blood-on-the-clocktower.onrender.com/socket"'
