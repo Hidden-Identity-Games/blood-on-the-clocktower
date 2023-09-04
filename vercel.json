@@ -1,9 +1,9 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" },
     {
       "source": "/api/:path*",
       "destination": "https://blood-on-the-clocktower.onrender.com/:path*"
-    }
+    },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
