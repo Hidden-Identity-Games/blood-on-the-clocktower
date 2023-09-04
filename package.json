@@ -6,12 +6,17 @@
   "scripts": {
     "dev": "pnpm run -r --parallel dev",
     "build-client": "pnpm run -r build-client",
-    "build-server": "pnpm run -r build-server"
+    "build-server": "pnpm run -r build-server",
+    "prepare": "husky install",
+    "test": "pnpm run -r test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.1"
+  },
+  "dependencies": {
+    "husky": "^8.0.3"
   }
 }

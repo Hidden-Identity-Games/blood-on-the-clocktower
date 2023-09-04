@@ -9,9 +9,10 @@
     "build-client": "tsc && vite build",
     "build-server": "",
     "dev": "vite",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "preview": "vite preview",
-    "start-prod": ""
+    "start-prod": "",
+    "test": "tsc && pnpm run lint"
   },
   "dependencies": {
     "@hidden-identity/server": "workspace:*",

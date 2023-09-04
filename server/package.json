@@ -14,7 +14,8 @@
     "build-server": "",
     "start-prod": "PORT=3000 ts-node --esm src/index.ts",
     "dev": "concurrently \"pnpm run build --watch\" \"PORT=6001 nodemon --esm src/index.ts\"",
-    "lint": "eslint --fix ./src/**/*"
+    "lint": "eslint --fix ./src/**/*",
+    "test": "tsc && pnpm run lint"
   },
   "keywords": [],
   "author": "",
