@@ -10,6 +10,7 @@ import { useState } from "react";
 import { ShareButton } from "./ShareButton";
 import { useParams } from "react-router-dom";
 import { Share1Icon } from "@radix-ui/react-icons";
+import { Character } from "@hidden-identity/server";
 
 function StartGameButton({
   onClick,
@@ -31,7 +32,12 @@ function StartGameButton({
     </Button>
   );
 }
-export function Lobby() {
+
+export interface LobbyProps {
+  rolesList: Character[];
+}
+
+export function Lobby({ rolesList }: LobbyProps) {
   const { game } = useGame();
   const { gameId } = useParams();
   const playersToRoles = usePlayerNamesToRoles();
@@ -39,7 +45,7 @@ export function Lobby() {
   const [distributeRolesError, isLoading, , distributeRoles, clear] =
     useDistributeRoles();
 
-  const characterSelectState = useCharacterSelectState();
+  const characterSelectState = useCharacterSelectState(rolesList);
   const availableRolesList = Object.entries(
     characterSelectState.selectedRoles.value,
   )
@@ -81,7 +87,10 @@ export function Lobby() {
         <Flex direction="column" gap="3" py="3">
           <CharacterSelectList state={characterSelectState} />
           <TeamDistributionBar
-            charsSelected={characterSelectState.characters.filter(
+            charsSelected={[
+              ...characterSelectState.characters,
+              ...characterSelectState.additionalCharacters.value,
+            ].filter(
               ({ name }) => characterSelectState.selectedRoles.value[name],
             )}
           />

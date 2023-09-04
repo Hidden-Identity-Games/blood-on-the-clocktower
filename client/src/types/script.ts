@@ -1,4 +1,9 @@
-import type { Script, Character, CharacterType } from "@hidden-identity/server";
+import type {
+  Script,
+  Character,
+  CharacterId,
+  CharacterType,
+} from "@hidden-identity/server";
 
 // Can't share actual code with the server right now, only types
 export const CharacterTypes = [
@@ -8,4 +13,4 @@ export const CharacterTypes = [
   "Demon",
 ] satisfies Array<CharacterType>;
 
-export { Script, Character, CharacterType };
+export { Script, Character, CharacterId, CharacterType };
