@@ -11,7 +11,6 @@ dotenv.config()
 const rawApp = express()
 const app = expressWs(rawApp).app
 const port = process.env.PORT
-
 // app.use((req, response, next) => {
 //   try {
 //     console.log(`recieved ${JSON.stringify(req, null, 4)}`)
@@ -26,9 +25,15 @@ app.use(cors())
 
 app.use(express.json())
 app.use((req, res, next) => {
-  console.log(`Recieved: ${JSON.stringify(req.url)}, body: ${JSON.stringify(req.body)}, headers: ${JSON.stringify(req.headers)}`)
+  console.log(
+    `Recieved: ${JSON.stringify(req.url)}, body: ${JSON.stringify(
+      req.body,
+    )}, headers: ${JSON.stringify(req.headers)}`,
+  )
 
-  res.on('close', () => { console.log(`Sending: ${JSON.stringify(res.statusMessage)}`) })
+  res.on('close', () => {
+    console.log(`Sending: ${JSON.stringify(res.statusMessage)}`)
+  })
   next()
 })
 app.use((err: Error, _req: unknown, res: Response, _next: unknown): void => {

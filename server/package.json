@@ -13,7 +13,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"pnpm run build --watch\" \"PORT=6001 nodemon --esm src/index.ts\"",
-    "lint": "eslint --fix ./src/**",
+    "lint": "eslint --fix ./src/**/*",
     "build-prod": "",
     "start-prod": "PORT=3000 ts-node --esm src/index.ts"
   },

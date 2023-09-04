@@ -29,7 +29,10 @@ export function addGame (gameId: string): boolean {
   return true
 }
 
-export function subscribeToGame (gameId: string, callback: (value: UnifiedGame | null) => void): () => void {
+export function subscribeToGame (
+  gameId: string,
+  callback: (value: UnifiedGame | null) => void,
+): () => void {
   if (!gameExists(gameId)) {
     throw new Error(`${gameId} not found`)
   }
@@ -54,13 +57,19 @@ function createGame (gameId: string): UnifiedGame {
   }
 }
 
-export function addPlayer (gameId: string, playerId: string, playerName: string): void {
+export function addPlayer (
+  gameId: string,
+  playerId: string,
+  playerName: string,
+): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   // player already exists
   if (gameInstance.playersToNames[playerId]) {
-    throw new Error(`Duplicate Playerid found: ${playerId}, name: ${playerName}`)
+    throw new Error(
+      `Duplicate Playerid found: ${playerId}, name: ${playerName}`,
+    )
   }
 
   // player name taken
@@ -76,14 +85,19 @@ export function addPlayer (gameId: string, playerId: string, playerName: string)
     },
   })
 }
-export function assignRoles (gameId: string, roles: string[]): string | undefined {
+export function assignRoles (
+  gameId: string,
+  roles: string[],
+): string | undefined {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
   const playerIdList = Object.keys(gameInstance.playersToNames)
 
   // player already exists
   if (playerIdList.length !== roles.length) {
-    return `Player count does not match role count players${JSON.stringify(Object.values(gameInstance.playersToNames))}, roles:${JSON.stringify(roles)}.`
+    return `Player count does not match role count players${JSON.stringify(
+      Object.values(gameInstance.playersToNames),
+    )}, roles:${JSON.stringify(roles)}.`
   }
 
   game.update({

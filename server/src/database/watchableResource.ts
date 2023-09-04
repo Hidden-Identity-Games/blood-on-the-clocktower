@@ -9,7 +9,7 @@ export class WatchableResource<ResourceShape> {
   update (newValue: ResourceShape): void {
     this.value = newValue
     const callbacksToRemove: unknown[] = []
-    this.callbacks.forEach(cb => {
+    this.callbacks.forEach((cb) => {
       try {
         cb(this.value)
       } catch (e) {
@@ -17,14 +17,16 @@ export class WatchableResource<ResourceShape> {
         callbacksToRemove.push(cb)
       }
     })
-    this.callbacks = this.callbacks.filter(cb => !callbacksToRemove.includes(cb))
+    this.callbacks = this.callbacks.filter(
+      (cb) => !callbacksToRemove.includes(cb),
+    )
   }
 
   subscribe (callback: Callback<ResourceShape>): () => void {
     this.callbacks = [...this.callbacks, callback]
     callback(this.value)
     return () => {
-      this.callbacks = this.callbacks.filter(cb => cb !== callback)
+      this.callbacks = this.callbacks.filter((cb) => cb !== callback)
     }
   }
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { generate } from "random-words";
 import { useNavigate } from "react-router-dom";
 

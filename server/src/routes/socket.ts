@@ -7,18 +7,20 @@ export function useSocket (app: Application): void {
     console.log('Connection esablished')
     ws.on('message', (rawMsg) => {
       try {
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         const message = rawMsg.toString()
         console.log(`recieved message ${message}}`)
         const parsedMessage = parseMessage(message)
         if (parsedMessage.type === 'ListenToGame') {
           subscribeToGame(parsedMessage.gameId, (game) => {
-            ws.send(createMessage({
-              type: 'ObjectUpdated',
-              objectType: 'game',
-              updatedId: parsedMessage.gameId,
-              nextObj: game,
-            }))
+            ws.send(
+              createMessage({
+                type: 'ObjectUpdated',
+                objectType: 'game',
+                updatedId: parsedMessage.gameId,
+                nextObj: game,
+              }),
+            )
           })
         }
       } catch (e) {

@@ -1,5 +1,10 @@
 import { type Application } from 'express-ws'
-import { addGame, addPlayer, assignRoles, getGame } from '../database/gameDB.ts'
+import {
+  addGame,
+  addPlayer,
+  assignRoles,
+  getGame,
+} from '../database/gameDB.ts'
 
 export function useGame (app: Application): void {
   addGame('test-game')
