@@ -45,7 +45,7 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   if (mode === "scriptSelect") {
     return (
       <ScriptSelect
-        handleSubmit={(script, customScript) => {
+        handleSubmit={(script: string, customScript?: CharacterId[]) => {
           if (customScript) {
             setRoles(customScript);
           } else {

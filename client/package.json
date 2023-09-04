@@ -9,9 +9,10 @@
     "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "tsc && vite build",
+    "build-client": "tsc && vite build",
+    "build-server": "",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build-prod": "",
     "start-prod": ""
   },
   "dependencies": {
