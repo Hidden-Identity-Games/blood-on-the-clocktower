@@ -68,7 +68,6 @@ export function CharacterSelectList({
         id: newCharacterName,
         name: newCharacterName,
         team: newCharacterTeam,
-        imageSrc: undefined,
       },
     ]);
     state.selectedRoles.set((selectedroles) => ({
