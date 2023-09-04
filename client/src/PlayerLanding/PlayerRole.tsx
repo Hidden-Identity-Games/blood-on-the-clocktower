@@ -2,6 +2,10 @@ import { Flex } from "@radix-ui/themes";
 import "./PlayerRole.css";
 import { Character } from "../types/script";
 import { Self } from "../store/Game";
+import tokenBack from "../assets/token_logo.png";
+import tokenBlank from "../assets/token_blank.png";
+import defaultRoleImage from "../assets/default_role.svg";
+import fingerprintImage from "../assets/fingerprint.png";
 
 interface PlayerRoleProps {
   self: Self;
@@ -17,7 +21,7 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
             <img
               width={"300px"}
               height={"300px"}
-              src="./src/assets/token_logo.png"
+              src={tokenBack}
               onContextMenu={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
@@ -28,7 +32,7 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
             <img
               width={"300px"}
               height={"300px"}
-              src="./src/assets/token_blank.png"
+              src={tokenBlank}
               onContextMenu={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
@@ -41,7 +45,7 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
               height={"300px"}
               src={
                 characters.find(({ name }) => name === self.role)?.imageSrc ??
-                "./src/assets/default_role.svg"
+                defaultRoleImage
               }
               onContextMenu={(event) => {
                 event.preventDefault();
@@ -56,12 +60,11 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
         <img
           width={"85px"}
           height={"110px"}
-          //style={{ paddingTop: "100%" }}
           onContextMenu={(event) => {
             event.preventDefault();
             event.stopPropagation();
           }}
-          src="./src/assets/fingerprint.png"
+          src={fingerprintImage}
         />
         <div>Hold to reveal role</div>
       </div>
