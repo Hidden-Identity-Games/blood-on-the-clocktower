@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "pnpm run -r --parallel dev",
     "build": "pnpm run -r --parallel build-prod",
+    "build-client": "pnpm run -r --parallel build-client",
     "start": "pnpm run -r --parallel start-prod"
   },
   "keywords": [],
