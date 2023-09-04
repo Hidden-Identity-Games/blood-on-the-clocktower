@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { UnifiedGame } from "./Game";
 import { UnifiedGameContext } from "./GameContext";
 import { createMessage, parseMessage } from "./messenger";
-import { apiUrl } from "./urlBuilder";
 
 export function GameProvider({
   gameId,
