@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "build-client": "",
+    "build-client": "tsc",
     "build-server": "tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"pnpm run build --watch\" \"PORT=6001 nodemon --esm src/index.ts\"",
