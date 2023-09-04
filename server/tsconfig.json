@@ -1,0 +1,38 @@
+
+
+{
+
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["es2021"],
+    "module": "node16",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleDetection": "auto",
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "declarationDir": "declarations",
+    "declaration": true,
+
+
+    /* build */
+    "outDir": "./dist"
+  },
+  "include": ["src"],
+}
