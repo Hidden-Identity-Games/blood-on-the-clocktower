@@ -13,5 +13,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.1"
+  },
+  "dependencies": {
+    "@railway/cli": "^3.4.0"
   }
 }
