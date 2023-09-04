@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm run -r --parallel dev",
-    "build": "pnpm run -r --parallel build-prod",
     "build-client": "pnpm run -r --parallel build-client",
+    "build-server": "pnpm run -r --parallel build-server",
     "start": "pnpm run -r --parallel start-prod"
   },
   "keywords": [],
