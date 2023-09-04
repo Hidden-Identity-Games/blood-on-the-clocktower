@@ -5,12 +5,10 @@
   "type": "module",
   "packageManager": "pnpm@8.6.12",
   "scripts": {
-    "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d build",
-    "dev": "vite",
     "build": "tsc && vite build",
     "build-client": "tsc && vite build",
     "build-server": "",
+    "dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start-prod": ""

@@ -6,7 +6,7 @@ import { Self, UnifiedGame } from "./Game";
 import { useSecretKey } from "./secretKey";
 import { useAction, useGame } from "./GameContext";
 import { mapObject } from "../utils/mapObject";
-import { buildUrl } from "./urlBuilder";
+import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 
 export function usePlayerNamesToRoles() {
@@ -38,7 +38,7 @@ export function useCreateGame() {
   const playerSecretHash = useMemo(() => generate(3).join("-"), []);
   const navigate = useNavigate();
   return useAction(async () => {
-    const response = await fetch(buildUrl(`/game`), {
+    const response = await fetch(apiUrl(`/game`), {
       method: "post",
       body: JSON.stringify({
         hash: playerSecretHash,
@@ -71,7 +71,7 @@ export function useAddPlayer() {
     }
 
     try {
-      const response = await axios.post(buildUrl("/add_player"), {
+      const response = await axios.post(apiUrl("/add_player"), {
         playerName,
         playerId: secretKey,
         gameId,
@@ -103,7 +103,7 @@ export function useDistributeRoles() {
     }
 
     try {
-      const response = await axios.post(buildUrl("/assign_roles"), {
+      const response = await axios.post(apiUrl("/assign_roles"), {
         roles: availableRoles,
         gameId,
       });

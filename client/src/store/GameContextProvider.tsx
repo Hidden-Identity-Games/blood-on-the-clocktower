@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { UnifiedGame } from "./Game";
 import { UnifiedGameContext } from "./GameContext";
 import { createMessage, parseMessage } from "./messenger";
-import { buildUrl } from "./urlBuilder";
+import { apiUrl } from "./urlBuilder";
 
 export function GameProvider({
   gameId,
@@ -28,7 +28,7 @@ export function GameProvider({
       return;
     }
 
-    const socket = new WebSocket(buildUrl("/socket", { websocket: true }));
+    const socket = new WebSocket(apiUrl("/socket", { websocket: true }));
     socket.onopen = () => {
       socket.send(
         createMessage({

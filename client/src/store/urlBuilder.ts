@@ -1,6 +1,7 @@
-export function buildUrl(
-  absoluteUrl: string,
-  options?: { websocket?: boolean },
-) {
-  return `${options?.websocket ? "ws" : "http"}://${SERVER_URL}${absoluteUrl}`;
+export function apiUrl(path: `/${string}`, options?: { websocket?: boolean }) {
+  const url = new URL(`./api${path}`, window.location.origin);
+  if (options?.websocket) {
+    url.protocol = "ws";
+  }
+  return url.toString();
 }
