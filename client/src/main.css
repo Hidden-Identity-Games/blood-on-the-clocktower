@@ -1,5 +1,5 @@
 body {
   /* prevent unwanted scrolling */
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
