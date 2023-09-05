@@ -89,6 +89,7 @@ export function CharacterSelectList({
       Outsider: allCharacters.filter((c) => c.team === "Outsider"),
       Minion: allCharacters.filter((c) => c.team === "Minion"),
       Demon: allCharacters.filter((c) => c.team === "Demon"),
+      Unknown: allCharacters.filter((c) => c.team === "Unknown"),
     };
   }, [state.characters, state.additionalCharacters.value]);
 

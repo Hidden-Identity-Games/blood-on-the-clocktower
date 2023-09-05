@@ -9,15 +9,15 @@ interface TeamDistributionBarProps {
   charsSelected: string[];
 }
 
-interface CharachterTypeSectionProps {
+interface CharacterTypeSectionProps {
   charsSelected: string[];
   charType: CharacterType;
 }
 
-function CharachterTypeSection({
+function CharacterTypeSection({
   charsSelected,
   charType,
-}: CharachterTypeSectionProps) {
+}: CharacterTypeSectionProps) {
   const { game } = useGame();
   if (!game) {
     return;
@@ -57,19 +57,16 @@ function TeamDistributionBar({ charsSelected }: TeamDistributionBarProps) {
   return (
     <>
       <Flex wrap="wrap">
-        <CharachterTypeSection
+        <CharacterTypeSection
           charsSelected={charsSelected}
           charType="Townsfolk"
         />
-        <CharachterTypeSection
+        <CharacterTypeSection
           charsSelected={charsSelected}
           charType="Outsider"
         />
-        <CharachterTypeSection
-          charsSelected={charsSelected}
-          charType="Minion"
-        />
-        <CharachterTypeSection charsSelected={charsSelected} charType="Demon" />
+        <CharacterTypeSection charsSelected={charsSelected} charType="Minion" />
+        <CharacterTypeSection charsSelected={charsSelected} charType="Demon" />
       </Flex>
     </>
   );
