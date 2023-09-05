@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useMemo } from "react";
 import { Self, UnifiedGame } from "./Game";
-import { useSecretKey } from "./secretKey";
 import { useAction, useGame } from "./GameContext";
 import { mapObject } from "../utils/mapObject";
 import { apiUrl } from "./urlBuilder";
@@ -24,11 +23,9 @@ export function usePlayerNamesToRoles(): Record<
   ]);
 }
 
-export function useSelf() {
-  const secretKey = useSecretKey();
+export function useSelf(secretKey: string) {
   const { game } = useGame();
   return (
-    secretKey &&
     game &&
     ({
       name: game.playersToNames[secretKey],
@@ -82,8 +79,7 @@ class NameTakenError extends Error {
     super(`Name Taken: ${name}`);
   }
 }
-export function useAddPlayer() {
-  const secretKey = useSecretKey();
+export function useAddPlayer({ secretKey }: { secretKey: string }) {
   const { gameId } = useGame();
 
   return useAction(async (playerName: string) => {
@@ -93,7 +89,7 @@ export function useAddPlayer() {
 
     try {
       const response = await axios.post(apiUrl("/add_player"), {
-        playerName,
+        playerName: playerName.toLocaleLowerCase(),
         playerId: secretKey,
         gameId,
       });

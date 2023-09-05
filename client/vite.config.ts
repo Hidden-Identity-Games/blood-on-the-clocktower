@@ -3,8 +3,10 @@ import react from "@vitejs/plugin-react";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 const PORT = 3000;
 // https://vitejs.dev/config/
+
+const HTTPS = true;
 export default defineConfig((env) => ({
-  plugins: [react(), basicSsl()],
+  plugins: [react(), HTTPS && basicSsl()],
   build: {
     minify: false,
     sourcemap: true,
@@ -25,6 +27,8 @@ export default defineConfig((env) => ({
     WS_URL:
       env.command === "build"
         ? '"wss://blood-on-the-clocktower.onrender.com/socket"'
-        : `\`wss://\${window.location.hostname}:${PORT}/api/socket\``,
+        : `\`ws${
+            HTTPS ? "s" : ""
+          }://\${window.location.hostname}:${PORT}/api/socket\``,
   },
 }));

@@ -144,14 +144,15 @@ export function Lobby({ rolesList }: LobbyProps) {
                 key={name}
                 asChild
               >
-                <Text size="2">
-                  <RoleText roleId={role}>{name} </RoleText>
+                <Text size="2" style={{ textTransform: "capitalize" }}>
+                  <RoleText roleId={role}>{name}</RoleText>
                   <div
                     style={{
                       flex: 2,
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
+                      textTransform: "capitalize",
                     }}
                   >
                     {RoleName(role) ?? "Not yet assigned"}

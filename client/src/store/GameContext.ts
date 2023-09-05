@@ -14,6 +14,13 @@ export function useGame() {
   const game = useContext(UnifiedGameContext);
   return game;
 }
+export function useDefiniteGame() {
+  const game = useContext(UnifiedGameContext);
+  if (!game.game) {
+    throw new Error("Not in a game?");
+  }
+  return game;
+}
 
 export function useAction<Args extends Array<unknown>>(
   action: (...args: Args) => Promise<void>,
