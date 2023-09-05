@@ -20,7 +20,7 @@ export interface Self {
 export interface Character {
   id: string
   name: string
-  team: string
+  team: CharacterType
   imageSrc?: string
 }
 
@@ -35,4 +35,5 @@ export const CharacterTypes = [
   'Demon',
 ] as const
 
-export type CharacterType = (typeof CharacterTypes)[number]
+export type CharacterType = (typeof CharacterTypes)[number] | 'Unknown'
+export type KnownCharacterType = (typeof CharacterTypes)[number]

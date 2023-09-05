@@ -1,10 +1,14 @@
-import { Button, Flex, Tabs } from "@radix-ui/themes";
+import { Button, Flex, Tabs, Text } from "@radix-ui/themes";
 import {
   CharacterSelectList,
   useCharacterSelectState,
 } from "./CharacterSelectList";
 import { useGame } from "../store/GameContext";
-import { useDistributeRoles, usePlayerNamesToRoles } from "../store/useStore";
+import {
+  useDistributeRoles,
+  useKickPlayer,
+  usePlayerNamesToRoles,
+} from "../store/useStore";
 import TeamDistributionBar from "./TeamDistributionBar";
 import { useState } from "react";
 import { ShareButton } from "./ShareButton";
@@ -12,7 +16,7 @@ import { useParams } from "react-router-dom";
 import { Share1Icon } from "@radix-ui/react-icons";
 import { Character } from "@hidden-identity/server";
 import "./Lobby.css";
-import { RoleIcon, RoleName } from "../shared/RoleIcon";
+import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 
 function StartGameButton({
   onClick,
@@ -43,6 +47,7 @@ export function Lobby({ rolesList }: LobbyProps) {
   const { game } = useGame();
   const { gameId } = useParams();
   const playersToRoles = usePlayerNamesToRoles();
+  const [, kickPlayerLoading, , handleKickPlayer] = useKickPlayer();
   const [selectedTab, setSelectedTab] = useState<"roles" | "players">(
     "players",
   );
@@ -130,11 +135,38 @@ export function Lobby({ rolesList }: LobbyProps) {
             </Flex>
             {Object.entries(playersToRoles).length === 0 &&
               "No players have joined yet."}
-            {Object.entries(playersToRoles).map(([name, role]) => (
-              <Flex justify="between" align="center" px="3" key={name}>
-                <div>{name}</div>
-                <div>{RoleName(role) ?? "Not yet assigned"}</div>
-                <RoleIcon role={role} style={{ maxHeight: "3em" }} />
+            {Object.entries(playersToRoles).map(([id, { role, name }]) => (
+              <Flex
+                justify="between"
+                align="center"
+                px="3"
+                gap="3"
+                key={name}
+                asChild
+              >
+                <Text size="2">
+                  <RoleText roleId={role}>{name} </RoleText>
+                  <div
+                    style={{
+                      flex: 2,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {RoleName(role) ?? "Not yet assigned"}
+                  </div>
+                  <RoleIcon role={role} style={{ maxHeight: "3em" }} />
+                  {!game.gameStarted && (
+                    <Button
+                      disabled={kickPlayerLoading}
+                      size="1"
+                      onClick={() => handleKickPlayer(id)}
+                    >
+                      {kickPlayerLoading ? "Kicking..." : "Kick"}
+                    </Button>
+                  )}
+                </Text>
               </Flex>
             ))}
           </Flex>

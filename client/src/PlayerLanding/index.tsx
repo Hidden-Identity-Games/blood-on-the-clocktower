@@ -2,9 +2,9 @@ import { Callout } from "@radix-ui/themes";
 import AddPlayer from "./AddPlayer";
 import PlayerRole from "./PlayerRole";
 import { useSelf } from "../store/useStore";
-import AvailableCharacters from "../assets/game_data/roles.json";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
+import { roles } from "../assets/game_data/roles";
 export function GameMasterRoot() {}
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -14,6 +14,7 @@ export function PlayerRoot() {
     </GameProvider>
   );
 }
+
 function PlayerLanding() {
   const self = useSelf();
 
@@ -28,5 +29,5 @@ function PlayerLanding() {
       </Callout.Root>
     );
 
-  return <PlayerRole self={self} characters={AvailableCharacters.characters} />;
+  return <PlayerRole self={self} characters={Object.values(roles)} />;
 }
