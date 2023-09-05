@@ -71,14 +71,18 @@ export function Lobby({ rolesList }: LobbyProps) {
       </>
     );
   }
+  const assignedRoles = Object.values(game.playersToRoles);
 
   return (
     <Flex gap="0" className="lobby">
       <TeamDistributionBar
-        charsSelected={[
-          ...characterSelectState.characters,
-          ...characterSelectState.additionalCharacters.value,
-        ].filter(({ id }) => characterSelectState.selectedRoles.value[id])}
+        charsSelected={
+          game.gameStarted
+            ? assignedRoles
+            : Object.entries(characterSelectState.selectedRoles.value)
+                .filter(([_, value]) => !!value)
+                .map(([key]) => key)
+        }
       />
       <Tabs.Root
         value={game?.gameStarted ? "players" : selectedTab}

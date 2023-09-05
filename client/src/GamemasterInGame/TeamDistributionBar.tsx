@@ -1,15 +1,16 @@
 import { Flex, Text } from "@radix-ui/themes";
-import { Character, CharacterType } from "../types/script";
+import { CharacterType } from "../types/script";
 import { useGame } from "../store/GameContext";
 import "./TeamDistributionBar.css";
 import { colorMap } from "../shared/CharacterTypes";
+import { roles } from "../assets/game_data/roles";
 
 interface TeamDistributionBarProps {
-  charsSelected: Character[];
+  charsSelected: string[];
 }
 
 interface CharachterTypeSectionProps {
-  charsSelected: Character[];
+  charsSelected: string[];
   charType: CharacterType;
 }
 
@@ -74,14 +75,12 @@ function TeamDistributionBar({ charsSelected }: TeamDistributionBarProps) {
   );
 }
 
-function uniqueCharsByTeam(team: string, charsSelected: Character[]) {
-  return [
-    ...new Set(
-      charsSelected
-        .filter((char) => char.team === team)
-        .map(({ name }) => name),
-    ),
-  ].length;
+function uniqueCharsByTeam(team: string, charsSelected: string[]) {
+  return charsSelected
+    .map((char) => roles[char])
+    .filter(Boolean)
+    .filter((char) => char.team === team)
+    .map(({ name }) => name).length;
 }
 
 export default TeamDistributionBar;
