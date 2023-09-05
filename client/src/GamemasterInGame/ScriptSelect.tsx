@@ -9,10 +9,12 @@ import {
   Dialog,
   Inset,
   DialogClose,
+  Separator,
 } from "@radix-ui/themes";
 import GameData from "../assets/game_data/scripts.json";
 import React from "react";
 import { CharacterId } from "../types/script";
+import scriptIcon from "../assets/icon/feather.svg";
 import "./ScriptSelect.css";
 
 interface ScriptSelectProps {
@@ -26,10 +28,13 @@ function ScriptSelect({
 }: ScriptSelectProps) {
   return (
     <Flex
+      gap="1"
       direction={"column"}
       align={"center"}
       style={{ overflowY: "scroll", height: "100%" }}
     >
+      <Heading color="tomato">Select a Script</Heading>
+      <Separator color="ruby" size="4" />
       <Grid columns="2" align={"center"}>
         {GameData.scripts.map(({ name, imageSrc }) => (
           <Box
@@ -39,7 +44,7 @@ function ScriptSelect({
               handleSubmit(name);
             }}
           >
-            <img className="scriptImage" src={imageSrc} />
+            <img className="script-image" src={imageSrc} />
           </Box>
         ))}
         {enableCustom && (
@@ -76,7 +81,12 @@ function CustomScriptInputDialog({
     <Dialog.Root>
       <Dialog.Trigger>
         <Box className="border">
-          <Heading as="h1">CUSTOM</Heading>
+          <Flex direction="column" align="center">
+            <Heading m="1" color="ruby">
+              CUSTOM
+            </Heading>
+            <img className="custom-script-image" src={scriptIcon} />
+          </Flex>
         </Box>
       </Dialog.Trigger>
       <Dialog.Content>
