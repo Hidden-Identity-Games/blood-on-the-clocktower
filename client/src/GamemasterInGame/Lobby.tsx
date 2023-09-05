@@ -11,6 +11,7 @@ import { ShareButton } from "./ShareButton";
 import { useParams } from "react-router-dom";
 import { Share1Icon } from "@radix-ui/react-icons";
 import { Character } from "@hidden-identity/server";
+import "./Lobby.css";
 
 function StartGameButton({
   onClick,
@@ -69,68 +70,63 @@ export function Lobby({ rolesList }: LobbyProps) {
   }
 
   return (
-    <Tabs.Root
-      defaultValue="roles"
-      value={game?.gameStarted ? "players" : selectedTab}
-      onValueChange={(e) => setSelectedTab(e as "roles" | "players")}
-    >
-      <Tabs.List>
-        <Tabs.Trigger disabled={game.gameStarted} value="roles">
-          Roles
-        </Tabs.Trigger>
-        <Tabs.Trigger value="players">
-          Players ({Object.keys(game.playersToNames).length})
-        </Tabs.Trigger>
-      </Tabs.List>
-
-      <Tabs.Content value="roles">
-        <Flex direction="column" gap="3" py="3">
-          <CharacterSelectList state={characterSelectState} />
-          <TeamDistributionBar
-            charsSelected={[
-              ...characterSelectState.characters,
-              ...characterSelectState.additionalCharacters.value,
-            ].filter(
-              ({ name }) => characterSelectState.selectedRoles.value[name],
-            )}
-          />
-        </Flex>
-        <Flex gap="4">
-          <StartGameButton
-            disabled={!gameStartable}
-            gameStarted={game.gameStarted}
-            isLoading={isLoading}
-            onClick={() => distributeRoles(availableRolesList)}
-          />
-          <ShareButton
-            url={`${document.location.protocol}//${document.location.hostname}${
-              document.location.port ? `:${document.location.port}` : ""
-            }/${gameId}`}
-            title="Join Game: Blood on the Clocktower"
-            text="Join game: Blood on the Clocktower"
-          >
-            <Share1Icon /> Invite Players
-          </ShareButton>
-        </Flex>
-      </Tabs.Content>
-      <Tabs.Content value="players">
-        <Flex direction="column" py="3" style={{ overflowY: "auto" }}>
-          {Object.entries(playersToRoles).length === 0 &&
-            "No players joined yet."}
-          {Object.entries(playersToRoles).map(([name, role]) => (
-            <Flex justify="between" px="3" key={name}>
-              <div>{name}</div>
-              <div>{role || "Not yet assigned"}</div>
-            </Flex>
-          ))}
-        </Flex>
+    <Flex gap="2" className="lobby">
+      <Flex justify="between">
         <StartGameButton
           disabled={!gameStartable}
           gameStarted={game.gameStarted}
           isLoading={isLoading}
           onClick={() => distributeRoles(availableRolesList)}
         />
-      </Tabs.Content>
-    </Tabs.Root>
+        <ShareButton
+          url={`${document.location.protocol}//${document.location.hostname}${
+            document.location.port ? `:${document.location.port}` : ""
+          }/${gameId}`}
+          title="Join Game: Blood on the Clocktower"
+          text="Join game: Blood on the Clocktower"
+        >
+          <Share1Icon /> Invite Players
+        </ShareButton>
+      </Flex>
+      <TeamDistributionBar
+        charsSelected={[
+          ...characterSelectState.characters,
+          ...characterSelectState.additionalCharacters.value,
+        ].filter(({ name }) => characterSelectState.selectedRoles.value[name])}
+      />
+      <Tabs.Root
+        defaultValue="roles"
+        value={game?.gameStarted ? "players" : selectedTab}
+        onValueChange={(e) => setSelectedTab(e as "roles" | "players")}
+        className="tab-root"
+      >
+        <Tabs.List>
+          <Tabs.Trigger disabled={game.gameStarted} value="roles">
+            Roles
+          </Tabs.Trigger>
+          <Tabs.Trigger value="players">
+            Players ({Object.keys(game.playersToNames).length})
+          </Tabs.Trigger>
+        </Tabs.List>
+
+        <Tabs.Content className="tab-content" value="roles" style={{ flex: 1 }}>
+          <Flex direction="column" gap="3" py="3">
+            <CharacterSelectList state={characterSelectState} />
+          </Flex>
+        </Tabs.Content>
+        <Tabs.Content className="tab-content" value="players">
+          <Flex direction="column" py="3" style={{ overflowY: "auto" }}>
+            {Object.entries(playersToRoles).length === 0 &&
+              "No players joined yet."}
+            {Object.entries(playersToRoles).map(([name, role]) => (
+              <Flex justify="between" px="3" key={name}>
+                <div>{name}</div>
+                <div>{role || "Not yet assigned"}</div>
+              </Flex>
+            ))}
+          </Flex>
+        </Tabs.Content>
+      </Tabs.Root>
+    </Flex>
   );
 }
