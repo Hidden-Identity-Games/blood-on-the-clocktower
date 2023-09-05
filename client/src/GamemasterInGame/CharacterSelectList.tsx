@@ -104,7 +104,7 @@ export function CharacterSelectList({
           >
             {characterType}
           </Heading>
-          {characters.map(({ id, name }) => (
+          {characters.map(({ id }) => (
             <Flex
               gap="1"
               align={"center"}
@@ -125,7 +125,7 @@ export function CharacterSelectList({
                 />
                 <RoleIcon role={id} style={{ maxHeight: "3em" }} />
                 <span style={{ textTransform: "capitalize" }}>
-                  {RoleName(name)}
+                  {RoleName(id)}
                 </span>
               </label>
             </Flex>
