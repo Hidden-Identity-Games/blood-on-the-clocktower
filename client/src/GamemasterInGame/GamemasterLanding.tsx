@@ -5,8 +5,8 @@ import { GameProvider } from "../store/GameContextProvider";
 import { Lobby } from "./Lobby";
 import { ScriptSelect } from "./ScriptSelect";
 import { Character, CharacterId } from "../types/script";
-import Scripts from "../assets/game_data/scripts.json";
-import Roles from "../assets/game_data/roles.json";
+import scriptsData from "../assets/game_data/scripts.json";
+import rolesData from "../assets/game_data/roles.json";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
@@ -26,8 +26,14 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   const { game } = useGame();
 
   function setRoles(roleIds: CharacterId[] = []) {
-    const ids = roleIds?.map(({ id }) => id);
-    const roles = Roles.characters.filter(({ id }) => ids?.includes(id));
+    const roles = roleIds.map(
+      ({ id }) =>
+        rolesData.characters.find((char) => char.id === id) ?? {
+          id,
+          name: capitalize(id),
+          team: "",
+        },
+    );
     setCharacters(roles);
   }
 
@@ -49,8 +55,9 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
           if (customScript) {
             setRoles(customScript);
           } else {
-            const roleIds = Scripts.scripts.find(({ name }) => name === script)
-              ?.characters;
+            const roleIds = scriptsData.scripts.find(
+              ({ name }) => name === script,
+            )?.characters;
             setRoles(roleIds);
           }
           setMode("lobby");
@@ -60,6 +67,13 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   }
 
   return <div>uh oh</div>;
+}
+
+function capitalize(toCap: string) {
+  return toCap
+    .split(" ")
+    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+    .join(" ");
 }
 
 export { GamemasterLanding };
