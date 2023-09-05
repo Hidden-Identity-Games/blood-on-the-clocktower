@@ -34,7 +34,7 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
           team: "Unknown",
         },
     );
-    setCharacters(roles);
+    setCharacters(roles as Character[]);
   }
 
   if (!game) {

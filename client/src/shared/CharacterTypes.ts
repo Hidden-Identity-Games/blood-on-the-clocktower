@@ -1,6 +1,7 @@
 export const colorMap = {
   Townsfolk: "blue",
   Outsider: "cyan",
-  Minion: "crimson",
-  Demon: "tomato",
+  Minion: "tomato",
+  Demon: "crimson",
+  Unknown: undefined,
 } as const;

@@ -9,15 +9,18 @@ import { mapObject } from "../utils/mapObject";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 
-export function usePlayerNamesToRoles() {
+export function usePlayerNamesToRoles(): Record<
+  string,
+  { name: string; role: string }
+> {
   const { game } = useGame();
   if (!game) {
     throw new Error("ASDFASDF");
   }
   const { playersToNames, playersToRoles } = game;
   return mapObject(playersToNames, (hash, name: string) => [
-    name,
-    playersToRoles[hash],
+    hash,
+    { role: playersToRoles[hash], name },
   ]);
 }
 
@@ -53,6 +56,24 @@ export function useCreateGame() {
     }
     const parsedResponse = (await response.json()) as UnifiedGame;
     navigate(`/${playerSecretHash}/gm/${parsedResponse.gmSecretHash}`);
+  });
+}
+
+export function useKickPlayer() {
+  const { gameId } = useGame();
+
+  return useAction(async (playerId: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/kick_player"), {
+      playerId,
+      gameId,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
   });
 }
 

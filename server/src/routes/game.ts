@@ -4,6 +4,7 @@ import {
   addPlayer,
   assignRoles,
   getGame,
+  kickPlayer,
 } from '../database/gameDB.ts'
 
 export function useGame (app: Application): void {
@@ -35,6 +36,13 @@ export function useGame (app: Application): void {
       playerId,
       playerName,
     })
+  })
+
+  app.post('/kick_player', (req, res) => {
+    const { playerId, gameId } = req.body
+    kickPlayer(gameId, playerId)
+    res.status(200)
+    res.send({})
   })
   app.post('/assign_roles', (req, res) => {
     const { roles, gameId } = req.body

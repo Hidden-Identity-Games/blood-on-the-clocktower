@@ -85,6 +85,37 @@ export function addPlayer (
     },
   })
 }
+
+export function kickPlayer (gameId: string, playerId: string): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  // player doesn't exist
+  if (!gameInstance.playersToNames[playerId]) {
+    throw new Error(
+      `Playerid not found: ${playerId}`,
+    )
+  }
+  const nextPlayerNames = {
+    ...gameInstance.playersToNames,
+  }
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+  delete nextPlayerNames[playerId]
+
+  const nextPlayerRoles = {
+    ...gameInstance.playersToRoles,
+  }
+  if (Reflect.has(nextPlayerRoles, playerId)) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete nextPlayerRoles[playerId]
+  }
+
+  game.update({
+    ...gameInstance,
+    playersToNames: nextPlayerNames,
+    playersToRoles: nextPlayerRoles,
+  })
+}
 export function assignRoles (
   gameId: string,
   roles: string[],

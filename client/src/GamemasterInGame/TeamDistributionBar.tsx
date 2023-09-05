@@ -1,9 +1,9 @@
 import { Flex, Text } from "@radix-ui/themes";
-import { CharacterType } from "../types/script";
 import { useGame } from "../store/GameContext";
 import "./TeamDistributionBar.css";
 import { colorMap } from "../shared/CharacterTypes";
 import { roles } from "../assets/game_data/roles";
+import { KnownCharacterType } from "@hidden-identity/server";
 
 interface TeamDistributionBarProps {
   charsSelected: string[];
@@ -11,7 +11,7 @@ interface TeamDistributionBarProps {
 
 interface CharacterTypeSectionProps {
   charsSelected: string[];
-  charType: CharacterType;
+  charType: KnownCharacterType;
 }
 
 function CharacterTypeSection({
@@ -48,7 +48,7 @@ function CharacterTypeSection({
         {charType}
       </Text>
       {uniqueCharsByTeam(charType, charsSelected)}
-      {target && `/${target}`}
+      {target != null && `/${target}`}
     </Text>
   );
 }
@@ -84,7 +84,7 @@ export default TeamDistributionBar;
 
 const DistributionsByPlayerCount: Record<
   number,
-  Record<CharacterType, number>
+  Record<KnownCharacterType, number>
 > = {
   5: { Townsfolk: 3, Outsider: 0, Minion: 1, Demon: 1 },
   6: { Townsfolk: 3, Outsider: 1, Minion: 1, Demon: 1 },
@@ -101,7 +101,7 @@ const DistributionsByPlayerCount: Record<
 
 function getDistribution(
   playerCount: number,
-  characterType: CharacterType,
+  characterType: KnownCharacterType,
 ): number | null {
   const distribution =
     playerCount in DistributionsByPlayerCount
