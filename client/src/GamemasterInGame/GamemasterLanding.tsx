@@ -30,7 +30,6 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
       ({ id }) =>
         rolesData.characters.find((char) => char.id === id) ?? {
           id,
-          name: capitalize(id),
           team: "Unknown",
         },
     );
@@ -67,13 +66,6 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   }
 
   return <div>uh oh</div>;
-}
-
-function capitalize(toCap: string) {
-  return toCap
-    .split(" ")
-    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-    .join(" ");
 }
 
 export { GamemasterLanding };
