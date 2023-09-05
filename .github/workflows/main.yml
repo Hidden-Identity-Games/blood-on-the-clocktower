@@ -1,0 +1,22 @@
+on: [pull_request]
+jobs:
+  test:
+    name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node_version: ['16']
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: theoparis/pnpm-action@v2.1.1-alpha
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+
+    - name: npm install, build and test
+      run: |
+        pnpm install
+        pnpm run build --if-present
+        pnpm test
