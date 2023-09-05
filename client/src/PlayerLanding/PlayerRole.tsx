@@ -44,7 +44,7 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
               width={"300px"}
               height={"300px"}
               src={
-                characters.find(({ name }) => name === self.role)?.imageSrc ??
+                characters.find(({ id }) => id === self.role)?.imageSrc ??
                 defaultRoleImage
               }
               onContextMenu={(event) => {
