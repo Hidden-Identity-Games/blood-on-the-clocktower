@@ -1,5 +1,13 @@
 body {
   /* prevent unwanted scrolling */
   margin: 0;
+  height: 100vh;
   /* overflow: hidden; */
+  max-height: -webkit-fill-available;
+}
+html {
+  height: -webkit-fill-available;
+}
+body > #root {
+  height: 100%;
 }

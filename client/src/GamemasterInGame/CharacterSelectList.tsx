@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Character, CharacterType, CharacterTypes } from "../types/script";
-import DefaultRoleImageSrc from "../assets/default_role.svg";
 import {
   Checkbox,
   Flex,
   IconButton,
   Select,
   TextField,
+  Heading,
 } from "@radix-ui/themes";
+import React from "react";
+import { colorMap } from "../shared/CharacterTypes";
+import { RoleIcon, RoleName } from "../shared/RoleIcon";
 
 interface StateContainer<T> {
   value: T;
@@ -76,37 +79,60 @@ export function CharacterSelectList({
     }));
     setNewCharacterName("");
   }
+  const charactersByType: Record<CharacterType, Character[]> = useMemo(() => {
+    const allCharacters = [
+      ...state.characters,
+      ...state.additionalCharacters.value,
+    ];
+    return {
+      Townsfolk: allCharacters.filter((c) => c.team === "Townsfolk"),
+      Outsider: allCharacters.filter((c) => c.team === "Outsider"),
+      Minion: allCharacters.filter((c) => c.team === "Minion"),
+      Demon: allCharacters.filter((c) => c.team === "Demon"),
+      Unknown: allCharacters.filter((c) => c.team === "Unknown"),
+    };
+  }, [state.characters, state.additionalCharacters.value]);
 
   return (
-    <Flex gap="2" direction="column">
-      {[...state.characters, ...state.additionalCharacters.value].map(
-        ({ name, imageSrc }) => (
-          <Flex gap="2" align={"center"} key={name}>
-            <Checkbox
-              id={name}
-              checked={state.selectedRoles.value[name]}
-              onClick={() => {
-                state.selectedRoles.set((selectedroles) => ({
-                  ...selectedroles,
-                  [name]: !selectedroles[name],
-                }));
-              }}
-            />
-            <Flex gap="1" align={"center"} key={name} asChild>
-              <label style={{ flex: 1 }} htmlFor={name}>
-                <img
-                  src={imageSrc ?? DefaultRoleImageSrc}
-                  height={"70px"}
-                  width={"70px"}
+    <Flex gap="1" direction="column" px="3">
+      {Object.entries(charactersByType).map(([characterType, characters]) => (
+        <React.Fragment key={characterType}>
+          <Heading
+            size="4"
+            id={characterType}
+            align="right"
+            color={colorMap[characterType as CharacterType]}
+          >
+            {characterType}
+          </Heading>
+          {characters.map(({ id }) => (
+            <Flex
+              gap="1"
+              align={"center"}
+              key={id}
+              style={{ height: "2em" }}
+              asChild
+            >
+              <label>
+                <Checkbox
+                  id={id}
+                  checked={state.selectedRoles.value[id]}
+                  onClick={() => {
+                    state.selectedRoles.set((selectedroles) => ({
+                      ...selectedroles,
+                      [id]: !selectedroles[id],
+                    }));
+                  }}
                 />
-                {name}
+                <RoleIcon role={id} style={{ maxHeight: "3em" }} />
+                <span>{RoleName(id)}</span>
               </label>
             </Flex>
-          </Flex>
-        ),
-      )}
+          ))}
+        </React.Fragment>
+      ))}
 
-      <Flex align={"center"} gap="2">
+      <Flex align={"center"} gap="2" pt="2" pb="6">
         <IconButton type="button" size="1" onClick={addNewCharacter}>
           +
         </IconButton>
@@ -135,6 +161,7 @@ export function CharacterSelectList({
           </Select.Content>
         </Select.Root>
       </Flex>
+      {/* <div className="mobile-spacer" style={{ height: 150, width: "100%" }} /> */}
     </Flex>
   );
 }

@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       accentColor="red"
       panelBackground="solid"
       hasBackground
-      style={{ "--scaling": 2 } as CSSProperties}
+      style={{ "--scaling": 1.5, height: "100%" } as CSSProperties}
     >
       <MainRouter />
     </Theme>

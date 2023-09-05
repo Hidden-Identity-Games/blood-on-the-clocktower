@@ -31,7 +31,7 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
         rolesData.characters.find((char) => char.id === id) ?? {
           id,
           name: capitalize(id),
-          team: "",
+          team: "Unknown",
         },
     );
     setCharacters(roles);

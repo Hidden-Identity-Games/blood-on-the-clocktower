@@ -1,0 +1,5 @@
+.character-type-container {
+  flex: 1;
+  text-align: center !important;
+  min-width: 80px;
+}
