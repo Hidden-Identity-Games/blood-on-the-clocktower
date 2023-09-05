@@ -25,6 +25,6 @@ export default defineConfig((env) => ({
     WS_URL:
       env.command === "build"
         ? '"wss://blood-on-the-clocktower.onrender.com/socket"'
-        : `"wss://localhost:${PORT}/api/socket"`,
+        : `\`wss://\${window.location.hostname}:${PORT}/api/socket\``,
   },
 }));
