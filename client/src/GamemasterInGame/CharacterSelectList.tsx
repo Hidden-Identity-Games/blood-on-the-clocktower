@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { Character, CharacterType, CharacterTypes } from "../types/script";
-import DefaultRoleImageSrc from "../assets/default_role.svg";
 import {
   Checkbox,
   Flex,
@@ -11,6 +10,7 @@ import {
 } from "@radix-ui/themes";
 import React from "react";
 import { colorMap } from "../shared/CharacterTypes";
+import { RoleIcon, RoleName } from "../shared/RoleIcon";
 
 interface StateContainer<T> {
   value: T;
@@ -104,30 +104,27 @@ export function CharacterSelectList({
           >
             {characterType}
           </Heading>
-          {characters.map(({ name, imageSrc }) => (
+          {characters.map(({ id }) => (
             <Flex
               gap="1"
               align={"center"}
-              key={name}
+              key={id}
               style={{ height: "2em" }}
               asChild
             >
-              <label htmlFor={name}>
+              <label>
                 <Checkbox
-                  id={name}
-                  checked={state.selectedRoles.value[name]}
+                  id={id}
+                  checked={state.selectedRoles.value[id]}
                   onClick={() => {
                     state.selectedRoles.set((selectedroles) => ({
                       ...selectedroles,
-                      [name]: !selectedroles[name],
+                      [id]: !selectedroles[id],
                     }));
                   }}
                 />
-                <img
-                  src={imageSrc ?? DefaultRoleImageSrc}
-                  style={{ maxHeight: "3em", objectFit: "contain" }}
-                />
-                <span>{name}</span>
+                <RoleIcon role={id} style={{ maxHeight: "3em" }} />
+                <span>{RoleName(id)}</span>
               </label>
             </Flex>
           ))}

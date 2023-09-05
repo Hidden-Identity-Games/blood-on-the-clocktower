@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { Share1Icon } from "@radix-ui/react-icons";
 import { Character } from "@hidden-identity/server";
 import "./Lobby.css";
+import { RoleIcon, RoleName } from "../shared/RoleIcon";
 
 function StartGameButton({
   onClick,
@@ -77,7 +78,7 @@ export function Lobby({ rolesList }: LobbyProps) {
         charsSelected={[
           ...characterSelectState.characters,
           ...characterSelectState.additionalCharacters.value,
-        ].filter(({ name }) => characterSelectState.selectedRoles.value[name])}
+        ].filter(({ id }) => characterSelectState.selectedRoles.value[id])}
       />
       <Tabs.Root
         value={game?.gameStarted ? "players" : selectedTab}
@@ -93,7 +94,7 @@ export function Lobby({ rolesList }: LobbyProps) {
             disabled={game.gameStarted}
             value="roles"
           >
-            Roles
+            Roles{game.gameStarted && "(Game started)"}
           </Tabs.Trigger>
         </Tabs.List>
 
@@ -126,9 +127,10 @@ export function Lobby({ rolesList }: LobbyProps) {
             {Object.entries(playersToRoles).length === 0 &&
               "No players have joined yet."}
             {Object.entries(playersToRoles).map(([name, role]) => (
-              <Flex justify="between" px="3" key={name}>
+              <Flex justify="between" align="center" px="3" key={name}>
                 <div>{name}</div>
-                <div>{role || "Not yet assigned"}</div>
+                <div>{RoleName(role) ?? "Not yet assigned"}</div>
+                <RoleIcon role={role} style={{ maxHeight: "3em" }} />
               </Flex>
             ))}
           </Flex>
