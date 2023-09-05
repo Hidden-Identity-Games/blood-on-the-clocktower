@@ -21,9 +21,19 @@ function ScriptSelect({
   handleSubmit,
   enableCustom = true,
 }: ScriptSelectProps) {
-  const [selectedScript, setSelectedScript] = React.useState("");
   const [customScript, setCustomScript] = React.useState("");
   const [errorMsg, setErrorMsg] = React.useState("");
+
+  const handleCustomScriptClick = () => {
+    try {
+      const parsedCustomScript = ValidateCustomScript(customScript);
+      handleSubmit("custom-script", parsedCustomScript);
+      setErrorMsg("");
+    } catch (e) {
+      const error = e as Error;
+      setErrorMsg(error.message);
+    }
+  };
 
   return (
     <Flex gap="4" direction={"column"} align={"center"}>
@@ -31,37 +41,37 @@ function ScriptSelect({
         {GameData.scripts.map(({ name, imageSrc }) => (
           <Box
             key={name}
-            className={name === selectedScript ? "border" : undefined}
+            className="border"
             onClick={() => {
-              setSelectedScript(name);
+              handleSubmit(name);
             }}
           >
             <img width="300px" src={imageSrc} />
           </Box>
         ))}
         {enableCustom && (
-          <Box
-            key="custom-script"
-            className={
-              "custom-script" === selectedScript ? "border" : undefined
-            }
-            onClick={() => {
-              setSelectedScript("custom-script");
-            }}
-          >
+          <Box key="custom-script" className="border">
             <label htmlFor="custom-input">
               <Heading as="h1">CUSTOM</Heading>
             </label>
-            {"custom-script" === selectedScript && (
-              <TextArea
-                id="custom-input"
-                placeholder="[ { 'id': 'Washerwoman' }, ... ]"
-                value={customScript}
-                onChange={(event) => {
-                  setCustomScript(event.currentTarget.value);
-                }}
-              ></TextArea>
-            )}
+            <TextArea
+              id="custom-input"
+              placeholder="[ { 'id': 'Washerwoman' }, ... ]"
+              value={customScript}
+              onChange={(event) => {
+                setCustomScript(event.currentTarget.value);
+              }}
+              onPaste={(event) => {
+                setCustomScript(
+                  JSON.stringify(
+                    JSON.parse(event.currentTarget.value),
+                    null,
+                    4,
+                  ),
+                );
+              }}
+            />
+            <Button onClick={handleCustomScriptClick}>Use Custom Script</Button>
           </Box>
         )}
       </Grid>
@@ -70,29 +80,6 @@ function ScriptSelect({
           <Callout.Text>{errorMsg}</Callout.Text>
         </Callout.Root>
       )}
-      <Button
-        onClick={(event) => {
-          event.preventDefault();
-          if (selectedScript === "custom-script") {
-            try {
-              const parsedCustomScript = ValidateCustomScript(customScript);
-              handleSubmit(selectedScript, parsedCustomScript);
-              setErrorMsg("");
-            } catch (e) {
-              const error = e as Error;
-              setErrorMsg(error.message);
-            }
-          } else {
-            handleSubmit(selectedScript);
-          }
-        }}
-        onPaste={(event) =>
-          JSON.stringify(JSON.parse(event.currentTarget.value), null, 4)
-        }
-        disabled={!selectedScript}
-      >
-        Select Script
-      </Button>
     </Flex>
   );
 }
