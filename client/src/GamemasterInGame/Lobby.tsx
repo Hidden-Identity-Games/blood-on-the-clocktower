@@ -17,6 +17,9 @@ import { Share1Icon } from "@radix-ui/react-icons";
 import { Character } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
+import { ConfirmButton } from "./ConfirmButton";
+import rolesIcon from "../assets/icon/mask.svg";
+import playersIcon from "../assets/icon/users.svg";
 
 function StartGameButton({
   onClick,
@@ -33,9 +36,9 @@ function StartGameButton({
     return <div>Game has started.</div>;
   }
   return (
-    <Button disabled={disabled} onClick={onClick}>
+    <ConfirmButton disabled={disabled} onClick={onClick}>
       {isLoading ? "Doing some work..." : "Distribute Roles"}
-    </Button>
+    </ConfirmButton>
   );
 }
 
@@ -96,6 +99,7 @@ export function Lobby({ rolesList }: LobbyProps) {
       >
         <Tabs.List>
           <Tabs.Trigger className="tab-trigger" value="players">
+            <img className="tab-icon" src={playersIcon} />
             Players ({Object.keys(game.playersToNames).length})
           </Tabs.Trigger>
           <Tabs.Trigger
@@ -103,6 +107,7 @@ export function Lobby({ rolesList }: LobbyProps) {
             disabled={game.gameStarted}
             value="roles"
           >
+            <img className="tab-icon" src={rolesIcon} />
             Roles{game.gameStarted && "(Game started)"}
           </Tabs.Trigger>
         </Tabs.List>
@@ -158,13 +163,13 @@ export function Lobby({ rolesList }: LobbyProps) {
                   </div>
                   <RoleIcon role={role} style={{ maxHeight: "3em" }} />
                   {!game.gameStarted && (
-                    <Button
+                    <ConfirmButton
                       disabled={kickPlayerLoading}
-                      size="1"
+                      //size="1"
                       onClick={() => handleKickPlayer(id)}
                     >
                       {kickPlayerLoading ? "Kicking..." : "Kick"}
-                    </Button>
+                    </ConfirmButton>
                   )}
                 </Text>
               </Flex>
