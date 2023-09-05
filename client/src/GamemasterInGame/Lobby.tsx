@@ -10,9 +10,13 @@ import { useState } from "react";
 import { ShareButton } from "./ShareButton";
 import { useParams } from "react-router-dom";
 import { Share1Icon } from "@radix-ui/react-icons";
-import { Character } from "@hidden-identity/server";
+import { Character, UnifiedGame } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
+import ConfirmButton from "./ConfirmButton";
+import scriptIcon from "../assets/icons/feather.svg";
+import rolesIcon from "../assets/icons/mask-carnival.svg";
+import playersIcon from "../assets/icons/users.svg";
 
 function StartGameButton({
   onClick,
@@ -29,9 +33,9 @@ function StartGameButton({
     return <div>Game has started.</div>;
   }
   return (
-    <Button disabled={disabled} onClick={onClick}>
+    <ConfirmButton disabled={disabled} onClick={onClick}>
       {isLoading ? "Doing some work..." : "Distribute Roles"}
-    </Button>
+    </ConfirmButton>
   );
 }
 
@@ -43,9 +47,9 @@ export function Lobby({ rolesList }: LobbyProps) {
   const { game } = useGame();
   const { gameId } = useParams();
   const playersToRoles = usePlayerNamesToRoles();
-  const [selectedTab, setSelectedTab] = useState<"roles" | "players">(
-    "players",
-  );
+  const [selectedTab, setSelectedTab] = useState<
+    "scripts" | "roles" | "players"
+  >("players");
   const [distributeRolesError, isLoading, , distributeRoles, clear] =
     useDistributeRoles();
 
@@ -89,18 +93,7 @@ export function Lobby({ rolesList }: LobbyProps) {
         onValueChange={(e) => setSelectedTab(e as "roles" | "players")}
         className="tab-root"
       >
-        <Tabs.List>
-          <Tabs.Trigger className="tab-trigger" value="players">
-            Players ({Object.keys(game.playersToNames).length})
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            className="tab-trigger"
-            disabled={game.gameStarted}
-            value="roles"
-          >
-            Roles{game.gameStarted && "(Game started)"}
-          </Tabs.Trigger>
-        </Tabs.List>
+        <TabsList selectedTab={selectedTab} game={game} />
 
         <Tabs.Content className="tab-content" value="roles" style={{ flex: 1 }}>
           <Flex direction="column" gap="3" py="3">
@@ -141,5 +134,61 @@ export function Lobby({ rolesList }: LobbyProps) {
         </Tabs.Content>
       </Tabs.Root>
     </Flex>
+  );
+}
+
+interface TabsListProps {
+  selectedTab: string;
+  game: UnifiedGame;
+}
+
+function TabsList({ selectedTab, game }: TabsListProps) {
+  return (
+    <Tabs.List>
+      <Tabs.Trigger
+        className={
+          selectedTab === "scripts" ? "tab-trigger-selected" : "tab-trigger"
+        }
+        disabled={game.gameStarted}
+        value="scripts"
+      >
+        <span>
+          <img width={"25px"} src={scriptIcon} />{" "}
+          {selectedTab === "scripts" ? "Scripts" : ""}
+        </span>
+      </Tabs.Trigger>
+      <Tabs.Trigger
+        className={
+          selectedTab === "roles" ? "tab-trigger-selected" : "tab-trigger"
+        }
+        disabled={game.gameStarted}
+        value="roles"
+      >
+        <span>
+          <img width={"25px"} src={rolesIcon} />{" "}
+          {selectedTab === "roles" ? "Roles" : ""}
+        </span>
+      </Tabs.Trigger>
+      <Tabs.Trigger
+        className={
+          selectedTab === "players" ? "tab-trigger-selected" : "tab-trigger"
+        }
+        value="players"
+      >
+        <span>
+          <img width={"25px"} src={playersIcon} />{" "}
+          {selectedTab === "players"
+            ? `Players (${Object.keys(game.playersToNames).length})`
+            : `(${Object.keys(game.playersToNames).length})`}
+        </span>
+      </Tabs.Trigger>
+      <Tabs.Trigger
+        disabled={true}
+        onSelect={() => console.log("hi")}
+        value="share"
+      >
+        <Share1Icon />
+      </Tabs.Trigger>
+    </Tabs.List>
   );
 }

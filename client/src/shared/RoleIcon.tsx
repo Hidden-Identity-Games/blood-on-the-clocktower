@@ -21,7 +21,7 @@ export function RoleName(roleId: string) {
   return roles[roleId]?.name ?? capitalize(roleId);
 }
 
-function capitalize(toCap: string) {
+function capitalize(toCap: string = "") {
   return toCap
     .split(/[_ ]/)
     .map((str) => str.charAt(0).toUpperCase() + str.slice(1))

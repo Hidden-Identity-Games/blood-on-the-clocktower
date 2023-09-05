@@ -7,6 +7,11 @@
 
 .tab-trigger {
   flex: 1;
+  max-width: 100px;
+}
+
+.tab-trigger-selected {
+  flex: 2;
   max-width: 200px;
 }
 
