@@ -40,7 +40,7 @@ function ScriptSelect({
       gap="4"
       direction={"column"}
       align={"center"}
-      style={{ overflowY: "scroll" }}
+      style={{ overflowY: "scroll", height: "100%" }}
     >
       <Grid gap="3" columns="1" align={"center"}>
         {GameData.scripts.map(({ name, imageSrc }) => (

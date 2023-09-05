@@ -45,7 +45,7 @@ function createGame (gameId: string): UnifiedGame {
     return {
       gameStarted: false,
       gmSecretHash: gameId,
-      playersToNames: { 1: 'Linh', 2: 'Alex' },
+      playersToNames: { 1: 'Linh', 2: 'Alex', 3: 'Tali', 4: 'Elan', 5: 'Joey', 6: 'Jess' },
       playersToRoles: {},
     }
   }

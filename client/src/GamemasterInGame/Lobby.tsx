@@ -42,7 +42,9 @@ export function Lobby({ rolesList }: LobbyProps) {
   const { game } = useGame();
   const { gameId } = useParams();
   const playersToRoles = usePlayerNamesToRoles();
-  const [selectedTab, setSelectedTab] = useState<"roles" | "players">("roles");
+  const [selectedTab, setSelectedTab] = useState<"roles" | "players">(
+    "players",
+  );
   const [distributeRolesError, isLoading, , distributeRoles, clear] =
     useDistributeRoles();
 
@@ -70,24 +72,7 @@ export function Lobby({ rolesList }: LobbyProps) {
   }
 
   return (
-    <Flex gap="2" className="lobby">
-      <Flex justify="between">
-        <StartGameButton
-          disabled={!gameStartable}
-          gameStarted={game.gameStarted}
-          isLoading={isLoading}
-          onClick={() => distributeRoles(availableRolesList)}
-        />
-        <ShareButton
-          url={`${document.location.protocol}//${document.location.hostname}${
-            document.location.port ? `:${document.location.port}` : ""
-          }/${gameId}`}
-          title="Join Game: Blood on the Clocktower"
-          text="Join game: Blood on the Clocktower"
-        >
-          <Share1Icon /> Invite Players
-        </ShareButton>
-      </Flex>
+    <Flex gap="0" className="lobby">
       <TeamDistributionBar
         charsSelected={[
           ...characterSelectState.characters,
@@ -95,17 +80,20 @@ export function Lobby({ rolesList }: LobbyProps) {
         ].filter(({ name }) => characterSelectState.selectedRoles.value[name])}
       />
       <Tabs.Root
-        defaultValue="roles"
         value={game?.gameStarted ? "players" : selectedTab}
         onValueChange={(e) => setSelectedTab(e as "roles" | "players")}
         className="tab-root"
       >
         <Tabs.List>
-          <Tabs.Trigger disabled={game.gameStarted} value="roles">
-            Roles
-          </Tabs.Trigger>
-          <Tabs.Trigger value="players">
+          <Tabs.Trigger className="tab-trigger" value="players">
             Players ({Object.keys(game.playersToNames).length})
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className="tab-trigger"
+            disabled={game.gameStarted}
+            value="roles"
+          >
+            Roles
           </Tabs.Trigger>
         </Tabs.List>
 
@@ -116,8 +104,27 @@ export function Lobby({ rolesList }: LobbyProps) {
         </Tabs.Content>
         <Tabs.Content className="tab-content" value="players">
           <Flex direction="column" py="3" style={{ overflowY: "auto" }}>
+            <Flex gap="2" direction="column">
+              <StartGameButton
+                disabled={!gameStartable}
+                gameStarted={game.gameStarted}
+                isLoading={isLoading}
+                onClick={() => distributeRoles(availableRolesList)}
+              />
+              <ShareButton
+                url={`${document.location.protocol}//${
+                  document.location.hostname
+                }${
+                  document.location.port ? `:${document.location.port}` : ""
+                }/${gameId}`}
+                title="Join Game: Blood on the Clocktower"
+                text="Join game: Blood on the Clocktower"
+              >
+                <Share1Icon /> Invite Players
+              </ShareButton>
+            </Flex>
             {Object.entries(playersToRoles).length === 0 &&
-              "No players joined yet."}
+              "No players have joined yet."}
             {Object.entries(playersToRoles).map(([name, role]) => (
               <Flex justify="between" px="3" key={name}>
                 <div>{name}</div>
