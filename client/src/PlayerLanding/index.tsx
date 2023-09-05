@@ -5,6 +5,7 @@ import { useSelf } from "../store/useStore";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
 import { roles } from "../assets/game_data/roles";
+import { useSecretKey } from "../store/secretKey";
 export function GameMasterRoot() {}
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -16,11 +17,13 @@ export function PlayerRoot() {
 }
 
 function PlayerLanding() {
-  const self = useSelf();
+  const [secretKey, setSecretKey] = useSecretKey();
+  const self = useSelf(secretKey);
 
   if (!self) return <div>Loading...</div>;
 
-  if (!self.name) return <AddPlayer handleFormSubmit={() => {}} />;
+  if (!self.name)
+    return <AddPlayer secretKey={secretKey} setSecretKey={setSecretKey} />;
 
   if (!self.role)
     return (

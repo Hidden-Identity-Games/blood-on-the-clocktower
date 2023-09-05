@@ -59,23 +59,22 @@ export function CharacterSelectList({
     useState<CharacterType>("Townsfolk");
 
   function addNewCharacter() {
-    if (
-      state.additionalCharacters.value.find(({ id }) => id === newCharacterName)
-    ) {
+    if (!newCharacterName) {
       return;
     }
-
+    // Switch to a GUID
+    const newId = newCharacterName;
     state.additionalCharacters.set((curr) => [
       ...curr,
       {
-        id: newCharacterName,
+        id: newId,
         name: newCharacterName,
         team: newCharacterTeam,
       },
     ]);
     state.selectedRoles.set((selectedroles) => ({
       ...selectedroles,
-      [newCharacterName]: true,
+      [newId]: true,
     }));
     setNewCharacterName("");
   }
@@ -125,7 +124,9 @@ export function CharacterSelectList({
                   }}
                 />
                 <RoleIcon role={id} style={{ maxHeight: "3em" }} />
-                <span>{RoleName(id)}</span>
+                <span style={{ textTransform: "capitalize" }}>
+                  {RoleName(id)}
+                </span>
               </label>
             </Flex>
           ))}
@@ -133,7 +134,12 @@ export function CharacterSelectList({
       ))}
 
       <Flex align={"center"} gap="2" pt="2" pb="6">
-        <IconButton type="button" size="1" onClick={addNewCharacter}>
+        <IconButton
+          type="button"
+          size="1"
+          onClick={addNewCharacter}
+          disabled={!newCharacterName}
+        >
           +
         </IconButton>
         <TextField.Input

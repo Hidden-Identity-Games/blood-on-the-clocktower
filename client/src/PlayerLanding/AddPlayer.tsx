@@ -1,29 +1,38 @@
 import { Button, TextField } from "@radix-ui/themes";
 import React from "react";
 import { useAddPlayer } from "../store/useStore";
+import { useDefiniteGame } from "../store/GameContext";
 
 interface AddPlayerProps {
-  handleFormSubmit: (playerName: string) => void;
+  secretKey: string;
+  setSecretKey: (key: string) => void;
 }
 
-function AddPlayer({ handleFormSubmit }: AddPlayerProps) {
+function AddPlayer({ secretKey, setSecretKey }: AddPlayerProps) {
+  const { game } = useDefiniteGame();
+
   const [name, setName] = React.useState("");
-  const [error, isLoading, , addPlayer] = useAddPlayer();
+  const [error, isLoading, , addPlayer] = useAddPlayer({ secretKey });
+  const parsedName = name.toLowerCase();
+
+  const taken = Object.values(game.playersToNames).find(
+    (curr) => curr === parsedName,
+  );
+  const joinable = name && !taken;
 
   return (
-    <form
-      onSubmit={async (event) => {
-        event.preventDefault();
-        await addPlayer(name);
-        handleFormSubmit(name);
-      }}
-    >
+    <>
       <label htmlFor="name-input">NAME:</label>
       <TextField.Input
         id="name-input"
         placeholder="Player name..."
         value={name}
         onChange={(event) => setName(event.currentTarget.value)}
+        onKeyDown={async (event) => {
+          if (event.key === "Enter" && joinable) {
+            await addPlayer(name);
+          }
+        }}
       />
       {error && (
         <div>
@@ -35,11 +44,35 @@ function AddPlayer({ handleFormSubmit }: AddPlayerProps) {
       {isLoading ? (
         <div>Loading</div>
       ) : (
-        <Button type="submit" mt="2">
-          Join
-        </Button>
+        <>
+          <Button
+            disabled={!joinable}
+            mt="2"
+            onClick={async () => {
+              await addPlayer(name);
+            }}
+          >
+            Join
+          </Button>
+          {taken && (
+            <>
+              <div>Name already taken, is this you?</div>
+              <Button
+                onClick={() =>
+                  setSecretKey(
+                    Object.entries(game.playersToNames).find(
+                      ([, value]) => value === parsedName,
+                    )![0],
+                  )
+                }
+              >
+                Yes
+              </Button>
+            </>
+          )}
+        </>
       )}
-    </form>
+    </>
   );
 }
 

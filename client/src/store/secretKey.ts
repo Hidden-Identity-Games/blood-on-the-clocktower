@@ -1,13 +1,14 @@
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import { v4 } from "uuid";
 
-export function useSecretKey() {
-  const currentSecretKey = useRef<string | null>(
-    localStorage.getItem("secretKey"),
+export function useSecretKey(): [string, (key: string) => void] {
+  const [secretKey, setSecretKey] = useState<string>(
+    localStorage.getItem("secretKey") ?? v4(),
   );
-  if (!currentSecretKey.current) {
-    currentSecretKey.current = v4();
-    localStorage.setItem("secretKey", currentSecretKey.current);
-  }
-  return currentSecretKey.current;
+
+  useEffect(() => {
+    localStorage.setItem("secretKey", secretKey);
+  }, [secretKey]);
+
+  return [secretKey, setSecretKey];
 }
