@@ -17,6 +17,8 @@ import { Share1Icon } from "@radix-ui/react-icons";
 import { Character } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
+import rolesIcon from "../assets/icon/mask.svg";
+import playersIcon from "../assets/icon/users.svg";
 
 function StartGameButton({
   onClick,
@@ -96,6 +98,7 @@ export function Lobby({ rolesList }: LobbyProps) {
       >
         <Tabs.List>
           <Tabs.Trigger className="tab-trigger" value="players">
+            <img className="tab-icon" src={playersIcon} />
             Players ({Object.keys(game.playersToNames).length})
           </Tabs.Trigger>
           <Tabs.Trigger
@@ -103,6 +106,7 @@ export function Lobby({ rolesList }: LobbyProps) {
             disabled={game.gameStarted}
             value="roles"
           >
+            <img className="tab-icon" src={rolesIcon} />
             Roles{game.gameStarted && "(Game started)"}
           </Tabs.Trigger>
         </Tabs.List>
