@@ -17,7 +17,6 @@ import { Share1Icon } from "@radix-ui/react-icons";
 import { Character } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
-import { ConfirmButton } from "./ConfirmButton";
 import rolesIcon from "../assets/icon/mask.svg";
 import playersIcon from "../assets/icon/users.svg";
 
@@ -36,9 +35,9 @@ function StartGameButton({
     return <div>Game has started.</div>;
   }
   return (
-    <ConfirmButton disabled={disabled} onClick={onClick}>
+    <Button disabled={disabled} onClick={onClick}>
       {isLoading ? "Doing some work..." : "Distribute Roles"}
-    </ConfirmButton>
+    </Button>
   );
 }
 
@@ -163,13 +162,13 @@ export function Lobby({ rolesList }: LobbyProps) {
                   </div>
                   <RoleIcon role={role} style={{ maxHeight: "3em" }} />
                   {!game.gameStarted && (
-                    <ConfirmButton
+                    <Button
                       disabled={kickPlayerLoading}
-                      //size="1"
+                      size="1"
                       onClick={() => handleKickPlayer(id)}
                     >
                       {kickPlayerLoading ? "Kicking..." : "Kick"}
-                    </ConfirmButton>
+                    </Button>
                   )}
                 </Text>
               </Flex>
