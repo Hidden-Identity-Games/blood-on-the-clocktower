@@ -36,7 +36,12 @@ function ScriptSelect({
   };
 
   return (
-    <Flex gap="4" direction={"column"} align={"center"}>
+    <Flex
+      gap="4"
+      direction={"column"}
+      align={"center"}
+      style={{ overflowY: "scroll" }}
+    >
       <Grid gap="3" columns="1" align={"center"}>
         {GameData.scripts.map(({ name, imageSrc }) => (
           <Box
