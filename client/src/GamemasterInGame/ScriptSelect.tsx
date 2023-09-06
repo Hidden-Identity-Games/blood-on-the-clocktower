@@ -6,10 +6,15 @@ import {
   Heading,
   TextArea,
   Callout,
+  Dialog,
+  Inset,
+  DialogClose,
+  Separator,
 } from "@radix-ui/themes";
 import GameData from "../assets/game_data/scripts.json";
 import React from "react";
 import { CharacterId } from "../types/script";
+import scriptIcon from "../assets/icon/feather.svg";
 import "./ScriptSelect.css";
 
 interface ScriptSelectProps {
@@ -21,28 +26,16 @@ function ScriptSelect({
   handleSubmit,
   enableCustom = true,
 }: ScriptSelectProps) {
-  const [customScript, setCustomScript] = React.useState("");
-  const [errorMsg, setErrorMsg] = React.useState("");
-
-  const handleCustomScriptClick = () => {
-    try {
-      const parsedCustomScript = ValidateCustomScript(customScript);
-      handleSubmit("custom-script", parsedCustomScript);
-      setErrorMsg("");
-    } catch (e) {
-      const error = e as Error;
-      setErrorMsg(error.message);
-    }
-  };
-
   return (
     <Flex
-      gap="4"
+      gap="1"
       direction={"column"}
       align={"center"}
       style={{ overflowY: "scroll", height: "100%" }}
     >
-      <Grid gap="3" columns="1" align={"center"}>
+      <Heading color="tomato">Select a Script</Heading>
+      <Separator color="ruby" size="4" />
+      <Grid columns="2" align={"center"}>
         {GameData.scripts.map(({ name, imageSrc }) => (
           <Box
             key={name}
@@ -51,41 +44,84 @@ function ScriptSelect({
               handleSubmit(name);
             }}
           >
-            <img width="300px" src={imageSrc} />
+            <img className="script-image" src={imageSrc} />
           </Box>
         ))}
         {enableCustom && (
-          <Box key="custom-script" className="border">
-            <label htmlFor="custom-input">
-              <Heading as="h1">CUSTOM</Heading>
-            </label>
-            <TextArea
-              id="custom-input"
-              placeholder="[ { 'id': 'Washerwoman' }, ... ]"
-              value={customScript}
-              onChange={(event) => {
-                setCustomScript(event.currentTarget.value);
-              }}
-              onPaste={(event) => {
-                setCustomScript(
-                  JSON.stringify(
-                    JSON.parse(event.currentTarget.value),
-                    null,
-                    4,
-                  ),
-                );
-              }}
-            />
-            <Button onClick={handleCustomScriptClick}>Use Custom Script</Button>
-          </Box>
+          <CustomScriptInputDialog handleSubmit={handleSubmit} />
         )}
       </Grid>
-      {errorMsg && (
-        <Callout.Root>
-          <Callout.Text>{errorMsg}</Callout.Text>
-        </Callout.Root>
-      )}
     </Flex>
+  );
+}
+
+interface CustomScriptInputDialogProps {
+  handleSubmit: (script: string, customScript?: CharacterId[]) => void;
+}
+
+function CustomScriptInputDialog({
+  handleSubmit,
+}: CustomScriptInputDialogProps) {
+  const [customScript, setCustomScript] = React.useState("");
+  const [errorMsg, setErrorMsg] = React.useState("");
+
+  const handleCustomScriptImport = (event: React.MouseEvent) => {
+    try {
+      const parsedCustomScript = ValidateCustomScript(customScript);
+      handleSubmit("custom-script", parsedCustomScript);
+      setErrorMsg("");
+    } catch (e) {
+      event.preventDefault();
+      const error = e as Error;
+      setErrorMsg(error.message);
+    }
+  };
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Box className="border">
+          <Flex direction="column" align="center">
+            <Heading m="1" color="ruby">
+              CUSTOM
+            </Heading>
+            <img className="custom-script-image" src={scriptIcon} />
+          </Flex>
+        </Box>
+      </Dialog.Trigger>
+      <Dialog.Content>
+        <Dialog.Title align={"center"}>
+          <label htmlFor="custom-input">Custom Script Input</label>
+        </Dialog.Title>
+        <Inset m="5">
+          {errorMsg && (
+            <Callout.Root>
+              <Callout.Text>{errorMsg}</Callout.Text>
+            </Callout.Root>
+          )}
+          <TextArea
+            id="custom-input"
+            placeholder="[ { 'id': 'Washerwoman' }, ... ]"
+            value={customScript}
+            onChange={(event) => {
+              setCustomScript(event.currentTarget.value);
+            }}
+            onPaste={(event) => {
+              setCustomScript(
+                JSON.stringify(JSON.parse(event.currentTarget.value), null, 2),
+              );
+            }}
+          />
+          <Flex justify="center">
+            <DialogClose>
+              <Button onClick={handleCustomScriptImport}>
+                Use This Script
+              </Button>
+            </DialogClose>
+          </Flex>
+        </Inset>
+      </Dialog.Content>
+    </Dialog.Root>
   );
 }
 
