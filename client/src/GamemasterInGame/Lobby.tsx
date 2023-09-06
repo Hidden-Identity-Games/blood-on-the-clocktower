@@ -1,9 +1,17 @@
-import { Button, Flex, Tabs, Text } from "@radix-ui/themes";
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  Flex,
+  IconButton,
+  Tabs,
+  Text,
+} from "@radix-ui/themes";
 import {
   CharacterSelectList,
   useCharacterSelectState,
 } from "./CharacterSelectList";
-import { useGame } from "../store/GameContext";
+import { useDefiniteGame, useGame } from "../store/GameContext";
 import {
   useDistributeRoles,
   useKickPlayer,
@@ -13,7 +21,12 @@ import TeamDistributionBar from "./TeamDistributionBar";
 import { useState } from "react";
 import { ShareButton } from "./ShareButton";
 import { useParams } from "react-router-dom";
-import { Share1Icon } from "@radix-ui/react-icons";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  Cross1Icon,
+  Share1Icon,
+} from "@radix-ui/react-icons";
 import { Character } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
@@ -136,6 +149,7 @@ export function Lobby({ rolesList }: LobbyProps) {
               >
                 <Share1Icon /> Invite Players
               </ShareButton>
+              <ExportButton />
             </Flex>
             {Object.entries(playersToRoles).length === 0 &&
               "No players have joined yet."}
@@ -178,5 +192,90 @@ export function Lobby({ rolesList }: LobbyProps) {
         </Tabs.Content>
       </Tabs.Root>
     </Flex>
+  );
+}
+
+function ExportButton() {
+  const { game } = useDefiniteGame();
+  const [playerOrder, setPlayerOrder] = useState(
+    Object.keys(game.playersToNames),
+  );
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const handleMove = (playerId: string, direction: 1 | -1) => {
+    setPlayerOrder((oldArr) => {
+      const newArr = [...oldArr];
+      const index = newArr.findIndex((f) => f === playerId);
+      newArr[index] = oldArr[index + direction];
+      newArr[index + direction] = oldArr[index];
+      return newArr;
+    });
+  };
+
+  const exportedContent = {
+    bluffs: [],
+    edition: {},
+    roles: "",
+    fabled: [],
+    players: playerOrder.map((playerId) => ({
+      name: game.playersToNames[playerId],
+      id: "",
+      role: game.playersToRoles[playerId],
+      reminders: [],
+      isVoteless: false,
+      isDead: false,
+      pronouns: "",
+    })),
+  };
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button>Export</Button>
+      </Dialog.Trigger>
+
+      <Dialog.Content>
+        <DialogClose>
+          <IconButton variant="ghost">
+            <Cross1Icon />
+          </IconButton>
+        </DialogClose>
+
+        <Flex gap="2" direction="column">
+          {playerOrder.map((playerId, idx) => {
+            return (
+              <Flex gap="4" key={playerId}>
+                <IconButton
+                  onClick={() => handleMove(playerId, -1)}
+                  disabled={idx === 0}
+                >
+                  <ArrowUpIcon />
+                </IconButton>
+                <IconButton
+                  onClick={() => handleMove(playerId, 1)}
+                  disabled={idx === playerOrder.length - 1}
+                >
+                  <ArrowDownIcon />
+                </IconButton>
+                <div>{game.playersToNames[playerId]}</div>
+              </Flex>
+            );
+          })}
+
+          <Button
+            onClick={() => {
+              navigator.clipboard.writeText(
+                JSON.stringify(exportedContent, null, 4),
+              );
+              setShowSnackbar(true);
+            }}
+          >
+            Export
+          </Button>
+          {showSnackbar && <div>Copied to clipboard</div>}
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
   );
 }
