@@ -149,7 +149,7 @@ export function Lobby({ rolesList }: LobbyProps) {
               >
                 <Share1Icon /> Invite Players
               </ShareButton>
-              <ExportButton />
+              <ExportButton disabled={assignedRoles.length === 0} />
             </Flex>
             {Object.entries(playersToRoles).length === 0 &&
               "No players have joined yet."}
@@ -195,7 +195,11 @@ export function Lobby({ rolesList }: LobbyProps) {
   );
 }
 
-function ExportButton() {
+interface ExportButtonProps {
+  disabled?: boolean;
+}
+
+function ExportButton({ disabled = false }: ExportButtonProps) {
   const { game } = useDefiniteGame();
   const [playerOrder, setPlayerOrder] = useState(
     Object.keys(game.playersToNames),
@@ -221,7 +225,7 @@ function ExportButton() {
     players: playerOrder.map((playerId) => ({
       name: game.playersToNames[playerId],
       id: "",
-      role: game.playersToRoles[playerId],
+      role: game.playersToRoles[playerId]?.replace("_", ""),
       reminders: [],
       isVoteless: false,
       isDead: false,
@@ -232,7 +236,7 @@ function ExportButton() {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>Export</Button>
+        <Button disabled={disabled}>Export</Button>
       </Dialog.Trigger>
 
       <Dialog.Content>
