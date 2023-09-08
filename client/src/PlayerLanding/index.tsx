@@ -6,6 +6,7 @@ import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
 import { roles } from "../assets/game_data/gameData";
 import { useSecretKey } from "../store/secretKey";
+import { OrderPlayers } from "./OrderPlayers";
 export function GameMasterRoot() {}
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -27,9 +28,12 @@ function PlayerLanding() {
 
   if (!self.role)
     return (
-      <Callout.Root>
-        <Callout.Text>Waiting for game to begin...</Callout.Text>
-      </Callout.Root>
+      <>
+        <Callout.Root>
+          <Callout.Text>Waiting for game to begin...</Callout.Text>
+        </Callout.Root>
+        <OrderPlayers myName={self.name} />
+      </>
     );
 
   return <PlayerRole self={self} characters={Object.values(roles)} />;
