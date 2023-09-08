@@ -7,15 +7,23 @@ interface OrderPlayersProps {
   myName: string;
 }
 
-function OrderPlayers({ myName }: OrderPlayersProps) {
+export function OrderPlayers({ myName }: OrderPlayersProps) {
   const players = Object.values(usePlayerNamesToRoles())
     .map(({ name }) => name)
     .filter((name) => name !== myName);
   const [neighbors, setNeighbors] = React.useState<string[]>(["", ""]);
 
+  React.useEffect(() => {
+    const timer = setInterval(() => console.log("hi"), 5000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [neighbors]);
+
   return (
-    <Flex direction="column" align="center" gap="3">
-      <Grid columns={"3"} gap="1">
+    <Flex direction="column" align="center" gap="4">
+      <Grid columns={"3"} gap="2">
         {players.sort().map((pl) => (
           <Button
             className="name-button"
@@ -47,5 +55,3 @@ function OrderPlayers({ myName }: OrderPlayersProps) {
     </Flex>
   );
 }
-
-export { OrderPlayers };
