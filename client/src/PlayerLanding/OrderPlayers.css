@@ -1,0 +1,11 @@
+.name-button,
+.neighbor-box {
+  text-transform: capitalize;
+}
+
+.neighbor-box {
+  border: 2px solid darkred;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
