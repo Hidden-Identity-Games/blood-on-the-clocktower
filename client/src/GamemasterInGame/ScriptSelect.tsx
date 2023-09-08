@@ -10,10 +10,9 @@ import {
   DialogClose,
   Separator,
 } from "@radix-ui/themes";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Script, ScriptItem } from "../types/script";
 import scriptIcon from "../assets/icon/feather.svg";
-import "./ScriptSelect.css";
 import {
   getScript,
   getScriptImg,
@@ -24,27 +23,42 @@ interface ScriptSelectProps {
   handleSubmit: (script: ScriptItem[]) => void;
 }
 
+function ScriptOption({
+  children,
+  onClick,
+}: {
+  children: ReactNode;
+  onClick?: React.MouseEventHandler;
+}) {
+  return (
+    <button
+      className="aspect-square max-h-[25vh] rounded-[10%] border-2 border-red-800 bg-transparent p-3"
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
 export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
   return (
     <Flex
       gap="1"
       direction={"column"}
       align={"center"}
-      style={{ overflowY: "scroll", height: "100%" }}
+      className="h-full overflow-y-auto"
     >
       <Heading color="tomato">Select a Script</Heading>
       <Separator color="ruby" size="4" />
       <Grid columns="2" align={"center"} gap="4" p="4">
         {getScriptNames().map((name) => (
-          <button
+          <ScriptOption
             key={name}
-            className="script"
             onClick={() => {
               handleSubmit(getScript(name)!);
             }}
           >
-            <img className="script-image" src={getScriptImg(name)} />
-          </button>
+            <img className="h-full w-full" src={getScriptImg(name)} />
+          </ScriptOption>
         ))}
         <CustomScriptInputDialog handleSubmit={handleSubmit} />
       </Grid>
@@ -77,14 +91,14 @@ function CustomScriptInputDialog({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <button className="script">
-          <Flex direction="column" align="center">
-            <Heading mb="1" color="ruby">
+        <ScriptOption>
+          <div className="relative flex h-full w-full items-center justify-center">
+            <img className="absolute left-0 top-0" src={scriptIcon} />
+            <Heading mb="1" color="ruby" className="relative z-10">
               CUSTOM
             </Heading>
-            <img className="custom-script-image" src={scriptIcon} />
-          </Flex>
-        </button>
+          </div>
+        </ScriptOption>
       </Dialog.Trigger>
       <Dialog.Content>
         <Dialog.Title align={"center"}>
@@ -98,6 +112,7 @@ function CustomScriptInputDialog({
           )}
           <TextArea
             id="custom-input"
+            className="mb-2 h-[50vh] rounded-l"
             placeholder="[ { 'id': 'Washerwoman' }, ... ]"
             value={customScript}
             onChange={(event) => {
