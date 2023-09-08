@@ -57,10 +57,8 @@ export function GameProvider({
       {readyState !== ReadyState.OPEN && (
         <Callout.Root>
           <Callout.Text>
-            <p>
-              You're currently disconnected from the server. Attempting to
-              reconnect.
-            </p>
+            You're currently disconnected from the server. Attempting to
+            reconnect.
           </Callout.Text>
         </Callout.Root>
       )}

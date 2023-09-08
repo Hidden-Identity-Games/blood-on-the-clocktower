@@ -116,10 +116,11 @@ export function CharacterSelectList({
                       }));
                     }}
                   />
-                  <RoleIcon role={role} style={{ maxHeight: "3em" }} />
-                  <span style={{ textTransform: "capitalize" }}>
-                    {RoleName(role)}
-                  </span>
+                  <RoleIcon
+                    role={role}
+                    style={{ height: "3em", aspectRatio: 1 }}
+                  />
+                  <span className="capitalize">{RoleName(role)}</span>
                 </label>
               </Flex>
             ))}
