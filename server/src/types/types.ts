@@ -1,11 +1,17 @@
 export interface UnifiedGame {
   playersToNames: Record<string, string>
   playersToRoles: PlayerSet
+  playerOrder: Record<string, Neighbors>
   gmSecretHash: string
   gameStarted: boolean
 }
 
 export type PlayerSet = Record<string, string>
+
+export interface Neighbors {
+  leftNeighbor: string
+  rightNeighbor: string
+}
 
 export interface Self {
   name: string | undefined

@@ -1,6 +1,6 @@
 import { Button, Flex, Grid } from "@radix-ui/themes";
 import React from "react";
-import { usePlayerNamesToRoles } from "../store/useStore";
+import { useOrderPlayer, usePlayerNamesToRoles } from "../store/useStore";
 import "./OrderPlayers.css";
 
 interface OrderPlayersProps {
@@ -12,14 +12,7 @@ export function OrderPlayers({ myName }: OrderPlayersProps) {
     .map(({ name }) => name)
     .filter((name) => name !== myName);
   const [neighbors, setNeighbors] = React.useState<string[]>(["", ""]);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => console.log("hi"), 5000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [neighbors]);
+  const [, , , handleOrderPlayer] = useOrderPlayer();
 
   return (
     <Flex direction="column" align="center" gap="4">
@@ -29,9 +22,11 @@ export function OrderPlayers({ myName }: OrderPlayersProps) {
             className="name-button"
             key={pl}
             disabled={neighbors.includes(pl)}
-            onClick={() =>
-              setNeighbors((prevNeighbors) => [...prevNeighbors, pl].slice(1))
-            }
+            onClick={() => {
+              const newNeighbors = [...neighbors, pl].slice(1);
+              setNeighbors(newNeighbors);
+              handleOrderPlayer(myName, newNeighbors[0], newNeighbors[1]);
+            }}
           >
             {pl}
           </Button>
@@ -46,9 +41,11 @@ export function OrderPlayers({ myName }: OrderPlayersProps) {
 
       <Button
         variant="surface"
-        onClick={() =>
-          setNeighbors((prevNeighbors) => [prevNeighbors[1], prevNeighbors[0]])
-        }
+        onClick={() => {
+          const newNeighbors = [neighbors[1], neighbors[0]];
+          setNeighbors(newNeighbors);
+          handleOrderPlayer(myName, newNeighbors[0], newNeighbors[1]);
+        }}
       >
         Swap
       </Button>

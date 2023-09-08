@@ -1,5 +1,6 @@
 {
     "eslint.codeActionsOnSave.mode": "all",
+    "eslint.format.enable": true,
     "editor.formatOnSave": true,
     "eslint.workingDirectories": [
         "client", "server"
@@ -11,5 +12,5 @@
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
 }

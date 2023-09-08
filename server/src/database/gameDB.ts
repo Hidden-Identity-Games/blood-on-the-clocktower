@@ -47,6 +47,7 @@ function createGame (gameId: string): UnifiedGame {
       gmSecretHash: gameId,
       playersToNames: { 1: 'linh', 2: 'alex', 3: 'tali', 4: 'elan', 5: 'joey', 6: 'jess' },
       playersToRoles: {},
+      playerOrder: {},
     }
   }
   return {
@@ -54,6 +55,7 @@ function createGame (gameId: string): UnifiedGame {
     gmSecretHash: generate(3).join('-'),
     playersToNames: {},
     playersToRoles: {},
+    playerOrder: {},
   }
 }
 
@@ -116,6 +118,19 @@ export function kickPlayer (gameId: string, playerId: string): void {
     playersToRoles: nextPlayerRoles,
   })
 }
+
+export function setPlayerOrder (
+  gameId: string,
+  player: string,
+  leftNeighbor: string,
+  rightNeighbor: string,
+): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  game.update({ ...gameInstance, playerOrder: { ...gameInstance.playerOrder, [player]: { leftNeighbor, rightNeighbor } } })
+}
+
 export function assignRoles (
   gameId: string,
   roles: string[],
