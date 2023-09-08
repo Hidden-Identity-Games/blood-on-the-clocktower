@@ -2,7 +2,7 @@ import { Flex, Text } from "@radix-ui/themes";
 import { useGame } from "../store/GameContext";
 import "./TeamDistributionBar.css";
 import { colorMap } from "../shared/CharacterTypes";
-import { roles } from "../assets/game_data/roles";
+import { roles } from "../assets/game_data/gameData";
 import { KnownCharacterType } from "@hidden-identity/server";
 
 interface TeamDistributionBarProps {

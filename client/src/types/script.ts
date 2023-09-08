@@ -1,7 +1,7 @@
 import type {
   Script,
   Character,
-  CharacterId,
+  ScriptItem,
   CharacterType,
 } from "@hidden-identity/server";
 
@@ -13,4 +13,4 @@ export const CharacterTypes = [
   "Demon",
 ] satisfies Array<CharacterType>;
 
-export { Script, Character, CharacterId, CharacterType };
+export { Script, Character, ScriptItem, CharacterType };

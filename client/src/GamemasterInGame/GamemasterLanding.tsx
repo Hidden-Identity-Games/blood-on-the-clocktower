@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { useGame } from "../store/useStore";
 import { useParams } from "react-router-dom";
 import { GameProvider } from "../store/GameContextProvider";
 import { Lobby } from "./Lobby";
 import { ScriptSelect } from "./ScriptSelect";
-import { Character, CharacterId } from "../types/script";
-import scriptsData from "../assets/game_data/scripts.json";
-import rolesData from "../assets/game_data/roles.json";
+import { Script } from "../types/script";
+import { useSearchParams } from "react-router-dom";
+import { Role } from "@hidden-identity/server";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
@@ -16,25 +15,26 @@ export function GameMasterRoot() {
     </GameProvider>
   );
 }
+function useScript() {
+  try {
+    const [params] = useSearchParams();
+    const _script = params.get("script");
+    if (_script === null) {
+      return null;
+    }
+
+    const script = JSON.parse(_script) as Role[];
+    return script;
+  } catch (e) {
+    return null;
+  }
+}
 
 function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
-  const [mode, setMode] = useState<"lobby" | "scriptSelect" | "other">(
-    "scriptSelect",
-  );
-  const [characters, setCharacters] = useState<Character[]>([]);
+  const script = useScript();
+  const [, setSearchParams] = useSearchParams();
 
   const { game } = useGame();
-
-  function setRoles(roleIds: CharacterId[] = []) {
-    const roles = roleIds.map(
-      ({ id }) =>
-        rolesData.characters.find((char) => char.id === id) ?? {
-          id,
-          team: "Unknown",
-        },
-    );
-    setCharacters(roles as Character[]);
-  }
 
   if (!game) {
     return <div>Loading...</div>;
@@ -43,29 +43,21 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
     return <div>You are in the wrong place</div>;
   }
 
-  if (mode === "lobby") {
-    return <Lobby rolesList={characters} />;
+  if (script) {
+    return <Lobby rolesList={script} />;
   }
 
-  if (mode === "scriptSelect") {
-    return (
-      <ScriptSelect
-        handleSubmit={(script: string, customScript?: CharacterId[]) => {
-          if (customScript) {
-            setRoles(customScript);
-          } else {
-            const roleIds = scriptsData.scripts.find(
-              ({ name }) => name === script,
-            )?.characters;
-            setRoles(roleIds);
-          }
-          setMode("lobby");
-        }}
-      />
-    );
-  }
-
-  return <div>uh oh</div>;
+  return (
+    <ScriptSelect
+      handleSubmit={(script: Script) => {
+        setSearchParams((prev) => {
+          const next = new URLSearchParams(prev);
+          next.set("script", JSON.stringify(script.map(({ id }) => id)));
+          return next;
+        });
+      }}
+    />
+  );
 }
 
 export { GamemasterLanding };

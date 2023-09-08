@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Character, CharacterType, CharacterTypes } from "../types/script";
+import { CharacterType, CharacterTypes } from "../types/script";
 import {
   Checkbox,
   Flex,
@@ -11,6 +11,8 @@ import {
 import React from "react";
 import { colorMap } from "../shared/CharacterTypes";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
+import { Role } from "@hidden-identity/server";
+import { getRole } from "../assets/game_data/gameData";
 
 interface StateContainer<T> {
   value: T;
@@ -18,23 +20,19 @@ interface StateContainer<T> {
 }
 
 export interface CharacterSelectState {
-  selectedRoles: StateContainer<Record<string, boolean>>;
-  additionalCharacters: StateContainer<Character[]>;
-  characters: Character[];
+  selectedRoles: StateContainer<Record<Role, boolean>>;
+  additionalCharacters: StateContainer<Role[]>;
+  characters: Role[];
 }
 
 // doing some wonky shit because we cannot elave the tab mounted when we switch.
 // so if we don't hoist state we lose data when switching tabs.
 export function useCharacterSelectState(
-  availableCharacters?: Character[],
+  availableCharacters?: Role[],
 ): CharacterSelectState {
-  const characters: Character[] = availableCharacters ?? [];
-  const [selectedRoles, setSelectedRoles] = useState<Record<string, boolean>>(
-    {},
-  );
-  const [additionalCharacters, setAdditionalCharacters] = useState<Character[]>(
-    [],
-  );
+  const characters: Role[] = availableCharacters ?? [];
+  const [selectedRoles, setSelectedRoles] = useState<Record<Role, boolean>>({});
+  const [additionalCharacters, setAdditionalCharacters] = useState<Role[]>([]);
 
   return {
     selectedRoles: {
@@ -64,31 +62,24 @@ export function CharacterSelectList({
     }
     // Switch to a GUID
     const newId = newCharacterName;
-    state.additionalCharacters.set((curr) => [
-      ...curr,
-      {
-        id: newId,
-        name: newCharacterName,
-        team: newCharacterTeam,
-      },
-    ]);
+    state.additionalCharacters.set((curr) => [...curr, newId as Role]);
     state.selectedRoles.set((selectedroles) => ({
       ...selectedroles,
       [newId]: true,
     }));
     setNewCharacterName("");
   }
-  const charactersByType: Record<CharacterType, Character[]> = useMemo(() => {
+  const charactersByType: Record<CharacterType, Role[]> = useMemo(() => {
     const allCharacters = [
       ...state.characters,
       ...state.additionalCharacters.value,
     ];
     return {
-      Townsfolk: allCharacters.filter((c) => c.team === "Townsfolk"),
-      Outsider: allCharacters.filter((c) => c.team === "Outsider"),
-      Minion: allCharacters.filter((c) => c.team === "Minion"),
-      Demon: allCharacters.filter((c) => c.team === "Demon"),
-      Unknown: allCharacters.filter((c) => c.team === "Unknown"),
+      Townsfolk: allCharacters.filter((c) => getRole(c).team === "Townsfolk"),
+      Outsider: allCharacters.filter((c) => getRole(c).team === "Outsider"),
+      Minion: allCharacters.filter((c) => getRole(c).team === "Minion"),
+      Demon: allCharacters.filter((c) => getRole(c).team === "Demon"),
+      Unknown: allCharacters.filter((c) => getRole(c).team === "Unknown"),
     };
   }, [state.characters, state.additionalCharacters.value]);
 
@@ -106,28 +97,28 @@ export function CharacterSelectList({
             >
               {characterType}
             </Heading>
-            {characters.map(({ id }) => (
+            {characters.map((role) => (
               <Flex
                 gap="1"
                 align={"center"}
-                key={id}
+                key={role}
                 style={{ height: "2em" }}
                 asChild
               >
                 <label>
                   <Checkbox
-                    id={id}
-                    checked={state.selectedRoles.value[id]}
+                    id={role}
+                    checked={state.selectedRoles.value[role]}
                     onClick={() => {
                       state.selectedRoles.set((selectedroles) => ({
                         ...selectedroles,
-                        [id]: !selectedroles[id],
+                        [role]: !selectedroles[role],
                       }));
                     }}
                   />
-                  <RoleIcon role={id} style={{ maxHeight: "3em" }} />
+                  <RoleIcon role={role} style={{ maxHeight: "3em" }} />
                   <span style={{ textTransform: "capitalize" }}>
-                    {RoleName(id)}
+                    {RoleName(role)}
                   </span>
                 </label>
               </Flex>
