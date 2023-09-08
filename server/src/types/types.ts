@@ -1,8 +1,3 @@
-export interface Script {
-  name: string
-  imageSrc: string
-  characters: Character[]
-}
 export interface UnifiedGame {
   playersToNames: Record<string, string>
   playersToRoles: PlayerSet
@@ -17,16 +12,21 @@ export interface Self {
   role: string | undefined
 }
 
+export type Role = string & {
+  __is_char_id: true
+}
+
 export interface Character {
-  id: string
+  id: Role
   name: string
   team: CharacterType
   imageSrc?: string
 }
 
-export interface CharacterId {
+export interface ScriptItem {
   id: string
 }
+export type Script = ScriptItem[]
 
 export const CharacterTypes = [
   'Townsfolk',

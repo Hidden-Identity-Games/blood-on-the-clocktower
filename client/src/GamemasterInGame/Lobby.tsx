@@ -27,7 +27,7 @@ import {
   Cross1Icon,
   Share1Icon,
 } from "@radix-ui/react-icons";
-import { Character } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import rolesIcon from "../assets/icon/mask.svg";
@@ -55,7 +55,7 @@ function StartGameButton({
 }
 
 export interface LobbyProps {
-  rolesList: Character[];
+  rolesList: Role[];
 }
 
 export function Lobby({ rolesList }: LobbyProps) {
@@ -163,7 +163,7 @@ export function Lobby({ rolesList }: LobbyProps) {
                 asChild
               >
                 <Text size="2" style={{ textTransform: "capitalize" }}>
-                  <RoleText roleId={role}>{name}</RoleText>
+                  <RoleText role={role}>{name}</RoleText>
                   <div
                     style={{
                       flex: 2,

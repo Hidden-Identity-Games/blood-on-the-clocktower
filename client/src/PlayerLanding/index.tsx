@@ -4,7 +4,7 @@ import PlayerRole from "./PlayerRole";
 import { useSelf } from "../store/useStore";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
-import { roles } from "../assets/game_data/roles";
+import { roles } from "../assets/game_data/gameData";
 import { useSecretKey } from "../store/secretKey";
 export function GameMasterRoot() {}
 export function PlayerRoot() {

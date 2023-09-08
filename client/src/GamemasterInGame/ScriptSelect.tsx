@@ -1,5 +1,4 @@
 import {
-  Box,
   Grid,
   Flex,
   Button,
@@ -11,21 +10,21 @@ import {
   DialogClose,
   Separator,
 } from "@radix-ui/themes";
-import GameData from "../assets/game_data/scripts.json";
 import React from "react";
-import { CharacterId } from "../types/script";
+import { Script, ScriptItem } from "../types/script";
 import scriptIcon from "../assets/icon/feather.svg";
 import "./ScriptSelect.css";
+import {
+  getScript,
+  getScriptImg,
+  getScriptNames,
+} from "../assets/game_data/gameData";
 
 interface ScriptSelectProps {
-  handleSubmit: (script: string, customScript?: CharacterId[]) => void;
-  enableCustom?: boolean;
+  handleSubmit: (script: ScriptItem[]) => void;
 }
 
-function ScriptSelect({
-  handleSubmit,
-  enableCustom = true,
-}: ScriptSelectProps) {
+export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
   return (
     <Flex
       gap="1"
@@ -35,28 +34,26 @@ function ScriptSelect({
     >
       <Heading color="tomato">Select a Script</Heading>
       <Separator color="ruby" size="4" />
-      <Grid columns="2" align={"center"}>
-        {GameData.scripts.map(({ name, imageSrc }) => (
-          <Box
+      <Grid columns="2" align={"center"} gap="4" p="4">
+        {getScriptNames().map((name) => (
+          <button
             key={name}
-            className="border"
+            className="script"
             onClick={() => {
-              handleSubmit(name);
+              handleSubmit(getScript(name)!);
             }}
           >
-            <img className="script-image" src={imageSrc} />
-          </Box>
+            <img className="script-image" src={getScriptImg(name)} />
+          </button>
         ))}
-        {enableCustom && (
-          <CustomScriptInputDialog handleSubmit={handleSubmit} />
-        )}
+        <CustomScriptInputDialog handleSubmit={handleSubmit} />
       </Grid>
     </Flex>
   );
 }
 
 interface CustomScriptInputDialogProps {
-  handleSubmit: (script: string, customScript?: CharacterId[]) => void;
+  handleSubmit: (customScript: Script) => void;
 }
 
 function CustomScriptInputDialog({
@@ -68,7 +65,7 @@ function CustomScriptInputDialog({
   const handleCustomScriptImport = (event: React.MouseEvent) => {
     try {
       const parsedCustomScript = ValidateCustomScript(customScript);
-      handleSubmit("custom-script", parsedCustomScript);
+      handleSubmit(parsedCustomScript);
       setErrorMsg("");
     } catch (e) {
       event.preventDefault();
@@ -80,14 +77,14 @@ function CustomScriptInputDialog({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Box className="border">
+        <button className="script">
           <Flex direction="column" align="center">
-            <Heading m="1" color="ruby">
+            <Heading mb="1" color="ruby">
               CUSTOM
             </Heading>
             <img className="custom-script-image" src={scriptIcon} />
           </Flex>
-        </Box>
+        </button>
       </Dialog.Trigger>
       <Dialog.Content>
         <Dialog.Title align={"center"}>
@@ -125,7 +122,7 @@ function CustomScriptInputDialog({
   );
 }
 
-function ValidateCustomScript(script: string) {
+function ValidateCustomScript(script: string): Script {
   const parsed = JSON.parse(script);
   if (!Array.isArray(parsed)) {
     throw new Error("JSON is not an array.");
@@ -140,5 +137,3 @@ function ValidateCustomScript(script: string) {
   }
   return parsed;
 }
-
-export { ScriptSelect };
