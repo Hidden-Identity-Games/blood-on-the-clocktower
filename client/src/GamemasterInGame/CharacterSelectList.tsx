@@ -94,44 +94,46 @@ export function CharacterSelectList({
 
   return (
     <Flex gap="1" direction="column" px="3">
-      {Object.entries(charactersByType).map(([characterType, characters]) => (
-        <React.Fragment key={characterType}>
-          <Heading
-            size="4"
-            id={characterType}
-            align="right"
-            color={colorMap[characterType as CharacterType]}
-          >
-            {characterType}
-          </Heading>
-          {characters.map(({ id }) => (
-            <Flex
-              gap="1"
-              align={"center"}
-              key={id}
-              style={{ height: "2em" }}
-              asChild
+      {Object.entries(charactersByType)
+        .filter(([_, characters]) => characters.length > 0)
+        .map(([characterType, characters]) => (
+          <React.Fragment key={characterType}>
+            <Heading
+              size="4"
+              id={characterType}
+              align="right"
+              color={colorMap[characterType as CharacterType]}
             >
-              <label>
-                <Checkbox
-                  id={id}
-                  checked={state.selectedRoles.value[id]}
-                  onClick={() => {
-                    state.selectedRoles.set((selectedroles) => ({
-                      ...selectedroles,
-                      [id]: !selectedroles[id],
-                    }));
-                  }}
-                />
-                <RoleIcon role={id} style={{ maxHeight: "3em" }} />
-                <span style={{ textTransform: "capitalize" }}>
-                  {RoleName(id)}
-                </span>
-              </label>
-            </Flex>
-          ))}
-        </React.Fragment>
-      ))}
+              {characterType}
+            </Heading>
+            {characters.map(({ id }) => (
+              <Flex
+                gap="1"
+                align={"center"}
+                key={id}
+                style={{ height: "2em" }}
+                asChild
+              >
+                <label>
+                  <Checkbox
+                    id={id}
+                    checked={state.selectedRoles.value[id]}
+                    onClick={() => {
+                      state.selectedRoles.set((selectedroles) => ({
+                        ...selectedroles,
+                        [id]: !selectedroles[id],
+                      }));
+                    }}
+                  />
+                  <RoleIcon role={id} style={{ maxHeight: "3em" }} />
+                  <span style={{ textTransform: "capitalize" }}>
+                    {RoleName(id)}
+                  </span>
+                </label>
+              </Flex>
+            ))}
+          </React.Fragment>
+        ))}
 
       <Flex align={"center"} gap="2" pt="2" pb="6">
         <IconButton
