@@ -1,8 +1,8 @@
 import { MessageFromClient, MessageFromServer } from "@hidden-identity/server";
 
 export function createMessage(message: MessageFromClient) {
-  return JSON.stringify(message);
+  return message;
 }
-export function parseMessage(message: string): MessageFromServer {
-  return JSON.parse(message);
+export function parseMessage(message: NonNullable<unknown>): MessageFromServer {
+  return message as MessageFromServer;
 }
