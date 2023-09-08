@@ -8,23 +8,42 @@
   height: 85%;
 }
 
+.image-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
 .script {
-  text-align: center;
   border: 2px solid darkred;
   border-radius: 20px;
   cursor: pointer;
   background: transparent;
-  width: 100%;
   aspect-ratio: 1;
+  max-height: 25vh;
+  padding: 12px;
 }
+
 .script-image {
   width: 100%;
   height: 100%;
 }
 
 .custom-script-image {
-  width: 60%;
-  height: 60%;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.custom-text {
+  position: inherit;
+  z-index: 2;
+  font-size: 10%;
 }
 
 #custom-input {

@@ -11,7 +11,7 @@
     "build": "tsc && vite build",
     "build-client": "tsc && vite build",
     "build-server": "",
-    "dev": "vite",
+    "dev": "vite --host",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "preview": "vite preview",
     "start-prod": "",

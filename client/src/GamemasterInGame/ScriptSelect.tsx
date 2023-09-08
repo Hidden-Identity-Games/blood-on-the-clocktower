@@ -78,12 +78,12 @@ function CustomScriptInputDialog({
     <Dialog.Root>
       <Dialog.Trigger>
         <button className="script">
-          <Flex direction="column" align="center">
-            <Heading mb="1" color="ruby">
+          <div className="image-container">
+            <img className="custom-script-image" src={scriptIcon} />
+            <Heading mb="1" color="ruby" className="custom-text">
               CUSTOM
             </Heading>
-            <img className="custom-script-image" src={scriptIcon} />
-          </Flex>
+          </div>
         </button>
       </Dialog.Trigger>
       <Dialog.Content>

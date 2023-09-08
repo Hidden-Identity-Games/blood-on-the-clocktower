@@ -1,6 +1,7 @@
 {
     "eslint.codeActionsOnSave.mode": "all",
     "editor.formatOnSave": true,
+    "eslint.format.enable": true,
     "eslint.workingDirectories": [
         "client", "server"
     ],
@@ -10,6 +11,18 @@
     },
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     },
     "editor.tabSize": 2
 }
