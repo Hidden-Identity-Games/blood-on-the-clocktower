@@ -2,22 +2,17 @@ import { Button, TextField } from "@radix-ui/themes";
 import React from "react";
 import { useAddPlayer } from "../store/useStore";
 import { useDefiniteGame } from "../store/GameContext";
+import { usePlayer } from "../store/secretKey";
 
-interface AddPlayerProps {
-  secretKey: string;
-  setSecretKey: (key: string) => void;
-}
-
-function AddPlayer({ secretKey, setSecretKey }: AddPlayerProps) {
+function AddPlayer() {
   const { game } = useDefiniteGame();
 
   const [name, setName] = React.useState("");
-  const [error, isLoading, , addPlayer] = useAddPlayer({ secretKey });
+  const [_, setPlayer] = usePlayer();
+  const [error, isLoading, , addPlayer] = useAddPlayer();
   const parsedName = name.toLowerCase();
 
-  const taken = Object.values(game.playersToNames).find(
-    (curr) => curr === parsedName,
-  );
+  const taken = !!game.playersToRoles[parsedName];
   const joinable = name && !taken;
 
   return (
@@ -30,7 +25,7 @@ function AddPlayer({ secretKey, setSecretKey }: AddPlayerProps) {
         onChange={(event) => setName(event.currentTarget.value)}
         onKeyDown={async (event) => {
           if (event.key === "Enter" && joinable) {
-            await addPlayer(name);
+            await addPlayer(name.toLocaleLowerCase());
           }
         }}
       />
@@ -57,17 +52,7 @@ function AddPlayer({ secretKey, setSecretKey }: AddPlayerProps) {
           {taken && (
             <>
               <div>Name already taken, is this you?</div>
-              <Button
-                onClick={() =>
-                  setSecretKey(
-                    Object.entries(game.playersToNames).find(
-                      ([, value]) => value === parsedName,
-                    )![0],
-                  )
-                }
-              >
-                Yes
-              </Button>
+              <Button onClick={() => setPlayer(parsedName)}>Yes</Button>
             </>
           )}
         </>

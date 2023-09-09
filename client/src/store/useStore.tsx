@@ -1,38 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
 import { useMemo } from "react";
-import { Self, UnifiedGame } from "./Game";
+import { UnifiedGame } from "./Game";
 import { useAction, useGame } from "./GameContext";
-import { mapObject } from "../utils/mapObject";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
-import { Role } from "@hidden-identity/server";
-
-export function usePlayerNamesToRoles(): Record<
-  string,
-  { name: string; role: Role }
-> {
-  const { game } = useGame();
-  if (!game) {
-    throw new Error("ASDFASDF");
-  }
-  const { playersToNames, playersToRoles } = game;
-  return mapObject(playersToNames, (hash, name: string) => [
-    hash,
-    { role: playersToRoles[hash], name },
-  ]);
-}
-
-export function useSelf(secretKey: string) {
-  const { game } = useGame();
-  return (
-    game &&
-    ({
-      name: game.playersToNames[secretKey],
-      role: game.playersToRoles[secretKey],
-    } as Self)
-  );
-}
+import { usePlayer } from "./secretKey";
 
 function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
@@ -102,26 +75,27 @@ class NameTakenError extends Error {
     super(`Name Taken: ${name}`);
   }
 }
-export function useAddPlayer({ secretKey }: { secretKey: string }) {
+export function useAddPlayer() {
   const { gameId } = useGame();
+  const [, setPlayer] = usePlayer();
 
-  return useAction(async (playerName: string) => {
+  return useAction(async (player: string) => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
 
     try {
       const response = await axios.post(apiUrl("/add_player"), {
-        playerName: playerName.toLocaleLowerCase(),
-        playerId: secretKey,
+        player,
         gameId,
       });
       if (response.status !== 200) {
         throw new Error(response.statusText);
       }
+      setPlayer(player);
     } catch (e: unknown) {
       if (e instanceof Error && e.message.match(/name taken/i)) {
-        throw new NameTakenError(playerName);
+        throw new NameTakenError(player);
       }
 
       throw e;

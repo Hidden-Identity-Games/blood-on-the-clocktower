@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
-import { v4 } from "uuid";
+import { useGame } from "./GameContext";
+import { useLocalStorage } from "./useLocalStorage";
 
-export function useSecretKey(): [string, (key: string) => void] {
-  const [secretKey, setSecretKey] = useState<string>(
-    localStorage.getItem("secretKey") ?? v4(),
-  );
+export function usePlayer(): [string | null, (key: string) => void] {
+  const { gameId } = useGame();
+  const [value, setValue] = useLocalStorage(`${gameId}_player`);
 
-  useEffect(() => {
-    localStorage.setItem("secretKey", secretKey);
-  }, [secretKey]);
+  return [value, setValue];
+}
 
-  return [secretKey, setSecretKey];
+export function useMe(): string {
+  const [myName] = usePlayer();
+  if (!myName) {
+    throw new Error("Name not yet declared!");
+  }
+  return myName;
 }

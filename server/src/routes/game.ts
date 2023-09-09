@@ -41,12 +41,11 @@ export function useGame (app: Application): void {
   })
 
   app.post('/add_player', (req, res) => {
-    const { playerId, playerName, gameId } = req.body
-    addPlayer(gameId, playerId, playerName)
+    const { player, gameId } = req.body
+    addPlayer(gameId, player)
     res.status(200)
     res.send({
-      playerId,
-      playerName,
+      player,
     })
   })
 
@@ -66,13 +65,8 @@ export function useGame (app: Application): void {
 
   app.post('/assign_roles', (req, res) => {
     const { roles, gameId } = req.body
-    const message = assignRoles(gameId, roles)
-    if (!message) {
-      res.status(200)
-      res.send({})
-    } else {
-      res.status(400)
-      res.send(message)
-    }
+    assignRoles(gameId, roles)
+    res.status(200)
+    res.send({})
   })
 }

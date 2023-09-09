@@ -1,6 +1,9 @@
 import { type Neighbors, type Role, type UnifiedGame } from '../types/types.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
+import { removeKey } from '../utils/objectUtils.ts'
+
+const UNASSIGNED: Role = 'unassigned' as Role
 
 const gameDB: Record<string, WatchableResource<UnifiedGame>> = {}
 
@@ -45,8 +48,15 @@ function createGame (gameId: string): UnifiedGame {
     return {
       gameStarted: false,
       gmSecretHash: gameId,
-      playersToNames: { 1: 'linh', 2: 'alex', 3: 'tali', 4: 'elan', 5: 'joey', 6: 'jess' },
-      playersToRoles: {},
+      playersToRoles: {
+        linh: UNASSIGNED,
+        alex: UNASSIGNED,
+        tali: UNASSIGNED,
+        elan: UNASSIGNED,
+        joey: UNASSIGNED,
+        jess: UNASSIGNED,
+
+      },
       partialPlayerOrdering: { alex: { leftNeighbor: 'linh', rightNeighbor: 'tali' }, linh: { leftNeighbor: 'jess', rightNeighbor: 'alex' }, jess: { leftNeighbor: 'joey', rightNeighbor: 'linh' }, joey: { leftNeighbor: 'elan', rightNeighbor: 'jess' }, elan: { leftNeighbor: 'tali', rightNeighbor: 'joey' }, tali: { leftNeighbor: 'alex', rightNeighbor: 'elan' } },
       orderedPlayers: ['alex', 'linh', 'jess', 'joey', 'elan', 'tali'],
     }
@@ -54,7 +64,6 @@ function createGame (gameId: string): UnifiedGame {
   return {
     gameStarted: false,
     gmSecretHash: generate(3).join('-'),
-    playersToNames: {},
     playersToRoles: {},
     partialPlayerOrdering: {},
     orderedPlayers: [],
@@ -63,61 +72,41 @@ function createGame (gameId: string): UnifiedGame {
 
 export function addPlayer (
   gameId: string,
-  playerId: string,
-  playerName: string,
+  player: string,
 ): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   // player already exists
-  if (gameInstance.playersToNames[playerId]) {
+  if (gameInstance.playersToRoles[player]) {
     throw new Error(
-      `Duplicate Playerid found: ${playerId}, name: ${playerName}`,
+      `Duplicate Playerid found: ${player}`,
     )
-  }
-
-  // player name taken
-  if (gameInstance.playersToNames[playerId]) {
-    throw new Error(`Name taken: ${playerName}`)
   }
 
   updateGameWithComputes(game, {
     ...gameInstance,
-    playersToNames: {
-      ...gameInstance.playersToNames,
-      [playerId]: playerName,
+    playersToRoles: {
+      ...gameInstance.playersToRoles,
+      [player]: UNASSIGNED,
     },
   })
 }
 
-export function kickPlayer (gameId: string, playerId: string): void {
+export function kickPlayer (gameId: string, player: string): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   // player doesn't exist
-  if (!gameInstance.playersToNames[playerId]) {
+  if (!gameInstance.playersToRoles[player]) {
     throw new Error(
-      `Playerid not found: ${playerId}`,
+      `Playerid not found: ${player}`,
     )
-  }
-  const nextPlayerNames = {
-    ...gameInstance.playersToNames,
-  }
-  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-  delete nextPlayerNames[playerId]
-
-  const nextPlayerRoles = {
-    ...gameInstance.playersToRoles,
-  }
-  if (Reflect.has(nextPlayerRoles, playerId)) {
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete nextPlayerRoles[playerId]
   }
 
   updateGameWithComputes(game, {
     ...gameInstance,
-    playersToNames: nextPlayerNames,
-    playersToRoles: nextPlayerRoles,
+    playersToRoles: removeKey(gameInstance.playersToRoles, player),
   })
 }
 
@@ -159,17 +148,10 @@ function getOrderedPlayersRecurse (
 export function assignRoles (
   gameId: string,
   roles: Role[],
-): string | undefined {
+): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
-  const playerIdList = Object.keys(gameInstance.playersToNames)
-
-  // player already exists
-  if (playerIdList.length !== roles.length) {
-    return `Player count does not match role count players${JSON.stringify(
-      Object.values(gameInstance.playersToNames),
-    )}, roles:${JSON.stringify(roles)}.`
-  }
+  const playerIdList = Object.keys(gameInstance.playersToRoles)
 
   updateGameWithComputes(game, {
     ...gameInstance,
