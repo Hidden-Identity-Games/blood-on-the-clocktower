@@ -163,7 +163,7 @@ export function Lobby({ rolesList }: LobbyProps) {
                 asChild
               >
                 <Text size="2" style={{ textTransform: "capitalize" }}>
-                  <RoleText role={role}>{name}</RoleText>
+                  <RoleText role={role} />
                   <div
                     style={{
                       flex: 2,

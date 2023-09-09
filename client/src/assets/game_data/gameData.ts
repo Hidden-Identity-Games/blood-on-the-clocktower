@@ -1,6 +1,7 @@
 import { Character, Role, Script } from "@hidden-identity/server";
 import rolesJson from "./roles.json";
 import scriptsJson from "./scripts.json";
+import defaultRoleImage from "../default_role.svg";
 
 export const roles: Record<string, Character> = Object.fromEntries(
   rolesJson.characters.map((role) => [role.id, role as Character]),
@@ -8,11 +9,13 @@ export const roles: Record<string, Character> = Object.fromEntries(
 
 export function getRole(role: Role): Character {
   return (
-    roles[role] ?? {
+    roles[role] ??
+    ({
       id: role,
       name: role,
-      imageSrc: "",
-    }
+      imageSrc: defaultRoleImage,
+      team: "Unknown",
+    } satisfies Character)
   );
 }
 

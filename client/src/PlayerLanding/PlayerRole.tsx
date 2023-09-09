@@ -1,26 +1,65 @@
 import { Flex } from "@radix-ui/themes";
 import "./PlayerRole.css";
-import { Character } from "../types/script";
-import { Self } from "../store/Game";
 import tokenBack from "../assets/token_logo.png";
 import tokenBlank from "../assets/token_blank.png";
-import defaultRoleImage from "../assets/default_role.svg";
 import fingerprintImage from "../assets/fingerprint.png";
+import { getRole } from "../assets/game_data/gameData";
+import { Role } from "@hidden-identity/server";
+import { useState } from "react";
+import { RoleText } from "../shared/RoleIcon";
 
 interface PlayerRoleProps {
-  self: Self;
-  characters: Character[];
+  role: Role;
 }
 
-function PlayerRole({ self, characters }: PlayerRoleProps) {
+function PlayerRole({ role }: PlayerRoleProps) {
+  const [isHolding, setIsHolding] = useState(false);
   return (
-    <Flex direction="column" align="center" className="role">
-      <Flex direction="column" align="center">
-        <div className="role-inner">
-          <div className="role-hidden">
+    <Flex
+      direction="column-reverse"
+      align="center"
+      justify="between"
+      className=" flex-1 bg-transparent"
+    >
+      <button
+        data-flipper="true"
+        className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
+        onClick={() => {}}
+        onMouseDown={(e) => {
+          setIsHolding(true);
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onMouseUp={() => {
+          setIsHolding(false);
+        }}
+        onTouchStart={(e) => {
+          setIsHolding(true);
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onTouchEnd={() => {
+          setIsHolding(false);
+        }}
+      >
+        <img
+          className="h-[110px] w-[85px]"
+          onContextMenu={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+          src={fingerprintImage}
+        />
+        <div className="select-none">Hold to reveal role</div>
+      </button>
+      <div
+        className="perspective aspect-square h-1/2 p-4"
+        data-flipped={isHolding ? "true" : "false"}
+      >
+        <div className="relative h-full w-full" data-card="true">
+          <div data-card-side="front" className="h-full w-full">
             <img
-              width={"300px"}
-              height={"300px"}
+              className="h-full w-full"
               src={tokenBack}
               onContextMenu={(event) => {
                 event.preventDefault();
@@ -28,10 +67,10 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
               }}
             />
           </div>
-          <div className="role-shown">
+          {/* token background */}
+          <div data-card-side="back" className="h-full w-full">
             <img
-              width={"300px"}
-              height={"300px"}
+              className="h-full w-full"
               src={tokenBlank}
               onContextMenu={(event) => {
                 event.preventDefault();
@@ -39,34 +78,19 @@ function PlayerRole({ self, characters }: PlayerRoleProps) {
               }}
             />
           </div>
-          <div className="role-shown">
+          {/* Role icon */}
+          <div data-card-side="back" className="h-full w-full text-center">
             <img
-              width={"300px"}
-              height={"300px"}
-              src={
-                characters.find(({ id }) => id === self.role)?.imageSrc ??
-                defaultRoleImage
-              }
+              className="h-full w-full"
+              src={getRole(role).imageSrc}
               onContextMenu={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
               }}
             />
-            <div>{self.role}</div>
+            <RoleText role={role} />
           </div>
         </div>
-      </Flex>
-      <div className="fingerprint">
-        <img
-          width={"85px"}
-          height={"110px"}
-          onContextMenu={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-          src={fingerprintImage}
-        />
-        <div>Hold to reveal role</div>
       </div>
     </Flex>
   );

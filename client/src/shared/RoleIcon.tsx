@@ -1,7 +1,8 @@
-import { roles } from "../assets/game_data/gameData";
+import { getRole, roles } from "../assets/game_data/gameData";
 import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { colorMap } from "./CharacterTypes";
 import { Text } from "@radix-ui/themes";
+import { Role } from "@hidden-identity/server";
 
 export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
   role: string;
@@ -24,11 +25,14 @@ export function RoleName(role: string) {
 }
 
 export interface RoleTextProps {
-  role: string;
-  children: React.ReactNode;
+  role: Role;
 }
 
-export function RoleText({ role, children }: RoleTextProps) {
+export function RoleText({ role }: RoleTextProps) {
   const charType = roles[role]?.team;
-  return <Text color={colorMap[charType] ?? undefined}>{children}</Text>;
+  return (
+    <Text color={colorMap[charType] ?? undefined} className="capitalize">
+      {getRole(role).name ?? role}
+    </Text>
+  );
 }

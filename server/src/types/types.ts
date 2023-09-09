@@ -6,7 +6,7 @@ export interface UnifiedGame {
   nextGameId?: string
 }
 
-export type PlayerSet = Record<string, string>
+export type PlayerSet = Record<string, Role>
 
 export interface Self {
   name: string | undefined
