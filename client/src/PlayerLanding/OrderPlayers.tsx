@@ -9,7 +9,7 @@ interface OrderPlayersProps {
 
 export function OrderPlayers({ myName }: OrderPlayersProps) {
   const players = Object.values(usePlayerNamesToRoles())
-    .map(({ name }) => name)
+    .map((name) => name)
     .filter((name) => name !== myName);
   const [neighbors, setNeighbors] = React.useState<string[]>(["", ""]);
   const [, , , handleOrderPlayer] = useOrderPlayer();

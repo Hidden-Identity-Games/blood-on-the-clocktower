@@ -112,7 +112,7 @@ export function Lobby({ rolesList }: LobbyProps) {
         <Tabs.List>
           <Tabs.Trigger className="tab-trigger" value="players">
             <img className="tab-icon" src={playersIcon} />
-            Players ({Object.keys(game.playersToNames).length})
+            Players ({game.players.length})
           </Tabs.Trigger>
           <Tabs.Trigger
             className="tab-trigger"
@@ -153,7 +153,7 @@ export function Lobby({ rolesList }: LobbyProps) {
             </Flex>
             {Object.entries(playersToRoles).length === 0 &&
               "No players have joined yet."}
-            {Object.entries(playersToRoles).map(([id, { role, name }]) => (
+            {Object.entries(playersToRoles).map(([name, role]) => (
               <Flex
                 justify="between"
                 align="center"
@@ -163,7 +163,7 @@ export function Lobby({ rolesList }: LobbyProps) {
                 asChild
               >
                 <Text size="2" style={{ textTransform: "capitalize" }}>
-                  <RoleText role={role}>{name}</RoleText>
+                  <RoleText role={name}>{name}</RoleText>
                   <div
                     style={{
                       flex: 2,
@@ -180,7 +180,7 @@ export function Lobby({ rolesList }: LobbyProps) {
                     <Button
                       disabled={kickPlayerLoading}
                       size="1"
-                      onClick={() => handleKickPlayer(id)}
+                      onClick={() => handleKickPlayer(name)}
                     >
                       {kickPlayerLoading ? "Kicking..." : "Kick"}
                     </Button>
@@ -225,10 +225,10 @@ function ExportButtonContent() {
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const handleMove = (playerId: string, direction: 1 | -1) => {
+  const handleMove = (player: string, direction: 1 | -1) => {
     setPlayerOrder((oldArr) => {
       const newArr = [...oldArr];
-      const index = newArr.findIndex((f) => f === playerId);
+      const index = newArr.findIndex((f) => f === player);
       newArr[index] = oldArr[index + direction];
       newArr[index + direction] = oldArr[index];
       return newArr;
@@ -240,10 +240,10 @@ function ExportButtonContent() {
     edition: {},
     roles: "",
     fabled: [],
-    players: playerOrder.map((playerId) => ({
-      name: game.playersToNames[playerId],
+    players: playerOrder.map((player) => ({
+      name: player,
       id: "",
-      role: game.playersToRoles[playerId]?.replace("_", ""),
+      role: game.playersToRoles[player]?.replace("_", ""),
       reminders: [],
       isVoteless: false,
       isDead: false,
@@ -253,22 +253,22 @@ function ExportButtonContent() {
 
   return (
     <Flex gap="2" direction="column">
-      {playerOrder.map((playerId, idx) => {
+      {playerOrder.map((player, idx) => {
         return (
-          <Flex gap="4" key={playerId}>
+          <Flex gap="4" key={player}>
             <IconButton
-              onClick={() => handleMove(playerId, -1)}
+              onClick={() => handleMove(player, -1)}
               disabled={idx === 0}
             >
               <ArrowUpIcon />
             </IconButton>
             <IconButton
-              onClick={() => handleMove(playerId, 1)}
+              onClick={() => handleMove(player, 1)}
               disabled={idx === playerOrder.length - 1}
             >
               <ArrowDownIcon />
             </IconButton>
-            <div>{game.playersToNames[playerId]}</div>
+            <div>{player}</div>
           </Flex>
         );
       })}

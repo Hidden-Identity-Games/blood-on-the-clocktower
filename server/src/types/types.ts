@@ -1,5 +1,5 @@
 export interface UnifiedGame {
-  playersToNames: Record<string, string>
+  players: string[]
   playersToRoles: PlayerSet
   partialPlayerOrdering: Record<string, Neighbors>
   orderedPlayers: string[]

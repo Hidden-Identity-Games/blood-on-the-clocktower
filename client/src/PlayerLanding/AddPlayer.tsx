@@ -4,20 +4,18 @@ import { useAddPlayer } from "../store/useStore";
 import { useDefiniteGame } from "../store/GameContext";
 
 interface AddPlayerProps {
-  secretKey: string;
-  setSecretKey: (key: string) => void;
+  //playerName: string;
+  setPlayerName: (key: string) => void;
 }
 
-function AddPlayer({ secretKey, setSecretKey }: AddPlayerProps) {
+function AddPlayer({ setPlayerName }: AddPlayerProps) {
   const { game } = useDefiniteGame();
 
   const [name, setName] = React.useState("");
-  const [error, isLoading, , addPlayer] = useAddPlayer({ secretKey });
+  const [error, isLoading, , addPlayer] = useAddPlayer();
   const parsedName = name.toLowerCase();
 
-  const taken = Object.values(game.playersToNames).find(
-    (curr) => curr === parsedName,
-  );
+  const taken = game.players.find((curr) => curr === parsedName);
   const joinable = name && !taken;
 
   return (
@@ -59,10 +57,8 @@ function AddPlayer({ secretKey, setSecretKey }: AddPlayerProps) {
               <div>Name already taken, is this you?</div>
               <Button
                 onClick={() =>
-                  setSecretKey(
-                    Object.entries(game.playersToNames).find(
-                      ([, value]) => value === parsedName,
-                    )![0],
+                  setPlayerName(
+                    game.players.find(([, value]) => value === parsedName)![0],
                   )
                 }
               >

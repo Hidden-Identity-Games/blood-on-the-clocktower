@@ -4,32 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { Self, UnifiedGame } from "./Game";
 import { useAction, useGame } from "./GameContext";
-import { mapObject } from "../utils/mapObject";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 
-export function usePlayerNamesToRoles(): Record<
-  string,
-  { name: string; role: string }
-> {
+export function usePlayerNamesToRoles(): Record<string, string> {
   const { game } = useGame();
   if (!game) {
     throw new Error("ASDFASDF");
   }
-  const { playersToNames, playersToRoles } = game;
-  return mapObject(playersToNames, (hash, name: string) => [
-    hash,
-    { role: playersToRoles[hash], name },
-  ]);
+  return game.playersToRoles;
 }
 
-export function useSelf(secretKey: string) {
+export function useSelf(player: string) {
   const { game } = useGame();
   return (
     game &&
     ({
-      name: game.playersToNames[secretKey],
-      role: game.playersToRoles[secretKey],
+      name: player,
+      role: game.playersToRoles[player],
     } as Self)
   );
 }
@@ -59,13 +51,13 @@ export function useCreateGame() {
 export function useKickPlayer() {
   const { gameId } = useGame();
 
-  return useAction(async (playerId: string) => {
+  return useAction(async (player: string) => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
 
     const response = await axios.post(apiUrl("/kick_player"), {
-      playerId,
+      player,
       gameId,
     });
     if (response.status !== 200) {
@@ -101,7 +93,7 @@ class NameTakenError extends Error {
     super(`Name Taken: ${name}`);
   }
 }
-export function useAddPlayer({ secretKey }: { secretKey: string }) {
+export function useAddPlayer() {
   const { gameId } = useGame();
 
   return useAction(async (playerName: string) => {
@@ -112,7 +104,6 @@ export function useAddPlayer({ secretKey }: { secretKey: string }) {
     try {
       const response = await axios.post(apiUrl("/add_player"), {
         playerName: playerName.toLocaleLowerCase(),
-        playerId: secretKey,
         gameId,
       });
       if (response.status !== 200) {

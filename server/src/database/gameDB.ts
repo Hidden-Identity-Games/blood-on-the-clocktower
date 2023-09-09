@@ -45,7 +45,7 @@ function createGame (gameId: string): UnifiedGame {
     return {
       gameStarted: false,
       gmSecretHash: gameId,
-      playersToNames: { 1: 'linh', 2: 'alex', 3: 'tali', 4: 'elan', 5: 'joey', 6: 'jess' },
+      players: ['linh', 'alex', 'tali', 'elan', 'joey', 'jess'],
       playersToRoles: {},
       partialPlayerOrdering: { alex: { leftNeighbor: 'linh', rightNeighbor: 'tali' }, linh: { leftNeighbor: 'jess', rightNeighbor: 'alex' }, jess: { leftNeighbor: 'joey', rightNeighbor: 'linh' }, joey: { leftNeighbor: 'elan', rightNeighbor: 'jess' }, elan: { leftNeighbor: 'tali', rightNeighbor: 'joey' }, tali: { leftNeighbor: 'alex', rightNeighbor: 'elan' } },
       orderedPlayers: ['alex', 'linh', 'jess', 'joey', 'elan', 'tali'],
@@ -54,7 +54,7 @@ function createGame (gameId: string): UnifiedGame {
   return {
     gameStarted: false,
     gmSecretHash: generate(3).join('-'),
-    playersToNames: {},
+    players: [],
     playersToRoles: {},
     partialPlayerOrdering: {},
     orderedPlayers: [],
@@ -63,60 +63,53 @@ function createGame (gameId: string): UnifiedGame {
 
 export function addPlayer (
   gameId: string,
-  playerId: string,
-  playerName: string,
+  player: string,
 ): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  // player already exists
-  if (gameInstance.playersToNames[playerId]) {
-    throw new Error(
-      `Duplicate Playerid found: ${playerId}, name: ${playerName}`,
-    )
-  }
-
   // player name taken
-  if (gameInstance.playersToNames[playerId]) {
-    throw new Error(`Name taken: ${playerName}`)
+  if (gameInstance.players.includes(player)) {
+    throw new Error(`Name taken: ${player}`)
   }
 
   updateGameWithComputes(game, {
     ...gameInstance,
-    playersToNames: {
-      ...gameInstance.playersToNames,
-      [playerId]: playerName,
-    },
+    players: [
+      ...gameInstance.players,
+      player,
+    ],
   })
 }
 
-export function kickPlayer (gameId: string, playerId: string): void {
+export function kickPlayer (gameId: string, player: string): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   // player doesn't exist
-  if (!gameInstance.playersToNames[playerId]) {
+  if (!gameInstance.players.includes(player)) {
     throw new Error(
-      `Playerid not found: ${playerId}`,
+      `Player not found: ${player}`,
     )
   }
-  const nextPlayerNames = {
-    ...gameInstance.playersToNames,
-  }
+  const nextPlayerNames = [
+    ...gameInstance.players,
+  ]
   // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-  delete nextPlayerNames[playerId]
+  const indexOf = nextPlayerNames.indexOf(player)
+  nextPlayerNames.splice(indexOf)
 
   const nextPlayerRoles = {
     ...gameInstance.playersToRoles,
   }
-  if (Reflect.has(nextPlayerRoles, playerId)) {
+  if (Reflect.has(nextPlayerRoles, player)) {
     // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete nextPlayerRoles[playerId]
+    delete nextPlayerRoles[player]
   }
 
   updateGameWithComputes(game, {
     ...gameInstance,
-    playersToNames: nextPlayerNames,
+    players: nextPlayerNames,
     playersToRoles: nextPlayerRoles,
   })
 }
@@ -162,12 +155,11 @@ export function assignRoles (
 ): string | undefined {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
-  const playerIdList = Object.keys(gameInstance.playersToNames)
 
   // player already exists
-  if (playerIdList.length !== roles.length) {
-    return `Player count does not match role count players${JSON.stringify(
-      Object.values(gameInstance.playersToNames),
+  if (gameInstance.players.length !== roles.length) {
+    return `Player count does not match role count players ${JSON.stringify(
+      gameInstance.players,
     )}, roles:${JSON.stringify(roles)}.`
   }
 
@@ -181,7 +173,7 @@ export function assignRoles (
       .reduce<Record<string, string>>(
       (acc, item, idx) => ({
         ...acc,
-        [playerIdList[idx]]: item,
+        [gameInstance.players[idx]]: item,
       }),
       {},
     ),

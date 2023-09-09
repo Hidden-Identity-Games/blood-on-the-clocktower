@@ -22,10 +22,7 @@ function CharacterTypeSection({
   if (!game) {
     return;
   }
-  const target = getDistribution(
-    Object.keys(game.playersToNames).length,
-    charType,
-  );
+  const target = getDistribution(game.players.length, charType);
 
   return (
     <Text
