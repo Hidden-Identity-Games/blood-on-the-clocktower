@@ -226,10 +226,10 @@ function ExportButtonContent() {
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const handleMove = (playerId: string, direction: 1 | -1) => {
+  const handleMove = (player: string, direction: 1 | -1) => {
     setPlayerOrder((oldArr) => {
       const newArr = [...oldArr];
-      const index = newArr.findIndex((f) => f === playerId);
+      const index = newArr.findIndex((f) => f === player);
       newArr[index] = oldArr[index + direction];
       newArr[index + direction] = oldArr[index];
       return newArr;
@@ -254,22 +254,22 @@ function ExportButtonContent() {
 
   return (
     <Flex gap="2" direction="column">
-      {playerOrder.map((playerId, idx) => {
+      {playerOrder.map((name, idx) => {
         return (
-          <Flex gap="4" key={playerId}>
+          <Flex gap="4" key={name}>
             <IconButton
-              onClick={() => handleMove(playerId, -1)}
+              onClick={() => handleMove(name, -1)}
               disabled={idx === 0}
             >
               <ArrowUpIcon />
             </IconButton>
             <IconButton
-              onClick={() => handleMove(playerId, 1)}
+              onClick={() => handleMove(name, 1)}
               disabled={idx === playerOrder.length - 1}
             >
               <ArrowDownIcon />
             </IconButton>
-            <div>{game.playersToNames[playerId]}</div>
+            <div>{name}</div>
           </Flex>
         );
       })}
