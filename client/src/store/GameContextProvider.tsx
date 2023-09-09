@@ -54,14 +54,16 @@ export function GameProvider({
 
   return (
     <UnifiedGameContext.Provider value={contextValue}>
-      {readyState !== ReadyState.OPEN && (
-        <Callout.Root>
-          <Callout.Text>
-            You're currently disconnected from the server. Attempting to
-            reconnect.
-          </Callout.Text>
-        </Callout.Root>
-      )}
+      {readyState !== ReadyState.OPEN &&
+        readyState !== ReadyState.CONNECTING && (
+          <Callout.Root>
+            <Callout.Text>
+              You're currently disconnected from the server. Attempting to
+              reconnect.
+            </Callout.Text>
+          </Callout.Root>
+        )}
+
       {children}
     </UnifiedGameContext.Provider>
   );

@@ -6,6 +6,8 @@ import { ScriptSelect } from "./ScriptSelect";
 import { Script } from "../types/script";
 import { useSearchParams } from "react-router-dom";
 import { Role } from "@hidden-identity/server";
+import { GameHeader } from "../shared/GameHeader";
+import { PageLoader } from "../shared/PageLoader";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
@@ -37,26 +39,29 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   const { game } = useGame();
 
   if (!game) {
-    return <div>Loading...</div>;
+    return <PageLoader />;
   }
   if (providedGMHash !== game.gmSecretHash) {
     return <div>You are in the wrong place</div>;
   }
 
-  if (script) {
-    return <Lobby rolesList={script} />;
-  }
-
   return (
-    <ScriptSelect
-      handleSubmit={(script: Script) => {
-        setSearchParams((prev) => {
-          const next = new URLSearchParams(prev);
-          next.set("script", JSON.stringify(script.map(({ id }) => id)));
-          return next;
-        });
-      }}
-    />
+    <>
+      <GameHeader />
+      {script ? (
+        <Lobby rolesList={script} />
+      ) : (
+        <ScriptSelect
+          handleSubmit={(script: Script) => {
+            setSearchParams((prev) => {
+              const next = new URLSearchParams(prev);
+              next.set("script", JSON.stringify(script.map(({ id }) => id)));
+              return next;
+            });
+          }}
+        />
+      )}
+    </>
   );
 }
 

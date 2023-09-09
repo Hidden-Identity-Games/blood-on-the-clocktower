@@ -3,6 +3,7 @@ export interface UnifiedGame {
   playersToRoles: PlayerSet
   gmSecretHash: string
   gameStarted: boolean
+  nextGameId?: string
 }
 
 export type PlayerSet = Record<string, string>

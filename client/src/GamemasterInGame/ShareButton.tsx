@@ -5,17 +5,16 @@ import "./ShareButton.css";
 interface ShareProps {
   children: ReactNode;
   url: string;
-  text: string;
   title: string;
 }
 
-function ShareButton({ children, url, text, title }: ShareProps) {
+function ShareButton({ children, url, title }: ShareProps) {
   const [showSnackbar, setShowSnackbar] = React.useState(false);
 
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ url, title, text });
+        await navigator.share({ url, title, text: title });
       } catch (error) {
         console.log("Failed to share.");
       }
@@ -28,7 +27,7 @@ function ShareButton({ children, url, text, title }: ShareProps) {
 
   return (
     <>
-      <Button onClick={handleShare}>
+      <Button onClick={handleShare} size="1">
         <span>{children}</span>
       </Button>
       <div id="snackbar" className={showSnackbar ? "show" : ""}>
