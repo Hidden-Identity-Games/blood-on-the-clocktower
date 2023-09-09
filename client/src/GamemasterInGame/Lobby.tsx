@@ -201,17 +201,37 @@ interface ExportButtonProps {
 }
 
 function ExportButton({ disabled = false, className }: ExportButtonProps) {
-  const { game } = useDefiniteGame();
-  const [playerOrder, setPlayerOrder] = useState(
-    Object.keys(game.playersToNames),
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button disabled={disabled} className={className}>
+          Export
+        </Button>
+      </Dialog.Trigger>
+
+      <Dialog.Content>
+        <DialogClose>
+          <IconButton variant="ghost">
+            <Cross1Icon />
+          </IconButton>
+        </DialogClose>
+
+        <ExportButtonContent />
+      </Dialog.Content>
+    </Dialog.Root>
   );
+}
+
+function ExportButtonContent() {
+  const { game } = useDefiniteGame();
+  const [playerOrder, setPlayerOrder] = useState<string[]>(game.orderedPlayers);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const handleMove = (playerId: string, direction: 1 | -1) => {
+  const handleMove = (player: string, direction: 1 | -1) => {
     setPlayerOrder((oldArr) => {
       const newArr = [...oldArr];
-      const index = newArr.findIndex((f) => f === playerId);
+      const index = newArr.findIndex((f) => f === player);
       newArr[index] = oldArr[index + direction];
       newArr[index + direction] = oldArr[index];
       return newArr;
@@ -235,54 +255,38 @@ function ExportButton({ disabled = false, className }: ExportButtonProps) {
   };
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <Button disabled={disabled} className={className}>
-          Export
-        </Button>
-      </Dialog.Trigger>
+    <Flex gap="2" direction="column">
+      {playerOrder.map((name, idx) => {
+        return (
+          <Flex gap="4" key={name}>
+            <IconButton
+              onClick={() => handleMove(name, -1)}
+              disabled={idx === 0}
+            >
+              <ArrowUpIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => handleMove(name, 1)}
+              disabled={idx === playerOrder.length - 1}
+            >
+              <ArrowDownIcon />
+            </IconButton>
+            <div>{name}</div>
+          </Flex>
+        );
+      })}
 
-      <Dialog.Content>
-        <DialogClose>
-          <IconButton variant="ghost">
-            <Cross1Icon />
-          </IconButton>
-        </DialogClose>
-
-        <Flex gap="2" direction="column">
-          {playerOrder.map((playerId, idx) => {
-            return (
-              <Flex gap="4" key={playerId}>
-                <IconButton
-                  onClick={() => handleMove(playerId, -1)}
-                  disabled={idx === 0}
-                >
-                  <ArrowUpIcon />
-                </IconButton>
-                <IconButton
-                  onClick={() => handleMove(playerId, 1)}
-                  disabled={idx === playerOrder.length - 1}
-                >
-                  <ArrowDownIcon />
-                </IconButton>
-                <div>{game.playersToNames[playerId]}</div>
-              </Flex>
-            );
-          })}
-
-          <Button
-            onClick={() => {
-              navigator.clipboard.writeText(
-                JSON.stringify(exportedContent, null, 4),
-              );
-              setShowSnackbar(true);
-            }}
-          >
-            Export
-          </Button>
-          {showSnackbar && <div>Copied to clipboard</div>}
-        </Flex>
-      </Dialog.Content>
-    </Dialog.Root>
+      <Button
+        onClick={() => {
+          navigator.clipboard.writeText(
+            JSON.stringify(exportedContent, null, 4),
+          );
+          setShowSnackbar(true);
+        }}
+      >
+        Export
+      </Button>
+      {showSnackbar && <div>Copied to clipboard</div>}
+    </Flex>
   );
 }
