@@ -6,10 +6,11 @@ import { useAction, useGame } from "./GameContext";
 import { mapObject } from "../utils/mapObject";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
+import { Role } from "@hidden-identity/server";
 
 export function usePlayerNamesToRoles(): Record<
   string,
-  { name: string; role: string }
+  { name: string; role: Role }
 > {
   const { game } = useGame();
   if (!game) {

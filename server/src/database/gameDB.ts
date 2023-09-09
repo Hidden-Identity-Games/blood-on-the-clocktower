@@ -1,4 +1,4 @@
-import { type UnifiedGame } from '../types/types.ts'
+import { type Role, type UnifiedGame } from '../types/types.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 
@@ -118,7 +118,7 @@ export function kickPlayer (gameId: string, playerId: string): void {
 }
 export function assignRoles (
   gameId: string,
-  roles: string[],
+  roles: Role[],
 ): string | undefined {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
@@ -138,7 +138,7 @@ export function assignRoles (
       .map((item) => ({ item, random: Math.random() }))
       .sort((a, b) => a.random - b.random)
       .map((element) => element.item)
-      .reduce<Record<string, string>>(
+      .reduce<Record<string, Role>>(
       (acc, item, idx) => ({
         ...acc,
         [playerIdList[idx]]: item,
