@@ -13,42 +13,41 @@ import {
 } from "./CharacterSelectList";
 import { useDefiniteGame, useGame } from "../store/GameContext";
 import {
+  useCreateGame,
   useDistributeRoles,
   useKickPlayer,
   usePlayerNamesToRoles,
 } from "../store/useStore";
 import TeamDistributionBar from "./TeamDistributionBar";
 import { useState } from "react";
-import { ShareButton } from "./ShareButton";
 import { useParams } from "react-router-dom";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  Cross1Icon,
-  Share1Icon,
-} from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { Role } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import rolesIcon from "../assets/icon/mask.svg";
 import playersIcon from "../assets/icon/users.svg";
+import { DestructiveButton } from "./DestructiveButton";
+import { PageLoader } from "../shared/PageLoader";
 
 function StartGameButton({
   onClick,
   isLoading,
   disabled,
   gameStarted,
+  className,
 }: {
   onClick: () => void;
   isLoading: boolean;
   disabled: boolean;
   gameStarted?: boolean;
+  className?: string;
 }) {
   if (gameStarted) {
     return <div>Game has started.</div>;
   }
   return (
-    <Button disabled={disabled} onClick={onClick}>
+    <Button disabled={disabled} onClick={onClick} className={className}>
       {isLoading ? "Doing some work..." : "Distribute Roles"}
     </Button>
   );
@@ -79,8 +78,10 @@ export function Lobby({ rolesList }: LobbyProps) {
   const gameStartable =
     availableRolesList.length === Object.keys(playersToRoles).length;
 
+  const [newGameError, newGameLoading, , newGame] = useCreateGame();
+
   if (!game) {
-    return <div>Loading...</div>;
+    return <PageLoader />;
   }
   if (distributeRolesError) {
     return (
@@ -94,7 +95,7 @@ export function Lobby({ rolesList }: LobbyProps) {
   const assignedRoles = Object.values(game.playersToRoles);
 
   return (
-    <Flex gap="0" className="lobby">
+    <Flex gap="0" pt="1" className="flex flex-1 flex-col overflow-y-auto">
       <TeamDistributionBar
         charsSelected={
           game.gameStarted
@@ -138,18 +139,17 @@ export function Lobby({ rolesList }: LobbyProps) {
                 isLoading={isLoading}
                 onClick={() => distributeRoles(availableRolesList)}
               />
-              <ShareButton
-                url={`${document.location.protocol}//${
-                  document.location.hostname
-                }${
-                  document.location.port ? `:${document.location.port}` : ""
-                }/${gameId}`}
-                title="Join Game: Blood on the Clocktower"
-                text="Join game: Blood on the Clocktower"
-              >
-                <Share1Icon /> Invite Players
-              </ShareButton>
+
               <ExportButton disabled={assignedRoles.length === 0} />
+              <DestructiveButton
+                confirmationText="This will end the current game and create a new one"
+                onClick={() => {
+                  newGame(gameId);
+                }}
+              >
+                {newGameError && "oops, creating game failed, try again"}
+                {newGameLoading ? "Creating new Game" : "New Game"}
+              </DestructiveButton>
             </Flex>
             {Object.entries(playersToRoles).length === 0 &&
               "No players have joined yet."}
@@ -197,9 +197,10 @@ export function Lobby({ rolesList }: LobbyProps) {
 
 interface ExportButtonProps {
   disabled?: boolean;
+  className?: string;
 }
 
-function ExportButton({ disabled = false }: ExportButtonProps) {
+function ExportButton({ disabled = false, className }: ExportButtonProps) {
   const { game } = useDefiniteGame();
   const [playerOrder, setPlayerOrder] = useState(
     Object.keys(game.playersToNames),
@@ -236,7 +237,9 @@ function ExportButton({ disabled = false }: ExportButtonProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button disabled={disabled}>Export</Button>
+        <Button disabled={disabled} className={className}>
+          Export
+        </Button>
       </Dialog.Trigger>
 
       <Dialog.Content>

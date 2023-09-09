@@ -1,4 +1,3 @@
-import { generate } from "random-words";
 import { useNavigate } from "react-router-dom";
 
 import { useMemo } from "react";
@@ -34,24 +33,25 @@ export function useSelf(secretKey: string) {
   );
 }
 
+function randomUppercase() {
+  return String.fromCharCode(Math.random() * 26 + 65);
+}
+
 export function useCreateGame() {
-  const playerSecretHash = useMemo(() => generate(3).join("-"), []);
+  const playerSecretHash = useMemo(
+    () => Array.from({ length: 5 }).map(randomUppercase).join(""),
+    [],
+  );
   const navigate = useNavigate();
-  return useAction(async () => {
-    const response = await fetch(apiUrl(`/game`), {
-      method: "post",
-      body: JSON.stringify({
-        hash: playerSecretHash,
-      }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  return useAction(async (currentGameId?: string) => {
+    const response = await axios.post(apiUrl(`/game`), {
+      hash: playerSecretHash,
+      ...(currentGameId && { oldGameId: currentGameId }),
     });
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(response.statusText);
     }
-    const parsedResponse = (await response.json()) as UnifiedGame;
+    const parsedResponse = response.data as UnifiedGame;
     navigate(`/${playerSecretHash}/gm/${parsedResponse.gmSecretHash}`);
   });
 }

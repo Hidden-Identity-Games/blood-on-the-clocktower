@@ -5,13 +5,24 @@ import {
   assignRoles,
   getGame,
   kickPlayer,
+  retrieveGame,
 } from '../database/gameDB.ts'
 
 export function useGame (app: Application): void {
   addGame('test-game')
-  app.post('/game', (_req, res) => {
-    const gameId = _req.body.hash
+  app.post('/game', (req, res) => {
+    const { hash: gameId, oldGameId } = req.body
 
+    if (oldGameId) {
+      console.log(`recieved old gameID: ${oldGameId}, updating old game`)
+
+      const oldGame = retrieveGame(oldGameId)
+      oldGame.update({
+        ...oldGame.readOnce(),
+        nextGameId: gameId,
+      })
+    }
+    console.log(`creating new game ${gameId}`)
     addGame(gameId)
     const game = getGame(gameId)
     console.log(`Game created ${gameId}`)

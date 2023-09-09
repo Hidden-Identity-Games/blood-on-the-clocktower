@@ -6,11 +6,14 @@ import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
 import { roles } from "../assets/game_data/gameData";
 import { useSecretKey } from "../store/secretKey";
+import { GameHeader } from "../shared/GameHeader";
+import { PageLoader } from "../shared/PageLoader";
 export function GameMasterRoot() {}
 export function PlayerRoot() {
   const { gameId } = useParams();
   return (
     <GameProvider gameId={gameId!}>
+      <GameHeader />
       <PlayerLanding />
     </GameProvider>
   );
@@ -20,7 +23,7 @@ function PlayerLanding() {
   const [secretKey, setSecretKey] = useSecretKey();
   const self = useSelf(secretKey);
 
-  if (!self) return <div>Loading...</div>;
+  if (!self) return <PageLoader />;
 
   if (!self.name)
     return <AddPlayer secretKey={secretKey} setSecretKey={setSecretKey} />;

@@ -6,9 +6,7 @@ import {
   TextArea,
   Callout,
   Dialog,
-  Inset,
   DialogClose,
-  Separator,
 } from "@radix-ui/themes";
 import React, { ReactNode } from "react";
 import { Script, ScriptItem } from "../types/script";
@@ -45,10 +43,9 @@ export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
       gap="1"
       direction={"column"}
       align={"center"}
-      className="h-full overflow-y-auto"
+      className="flex-1 overflow-y-auto"
     >
       <Heading color="tomato">Select a Script</Heading>
-      <Separator color="ruby" size="4" />
       <Grid columns="2" align={"center"} gap="4" p="4">
         {getScriptNames().map((name) => (
           <ScriptOption
@@ -104,34 +101,36 @@ function CustomScriptInputDialog({
         <Dialog.Title align={"center"}>
           <label htmlFor="custom-input">Custom Script Input</label>
         </Dialog.Title>
-        <Inset m="5">
-          {errorMsg && (
-            <Callout.Root>
+
+        <TextArea
+          id="custom-input"
+          className=" h-[50vh] rounded-l"
+          placeholder="[ { 'id': 'Washerwoman' }, ... ]"
+          value={customScript}
+          onChange={(event) => {
+            setCustomScript(event.currentTarget.value);
+          }}
+          onPaste={(event) => {
+            setCustomScript(
+              JSON.stringify(JSON.parse(event.currentTarget.value), null, 2),
+            );
+          }}
+        />
+        {errorMsg && (
+          <div className="relative h-0 w-full">
+            <Callout.Root className="absolute bottom-0">
               <Callout.Text>{errorMsg}</Callout.Text>
             </Callout.Root>
-          )}
-          <TextArea
-            id="custom-input"
-            className="mb-2 h-[50vh] rounded-l"
-            placeholder="[ { 'id': 'Washerwoman' }, ... ]"
-            value={customScript}
-            onChange={(event) => {
-              setCustomScript(event.currentTarget.value);
-            }}
-            onPaste={(event) => {
-              setCustomScript(
-                JSON.stringify(JSON.parse(event.currentTarget.value), null, 2),
-              );
-            }}
-          />
-          <Flex justify="center">
-            <DialogClose>
-              <Button onClick={handleCustomScriptImport}>
-                Use This Script
-              </Button>
-            </DialogClose>
-          </Flex>
-        </Inset>
+          </div>
+        )}
+        <Flex justify="between" mt="1">
+          <DialogClose>
+            <Button>Cancel</Button>
+          </DialogClose>
+          <DialogClose>
+            <Button onClick={handleCustomScriptImport}>Use this script</Button>
+          </DialogClose>
+        </Flex>
       </Dialog.Content>
     </Dialog.Root>
   );

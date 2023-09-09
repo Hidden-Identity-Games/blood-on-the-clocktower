@@ -88,9 +88,6 @@ importers:
       prettier:
         specifier: ^3.0.2
         version: 3.0.3
-      random-words:
-        specifier: ^2.0.0
-        version: 2.0.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
