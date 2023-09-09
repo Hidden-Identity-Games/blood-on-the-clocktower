@@ -153,41 +153,43 @@ export function Lobby({ rolesList }: LobbyProps) {
             </Flex>
             {Object.entries(playersToRoles).length === 0 &&
               "No players have joined yet."}
-            {Object.entries(playersToRoles).map(([id, { role, name }]) => (
-              <Flex
-                justify="between"
-                align="center"
-                px="3"
-                gap="3"
-                key={name}
-                asChild
-              >
-                <Text size="2" style={{ textTransform: "capitalize" }}>
-                  <RoleText role={role} />
-                  <div
-                    style={{
-                      flex: 2,
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    {RoleName(role) ?? "Not yet assigned"}
-                  </div>
-                  <RoleIcon role={role} style={{ maxHeight: "3em" }} />
-                  {!game.gameStarted && (
-                    <Button
-                      disabled={kickPlayerLoading}
-                      size="1"
-                      onClick={() => handleKickPlayer(id)}
+            {Object.entries(playersToRoles).map(
+              ([id, { role, name: playerName }]) => (
+                <Flex
+                  justify="between"
+                  align="center"
+                  px="3"
+                  gap="3"
+                  key={playerName}
+                  asChild
+                >
+                  <Text size="2" style={{ textTransform: "capitalize" }}>
+                    <RoleText role={role}>{playerName}</RoleText>
+                    <div
+                      style={{
+                        flex: 2,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        textTransform: "capitalize",
+                      }}
                     >
-                      {kickPlayerLoading ? "Kicking..." : "Kick"}
-                    </Button>
-                  )}
-                </Text>
-              </Flex>
-            ))}
+                      {RoleName(role) ?? "Not yet assigned"}
+                    </div>
+                    <RoleIcon role={role} style={{ maxHeight: "3em" }} />
+                    {!game.gameStarted && (
+                      <Button
+                        disabled={kickPlayerLoading}
+                        size="1"
+                        onClick={() => handleKickPlayer(id)}
+                      >
+                        {kickPlayerLoading ? "Kicking..." : "Kick"}
+                      </Button>
+                    )}
+                  </Text>
+                </Flex>
+              ),
+            )}
           </Flex>
         </Tabs.Content>
       </Tabs.Root>
