@@ -23,7 +23,7 @@ export function OrderPlayers({ myName }: OrderPlayersProps) {
             key={pl}
             disabled={neighbors.includes(pl)}
             onClick={() => {
-              const newNeighbors = [...neighbors, pl].slice(1);
+              const newNeighbors = [pl, ...neighbors].slice(0, 2);
               setNeighbors(newNeighbors);
               handleOrderPlayer(myName, newNeighbors[0], newNeighbors[1]);
             }}
