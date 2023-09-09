@@ -1,13 +1,13 @@
 import { Callout } from "@radix-ui/themes";
 import AddPlayer from "./AddPlayer";
 import PlayerRole from "./PlayerRole";
-import { useSelf } from "../store/useStore";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
-import { useSecretKey } from "../store/secretKey";
+import { usePlayer } from "../store/secretKey";
 import { GameHeader } from "../shared/GameHeader";
 import { PageLoader } from "../shared/PageLoader";
 import { OrderPlayers } from "./OrderPlayers";
+import { useGame } from "../store/GameContext";
 export function GameMasterRoot() {}
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -20,23 +20,23 @@ export function PlayerRoot() {
 }
 
 function PlayerLanding() {
-  const [secretKey, setSecretKey] = useSecretKey();
-  const self = useSelf(secretKey);
+  const [player] = usePlayer();
+  const { game } = useGame();
+  const role = game?.playersToRoles[player!] ?? null;
 
-  if (!self) return <PageLoader />;
+  if (!game) return <PageLoader />;
 
-  if (!self.name)
-    return <AddPlayer secretKey={secretKey} setSecretKey={setSecretKey} />;
+  if (!role) return <AddPlayer />;
 
-  if (!self.role)
+  if (role === "unassigned")
     return (
       <>
         <Callout.Root>
           <Callout.Text>Waiting for game to begin...</Callout.Text>
         </Callout.Root>
-        <OrderPlayers myName={self.name} />
+        <OrderPlayers />
       </>
     );
 
-  return <PlayerRole role={self.role} />;
+  return <PlayerRole role={role} />;
 }

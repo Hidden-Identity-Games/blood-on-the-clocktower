@@ -11,12 +11,11 @@ import {
   CharacterSelectList,
   useCharacterSelectState,
 } from "./CharacterSelectList";
-import { useDefiniteGame, useGame } from "../store/GameContext";
+import { useDefiniteGame } from "../store/GameContext";
 import {
   useCreateGame,
   useDistributeRoles,
   useKickPlayer,
-  usePlayerNamesToRoles,
 } from "../store/useStore";
 import TeamDistributionBar from "./TeamDistributionBar";
 import { useState } from "react";
@@ -28,7 +27,6 @@ import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import rolesIcon from "../assets/icon/mask.svg";
 import playersIcon from "../assets/icon/users.svg";
 import { DestructiveButton } from "./DestructiveButton";
-import { PageLoader } from "../shared/PageLoader";
 
 function StartGameButton({
   onClick,
@@ -58,9 +56,8 @@ export interface LobbyProps {
 }
 
 export function Lobby({ rolesList }: LobbyProps) {
-  const { game } = useGame();
+  const { game } = useDefiniteGame();
   const { gameId } = useParams();
-  const playersToRoles = usePlayerNamesToRoles();
   const [, kickPlayerLoading, , handleKickPlayer] = useKickPlayer();
   const [selectedTab, setSelectedTab] = useState<"roles" | "players">(
     "players",
@@ -75,14 +72,11 @@ export function Lobby({ rolesList }: LobbyProps) {
     .filter(([, value]) => value)
     .map(([key]) => key);
 
-  const gameStartable =
-    availableRolesList.length === Object.keys(playersToRoles).length;
-
   const [newGameError, newGameLoading, , newGame] = useCreateGame();
 
-  if (!game) {
-    return <PageLoader />;
-  }
+  const gameStartable =
+    availableRolesList.length === Object.keys(game.playersToRoles).length;
+
   if (distributeRolesError) {
     return (
       <>
@@ -113,7 +107,7 @@ export function Lobby({ rolesList }: LobbyProps) {
         <Tabs.List>
           <Tabs.Trigger className="tab-trigger" value="players">
             <img className="tab-icon" src={playersIcon} />
-            Players ({Object.keys(game.playersToNames).length})
+            Players ({Object.keys(game.playersToRoles).length})
           </Tabs.Trigger>
           <Tabs.Trigger
             className="tab-trigger"
@@ -151,45 +145,44 @@ export function Lobby({ rolesList }: LobbyProps) {
                 {newGameLoading ? "Creating new Game" : "New Game"}
               </DestructiveButton>
             </Flex>
-            {Object.entries(playersToRoles).length === 0 &&
+            {Object.entries(game.playersToRoles).length === 0 &&
               "No players have joined yet."}
-            {Object.entries(playersToRoles).map(
-              ([id, { role, name: playerName }]) => (
-                <Flex
-                  justify="between"
-                  align="center"
-                  px="3"
-                  gap="3"
-                  key={playerName}
-                  asChild
-                >
-                  <Text size="2" style={{ textTransform: "capitalize" }}>
-                    <RoleText role={role}>{playerName}</RoleText>
-                    <div
-                      style={{
-                        flex: 2,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        textTransform: "capitalize",
-                      }}
+            {Object.entries(game.playersToRoles).map(([player, role]) => (
+              <Flex
+                justify="between"
+                align="center"
+                px="3"
+                gap="3"
+                key={role}
+                asChild
+              >
+                <Text size="2" style={{ textTransform: "capitalize" }}>
+                  <RoleText role={role}>{player}</RoleText>
+                  <div
+                    style={{
+                      flex: 2,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {RoleName(role) ?? "Not yet assigned"}
+                  </div>
+                  <RoleIcon role={role} style={{ maxHeight: "3em" }} />
+
+                  {!game.gameStarted && (
+                    <Button
+                      disabled={kickPlayerLoading}
+                      size="1"
+                      onClick={() => handleKickPlayer(player)}
                     >
-                      {RoleName(role) ?? "Not yet assigned"}
-                    </div>
-                    <RoleIcon role={role} style={{ maxHeight: "3em" }} />
-                    {!game.gameStarted && (
-                      <Button
-                        disabled={kickPlayerLoading}
-                        size="1"
-                        onClick={() => handleKickPlayer(id)}
-                      >
-                        {kickPlayerLoading ? "Kicking..." : "Kick"}
-                      </Button>
-                    )}
-                  </Text>
-                </Flex>
-              ),
-            )}
+                      {kickPlayerLoading ? "Kicking..." : "Kick"}
+                    </Button>
+                  )}
+                </Text>
+              </Flex>
+            ))}
           </Flex>
         </Tabs.Content>
       </Tabs.Root>
@@ -245,10 +238,10 @@ function ExportButtonContent() {
     edition: {},
     roles: "",
     fabled: [],
-    players: playerOrder.map((playerId) => ({
-      name: game.playersToNames[playerId],
+    players: playerOrder.map((player) => ({
+      name: player,
       id: "",
-      role: game.playersToRoles[playerId]?.replace("_", ""),
+      role: game.playersToRoles[player]?.replace("_", ""),
       reminders: [],
       isVoteless: false,
       isDead: false,
