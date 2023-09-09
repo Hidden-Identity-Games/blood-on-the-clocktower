@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame } from '../types/types.ts'
+import { type Neighbors, type Role, type UnifiedGame } from '../types/types.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 
@@ -47,7 +47,8 @@ function createGame (gameId: string): UnifiedGame {
       gmSecretHash: gameId,
       playersToNames: { 1: 'linh', 2: 'alex', 3: 'tali', 4: 'elan', 5: 'joey', 6: 'jess' },
       playersToRoles: {},
-      playerOrder: {},
+      partialPlayerOrdering: { alex: { leftNeighbor: 'linh', rightNeighbor: 'tali' }, linh: { leftNeighbor: 'jess', rightNeighbor: 'alex' }, jess: { leftNeighbor: 'joey', rightNeighbor: 'linh' }, joey: { leftNeighbor: 'elan', rightNeighbor: 'jess' }, elan: { leftNeighbor: 'tali', rightNeighbor: 'joey' }, tali: { leftNeighbor: 'alex', rightNeighbor: 'elan' } },
+      orderedPlayers: ['alex', 'linh', 'jess', 'joey', 'elan', 'tali'],
     }
   }
   return {
@@ -55,7 +56,8 @@ function createGame (gameId: string): UnifiedGame {
     gmSecretHash: generate(3).join('-'),
     playersToNames: {},
     playersToRoles: {},
-    playerOrder: {},
+    partialPlayerOrdering: {},
+    orderedPlayers: [],
   }
 }
 
@@ -79,7 +81,7 @@ export function addPlayer (
     throw new Error(`Name taken: ${playerName}`)
   }
 
-  game.update({
+  updateGameWithComputes(game, {
     ...gameInstance,
     playersToNames: {
       ...gameInstance.playersToNames,
@@ -112,7 +114,7 @@ export function kickPlayer (gameId: string, playerId: string): void {
     delete nextPlayerRoles[playerId]
   }
 
-  game.update({
+  updateGameWithComputes(game, {
     ...gameInstance,
     playersToNames: nextPlayerNames,
     playersToRoles: nextPlayerRoles,
@@ -128,7 +130,30 @@ export function setPlayerOrder (
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  game.update({ ...gameInstance, playerOrder: { ...gameInstance.playerOrder, [player]: { leftNeighbor, rightNeighbor } } })
+  updateGameWithComputes(game, { ...gameInstance, partialPlayerOrdering: { ...gameInstance.partialPlayerOrdering, [player]: { leftNeighbor, rightNeighbor } } })
+}
+
+export function getOrderedPlayers (
+  playerOrderSnippets: Record<string, Neighbors>,
+): string[] {
+  const playerKeys = Object.keys(playerOrderSnippets ?? {})
+  if (!playerKeys[0]) return []
+  return getOrderedPlayersRecurse(playerOrderSnippets, [playerKeys[0]])
+}
+
+function getOrderedPlayersRecurse (
+  playerOrderSnippets: Record<string, Neighbors>,
+  ordered: string[],
+): string[] {
+  if (ordered.length === Object.keys(playerOrderSnippets).length) { return ordered }
+
+  const nextPlayer = playerOrderSnippets[ordered[ordered.length - 1]].leftNeighbor
+  if (ordered.includes(nextPlayer)) throw new Error('Players formed sub-loop.')
+
+  return getOrderedPlayersRecurse(playerOrderSnippets, [
+    ...ordered,
+    nextPlayer,
+  ])
 }
 
 export function assignRoles (
@@ -146,7 +171,7 @@ export function assignRoles (
     )}, roles:${JSON.stringify(roles)}.`
   }
 
-  game.update({
+  updateGameWithComputes(game, {
     ...gameInstance,
     gameStarted: true,
     playersToRoles: roles
@@ -161,4 +186,9 @@ export function assignRoles (
       {},
     ),
   })
+}
+
+function updateGameWithComputes (game: WatchableResource<UnifiedGame>, newValue: UnifiedGame): void {
+  newValue.orderedPlayers = getOrderedPlayers(newValue.partialPlayerOrdering)
+  game.update(newValue)
 }
