@@ -204,7 +204,9 @@ function ExportButton({ disabled = false, className }: ExportButtonProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button disabled={disabled} className={className}>Export</Button>
+        <Button disabled={disabled} className={className}>
+          Export
+        </Button>
       </Dialog.Trigger>
 
       <Dialog.Content>
