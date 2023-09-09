@@ -1,7 +1,8 @@
 export interface UnifiedGame {
   playersToNames: Record<string, string>
   playersToRoles: PlayerSet
-  playerOrder: Record<string, Neighbors>
+  partialPlayerOrdering: Record<string, Neighbors>
+  orderedPlayers: string[]
   gmSecretHash: string
   gameStarted: boolean
 }
