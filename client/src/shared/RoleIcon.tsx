@@ -26,13 +26,14 @@ export function RoleName(role: string) {
 
 export interface RoleTextProps {
   role: Role;
+  children?: React.ReactNode;
 }
 
-export function RoleText({ role }: RoleTextProps) {
+export function RoleText({ role, children }: RoleTextProps) {
   const charType = roles[role]?.team;
   return (
     <Text color={colorMap[charType] ?? undefined} className="capitalize">
-      {getRole(role).name ?? role}
+      {children ?? getRole(role).name ?? role}
     </Text>
   );
 }
