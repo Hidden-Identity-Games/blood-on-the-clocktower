@@ -1,7 +1,11 @@
-export interface UnifiedGame {
+export interface UnifiedGame extends BaseUnifiedGame {
+  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
+
+}
+
+export interface BaseUnifiedGame {
   playersToRoles: Record<string, Role>
   partialPlayerOrdering: Record<string, Neighbors | null>
-  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
   gmSecretHash: string
   gameStarted: boolean
   nextGameId?: string
@@ -12,11 +16,14 @@ export interface WellOrderedPlayers {
   fullList: string[]
 }
 
+export type ProblemType = Problem['type']
+export type Problem = {
+  type: 'spiderman'
+} | { type: 'broken-link' } | { type: 'excluded' } | { type: 'excluder' }
+
 export interface BrokenOrderedPlayers {
   problems: true
-  brokenLinks: string[]
-  spidermanPointing: Array<[string, string]>
-  excludedPlayers: Record<string, string[]>
+  playerProblems: Record<string, Problem | null>
 }
 
 export interface Neighbors {

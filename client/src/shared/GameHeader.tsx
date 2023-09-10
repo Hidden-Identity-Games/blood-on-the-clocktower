@@ -1,6 +1,6 @@
 import { Callout, Flex, Heading, Link, Text } from "@radix-ui/themes";
 import { useGame } from "../store/GameContext";
-import { Share1Icon } from "@radix-ui/react-icons";
+import { BsShare } from "react-icons/bs";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 export function GameHeader() {
@@ -31,11 +31,11 @@ export function GameHeader() {
         align="center"
         className="border-b-2 border-red-900"
       >
-        <Link onClick={handleShare} size="1">
+        <Link onClick={handleShare} size="2">
           <Text color="amber">Game:</Text> {gameId}{" "}
-          <Share1Icon className="inline-block" />
+          <BsShare className="inline text-xs" />
         </Link>
-        <Heading size="1">
+        <Heading size="2">
           Status:{" "}
           {(() => {
             if (game?.gameStarted) return "Started";

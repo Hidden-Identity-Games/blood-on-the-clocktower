@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers } from '../types/types.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame } from '../types/types.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -115,49 +115,66 @@ export function computedValues (game: Omit<UnifiedGame, 'orderedPlayers'>): Unif
 }
 
 function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
-  let currentPlayer: string | null = Object.keys(players)[0]
+  const allPlayers = Object.keys(players)
+  let currentPlayer: string | null = allPlayers[0]
   const chain: string[] = []
-  while (currentPlayer) {
+  while (currentPlayer && !chain.includes(currentPlayer)) {
     chain.push(currentPlayer)
     const nextPlayer: string | null = players[currentPlayer]?.rightNeighbor ?? null
-    if (nextPlayer && chain.includes(nextPlayer)) {
+    if (!nextPlayer) {
       return []
     }
-
     currentPlayer = nextPlayer
   }
 
-  if (chain.length === 0 && players[chain[chain.length - 1]]?.rightNeighbor === chain[0]) {
+  if (chain.length === allPlayers.length && players[chain[chain.length - 1]]?.rightNeighbor === chain[0]) {
     return chain
   }
   return []
 }
 
+function getProblems (game: BaseUnifiedGame, player: string): Problem | null {
+  const neighbor = game.partialPlayerOrdering[player]?.rightNeighbor
+  if (!neighbor) {
+    return { type: 'broken-link' }
+  }
+
+  // if you're pointing at the person who is pointing at you
+  if (game.partialPlayerOrdering[neighbor]?.rightNeighbor === player) {
+    return ({ type: 'spiderman' })
+  }
+
+  const chosenPlayers = Object.values(game.partialPlayerOrdering).map(neighbors => neighbors?.rightNeighbor).filter(Boolean)
+  // If nobody is pointing at you yet.
+  if (chosenPlayers.filter(p => p === player).length > 1) {
+    return ({ type: 'excluded' })
+  } else if (chosenPlayers.filter(n => n === neighbor).length > 1) {
+    // if you've been chosen, and you have a duplicate choice, you're an excluder
+    return ({ type: 'excluder' })
+  }
+
+  return null
+}
+
 export function getOrderedPlayers (
-  game: Omit<UnifiedGame, 'orderedPlayers'>,
+  game: BaseUnifiedGame,
 ): BrokenOrderedPlayers | WellOrderedPlayers {
   const players = Object.keys(game.playersToRoles)
   const fullList = followGraph(game.partialPlayerOrdering)
+  console.log(fullList)
   if (fullList.length === players.length) {
     return { fullList, problems: false }
   }
-  // people who haven't chosen yet.
-  const brokenLinks: BrokenOrderedPlayers['brokenLinks'] = players.filter((player) => !game.partialPlayerOrdering[player]?.rightNeighbor)
 
-  // people who are pointing at each other
-  const spidermanPointing: BrokenOrderedPlayers['spidermanPointing'] = players.map((player) => {
-    const neighbor = game.partialPlayerOrdering[player]?.rightNeighbor
-    if (neighbor && game.partialPlayerOrdering[neighbor]?.rightNeighbor === player) {
-      return [player, neighbor]
-    }
-    return null
-  }).filter(Boolean) as Array<[string, string]>
-
-  // set of people ointing at each other
-  const excludedPlayers: BrokenOrderedPlayers['excludedPlayers'] = Object.fromEntries(players.map((player) => {
-    return [player, players.filter(curr => game.partialPlayerOrdering[curr]?.rightNeighbor === player)] as const
-  }).filter(([,value]) => value.length > 1))
-  return { brokenLinks, spidermanPointing, excludedPlayers, problems: true }
+  return {
+    problems: true,
+    playerProblems: players.reduce<Record<string, Problem | null>>((problemMap, player) => {
+      return {
+        ...problemMap,
+        [player]: getProblems(game, player),
+      }
+    }, {}),
+  }
 }
 
 export function assignRoles (

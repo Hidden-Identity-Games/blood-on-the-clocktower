@@ -36,6 +36,9 @@ importers:
       postcss:
         specifier: ^8.4.29
         version: 8.4.29
+      react-icons:
+        specifier: ^4.11.0
+        version: 4.11.0(react@18.2.0)
       react-use-websocket:
         specifier: ^4.4.0
         version: 4.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -4410,6 +4413,14 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+
+  /react-icons@4.11.0(react@18.2.0):
+    resolution: {integrity: sha512-V+4khzYcE5EBk/BvcuYRq6V/osf11ODUM2J8hg2FDSswRrGvqiYUYPRy4OdrWaQOBj4NcpJfmHZLNaD+VH0TyA==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-refresh@0.14.0:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}

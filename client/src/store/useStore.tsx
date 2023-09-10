@@ -51,7 +51,7 @@ export function useKickPlayer() {
 export function useOrderPlayer() {
   const { gameId } = useGame();
 
-  return useAction(async (player: string, rightNeighbor: string) => {
+  return useAction(async (player: string, rightNeighbor: string | null) => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
