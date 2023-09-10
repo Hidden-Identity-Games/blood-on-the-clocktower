@@ -38,25 +38,26 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
     availableRolesList.length === game.orderedPlayers.fullList.length;
 
   return (
-    <Flex gap="2" direction="column">
+    <Flex gap="2" direction="row">
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
           <DialogHeader />
           <Flex direction="column" gap="2">
             <div>It looks like there was an error:</div>
             {distributeRolesError}
-            <Button className="w-full" onClick={clear}>
-              Retry
-            </Button>
+            <Button onClick={clear}>Retry</Button>
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
       {game.gameStarted ? (
-        <ExportButton />
+        <ExportButton className="flex-1" />
       ) : (
         <Dialog.Root>
           <Dialog.Trigger>
-            <Button color={gameStartable ? undefined : "gray"}>
+            <Button
+              color={gameStartable ? undefined : "gray"}
+              className="flex-1"
+            >
               Start Game
             </Button>
           </Dialog.Trigger>
@@ -119,7 +120,7 @@ function NewGameButton() {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>New game</Button>
+        <Button className="flex-1">New game</Button>
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
         <Flex direction="column" gap="2">
