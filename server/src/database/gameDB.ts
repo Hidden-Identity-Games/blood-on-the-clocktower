@@ -94,6 +94,7 @@ export function kickPlayer (gameId: string, player: string): void {
   updateGameWithComputes(game, {
     ...gameInstance,
     playersToRoles: removeKey(gameInstance.playersToRoles, player),
+    partialPlayerOrdering: removeKey(gameInstance.partialPlayerOrdering, player),
   })
 }
 
@@ -184,6 +185,9 @@ export function assignRoles (
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
   const playerIdList = Object.keys(gameInstance.playersToRoles)
+  if (playerIdList.length !== roles.length) {
+    throw new Error(`Player role count mistmatch, ${playerIdList.length} players, ${roles.length} roles.`)
+  }
 
   updateGameWithComputes(game, {
     ...gameInstance,

@@ -63,7 +63,7 @@ function AddPlayer() {
           open={rejoinOpen}
           onOpenChange={() => setRejoinOpen(false)}
         >
-          <Dialog.Content>
+          <Dialog.Content className="m-2">
             <Flex direction="column" gap="2">
               <Text as="div">
                 That name already exists, have you already joined and would like

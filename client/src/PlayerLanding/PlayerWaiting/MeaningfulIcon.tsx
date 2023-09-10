@@ -1,4 +1,5 @@
-import { Dialog, IconButton } from "@radix-ui/themes";
+import { Dialog, IconButton, Text } from "@radix-ui/themes";
+import { DialogHeader } from "../../shared/DialogHeader";
 
 type ColorProp = React.ComponentProps<typeof IconButton>["color"];
 interface MeaningfulIconProps {
@@ -20,7 +21,10 @@ export function MeaningfulIcon(props: MeaningfulIconProps) {
           {props.children}
         </IconButton>
       </Dialog.Trigger>
-      <Dialog.Content className="mx-3">{props.explanation}</Dialog.Content>
+      <DialogHeader />
+      <Text as="div" className="mt-3">
+        {props.explanation}
+      </Text>
     </Dialog.Root>
   );
 }

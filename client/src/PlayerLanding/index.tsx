@@ -7,6 +7,8 @@ import { GameHeader } from "../shared/GameHeader";
 import { PageLoader } from "../shared/PageLoader";
 import { PlayerWaiting } from "./PlayerWaiting";
 import { useGame } from "../store/GameContext";
+import { useEffect, useState } from "react";
+import { Callout } from "@radix-ui/themes";
 export function GameMasterRoot() {}
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -19,15 +21,44 @@ export function PlayerRoot() {
 }
 
 function PlayerLanding() {
-  const [player] = usePlayer();
+  const [player, setPlayer] = usePlayer();
+  const [kicked, setKicked] = useState(false);
   const { game } = useGame();
+  const role = (player && game?.playersToRoles[player]) ?? null;
+
+  useEffect(() => {
+    if (!player || !game) {
+      // Hasn't joined yet
+      return;
+    }
+    // They have joined, but have been removed from the server
+    if (!role) {
+      setPlayer(null);
+      setKicked(true);
+    }
+  }, [role, player, setPlayer, game]);
 
   if (!game) return <PageLoader />;
 
   console.log(player);
-  if (!player) return <AddPlayer />;
+  if (!player)
+    return (
+      <>
+        {kicked && (
+          <Callout.Root>
+            <Callout.Text>
+              It looks like you were kicked from the game, consult the gm before
+              rejoining.
+            </Callout.Text>
+          </Callout.Root>
+        )}
+        <AddPlayer />
+      </>
+    );
 
-  const role = game?.playersToRoles[player] ?? null;
+  if (!role) {
+    return;
+  }
 
   if (!role || role === "unassigned")
     return (
