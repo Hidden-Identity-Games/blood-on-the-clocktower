@@ -49,8 +49,10 @@ export function useCharacterSelectState(
 
 export function CharacterSelectList({
   state,
+  readOnly,
 }: {
   state: CharacterSelectState;
+  readOnly: boolean;
 }) {
   const [newCharacterName, setNewCharacterName] = useState("");
   const [newCharacterTeam, setNewCharacterTeam] =
@@ -108,6 +110,7 @@ export function CharacterSelectList({
                 <label>
                   <Checkbox
                     id={role}
+                    disabled={readOnly}
                     checked={state.selectedRoles.value[role]}
                     onClick={() => {
                       state.selectedRoles.set((selectedroles) => ({

@@ -1,4 +1,4 @@
-import { Button, Callout, Flex, IconButton, Text } from "@radix-ui/themes";
+import { Callout, Flex, IconButton, Text } from "@radix-ui/themes";
 import { useOrderPlayer } from "../../store/useStore";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useMe } from "../../store/secretKey";
@@ -8,6 +8,7 @@ import { FaPersonCircleQuestion } from "react-icons/fa6";
 import { CgArrowsExchangeAlt } from "react-icons/cg";
 import { SeatingProblem } from "./SeatingProblem";
 import { MeaningfulIcon } from "./MeaningfulIcon";
+import { PlayerNameButton } from "../../shared/PlayerNameButton";
 
 export function PlayerWaiting() {
   const myName = useMe();
@@ -35,7 +36,7 @@ export function PlayerWaiting() {
       <Flex
         direction="column"
         align="center"
-        gap="4"
+        gap="2"
         className="w-full flex-1 p-2"
       >
         <Text size="2">
@@ -46,16 +47,15 @@ export function PlayerWaiting() {
           .filter((name) => name !== myName)
           .sort()
           .map((player) => (
-            <Button
-              variant="outline"
-              className="w-full capitalize"
+            <PlayerNameButton
+              className="w-full"
               key={player}
               onClick={() => {
                 handleOrderPlayer(myName, player);
               }}
             >
               {player}
-            </Button>
+            </PlayerNameButton>
           ))}
       </Flex>
     );
