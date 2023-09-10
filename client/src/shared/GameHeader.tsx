@@ -11,7 +11,7 @@ export function GameHeader() {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ url, title: "aaa", text: "aaa" });
+        await navigator.share({ url, title: url, text: "aaa" });
       } catch (error) {
         console.log("Failed to share.");
       }
@@ -42,8 +42,8 @@ export function GameHeader() {
         <Heading size="2" className="shrink truncate">
           Status:{" "}
           {(() => {
-            if (game?.gameStarted) return "Started";
             if (game?.nextGameId) return "Ended";
+            if (game?.gameStarted) return "Started";
             return "Gathering";
           })()}
         </Heading>
