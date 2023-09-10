@@ -1,9 +1,9 @@
-import { type Neighbors, type Role, type UnifiedGame } from '../types/types.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers } from '../types/types.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
 
-const UNASSIGNED: Role = 'unassigned' as Role
+export const UNASSIGNED: Role = 'unassigned' as Role
 
 const gameDB: Record<string, WatchableResource<UnifiedGame>> = {}
 
@@ -23,12 +23,12 @@ export function getGame (gameId: string): UnifiedGame {
   return retrieveGame(gameId).readOnce()
 }
 
-export function addGame (gameId: string): boolean {
+export function addGame (gameId: string, game?: UnifiedGame): boolean {
   if (gameExists(gameId)) {
     throw new Error('Game already exists')
   }
 
-  gameDB[gameId] = new WatchableResource(createGame(gameId))
+  gameDB[gameId] = new WatchableResource(game ?? createGame())
   return true
 }
 
@@ -43,30 +43,13 @@ export function subscribeToGame (
   return gameDB[gameId].subscribe(callback)
 }
 
-function createGame (gameId: string): UnifiedGame {
-  if (gameId === 'test-game') {
-    return {
-      gameStarted: false,
-      gmSecretHash: gameId,
-      playersToRoles: {
-        linh: UNASSIGNED,
-        alex: UNASSIGNED,
-        tali: UNASSIGNED,
-        elan: UNASSIGNED,
-        joey: UNASSIGNED,
-        jess: UNASSIGNED,
-
-      },
-      partialPlayerOrdering: { alex: { leftNeighbor: 'linh', rightNeighbor: 'tali' }, linh: { leftNeighbor: 'jess', rightNeighbor: 'alex' }, jess: { leftNeighbor: 'joey', rightNeighbor: 'linh' }, joey: { leftNeighbor: 'elan', rightNeighbor: 'jess' }, elan: { leftNeighbor: 'tali', rightNeighbor: 'joey' }, tali: { leftNeighbor: 'alex', rightNeighbor: 'elan' } },
-      orderedPlayers: ['alex', 'linh', 'jess', 'joey', 'elan', 'tali'],
-    }
-  }
+function createGame (): UnifiedGame {
   return {
     gameStarted: false,
     gmSecretHash: generate(3).join('-'),
     playersToRoles: {},
     partialPlayerOrdering: {},
-    orderedPlayers: [],
+    orderedPlayers: { fullList: [], problems: false },
   }
 }
 
@@ -86,6 +69,10 @@ export function addPlayer (
 
   updateGameWithComputes(game, {
     ...gameInstance,
+    partialPlayerOrdering: {
+      ...gameInstance.partialPlayerOrdering,
+      [player]: { rightNeighbor: null },
+    },
     playersToRoles: {
       ...gameInstance.playersToRoles,
       [player]: UNASSIGNED,
@@ -113,36 +100,64 @@ export function kickPlayer (gameId: string, player: string): void {
 export function setPlayerOrder (
   gameId: string,
   player: string,
-  leftNeighbor: string,
   rightNeighbor: string,
 ): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  updateGameWithComputes(game, { ...gameInstance, partialPlayerOrdering: { ...gameInstance.partialPlayerOrdering, [player]: { leftNeighbor, rightNeighbor } } })
+  updateGameWithComputes(game, { ...gameInstance, partialPlayerOrdering: { ...gameInstance.partialPlayerOrdering, [player]: { rightNeighbor } } })
+}
+export function computedValues (game: Omit<UnifiedGame, 'orderedPlayers'>): UnifiedGame {
+  return {
+    ...game,
+    orderedPlayers: getOrderedPlayers(game),
+  }
+}
+
+function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
+  let currentPlayer: string | null = Object.keys(players)[0]
+  const chain: string[] = []
+  while (currentPlayer) {
+    chain.push(currentPlayer)
+    const nextPlayer: string | null = players[currentPlayer]?.rightNeighbor ?? null
+    if (nextPlayer && chain.includes(nextPlayer)) {
+      return []
+    }
+
+    currentPlayer = nextPlayer
+  }
+
+  if (chain.length === 0 && players[chain[chain.length - 1]]?.rightNeighbor === chain[0]) {
+    return chain
+  }
+  return []
 }
 
 export function getOrderedPlayers (
-  playerOrderSnippets: Record<string, Neighbors>,
-): string[] {
-  const playerKeys = Object.keys(playerOrderSnippets ?? {})
-  if (!playerKeys[0]) return []
-  return getOrderedPlayersRecurse(playerOrderSnippets, [playerKeys[0]])
-}
+  game: Omit<UnifiedGame, 'orderedPlayers'>,
+): BrokenOrderedPlayers | WellOrderedPlayers {
+  const players = Object.keys(game.playersToRoles)
+  const fullList = followGraph(game.partialPlayerOrdering)
+  if (fullList.length === players.length) {
+    return { fullList, problems: false }
+  }
+  // people who haven't chosen yet.
+  const brokenLinks: BrokenOrderedPlayers['brokenLinks'] = players.filter((player) => !game.partialPlayerOrdering[player]?.rightNeighbor)
 
-function getOrderedPlayersRecurse (
-  playerOrderSnippets: Record<string, Neighbors>,
-  ordered: string[],
-): string[] {
-  if (ordered.length === Object.keys(playerOrderSnippets).length) { return ordered }
+  // people who are pointing at each other
+  const spidermanPointing: BrokenOrderedPlayers['spidermanPointing'] = players.map((player) => {
+    const neighbor = game.partialPlayerOrdering[player]?.rightNeighbor
+    if (neighbor && game.partialPlayerOrdering[neighbor]?.rightNeighbor === player) {
+      return [player, neighbor]
+    }
+    return null
+  }).filter(Boolean) as Array<[string, string]>
 
-  const nextPlayer = playerOrderSnippets[ordered[ordered.length - 1]].leftNeighbor
-  if (ordered.includes(nextPlayer)) throw new Error('Players formed sub-loop.')
-
-  return getOrderedPlayersRecurse(playerOrderSnippets, [
-    ...ordered,
-    nextPlayer,
-  ])
+  // set of people ointing at each other
+  const excludedPlayers: BrokenOrderedPlayers['excludedPlayers'] = Object.fromEntries(players.map((player) => {
+    return [player, players.filter(curr => game.partialPlayerOrdering[curr]?.rightNeighbor === player)] as const
+  }).filter(([,value]) => value.length > 1))
+  return { brokenLinks, spidermanPointing, excludedPlayers, problems: true }
 }
 
 export function assignRoles (
@@ -171,6 +186,6 @@ export function assignRoles (
 }
 
 function updateGameWithComputes (game: WatchableResource<UnifiedGame>, newValue: UnifiedGame): void {
-  newValue.orderedPlayers = getOrderedPlayers(newValue.partialPlayerOrdering)
+  newValue.orderedPlayers = getOrderedPlayers(newValue)
   game.update(newValue)
 }
