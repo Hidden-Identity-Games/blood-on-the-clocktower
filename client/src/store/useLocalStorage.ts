@@ -36,7 +36,8 @@ function createLocalStorage(key: string) {
   return { subscribe, update, value };
 }
 
-export function useLocalStorage(key: string) {
+export function useLocalStorage(_key: string | null) {
+  const key = _key ?? "trash";
   if (!localStorageCache[key]) {
     localStorageCache[key] = createLocalStorage(key);
   }
@@ -44,6 +45,7 @@ export function useLocalStorage(key: string) {
     localStorageCache[key].value.current,
   );
   useEffect(() => {
+    setValue(localStorageCache[key].value.current);
     return localStorageCache[key].subscribe((nextValue) => {
       setValue(nextValue);
     });

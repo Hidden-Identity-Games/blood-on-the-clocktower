@@ -21,13 +21,15 @@ export function PlayerRoot() {
 function PlayerLanding() {
   const [player] = usePlayer();
   const { game } = useGame();
-  const role = game?.playersToRoles[player!] ?? null;
 
   if (!game) return <PageLoader />;
 
-  if (!role) return <AddPlayer />;
+  console.log(player);
+  if (!player) return <AddPlayer />;
 
-  if (role === "unassigned")
+  const role = game?.playersToRoles[player] ?? null;
+
+  if (!role || role === "unassigned")
     return (
       <>
         <PlayerWaiting />

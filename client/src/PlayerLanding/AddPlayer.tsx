@@ -21,7 +21,18 @@ function AddPlayer() {
   const parsedName = name.toLowerCase();
 
   const taken = !!game.playersToRoles[parsedName];
-  const joinable = name && !taken;
+
+  const handleSubmit = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    if (taken) {
+      setRejoinOpen(true);
+    } else {
+      await addPlayer(parsedName);
+    }
+  };
 
   return (
     <Flex direction="column" gap="2" className="p-2">
@@ -40,8 +51,11 @@ function AddPlayer() {
           value={name}
           onChange={(event) => setName(event.currentTarget.value)}
           onKeyDown={async (event) => {
-            if (event.key === "Enter" && joinable) {
-              await addPlayer(name.toLocaleLowerCase());
+            if (event.key === "Enter") {
+              handleSubmit();
+              // Otherwise it will also select in the dialog
+              event.stopPropagation();
+              event.preventDefault();
             }
           }}
         />
@@ -75,24 +89,10 @@ function AddPlayer() {
               : "There was an error, please try again."}
           </div>
         )}
-        {isLoading ? (
-          <div>Loading</div>
-        ) : (
-          <>
-            <Button
-              mt="2"
-              onClick={async () => {
-                if (taken) {
-                  setRejoinOpen(true);
-                } else {
-                  await addPlayer(name);
-                }
-              }}
-            >
-              Join
-            </Button>
-          </>
-        )}
+
+        <Button mt="2" onClick={handleSubmit}>
+          Join
+        </Button>
       </Flex>
     </Flex>
   );

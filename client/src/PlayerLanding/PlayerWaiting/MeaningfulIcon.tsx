@@ -20,7 +20,7 @@ export function MeaningfulIcon(props: MeaningfulIconProps) {
           {props.children}
         </IconButton>
       </Dialog.Trigger>
-      <Dialog.Content>{props.explanation}</Dialog.Content>
+      <Dialog.Content className="mx-3">{props.explanation}</Dialog.Content>
     </Dialog.Root>
   );
 }
