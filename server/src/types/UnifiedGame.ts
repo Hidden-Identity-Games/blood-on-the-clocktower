@@ -8,10 +8,12 @@ export interface UnifiedGame {
 }
 
 export interface WellOrderedPlayers {
+  problems: false
   fullList: string[]
 }
 
 export interface BrokenOrderedPlayers {
+  problems: true
   brokenLinks: string[]
   spidermanPointing: Array<[string, string]>
   excludedPlayers: Record<string, string[]>

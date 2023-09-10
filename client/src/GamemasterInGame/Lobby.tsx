@@ -28,6 +28,7 @@ import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import rolesIcon from "../assets/icon/mask.svg";
 import playersIcon from "../assets/icon/users.svg";
 import { DestructiveButton } from "./DestructiveButton";
+import { ProblemsPanel } from "./ProblemsPanel";
 
 function StartGameButton({
   onClick,
@@ -135,11 +136,8 @@ export function Lobby({ rolesList }: LobbyProps) {
                 onClick={() => distributeRoles(availableRolesList)}
               />
 
-              {"fullList" in game.orderedPlayers ? (
-                <ExportButton disabled={assignedRoles.length === 0} />
-              ) : (
-                <div>Players have not finished joining</div>
-              )}
+              <ExportButton disabled={assignedRoles.length === 0} />
+
               <DestructiveButton
                 confirmationText="This will end the current game and create a new one"
                 onClick={() => {
@@ -158,7 +156,7 @@ export function Lobby({ rolesList }: LobbyProps) {
                 align="center"
                 px="3"
                 gap="3"
-                key={role}
+                key={player}
                 asChild
               >
                 <Text size="2" style={{ textTransform: "capitalize" }}>
@@ -201,6 +199,8 @@ interface ExportButtonProps {
 }
 
 function ExportButton({ disabled = false, className }: ExportButtonProps) {
+  const { game } = useDefiniteGame();
+  console.log(game);
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -215,8 +215,11 @@ function ExportButton({ disabled = false, className }: ExportButtonProps) {
             <Cross1Icon />
           </IconButton>
         </DialogClose>
-
-        <ExportButtonContent />
+        {game.orderedPlayers.problems ? (
+          <ProblemsPanel />
+        ) : (
+          <ExportButtonContent />
+        )}
       </Dialog.Content>
     </Dialog.Root>
   );
@@ -252,6 +255,7 @@ function ExportButtonContent() {
   return (
     <Flex gap="2" direction="column">
       <TextArea
+        className="h-[400px]"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       ></TextArea>

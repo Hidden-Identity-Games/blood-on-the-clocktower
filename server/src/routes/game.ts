@@ -8,9 +8,10 @@ import {
   retrieveGame,
   setPlayerOrder,
 } from '../database/gameDB.ts'
+import { setupTestGames } from '../testGames.ts'
 
 export function useGame (app: Application): void {
-  addGame('test-game')
+  setupTestGames()
   app.post('/game', (req, res) => {
     const { hash: gameId, oldGameId } = req.body
 

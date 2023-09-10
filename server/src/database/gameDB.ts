@@ -3,7 +3,7 @@ import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
 
-const UNASSIGNED: Role = 'unassigned' as Role
+export const UNASSIGNED: Role = 'unassigned' as Role
 
 const gameDB: Record<string, WatchableResource<UnifiedGame>> = {}
 
@@ -23,12 +23,12 @@ export function getGame (gameId: string): UnifiedGame {
   return retrieveGame(gameId).readOnce()
 }
 
-export function addGame (gameId: string): boolean {
+export function addGame (gameId: string, game?: UnifiedGame): boolean {
   if (gameExists(gameId)) {
     throw new Error('Game already exists')
   }
 
-  gameDB[gameId] = new WatchableResource(createGame(gameId))
+  gameDB[gameId] = new WatchableResource(game ?? createGame())
   return true
 }
 
@@ -43,30 +43,13 @@ export function subscribeToGame (
   return gameDB[gameId].subscribe(callback)
 }
 
-function createGame (gameId: string): UnifiedGame {
-  if (gameId === 'test-game') {
-    return {
-      gameStarted: false,
-      gmSecretHash: gameId,
-      playersToRoles: {
-        linh: UNASSIGNED,
-        alex: UNASSIGNED,
-        tali: UNASSIGNED,
-        elan: UNASSIGNED,
-        joey: UNASSIGNED,
-        jess: UNASSIGNED,
-
-      },
-      partialPlayerOrdering: { alex: { rightNeighbor: 'tali' }, linh: { rightNeighbor: 'alex' }, jess: { rightNeighbor: 'linh' }, joey: { rightNeighbor: 'jess' }, elan: { rightNeighbor: 'joey' }, tali: { rightNeighbor: 'elan' } },
-      orderedPlayers: { fullList: ['alex', 'linh', 'jess', 'joey', 'elan', 'tali'] },
-    }
-  }
+function createGame (): UnifiedGame {
   return {
     gameStarted: false,
     gmSecretHash: generate(3).join('-'),
     playersToRoles: {},
     partialPlayerOrdering: {},
-    orderedPlayers: { fullList: [] },
+    orderedPlayers: { fullList: [], problems: false },
   }
 }
 
@@ -124,6 +107,12 @@ export function setPlayerOrder (
 
   updateGameWithComputes(game, { ...gameInstance, partialPlayerOrdering: { ...gameInstance.partialPlayerOrdering, [player]: { rightNeighbor } } })
 }
+export function computedValues (game: Omit<UnifiedGame, 'orderedPlayers'>): UnifiedGame {
+  return {
+    ...game,
+    orderedPlayers: getOrderedPlayers(game),
+  }
+}
 
 function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
   let currentPlayer: string | null = Object.keys(players)[0]
@@ -137,19 +126,23 @@ function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
 
     currentPlayer = nextPlayer
   }
-  return chain
+
+  if (chain.length === 0 && players[chain[chain.length - 1]]?.rightNeighbor === chain[0]) {
+    return chain
+  }
+  return []
 }
 
 export function getOrderedPlayers (
-  game: UnifiedGame,
+  game: Omit<UnifiedGame, 'orderedPlayers'>,
 ): BrokenOrderedPlayers | WellOrderedPlayers {
   const players = Object.keys(game.playersToRoles)
   const fullList = followGraph(game.partialPlayerOrdering)
-  if (fullList) {
-    return { fullList }
+  if (fullList.length === players.length) {
+    return { fullList, problems: false }
   }
   // people who haven't chosen yet.
-  const brokenLinks: BrokenOrderedPlayers['brokenLinks'] = players.filter((player) => game.partialPlayerOrdering[player]?.rightNeighbor)
+  const brokenLinks: BrokenOrderedPlayers['brokenLinks'] = players.filter((player) => !game.partialPlayerOrdering[player]?.rightNeighbor)
 
   // people who are pointing at each other
   const spidermanPointing: BrokenOrderedPlayers['spidermanPointing'] = players.map((player) => {
@@ -163,8 +156,8 @@ export function getOrderedPlayers (
   // set of people ointing at each other
   const excludedPlayers: BrokenOrderedPlayers['excludedPlayers'] = Object.fromEntries(players.map((player) => {
     return [player, players.filter(curr => game.partialPlayerOrdering[curr]?.rightNeighbor === player)] as const
-  }))
-  return { brokenLinks, spidermanPointing, excludedPlayers }
+  }).filter(([,value]) => value.length > 1))
+  return { brokenLinks, spidermanPointing, excludedPlayers, problems: true }
 }
 
 export function assignRoles (
