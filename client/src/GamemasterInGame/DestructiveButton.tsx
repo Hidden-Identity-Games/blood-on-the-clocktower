@@ -9,7 +9,7 @@ export function DestructiveButton({
 }) {
   return (
     <Dialog.Root>
-      <Dialog.Content>
+      <Dialog.Content className="m-2">
         <Dialog.Title>Are you sure?</Dialog.Title>
         {confirmationText}
         <Flex gap="3" mt="4" justify="end">

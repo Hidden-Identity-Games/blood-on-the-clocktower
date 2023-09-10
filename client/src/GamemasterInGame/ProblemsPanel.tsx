@@ -7,30 +7,16 @@ export function ProblemsPanel() {
     throw new Error("No errors");
   }
   return (
-    <Flex direction="column" gap="4">
+    <Flex direction="column" gap="2">
       <Heading>
-        There's some problems in player order preventing export:
+        There's some problems in player order preventing export. We're waiting
+        on these players to fix problems.
       </Heading>
-      {game.orderedPlayers.brokenLinks.length > 0 && (
-        <Text>
-          Waiting on players to select neighbors:{" "}
-          {game.orderedPlayers.brokenLinks.join(", ")}
+      {Object.keys(game.orderedPlayers.playerProblems).map((player) => (
+        <Text key="name" as="div" className="capitalize">
+          {player}
         </Text>
-      )}
-      {game.orderedPlayers.spidermanPointing.length > 0 && (
-        <Text>
-          Some folks are pointing at each other:{" "}
-          {game.orderedPlayers.spidermanPointing
-            .map((c) => c.join("<>"))
-            .join("|")}
-        </Text>
-      )}
-      {Object.keys(game.orderedPlayers.excludedPlayers).length > 0 && (
-        <Text>
-          Some players have been excluded:{" "}
-          {Object.values(game.orderedPlayers.excludedPlayers).join(",")}
-        </Text>
-      )}
+      ))}
     </Flex>
   );
 }

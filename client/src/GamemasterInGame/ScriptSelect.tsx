@@ -16,6 +16,7 @@ import {
   getScriptImg,
   getScriptNames,
 } from "../assets/game_data/gameData";
+import { DialogHeader } from "../shared/DialogHeader";
 
 interface ScriptSelectProps {
   handleSubmit: (script: ScriptItem[]) => void;
@@ -97,10 +98,8 @@ function CustomScriptInputDialog({
           </div>
         </ScriptOption>
       </Dialog.Trigger>
-      <Dialog.Content>
-        <Dialog.Title align={"center"}>
-          <label htmlFor="custom-input">Custom Script Input</label>
-        </Dialog.Title>
+      <Dialog.Content className="m-2">
+        <DialogHeader>Custom Script Input</DialogHeader>
 
         <TextArea
           id="custom-input"

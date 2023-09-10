@@ -1,6 +1,6 @@
 import { Callout, Flex, Heading, Link, Text } from "@radix-ui/themes";
 import { useGame } from "../store/GameContext";
-import { Share1Icon } from "@radix-ui/react-icons";
+import { BsShare } from "react-icons/bs";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 export function GameHeader() {
@@ -11,7 +11,7 @@ export function GameHeader() {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ url, title: "aaa", text: "aaa" });
+        await navigator.share({ url, title: url, text: "aaa" });
       } catch (error) {
         console.log("Failed to share.");
       }
@@ -31,17 +31,21 @@ export function GameHeader() {
         align="center"
         className="border-b-2 border-red-900"
       >
-        <Link onClick={handleShare} size="1">
-          <Text color="amber">Game:</Text> {gameId}{" "}
-          <Share1Icon className="inline-block" />
+        <Link
+          onClick={handleShare}
+          size="2"
+          className="flex-1 whitespace-nowrap"
+        >
+          <Text color="amber">Game:</Text> {gameId}
+          <BsShare className="ml-.5 inline text-xs" />
         </Link>
-        <Heading size="1">
+        <Heading size="2" className="shrink truncate">
           Status:{" "}
           {(() => {
-            if (game?.gameStarted) return "Started";
             if (game?.nextGameId) return "Ended";
-            return "Setting up";
-          })()}{" "}
+            if (game?.gameStarted) return "Started";
+            return "Gathering";
+          })()}
         </Heading>
       </Flex>
       {game?.nextGameId && (

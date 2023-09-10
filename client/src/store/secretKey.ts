@@ -1,9 +1,9 @@
 import { useGame } from "./GameContext";
 import { useLocalStorage } from "./useLocalStorage";
 
-export function usePlayer(): [string | null, (key: string) => void] {
+export function usePlayer(): [string | null, (key: string | null) => void] {
   const { gameId } = useGame();
-  const [value, setValue] = useLocalStorage(`${gameId}_player`);
+  const [value, setValue] = useLocalStorage(gameId ? `${gameId}_player` : null);
 
   return [value, setValue];
 }

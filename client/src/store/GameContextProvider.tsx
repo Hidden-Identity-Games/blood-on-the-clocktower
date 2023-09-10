@@ -15,13 +15,10 @@ export function GameProvider({
   const [game, setGame] = useState<UnifiedGame | null>(null);
 
   const contextValue = useMemo(
-    () =>
-      gameId && game
-        ? {
-            gameId,
-            game,
-          }
-        : { game: null, gameId: null },
+    () => ({
+      gameId,
+      game: game ?? null,
+    }),
     [gameId, game],
   );
 

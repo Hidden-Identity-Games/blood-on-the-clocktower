@@ -2,24 +2,25 @@ import { createContext, useContext, useState } from "react";
 import { UnifiedGame } from "./Game";
 
 export interface GameContext {
-  gameId: string;
-  game: UnifiedGame;
+  gameId: string | null;
+  game: UnifiedGame | null;
 }
 
-export const UnifiedGameContext = createContext<
-  GameContext | { gameId: null; game: null }
->({ game: null, gameId: null });
+export const UnifiedGameContext = createContext<GameContext>({
+  game: null,
+  gameId: null,
+});
 
 export function useGame() {
   const game = useContext(UnifiedGameContext);
   return game;
 }
-export function useDefiniteGame() {
+export function useDefiniteGame(): { game: UnifiedGame; gameId: string } {
   const game = useContext(UnifiedGameContext);
   if (!game.game) {
     throw new Error("Not in a game?");
   }
-  return game;
+  return game as { game: UnifiedGame; gameId: string };
 }
 
 export function useAction<Args extends Array<unknown>>(

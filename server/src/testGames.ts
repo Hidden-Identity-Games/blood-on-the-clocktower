@@ -36,15 +36,15 @@ export function setupTestGames (): void {
     gameStarted: false,
     gmSecretHash: 't',
     playersToRoles: {
-      correct1: UNASSIGNED,
+      excluded: UNASSIGNED,
       correct2: UNASSIGNED,
-      notYetChosen: UNASSIGNED,
+      brokenLink: UNASSIGNED,
 
     },
     partialPlayerOrdering: {
-      correct1: { rightNeighbor: 'correct2' },
-      correct2: { rightNeighbor: 'notYetChosen' },
-      notYetChosen: null,
+      excluded: { rightNeighbor: 'correct2' },
+      correct2: { rightNeighbor: 'brokenLink' },
+      brokenLink: null,
     },
   }))
   addGame('tg-excluded', computedValues({
@@ -53,15 +53,15 @@ export function setupTestGames (): void {
     playersToRoles: {
       correct1: UNASSIGNED,
       correct2: UNASSIGNED,
-      skipper: UNASSIGNED,
-      skipped: UNASSIGNED,
+      excluder: UNASSIGNED,
+      excluded: UNASSIGNED,
 
     },
     partialPlayerOrdering: {
       correct1: { rightNeighbor: 'correct2' },
-      correct2: { rightNeighbor: 'skipper' },
-      skipper: { rightNeighbor: 'correct1' },
-      skipped: { rightNeighbor: 'correct1' },
+      correct2: { rightNeighbor: 'excluder' },
+      excluder: { rightNeighbor: 'correct1' },
+      excluded: { rightNeighbor: 'correct1' },
     },
   }))
 }

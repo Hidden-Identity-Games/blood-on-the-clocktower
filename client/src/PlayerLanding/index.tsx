@@ -1,4 +1,3 @@
-import { Callout } from "@radix-ui/themes";
 import AddPlayer from "./AddPlayer";
 import PlayerRole from "./PlayerRole";
 import { GameProvider } from "../store/GameContextProvider";
@@ -6,8 +5,10 @@ import { useParams } from "react-router-dom";
 import { usePlayer } from "../store/secretKey";
 import { GameHeader } from "../shared/GameHeader";
 import { PageLoader } from "../shared/PageLoader";
-import { OrderPlayers } from "./OrderPlayers";
+import { PlayerWaiting } from "./PlayerWaiting";
 import { useGame } from "../store/GameContext";
+import { useEffect, useState } from "react";
+import { Callout } from "@radix-ui/themes";
 export function GameMasterRoot() {}
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -20,21 +21,49 @@ export function PlayerRoot() {
 }
 
 function PlayerLanding() {
-  const [player] = usePlayer();
+  const [player, setPlayer] = usePlayer();
+  const [kicked, setKicked] = useState(false);
   const { game } = useGame();
-  const role = game?.playersToRoles[player!] ?? null;
+  const role = (player && game?.playersToRoles[player]) ?? null;
+
+  useEffect(() => {
+    if (!player || !game) {
+      // Hasn't joined yet
+      return;
+    }
+    // They have joined, but have been removed from the server
+    if (!role) {
+      setPlayer(null);
+      setKicked(true);
+    }
+  }, [role, player, setPlayer, game]);
 
   if (!game) return <PageLoader />;
 
-  if (!role) return <AddPlayer />;
-
-  if (role === "unassigned")
+  console.log(player);
+  if (!player)
     return (
       <>
-        <Callout.Root>
-          <Callout.Text>Waiting for game to begin...</Callout.Text>
-        </Callout.Root>
-        <OrderPlayers />
+        {kicked && (
+          <Callout.Root>
+            <Callout.Text>
+              It looks like you were kicked from the game, consult the gm before
+              rejoining.
+            </Callout.Text>
+          </Callout.Root>
+        )}
+        <AddPlayer />
+      </>
+    );
+
+  if (!role) {
+    return;
+  }
+
+  if (!role || role === "unassigned")
+    return (
+      <>
+        <PlayerWaiting />
       </>
     );
 
