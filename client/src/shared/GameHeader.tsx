@@ -31,17 +31,21 @@ export function GameHeader() {
         align="center"
         className="border-b-2 border-red-900"
       >
-        <Link onClick={handleShare} size="2">
-          <Text color="amber">Game:</Text> {gameId}{" "}
-          <BsShare className="inline text-xs" />
+        <Link
+          onClick={handleShare}
+          size="2"
+          className="flex-1 whitespace-nowrap"
+        >
+          <Text color="amber">Game:</Text> {gameId}
+          <BsShare className="ml-.5 inline text-xs" />
         </Link>
-        <Heading size="2">
+        <Heading size="2" className="shrink truncate">
           Status:{" "}
           {(() => {
             if (game?.gameStarted) return "Started";
             if (game?.nextGameId) return "Ended";
-            return "Setting up";
-          })()}{" "}
+            return "Gathering";
+          })()}
         </Heading>
       </Flex>
       {game?.nextGameId && (
