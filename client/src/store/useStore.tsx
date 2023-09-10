@@ -51,23 +51,20 @@ export function useKickPlayer() {
 export function useOrderPlayer() {
   const { gameId } = useGame();
 
-  return useAction(
-    async (player: string, leftNeighbor: string, rightNeighbor: string) => {
-      if (!gameId) {
-        throw new Error("GameId not ready");
-      }
+  return useAction(async (player: string, rightNeighbor: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
 
-      const response = await axios.post(apiUrl("/order_player"), {
-        player,
-        leftNeighbor,
-        rightNeighbor,
-        gameId,
-      });
-      if (response.status !== 200) {
-        throw new Error(response.statusText);
-      }
-    },
-  );
+    const response = await axios.post(apiUrl("/order_player"), {
+      player,
+      rightNeighbor,
+      gameId,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
 }
 
 class NameTakenError extends Error {

@@ -57,8 +57,8 @@ export function useGame (app: Application): void {
   })
 
   app.post('/order_player', (req, res) => {
-    const { player, leftNeighbor, rightNeighbor, gameId } = req.body
-    setPlayerOrder(gameId, player, leftNeighbor, rightNeighbor)
+    const { player, rightNeighbor, gameId } = req.body
+    setPlayerOrder(gameId, player, rightNeighbor)
     res.status(200)
     res.send({})
   })

@@ -1,15 +1,24 @@
 export interface UnifiedGame {
   playersToRoles: Record<string, Role>
-  partialPlayerOrdering: Record<string, Neighbors>
-  orderedPlayers: string[]
+  partialPlayerOrdering: Record<string, Neighbors | null>
+  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
   gmSecretHash: string
   gameStarted: boolean
   nextGameId?: string
 }
 
+export interface WellOrderedPlayers {
+  fullList: string[]
+}
+
+export interface BrokenOrderedPlayers {
+  brokenLinks: string[]
+  spidermanPointing: Array<[string, string]>
+  excludedPlayers: Record<string, string[]>
+}
+
 export interface Neighbors {
-  leftNeighbor: string
-  rightNeighbor: string
+  rightNeighbor: string | null
 }
 
 export type Role = string & {

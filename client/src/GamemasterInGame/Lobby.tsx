@@ -6,6 +6,7 @@ import {
   IconButton,
   Tabs,
   Text,
+  TextArea,
 } from "@radix-ui/themes";
 import {
   CharacterSelectList,
@@ -20,8 +21,8 @@ import {
 import TeamDistributionBar from "./TeamDistributionBar";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { ArrowDownIcon, ArrowUpIcon, Cross1Icon } from "@radix-ui/react-icons";
-import { Role } from "@hidden-identity/server";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { Role, WellOrderedPlayers } from "@hidden-identity/server";
 import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import rolesIcon from "../assets/icon/mask.svg";
@@ -134,7 +135,11 @@ export function Lobby({ rolesList }: LobbyProps) {
                 onClick={() => distributeRoles(availableRolesList)}
               />
 
-              <ExportButton disabled={assignedRoles.length === 0} />
+              {"fullList" in game.orderedPlayers ? (
+                <ExportButton disabled={assignedRoles.length === 0} />
+              ) : (
+                <div>Players have not finished joining</div>
+              )}
               <DestructiveButton
                 confirmationText="This will end the current game and create a new one"
                 onClick={() => {
@@ -219,63 +224,41 @@ function ExportButton({ disabled = false, className }: ExportButtonProps) {
 
 function ExportButtonContent() {
   const { game } = useDefiniteGame();
-  const [playerOrder, setPlayerOrder] = useState<string[]>(game.orderedPlayers);
+  const players = (game.orderedPlayers as WellOrderedPlayers).fullList;
+  const [content, setContent] = useState(
+    JSON.stringify(
+      {
+        bluffs: [],
+        edition: {},
+        roles: "",
+        fabled: [],
+        players: players.map((player) => ({
+          name: player,
+          id: "",
+          role: game.playersToRoles[player]?.replace("_", ""),
+          reminders: [],
+          isVoteless: false,
+          isDead: false,
+          pronouns: "",
+        })),
+      },
+      null,
+      4,
+    ),
+  );
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const handleMove = (player: string, direction: 1 | -1) => {
-    setPlayerOrder((oldArr) => {
-      const newArr = [...oldArr];
-      const index = newArr.findIndex((f) => f === player);
-      newArr[index] = oldArr[index + direction];
-      newArr[index + direction] = oldArr[index];
-      return newArr;
-    });
-  };
-
-  const exportedContent = {
-    bluffs: [],
-    edition: {},
-    roles: "",
-    fabled: [],
-    players: playerOrder.map((player) => ({
-      name: player,
-      id: "",
-      role: game.playersToRoles[player]?.replace("_", ""),
-      reminders: [],
-      isVoteless: false,
-      isDead: false,
-      pronouns: "",
-    })),
-  };
-
   return (
     <Flex gap="2" direction="column">
-      {playerOrder.map((name, idx) => {
-        return (
-          <Flex gap="4" key={name}>
-            <IconButton
-              onClick={() => handleMove(name, -1)}
-              disabled={idx === 0}
-            >
-              <ArrowUpIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => handleMove(name, 1)}
-              disabled={idx === playerOrder.length - 1}
-            >
-              <ArrowDownIcon />
-            </IconButton>
-            <div>{name}</div>
-          </Flex>
-        );
-      })}
+      <TextArea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      ></TextArea>
 
       <Button
         onClick={() => {
-          navigator.clipboard.writeText(
-            JSON.stringify(exportedContent, null, 4),
-          );
+          navigator.clipboard.writeText(content);
           setShowSnackbar(true);
         }}
       >
