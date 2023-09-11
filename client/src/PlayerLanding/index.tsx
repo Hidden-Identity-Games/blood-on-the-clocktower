@@ -9,7 +9,7 @@ import { PlayerWaiting } from "./PlayerWaiting";
 import { useGame } from "../store/GameContext";
 import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
-export function GameMasterRoot() {}
+
 export function PlayerRoot() {
   const { gameId } = useParams();
   return (
@@ -40,7 +40,6 @@ function PlayerLanding() {
 
   if (!game) return <PageLoader />;
 
-  console.log(player);
   if (!player)
     return (
       <>

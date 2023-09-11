@@ -13,6 +13,7 @@ import { GameMasterActions } from "./GameMasterActions";
 import { BsPeopleFill } from "react-icons/bs";
 import { FaMasksTheater } from "react-icons/fa6";
 import classNames from "classnames";
+import { AnimatePresence, motion } from "framer-motion";
 
 export interface LobbyProps {
   rolesList: Role[];
@@ -60,71 +61,96 @@ export function Lobby({ rolesList }: LobbyProps) {
         </Tabs.List>
 
         <Tabs.Content className="tab-content" value="roles" style={{ flex: 1 }}>
-          <Flex direction="column" gap="3" py="3">
-            <CharacterSelectList
-              state={characterSelectState}
-              readOnly={game.gameStarted}
-            />
-          </Flex>
+          <AnimatePresence>
+            <motion.div
+              className="h-full w-full"
+              key="roles"
+              initial={{ x: 50, opacity: 0.3 }}
+              animate={{ x: 0, opacity: 1 }}
+            >
+              <Flex direction="column" gap="3" py="3">
+                <CharacterSelectList
+                  state={characterSelectState}
+                  readOnly={game.gameStarted}
+                />
+              </Flex>
+            </motion.div>
+          </AnimatePresence>
         </Tabs.Content>
         <Tabs.Content className="tab-content" value="players">
-          <Flex direction="column" py="3" gap="2" style={{ overflowY: "auto" }}>
-            <GameMasterActions
-              selectedRoles={characterSelectState.selectedRoles.value}
-            />
-            {Object.entries(game.playersToRoles).length === 0 && (
-              <Text as="div" className="m-5 text-center">
-                No players have joined yet. Share the game by clicking the game
-                code.
-              </Text>
-            )}
-            {Object.entries(game.playersToRoles).map(([player, role]) => (
+          <AnimatePresence>
+            <motion.div
+              className="h-full w-full"
+              key="players"
+              initial={{ x: -50, opacity: 0.3 }}
+              animate={{ x: 0, opacity: 1 }}
+            >
               <Flex
-                justify="between"
-                align="center"
-                px="3"
-                gap="3"
-                key={player}
-                asChild
+                direction="column"
+                py="3"
+                gap="2"
+                style={{ overflowY: "auto" }}
               >
-                <Text size="2">
-                  <RoleText className="flex-1" role={role}>
-                    {player}
-                  </RoleText>
-                  <RoleIcon
-                    role={role}
-                    className={classNames("h-4", {
-                      ["opacity-0"]: role === "unassigned",
-                    })}
-                  />
-                  {seatingProblems ? (
-                    <Text as="div">
-                      {seatingProblems[player] ? "Getting settled" : "Ready"}
-                    </Text>
-                  ) : (
-                    <div
-                      className="truncate capitalize"
-                      style={{
-                        flex: 2,
-                      }}
-                    >
-                      {RoleName(role)}
-                    </div>
-                  )}
+                <GameMasterActions
+                  selectedRoles={characterSelectState.selectedRoles.value}
+                />
+                {Object.entries(game.playersToRoles).length === 0 && (
+                  <Text as="div" className="m-5 text-center">
+                    No players have joined yet. Share the game by clicking the
+                    game code.
+                  </Text>
+                )}
+                {Object.entries(game.playersToRoles).map(([player, role]) => (
+                  <Flex
+                    justify="between"
+                    align="center"
+                    px="3"
+                    gap="3"
+                    key={player}
+                    asChild
+                  >
+                    <Text size="2">
+                      <RoleText className="flex-1" role={role}>
+                        {player}
+                      </RoleText>
+                      <RoleIcon
+                        role={role}
+                        className={classNames("h-4", {
+                          ["opacity-0"]: role === "unassigned",
+                        })}
+                      />
+                      {seatingProblems ? (
+                        <Text as="div">
+                          {seatingProblems[player]
+                            ? "Getting settled"
+                            : "Ready"}
+                        </Text>
+                      ) : (
+                        <div
+                          className="truncate capitalize"
+                          style={{
+                            flex: 2,
+                          }}
+                        >
+                          {RoleName(role)}
+                        </div>
+                      )}
 
-                  {!game.gameStarted && (
-                    <Button
-                      disabled={kickPlayerLoading}
-                      size="1"
-                      onClick={() => handleKickPlayer(player)}
-                    >
-                      {kickPlayerLoading ? "Kicking..." : "Kick"}
-                    </Button>
-                  )}
-                </Text>
+                      {!game.gameStarted && (
+                        <Button
+                          disabled={kickPlayerLoading}
+                          size="1"
+                          onClick={() => handleKickPlayer(player)}
+                        >
+                          {kickPlayerLoading ? "Kicking..." : "Kick"}
+                        </Button>
+                      )}
+                    </Text>
+                  </Flex>
+                ))}
               </Flex>
-            ))}
-          </Flex>
+            </motion.div>
+          </AnimatePresence>
         </Tabs.Content>
       </Tabs.Root>
     </Flex>
