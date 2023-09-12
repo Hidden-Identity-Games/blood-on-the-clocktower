@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { UnifiedGame } from "./Game";
 import { UnifiedGameContext } from "./GameContext";
 import { createMessage, parseMessage } from "./messenger";
@@ -13,6 +13,7 @@ export function GameProvider({
   children: React.ReactNode;
 }) {
   const [game, setGame] = useState<UnifiedGame | null>(null);
+  const unmounted = useRef(false);
 
   const contextValue = useMemo(
     () => ({
@@ -22,7 +23,23 @@ export function GameProvider({
     [gameId, game],
   );
 
-  const { lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(WS_URL);
+  const { lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(
+    WS_URL,
+    {
+      retryOnError: true,
+      shouldReconnect: (_closeEvent) => {
+        return !unmounted.current;
+      },
+      reconnectAttempts: 10,
+      reconnectInterval: 3000,
+    },
+  );
+
+  useEffect(() => {
+    return () => {
+      unmounted.current = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (readyState === ReadyState.OPEN) {
