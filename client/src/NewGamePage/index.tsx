@@ -74,7 +74,7 @@ export function NewGameLanding() {
               <DialogClose>
                 <Button
                   onClick={() => {
-                    navigate(`/${joinCode.toUpperCase}`);
+                    navigate(`/${joinCode.toUpperCase()}`);
                   }}
                 >
                   Join
