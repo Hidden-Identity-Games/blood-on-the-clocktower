@@ -30,8 +30,8 @@ export function GameProvider({
       shouldReconnect: (_closeEvent) => {
         return !unmounted.current;
       },
-      reconnectAttempts: 10,
-      reconnectInterval: 3000,
+      reconnectAttempts: 10000,
+      reconnectInterval: 1000,
     },
   );
 
