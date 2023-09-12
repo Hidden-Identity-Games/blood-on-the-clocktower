@@ -9,6 +9,7 @@ import {
 import { useCreateGame } from "../store/useStore";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import backgroundImg from "../assets/hidden_identity_cover.png";
 
 export function NewGameLanding() {
   const [error, isLoading, , createGame] = useCreateGame();
@@ -16,28 +17,27 @@ export function NewGameLanding() {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="flex flex-col bg-contain bg-center"
-      style={{
-        // backgroundImage: `url(${background})`,
-        height: "100%",
-        width: "100%",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      {error && (
-        <div className="relative h-0 w-full">
-          <Callout.Root className="absolute bottom-0">
-            <Callout.Text>{error}</Callout.Text>
-          </Callout.Root>
-        </div>
-      )}
-      <div className="w-full flex-1" />
+    <>
+      <div
+        className="flex h-full flex-col bg-contain bg-center"
+        style={{
+          backgroundImage: `url(${backgroundImg})`,
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {error && (
+          <div className="relative h-0 w-full">
+            <Callout.Root className="absolute bottom-0">
+              <Callout.Text>{error}</Callout.Text>
+            </Callout.Root>
+          </div>
+        )}
+      </div>
       <Flex
         className="mb-3 w-full "
         direction="row"
         align="center"
-        gap="4"
+        gap="6"
         justify={"center"}
       >
         <Button onClick={() => createGame()} disabled={isLoading}>
@@ -84,6 +84,6 @@ export function NewGameLanding() {
           </Dialog.Content>
         </Dialog.Root>
       </Flex>
-    </div>
+    </>
   );
 }
