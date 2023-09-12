@@ -60,7 +60,11 @@ export function Lobby({ rolesList }: LobbyProps) {
           </Tabs.Trigger>
         </Tabs.List>
 
-        <Tabs.Content className="tab-content" value="roles" style={{ flex: 1 }}>
+        <Tabs.Content
+          className="tab-content overflow-x-hidden"
+          value="roles"
+          style={{ flex: 1 }}
+        >
           <AnimatePresence>
             <motion.div
               className="h-full w-full"
@@ -77,7 +81,7 @@ export function Lobby({ rolesList }: LobbyProps) {
             </motion.div>
           </AnimatePresence>
         </Tabs.Content>
-        <Tabs.Content className="tab-content" value="players">
+        <Tabs.Content className="tab-content overflow-x-hidden" value="players">
           <AnimatePresence>
             <motion.div
               className="h-full w-full"

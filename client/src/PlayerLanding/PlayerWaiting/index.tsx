@@ -37,7 +37,7 @@ export function PlayerWaiting() {
     return (
       <AnimatePresence>
         <motion.div
-          className="h-full w-full"
+          className="h-full w-full overflow-x-hidden"
           key="select-right"
           initial={{ x: 100, opacity: 0.3 }}
           animate={{
@@ -79,7 +79,7 @@ export function PlayerWaiting() {
   return (
     <AnimatePresence>
       <motion.div
-        className="h-full w-full"
+        className="h-full w-full overflow-x-hidden"
         key="waiting"
         initial={{ x: 100, opacity: 0.3 }}
         animate={{
