@@ -1,8 +1,8 @@
 import {
   Checkbox,
+  Dialog,
   Flex,
   IconButton,
-  Popover,
   Text,
   Tooltip,
 } from "@radix-ui/themes";
@@ -11,7 +11,7 @@ import { getRole, getRoleExtension } from "../assets/game_data/gameData";
 import { useDecideFate, useKickPlayer } from "../store/useStore";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { GiBootKick, GiRaiseZombie } from "react-icons/gi";
-import { MdDriveFileRenameOutline } from "react-icons/md";
+// import { MdDriveFileRenameOutline } from "react-icons/md";
 import { PiKnifeBold } from "react-icons/pi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
@@ -71,33 +71,33 @@ export function PregamePlayerList({
               </div>
             )}
 
-            <Popover.Root>
-              <Popover.Trigger>
+            <Dialog.Root>
+              <Dialog.Trigger>
                 <IconButton variant="ghost">
                   <RxHamburgerMenu />
                 </IconButton>
-              </Popover.Trigger>
-              <Popover.Content>
+              </Dialog.Trigger>
+              <Dialog.Content>
                 <Flex direction="column" gap="2">
-                  <PlayerMenuItem
+                  {/* <PlayerMenuItem
                     id="rename"
                     label="Rename"
                     icon={MdDriveFileRenameOutline}
-                    onClick={() => {
-                      /* TODO */
-                    }}
+                    onClick={() => {}}
                     disabled={true}
-                  />
-                  <PlayerMenuItem
-                    id="kick-player"
-                    label="Kick Player"
-                    icon={GiBootKick}
-                    onClick={() => handleKickPlayer(player)}
-                    disabled={kickPlayerLoading}
-                  />
+                  /> */}
+                  <Dialog.Close>
+                    <PlayerMenuItem
+                      id="kick-player"
+                      label="Kick Player"
+                      icon={GiBootKick}
+                      onClick={() => handleKickPlayer(player)}
+                      disabled={kickPlayerLoading}
+                    />
+                  </Dialog.Close>
                 </Flex>
-              </Popover.Content>
-            </Popover.Root>
+              </Dialog.Content>
+            </Dialog.Root>
           </Text>
         </Flex>
       ))}
@@ -220,26 +220,28 @@ export function IngamePlayerList({
               {RoleName(playersToRoles[player])}
             </div>
 
-            <Popover.Root>
-              <Popover.Trigger>
+            <Dialog.Root>
+              <Dialog.Trigger>
                 <IconButton variant="ghost">
                   <RxHamburgerMenu />
                 </IconButton>
-              </Popover.Trigger>
-              <Popover.Content>
+              </Dialog.Trigger>
+              <Dialog.Content>
                 <Flex direction="column" gap="2">
-                  <PlayerMenuItem
-                    id="dead-alive"
-                    label={deadPlayers[player] ? "Revive" : "Kill"}
-                    icon={deadPlayers[player] ? GiRaiseZombie : PiKnifeBold}
-                    onClick={() =>
-                      handleDecideFate(player, !deadPlayers[player])
-                    }
-                    disabled={decideFateLoading}
-                  />
+                  <Dialog.Close>
+                    <PlayerMenuItem
+                      id="dead-alive"
+                      label={deadPlayers[player] ? "Revive" : "Kill"}
+                      icon={deadPlayers[player] ? GiRaiseZombie : PiKnifeBold}
+                      onClick={() =>
+                        handleDecideFate(player, !deadPlayers[player])
+                      }
+                      disabled={decideFateLoading}
+                    />
+                  </Dialog.Close>
                 </Flex>
-              </Popover.Content>
-            </Popover.Root>
+              </Dialog.Content>
+            </Dialog.Root>
           </Text>
         </Flex>
       ))}
