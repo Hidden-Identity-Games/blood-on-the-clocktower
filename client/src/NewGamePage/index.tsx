@@ -23,6 +23,7 @@ export function NewGameLanding() {
         style={{
           backgroundImage: `url(${backgroundImg})`,
           backgroundRepeat: "no-repeat",
+          boxShadow: "0 0 40px 40px var(--color-page-background) inset",
         }}
       >
         {error && (
@@ -34,7 +35,7 @@ export function NewGameLanding() {
         )}
       </div>
       <Flex
-        className="mb-3 w-full "
+        className="mb-3 mt-[-18vh] w-full "
         direction="row"
         align="center"
         gap="6"
