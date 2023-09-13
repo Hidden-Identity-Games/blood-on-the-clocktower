@@ -210,14 +210,17 @@ function ExportButtonContent() {
   const [circleTopPlayer, _setCircleTopPlayer] = useState<string | null>(null);
   const [content, setContent] = useState(createContent(players, game));
   const setCircleTopPlayer = (player: string | null) => {
-    setCircleTopPlayer(player);
+    _setCircleTopPlayer(player);
+    const reversedPlayers = [...players].reverse();
     const playerIndex =
-      player && players.includes(player) ? players.indexOf(player) : 0;
+      player && reversedPlayers.includes(player)
+        ? reversedPlayers.indexOf(player)
+        : 0;
 
     const playersInOrder = [
-      ...players.slice(playerIndex),
-      ...players.slice(0, playerIndex),
-    ].reverse();
+      ...reversedPlayers.slice(playerIndex),
+      ...reversedPlayers.slice(0, playerIndex),
+    ];
     setContent(createContent(playersInOrder, game));
   };
 
