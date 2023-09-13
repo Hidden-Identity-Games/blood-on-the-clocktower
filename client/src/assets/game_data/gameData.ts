@@ -20,8 +20,12 @@ export const roles: Record<string, Character> = Object.fromEntries(
   rolesJson.characters.map((role) => [role.id, role as Character]),
 );
 export const roleExtensions: Record<Role, RoleExtension> = Object.fromEntries(
-  roleExtensionsJSON.map((role) => [role.id, role as RoleExtension]),
+  roleExtensionsJSON.map((role) => [
+    role.name.toLocaleLowerCase().replace(" ", "_"),
+    role as RoleExtension,
+  ]),
 );
+console.log(Object.keys(roleExtensions).filter((role) => !roles[role]));
 
 export function getRoleExtension(role: Role): RoleExtension {
   return (

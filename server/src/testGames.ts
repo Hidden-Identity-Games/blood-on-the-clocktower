@@ -1,19 +1,28 @@
 import { UNASSIGNED, addGame, computedValues } from './database/gameDB.ts'
 
 export function setupTestGames (): void {
+  const players = [
+    'linh',
+    'alex',
+    'tali',
+    'elan',
+    'joey',
+    'jess',
+    'kennedy',
+    'auden',
+    'maria',
+    'victoria',
+    'mrinal',
+    'patrick',
+    'nadir',
+    'cameron',
+  ]
   addGame('test-game', computedValues({
     gameStarted: false,
     gmSecretHash: 't',
-    playersToRoles: {
-      linh: UNASSIGNED,
-      alex: UNASSIGNED,
-      tali: UNASSIGNED,
-      elan: UNASSIGNED,
-      joey: UNASSIGNED,
-      jess: UNASSIGNED,
-    },
+    playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
     deadPlayers: {},
-    partialPlayerOrdering: { alex: { rightNeighbor: 'tali' }, linh: { rightNeighbor: 'alex' }, jess: { rightNeighbor: 'linh' }, joey: { rightNeighbor: 'jess' }, elan: { rightNeighbor: 'joey' }, tali: { rightNeighbor: 'elan' } },
+    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
   }))
 
   addGame('tg-wrong-way', computedValues({
