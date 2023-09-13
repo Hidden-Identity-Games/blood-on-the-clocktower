@@ -1,31 +1,41 @@
-import { Button, Flex, IconButton, Text } from "@radix-ui/themes";
-import { useDefiniteGame } from "../store/GameContext";
+import { Button, Flex, Text } from "@radix-ui/themes";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
-import { useKickPlayer, useDecideFate } from "../store/useStore";
 import classNames from "classnames";
-import { PiKnifeBold } from "react-icons/pi";
-import { GiRaiseZombie } from "react-icons/gi";
+import {
+  BrokenOrderedPlayers,
+  Role,
+  WellOrderedPlayers,
+} from "@hidden-identity/server";
+import { useKickPlayer } from "../store/useStore";
 
-export function PlayerList() {
-  const { game } = useDefiniteGame();
+interface PlayerListProps {
+  playersToRoles: Record<string, Role>;
+  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers;
+  isGameStarted: boolean;
+}
+
+export function PlayerList({
+  playersToRoles,
+  orderedPlayers,
+  isGameStarted,
+}: PlayerListProps) {
   const [, kickPlayerLoading, , handleKickPlayer] = useKickPlayer();
-  const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const seatingProblems =
-    game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
+    orderedPlayers.problems && orderedPlayers.playerProblems;
+
   return (
-    <>
-      {Object.entries(game.playersToRoles).length === 0 && (
+    <Flex direction="column" py="3" gap="2" style={{ overflowY: "auto" }}>
+      {Object.entries(playersToRoles).length === 0 && (
         <Text as="div" className="m-5 text-center">
           No players have joined yet. Share the game by clicking the game code.
         </Text>
       )}
-      {Object.entries(game.playersToRoles).map(([player, role]) => (
+      {Object.entries(playersToRoles).map(([player, role]) => (
         <Flex
           justify="between"
           align="center"
           px="3"
           gap="3"
-          className={classNames(game.deadPlayers[player] && "line-through")}
           key={player}
           asChild
         >
@@ -35,7 +45,6 @@ export function PlayerList() {
             </RoleText>
             <RoleIcon
               role={role}
-              dead={game.deadPlayers[player]}
               className={classNames("h-4", {
                 ["opacity-0"]: role === "unassigned",
               })}
@@ -55,26 +64,7 @@ export function PlayerList() {
               </div>
             )}
 
-            {game.gameStarted ? (
-              <>
-                <IconButton
-                  variant="surface"
-                  size="1"
-                  onClick={() => {
-                    if (decideFateLoading) {
-                      return;
-                    }
-                    handleDecideFate(player, !game.deadPlayers[player]);
-                  }}
-                >
-                  {game.deadPlayers[player] ? (
-                    <GiRaiseZombie />
-                  ) : (
-                    <PiKnifeBold />
-                  )}
-                </IconButton>
-              </>
-            ) : (
+            {!isGameStarted && (
               <Button
                 disabled={kickPlayerLoading}
                 size="1"
@@ -86,6 +76,6 @@ export function PlayerList() {
           </Text>
         </Flex>
       ))}
-    </>
+    </Flex>
   );
 }

@@ -104,7 +104,11 @@ export function Lobby({ rolesList }: LobbyProps) {
                     <GameMasterActions
                       selectedRoles={characterSelectState.selectedRoles.value}
                     />
-                    <PlayerList />
+                    <PlayerList
+                      playersToRoles={game.playersToRoles}
+                      orderedPlayers={game.orderedPlayers}
+                      isGameStarted={game.gameStarted}
+                    />
                   </Flex>
                 </Tabs.Content>
               </motion.div>
