@@ -9,6 +9,7 @@ import { SeatingProblem } from "./SeatingProblem";
 import { MeaningfulIcon } from "./MeaningfulIcon";
 import { PlayerNameButton } from "../../shared/PlayerNameButton";
 import { AnimatePresence, motion } from "framer-motion";
+import { BrokenOrderedPlayers } from "@hidden-identity/server";
 
 export function PlayerWaiting() {
   const myName = useMe();
@@ -26,7 +27,9 @@ export function PlayerWaiting() {
   const playersWithSeatingProblems =
     game.orderedPlayers.problems &&
     !hasSeatingProblem &&
-    Object.keys(game.orderedPlayers.playerProblems);
+    Object.keys(game.orderedPlayers.playerProblems).filter(
+      (p) => !!(game.orderedPlayers as BrokenOrderedPlayers).playerProblems[p],
+    );
   const waitingOnRoles = !hasSeatingProblem && !playersWithSeatingProblems;
 
   return (
