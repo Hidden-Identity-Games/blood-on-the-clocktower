@@ -23,6 +23,8 @@ export function setupTestGames (): void {
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
+    playerNotes: {},
+    deadVotes: {},
   }))
 
   addGame('tg-wrong-way', computedValues({
@@ -40,6 +42,8 @@ export function setupTestGames (): void {
       wrongway: { rightNeighbor: 'correct2' },
     },
     deadPlayers: {},
+    playerNotes: {},
+    deadVotes: {},
   }))
 
   addGame('tg-broken-link', computedValues({
@@ -57,6 +61,8 @@ export function setupTestGames (): void {
       brokenLink: null,
     },
     deadPlayers: {},
+    playerNotes: {},
+    deadVotes: {},
   }))
   addGame('tg-excluded', computedValues({
     gameStarted: false,
@@ -74,5 +80,7 @@ export function setupTestGames (): void {
       excluded: { rightNeighbor: 'correct1' },
     },
     deadPlayers: {},
+    playerNotes: {},
+    deadVotes: {},
   }))
 }

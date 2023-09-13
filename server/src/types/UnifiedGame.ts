@@ -3,6 +3,8 @@ export interface UnifiedGame extends BaseUnifiedGame {
 
 }
 
+export type NoteType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', message: string } | { type: 'bluffing', as: string }
+export type Note = NoteType extends any ? NoteType & { id: string } : never
 export interface BaseUnifiedGame {
   playersToRoles: Record<string, Role>
   partialPlayerOrdering: Record<string, Neighbors | null>
@@ -10,6 +12,8 @@ export interface BaseUnifiedGame {
   gameStarted: boolean
   nextGameId?: string
   deadPlayers: Record<string, boolean>
+  playerNotes: Record<string, Note[]>
+  deadVotes: Record<string, boolean>
 }
 
 export interface WellOrderedPlayers {
