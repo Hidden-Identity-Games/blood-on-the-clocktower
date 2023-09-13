@@ -1,5 +1,7 @@
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Flex, IconButton, Popover, Text, Tooltip } from "@radix-ui/themes";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
+import { GiBootKick } from "react-icons/gi";
+import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
 import {
   BrokenOrderedPlayers,
@@ -64,15 +66,25 @@ export function PlayerList({
               </div>
             )}
 
-            {!isGameStarted && (
-              <Button
-                disabled={kickPlayerLoading}
-                size="1"
-                onClick={() => handleKickPlayer(player)}
-              >
-                {kickPlayerLoading ? "Kicking..." : "Kick"}
-              </Button>
-            )}
+            <Popover.Root>
+              <Popover.Trigger>
+                <IconButton variant="ghost">
+                  <RxHamburgerMenu />
+                </IconButton>
+              </Popover.Trigger>
+              <Popover.Content>
+                <Tooltip content="Kick player">
+                  <IconButton
+                    variant="soft"
+                    size="4"
+                    disabled={isGameStarted || kickPlayerLoading}
+                    onClick={() => handleKickPlayer(player)}
+                  >
+                    <GiBootKick />
+                  </IconButton>
+                </Tooltip>
+              </Popover.Content>
+            </Popover.Root>
           </Text>
         </Flex>
       ))}
