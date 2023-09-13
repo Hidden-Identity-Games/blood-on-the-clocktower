@@ -13,6 +13,7 @@ export function setupTestGames (): void {
       jess: UNASSIGNED,
 
     },
+    deadPlayers: {},
     partialPlayerOrdering: { alex: { rightNeighbor: 'tali' }, linh: { rightNeighbor: 'alex' }, jess: { rightNeighbor: 'linh' }, joey: { rightNeighbor: 'jess' }, elan: { rightNeighbor: 'joey' }, tali: { rightNeighbor: 'elan' } },
   }))
 
@@ -30,6 +31,7 @@ export function setupTestGames (): void {
       correct2: { rightNeighbor: 'wrongway' },
       wrongway: { rightNeighbor: 'correct2' },
     },
+    deadPlayers: {},
   }))
 
   addGame('tg-broken-link', computedValues({
@@ -46,6 +48,7 @@ export function setupTestGames (): void {
       correct2: { rightNeighbor: 'brokenLink' },
       brokenLink: null,
     },
+    deadPlayers: {},
   }))
   addGame('tg-excluded', computedValues({
     gameStarted: false,
@@ -55,7 +58,6 @@ export function setupTestGames (): void {
       correct2: UNASSIGNED,
       excluder: UNASSIGNED,
       excluded: UNASSIGNED,
-
     },
     partialPlayerOrdering: {
       correct1: { rightNeighbor: 'correct2' },
@@ -63,5 +65,6 @@ export function setupTestGames (): void {
       excluder: { rightNeighbor: 'correct1' },
       excluded: { rightNeighbor: 'correct1' },
     },
+    deadPlayers: {},
   }))
 }

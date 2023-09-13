@@ -50,6 +50,7 @@ function createGame (): UnifiedGame {
     playersToRoles: {},
     partialPlayerOrdering: {},
     orderedPlayers: { fullList: [], problems: false },
+    deadPlayers: {},
   }
 }
 
@@ -77,6 +78,10 @@ export function addPlayer (
       ...gameInstance.playersToRoles,
       [player]: UNASSIGNED,
     },
+    deadPlayers: {
+      ...gameInstance.deadPlayers,
+      [player]: false,
+    },
   })
 }
 
@@ -96,6 +101,17 @@ export function kickPlayer (gameId: string, player: string): void {
     playersToRoles: removeKey(gameInstance.playersToRoles, player),
     partialPlayerOrdering: removeKey(gameInstance.partialPlayerOrdering, player),
   })
+}
+
+export function setPlayerFate (
+  gameId: string,
+  player: string,
+  dead: boolean,
+): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, { ...gameInstance, deadPlayers: { ...gameInstance.deadPlayers, [player]: dead } })
 }
 
 export function setPlayerOrder (

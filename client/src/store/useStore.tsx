@@ -48,6 +48,25 @@ export function useKickPlayer() {
   });
 }
 
+export function useDecideFate() {
+  const { gameId } = useGame();
+
+  return useAction(async (player: string, dead: boolean) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/decide_fate"), {
+      dead,
+      player,
+      gameId,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
+}
+
 export function useOrderPlayer() {
   const { gameId } = useGame();
 
