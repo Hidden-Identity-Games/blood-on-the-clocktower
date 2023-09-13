@@ -4,21 +4,26 @@ import { colorMap } from "./CharacterTypes";
 import { Text } from "@radix-ui/themes";
 import { Role } from "@hidden-identity/server";
 import classNames from "classnames";
+import { GiSkullCrossedBones } from "react-icons/gi";
 
 export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
   role: string;
+  dead?: boolean;
 }
-export function RoleIcon({ role, ...props }: RoleIconProps) {
+export function RoleIcon({ role, dead, ...props }: RoleIconProps) {
   return (
-    <img
-      src={roles[role]?.imageSrc ?? DefaultRoleImageSrc}
-      style={{
-        objectFit: "contain",
-        maxHeight: "100%",
-        ...(props.style ?? {}),
-      }}
+    <div
       {...props}
-    />
+      className={classNames(
+        props.className,
+        "bg-center bg-contain h-4 w-4 flex items-center justify-center",
+      )}
+      style={{
+        backgroundImage: `url(${roles[role]?.imageSrc ?? DefaultRoleImageSrc})`,
+      }}
+    >
+      {dead && <GiSkullCrossedBones className="h-2 fill-red-600" />}
+    </div>
   );
 }
 export function RoleName(role: string) {

@@ -6,6 +6,7 @@ import {
   getGame,
   kickPlayer,
   retrieveGame,
+  setPlayerFate,
   setPlayerOrder,
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
@@ -67,6 +68,13 @@ export function useGame (app: Application): void {
   app.post('/assign_roles', (req, res) => {
     const { roles, gameId } = req.body
     assignRoles(gameId, roles)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/decide_fate', (req, res) => {
+    const { player, gameId, dead } = req.body
+    setPlayerFate(gameId, player, dead)
     res.status(200)
     res.send({})
   })
