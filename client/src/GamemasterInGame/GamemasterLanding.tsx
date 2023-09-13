@@ -7,7 +7,7 @@ import { Script } from "../types/script";
 import { useSearchParams } from "react-router-dom";
 import { Role } from "@hidden-identity/server";
 import { GameHeader } from "../shared/GameHeader";
-import { PageLoader } from "../shared/PageLoader";
+import { LoadingExperience } from "../shared/LoadingExperience";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
@@ -39,7 +39,7 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   const { game } = useGame();
 
   if (!game) {
-    return <PageLoader />;
+    return <LoadingExperience>Loading...</LoadingExperience>;
   }
   if (providedGMHash !== game.gmSecretHash) {
     return <div>You are in the wrong place</div>;

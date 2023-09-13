@@ -4,6 +4,7 @@ import { UnifiedGameContext } from "./GameContext";
 import { createMessage, parseMessage } from "./messenger";
 import { Callout } from "@radix-ui/themes";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import { LoadingExperience } from "../shared/LoadingExperience";
 
 export function GameProvider({
   gameId,
@@ -68,15 +69,16 @@ export function GameProvider({
 
   return (
     <UnifiedGameContext.Provider value={contextValue}>
-      {readyState !== ReadyState.OPEN &&
-        readyState !== ReadyState.CONNECTING && (
+      {readyState !== ReadyState.OPEN && (
+        <LoadingExperience>
           <Callout.Root>
             <Callout.Text>
               You're currently disconnected from the server. Attempting to
               reconnect.
             </Callout.Text>
           </Callout.Root>
-        )}
+        </LoadingExperience>
+      )}
 
       {children}
     </UnifiedGameContext.Provider>

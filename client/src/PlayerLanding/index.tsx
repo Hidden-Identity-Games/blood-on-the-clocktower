@@ -4,7 +4,7 @@ import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
 import { usePlayer } from "../store/secretKey";
 import { GameHeader } from "../shared/GameHeader";
-import { PageLoader } from "../shared/PageLoader";
+import { LoadingExperience } from "../shared/LoadingExperience";
 import { PlayerWaiting } from "./PlayerWaiting";
 import { useGame } from "../store/GameContext";
 import { useEffect, useState } from "react";
@@ -38,7 +38,7 @@ function PlayerLanding() {
     }
   }, [role, player, setPlayer, game]);
 
-  if (!game) return <PageLoader />;
+  if (!game) return <LoadingExperience>Loading...</LoadingExperience>;
 
   if (!player)
     return (
