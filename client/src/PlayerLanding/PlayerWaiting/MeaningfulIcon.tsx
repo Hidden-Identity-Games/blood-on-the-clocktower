@@ -6,7 +6,7 @@ interface MeaningfulIconProps {
   explanation: React.ReactNode;
   children: React.ReactNode;
   color?: ColorProp;
-  title: string;
+  title: React.ReactNode;
   size?: "1" | "2" | "3" | "4";
 }
 export function MeaningfulIcon(props: MeaningfulIconProps) {
