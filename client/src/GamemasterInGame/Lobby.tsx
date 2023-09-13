@@ -7,7 +7,6 @@ import { useDefiniteGame } from "../store/GameContext";
 import { useKickPlayer } from "../store/useStore";
 import TeamDistributionBar from "./TeamDistributionBar";
 import { Role } from "@hidden-identity/server";
-import "./Lobby.css";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import { GameMasterActions } from "./GameMasterActions";
 import { BsPeopleFill } from "react-icons/bs";
@@ -32,7 +31,7 @@ export function Lobby({ rolesList }: LobbyProps) {
 
   return (
     <Flex
-      gap="0"
+      gap="3"
       pt="1"
       direction="column"
       className="flex flex-1 flex-col overflow-y-auto"
@@ -46,13 +45,16 @@ export function Lobby({ rolesList }: LobbyProps) {
                 .map(([key]) => key)
         }
       />
+      <GameMasterActions
+        selectedRoles={characterSelectState.selectedRoles.value}
+      />
       <Tabs.Root
-        className="tab-root"
+        className="flex flex-1 flex-col"
         value={selectedTab}
         onValueChange={(e) => setSelectedTab(e)}
       >
         <Tabs.List>
-          <Tabs.Trigger className="tab-trigger" value="players">
+          <Tabs.Trigger className="max-w-[200px] flex-1" value="players">
             <Text className="mr-1">
               Players ({Object.keys(game.playersToRoles).length})
             </Text>
@@ -60,7 +62,7 @@ export function Lobby({ rolesList }: LobbyProps) {
               <BsPeopleFill />
             </Text>
           </Tabs.Trigger>
-          <Tabs.Trigger className="tab-trigger" value="roles">
+          <Tabs.Trigger className="max-w-[200px] flex-1" value="roles">
             <Text className="mr-1">
               Roles(
               {Object.keys(characterSelectState.selectedRoles.value).length})
@@ -70,20 +72,20 @@ export function Lobby({ rolesList }: LobbyProps) {
             </Text>
           </Tabs.Trigger>
         </Tabs.List>
-        <div className="relative flex-1">
+        <div className="relative flex-1 overflow-x-hidden">
           <AnimatePresence>
             {selectedTab === "players" && (
               <motion.div
                 className="absolute h-full w-full"
                 key="players"
-                initial={{ x: "100%", opacity: 0.3 }}
+                initial={{ x: "-100%", opacity: 0.3 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "100%", opacity: 0.3 }}
+                exit={{ x: "-100%", opacity: 0.3 }}
                 transition={{ type: "tween" }}
               >
                 <Tabs.Content
                   forceMount
-                  className="tab-content overflow-x-hidden"
+                  className="h-full overflow-y-auto"
                   value="players"
                 >
                   <Flex
@@ -92,9 +94,6 @@ export function Lobby({ rolesList }: LobbyProps) {
                     gap="2"
                     style={{ overflowY: "auto" }}
                   >
-                    <GameMasterActions
-                      selectedRoles={characterSelectState.selectedRoles.value}
-                    />
                     {Object.entries(game.playersToRoles).length === 0 && (
                       <Text as="div" className="m-5 text-center">
                         No players have joined yet. Share the game by clicking
@@ -159,14 +158,14 @@ export function Lobby({ rolesList }: LobbyProps) {
               <motion.div
                 className="absolute h-full w-full"
                 key="roles"
-                initial={{ x: "-100%", opacity: 0.3 }}
+                initial={{ x: "100%", opacity: 0.3 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "-100%", opacity: 0.3 }}
+                exit={{ x: "100%", opacity: 0.3 }}
                 transition={{ type: "tween" }}
               >
                 <Tabs.Content
                   forceMount
-                  className="tab-content h-full"
+                  className="h-full overflow-y-auto"
                   value="roles"
                 >
                   <CharacterSelectList
