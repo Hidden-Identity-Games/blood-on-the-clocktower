@@ -13,6 +13,8 @@ import { GameMasterActions } from "./GameMasterActions";
 import { BsPeopleFill } from "react-icons/bs";
 import { FaMasksTheater } from "react-icons/fa6";
 import classNames from "classnames";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 export interface LobbyProps {
   rolesList: Role[];
@@ -20,6 +22,7 @@ export interface LobbyProps {
 
 export function Lobby({ rolesList }: LobbyProps) {
   const { game } = useDefiniteGame();
+  const [selectedTab, setSelectedTab] = useState<string>("roles");
   const [, kickPlayerLoading, , handleKickPlayer] = useKickPlayer();
 
   const characterSelectState = useCharacterSelectState(rolesList);
@@ -28,7 +31,12 @@ export function Lobby({ rolesList }: LobbyProps) {
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
   return (
-    <Flex gap="0" pt="1" className="flex flex-1 flex-col overflow-y-auto">
+    <Flex
+      gap="0"
+      pt="1"
+      direction="column"
+      className="flex flex-1 flex-col overflow-y-auto"
+    >
       <TeamDistributionBar
         charsSelected={
           game.gameStarted
@@ -38,7 +46,11 @@ export function Lobby({ rolesList }: LobbyProps) {
                 .map(([key]) => key)
         }
       />
-      <Tabs.Root className="tab-root" defaultValue="roles">
+      <Tabs.Root
+        className="tab-root"
+        value={selectedTab}
+        onValueChange={(e) => setSelectedTab(e)}
+      >
         <Tabs.List>
           <Tabs.Trigger className="tab-trigger" value="players">
             <Text className="mr-1">
@@ -58,74 +70,114 @@ export function Lobby({ rolesList }: LobbyProps) {
             </Text>
           </Tabs.Trigger>
         </Tabs.List>
-
-        <Tabs.Content className="tab-content" value="roles" style={{ flex: 1 }}>
-          <Flex direction="column" gap="3" py="3">
-            <CharacterSelectList
-              state={characterSelectState}
-              readOnly={game.gameStarted}
-            />
-          </Flex>
-        </Tabs.Content>
-        <Tabs.Content className="tab-content" value="players">
-          <Flex direction="column" py="3" gap="2" style={{ overflowY: "auto" }}>
-            <GameMasterActions
-              selectedRoles={characterSelectState.selectedRoles.value}
-            />
-            {Object.entries(game.playersToRoles).length === 0 && (
-              <Text as="div" className="m-5 text-center">
-                No players have joined yet. Share the game by clicking the game
-                code.
-              </Text>
-            )}
-            {Object.entries(game.playersToRoles).map(([player, role]) => (
-              <Flex
-                justify="between"
-                align="center"
-                px="3"
-                gap="3"
-                key={player}
-                asChild
+        <div className="relative flex-1">
+          <AnimatePresence>
+            {selectedTab === "players" && (
+              <motion.div
+                className="absolute h-full w-full"
+                key="players"
+                initial={{ x: "100%", opacity: 0.3 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0.3 }}
+                transition={{ type: "tween" }}
               >
-                <Text size="2">
-                  <RoleText className="flex-1" role={role}>
-                    {player}
-                  </RoleText>
-                  <RoleIcon
-                    role={role}
-                    className={classNames("h-4", {
-                      ["opacity-0"]: role === "unassigned",
-                    })}
-                  />
-                  {seatingProblems ? (
-                    <Text as="div">
-                      {seatingProblems[player] ? "Getting settled" : "Ready"}
-                    </Text>
-                  ) : (
-                    <div
-                      className="truncate capitalize"
-                      style={{
-                        flex: 2,
-                      }}
-                    >
-                      {RoleName(role)}
-                    </div>
-                  )}
+                <Tabs.Content
+                  forceMount
+                  className="tab-content overflow-x-hidden"
+                  value="players"
+                >
+                  <Flex
+                    direction="column"
+                    py="3"
+                    gap="2"
+                    style={{ overflowY: "auto" }}
+                  >
+                    <GameMasterActions
+                      selectedRoles={characterSelectState.selectedRoles.value}
+                    />
+                    {Object.entries(game.playersToRoles).length === 0 && (
+                      <Text as="div" className="m-5 text-center">
+                        No players have joined yet. Share the game by clicking
+                        the game code.
+                      </Text>
+                    )}
+                    {Object.entries(game.playersToRoles).map(
+                      ([player, role]) => (
+                        <Flex
+                          justify="between"
+                          align="center"
+                          px="3"
+                          gap="3"
+                          key={player}
+                          asChild
+                        >
+                          <Text size="2">
+                            <RoleText className="flex-1" role={role}>
+                              {player}
+                            </RoleText>
+                            <RoleIcon
+                              role={role}
+                              className={classNames("h-4", {
+                                ["opacity-0"]: role === "unassigned",
+                              })}
+                            />
+                            {seatingProblems ? (
+                              <Text as="div">
+                                {seatingProblems[player]
+                                  ? "Getting settled"
+                                  : "Ready"}
+                              </Text>
+                            ) : (
+                              <div
+                                className="truncate capitalize"
+                                style={{
+                                  flex: 2,
+                                }}
+                              >
+                                {RoleName(role)}
+                              </div>
+                            )}
 
-                  {!game.gameStarted && (
-                    <Button
-                      disabled={kickPlayerLoading}
-                      size="1"
-                      onClick={() => handleKickPlayer(player)}
-                    >
-                      {kickPlayerLoading ? "Kicking..." : "Kick"}
-                    </Button>
-                  )}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-        </Tabs.Content>
+                            {!game.gameStarted && (
+                              <Button
+                                disabled={kickPlayerLoading}
+                                size="1"
+                                onClick={() => handleKickPlayer(player)}
+                              >
+                                {kickPlayerLoading ? "Kicking..." : "Kick"}
+                              </Button>
+                            )}
+                          </Text>
+                        </Flex>
+                      ),
+                    )}
+                  </Flex>
+                </Tabs.Content>
+              </motion.div>
+            )}
+            {selectedTab === "roles" && (
+              <motion.div
+                className="absolute h-full w-full"
+                key="roles"
+                initial={{ x: "-100%", opacity: 0.3 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "-100%", opacity: 0.3 }}
+                transition={{ type: "tween" }}
+              >
+                <Tabs.Content
+                  forceMount
+                  className="tab-content h-full"
+                  value="roles"
+                >
+                  <CharacterSelectList
+                    state={characterSelectState}
+                    readOnly={game.gameStarted}
+                  />
+                </Tabs.Content>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </Tabs.Root>
     </Flex>
   );

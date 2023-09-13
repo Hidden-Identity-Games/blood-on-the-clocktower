@@ -21,7 +21,7 @@ export function MeaningfulIcon(props: MeaningfulIconProps) {
           {props.children}
         </IconButton>
       </Dialog.Trigger>
-      <Dialog.Content>
+      <Dialog.Content className="m-2">
         <DialogHeader />
         <Text as="div" className="mt-3">
           {props.explanation}
