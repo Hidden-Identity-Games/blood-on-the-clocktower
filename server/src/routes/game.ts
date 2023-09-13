@@ -1,13 +1,16 @@
 import { type Application } from 'express-ws'
 import {
   addGame,
+  addNote,
   addPlayer,
   assignRoles,
+  clearNote,
   getGame,
   kickPlayer,
   retrieveGame,
   setPlayerFate,
   setPlayerOrder,
+  toggleDeadvote,
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
 
@@ -75,6 +78,27 @@ export function useGame (app: Application): void {
   app.post('/decide_fate', (req, res) => {
     const { player, gameId, dead } = req.body
     setPlayerFate(gameId, player, dead)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/add_note', (req, res) => {
+    const { player, gameId, note } = req.body
+    addNote(gameId, player, note)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/clear_note', (req, res) => {
+    const { player, gameId, note } = req.body
+    clearNote(gameId, player, note)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/dead_vote', (req, res) => {
+    const { player, gameId, voteUsed } = req.body
+    toggleDeadvote(gameId, player, voteUsed)
     res.status(200)
     res.send({})
   })

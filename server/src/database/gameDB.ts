@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame } from '../types/types.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note } from '../types/types.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -51,6 +51,8 @@ function createGame (): UnifiedGame {
     partialPlayerOrdering: {},
     orderedPlayers: { fullList: [], problems: false },
     deadPlayers: {},
+    playerNotes: {},
+    deadVotes: {},
   }
 }
 
@@ -220,6 +222,43 @@ export function assignRoles (
       }),
       {},
     ),
+  })
+}
+
+export function addNote (gameId: string, player: string, note: Note): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    playerNotes: {
+      ...gameInstance.playerNotes,
+      [player]: [...(gameInstance.playerNotes[player] || []), note],
+    },
+  })
+}
+export function clearNote (gameId: string, player: string, noteId: string): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    playerNotes: {
+      ...gameInstance.playerNotes,
+      [player]: [...(gameInstance.playerNotes[player] || []).filter(({ id }) => id !== noteId)],
+    },
+  })
+}
+export function toggleDeadvote (gameId: string, player: string, voteUsed: boolean): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    deadVotes: {
+      ...gameInstance.deadVotes,
+      [player]: voteUsed,
+    },
   })
 }
 
