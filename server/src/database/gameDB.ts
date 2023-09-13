@@ -146,10 +146,11 @@ function getProblems (game: BaseUnifiedGame, player: string): Problem | null {
   }
 
   const chosenPlayers = Object.values(game.partialPlayerOrdering).map(neighbors => neighbors?.rightNeighbor).filter(Boolean)
-  // If nobody is pointing at you yet.
-  if (chosenPlayers.filter(p => p === player).length > 1) {
-    return ({ type: 'excluded' })
-  } else if (chosenPlayers.filter(n => n === neighbor).length > 1) {
+  if (
+    // If nobody is pointing at you yet.
+    chosenPlayers.filter(p => p === player).length !== 0 &&
+    // you're pointing at the same person as someone else.
+    chosenPlayers.filter(n => n === neighbor).length > 1) {
     // if you've been chosen, and you have a duplicate choice, you're an excluder
     return ({ type: 'excluder' })
   }
