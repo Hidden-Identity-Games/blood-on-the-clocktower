@@ -9,6 +9,7 @@ export interface BaseUnifiedGame {
   gmSecretHash: string
   gameStarted: boolean
   nextGameId?: string
+  deadPlayers: Record<string, boolean>
 }
 
 export interface WellOrderedPlayers {
