@@ -6,7 +6,7 @@ import { ImArrowLeft, ImArrowRight } from "react-icons/im";
 import { FaPersonCircleQuestion } from "react-icons/fa6";
 import { CgArrowsExchangeAlt } from "react-icons/cg";
 import { SeatingProblem } from "./SeatingProblem";
-import { MeaningfulIcon } from "./MeaningfulIcon";
+import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { PlayerNameButton } from "../../shared/PlayerNameButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { BrokenOrderedPlayers } from "@hidden-identity/server";
@@ -71,7 +71,7 @@ export function PlayerWaiting() {
                   <Text className="flex-1 capitalize">
                     {leftPlayer ?? (
                       <MeaningfulIcon
-                        title="Missed connection"
+                        header="Missed connection"
                         explanation="It looks like your left neighbor hasn't finished getting set up.  Check and see if they have joined yet so the game can start!"
                       >
                         <FaPersonCircleQuestion />

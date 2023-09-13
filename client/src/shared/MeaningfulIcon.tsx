@@ -1,18 +1,18 @@
 import { Dialog, IconButton, Text } from "@radix-ui/themes";
-import { DialogHeader } from "../../shared/DialogHeader";
+import { DialogHeader } from "./DialogHeader";
 
 type ColorProp = React.ComponentProps<typeof IconButton>["color"];
-interface MeaningfulIconProps {
+interface MeaningfulIconProps extends React.HTMLAttributes<HTMLButtonElement> {
   explanation: React.ReactNode;
   children: React.ReactNode;
   color?: ColorProp;
-  title: React.ReactNode;
+  header: React.ReactNode;
   size?: "1" | "2" | "3" | "4";
 }
 export function MeaningfulIcon(props: MeaningfulIconProps) {
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger className={props.className}>
         <IconButton
           variant="surface"
           color={props.color}
@@ -23,7 +23,7 @@ export function MeaningfulIcon(props: MeaningfulIconProps) {
         </IconButton>
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
-        <DialogHeader>{props.title}</DialogHeader>
+        <DialogHeader>{props.header}</DialogHeader>
         <Text as="div" className="mt-3">
           {props.explanation}
         </Text>
