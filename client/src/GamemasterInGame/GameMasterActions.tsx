@@ -41,7 +41,7 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
     <Flex gap="2" direction="row">
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
-          <DialogHeader />
+          <DialogHeader>Error</DialogHeader>
           <Flex direction="column" gap="2">
             <div>It looks like there was an error:</div>
             {distributeRolesError}

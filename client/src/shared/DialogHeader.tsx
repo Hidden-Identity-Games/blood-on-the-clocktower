@@ -1,7 +1,7 @@
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Dialog, Flex, IconButton } from "@radix-ui/themes";
 
-export function DialogHeader(props: { children?: React.ReactNode }) {
+export function DialogHeader(props: { children: React.ReactNode }) {
   return (
     <Flex className="w-full" justify={props.children ? "between" : "end"}>
       {props.children && <Dialog.Title>{props.children}</Dialog.Title>}

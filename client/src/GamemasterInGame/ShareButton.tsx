@@ -14,7 +14,7 @@ function ShareButton({ children, url, title }: ShareProps) {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ url, title, text: title });
+        await navigator.share({ url, title, text: url });
       } catch (error) {
         console.log("Failed to share.");
       }

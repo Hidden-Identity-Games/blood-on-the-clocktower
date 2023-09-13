@@ -70,7 +70,10 @@ export function PlayerWaiting() {
                   <ImArrowLeft />
                   <Text className="flex-1 capitalize">
                     {leftPlayer ?? (
-                      <MeaningfulIcon explanation="It looks like your left neighbor hasn't finished getting set up.  Check and see if they have joined yet so the game can start!">
+                      <MeaningfulIcon
+                        title="Missed connection"
+                        explanation="It looks like your left neighbor hasn't finished getting set up.  Check and see if they have joined yet so the game can start!"
+                      >
                         <FaPersonCircleQuestion />
                       </MeaningfulIcon>
                     )}

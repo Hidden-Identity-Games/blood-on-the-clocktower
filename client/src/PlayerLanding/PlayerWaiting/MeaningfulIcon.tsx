@@ -6,6 +6,7 @@ interface MeaningfulIconProps {
   explanation: React.ReactNode;
   children: React.ReactNode;
   color?: ColorProp;
+  title: string;
   size?: "1" | "2" | "3" | "4";
 }
 export function MeaningfulIcon(props: MeaningfulIconProps) {
@@ -22,7 +23,7 @@ export function MeaningfulIcon(props: MeaningfulIconProps) {
         </IconButton>
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
-        <DialogHeader />
+        <DialogHeader>{props.title}</DialogHeader>
         <Text as="div" className="mt-3">
           {props.explanation}
         </Text>
