@@ -8,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { Role } from "@hidden-identity/server";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
+import { NightOrder } from "./NightOrder";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
@@ -49,7 +50,11 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
     <>
       <GameHeader />
       {script ? (
-        <Lobby rolesList={script} />
+        game.gameStarted ? (
+          <NightOrder />
+        ) : (
+          <Lobby rolesList={script} />
+        )
       ) : (
         <ScriptSelect
           handleSubmit={(script: Script) => {
