@@ -26,7 +26,8 @@ export default defineConfig((env) => ({
   define: {
     WS_URL:
       env.command === "build"
-        ? '"wss://blood-on-the-clocktower.onrender.com/socket"'
+        ? process.env.WS_URL ??
+          '"wss://blood-on-the-clocktower.onrender.com/socket"'
         : `\`ws${
             HTTPS ? "s" : ""
           }://\${window.location.hostname}:${PORT}/api/socket\``,
