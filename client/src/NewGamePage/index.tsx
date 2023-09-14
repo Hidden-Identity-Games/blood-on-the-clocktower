@@ -49,7 +49,7 @@ export function NewGameLanding() {
           <Dialog.Trigger>
             <Button disabled={isLoading}>Join Game</Button>
           </Dialog.Trigger>
-          <Dialog.Content>
+          <Dialog.Content className="m-2">
             <Dialog.Title align="center">
               <label htmlFor="game-code-input">Game code:</label>
             </Dialog.Title>

@@ -154,7 +154,7 @@ function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
 
 function getProblems (game: BaseUnifiedGame, player: string): Problem | null {
   const neighbor = game.partialPlayerOrdering[player]?.rightNeighbor
-  if (!neighbor) {
+  if (!(neighbor && game.playersToRoles[neighbor])) {
     return { type: 'broken-link' }
   }
 
