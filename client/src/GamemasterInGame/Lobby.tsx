@@ -90,10 +90,7 @@ export function Lobby({ rolesList }: LobbyProps) {
                     gap="2"
                     style={{ overflowY: "auto" }}
                   >
-                    <PregamePlayerList
-                      playersToRoles={game.playersToRoles}
-                      orderedPlayers={game.orderedPlayers}
-                    />
+                    <PregamePlayerList />
                   </Flex>
                 </Tabs.Content>
               </motion.div>

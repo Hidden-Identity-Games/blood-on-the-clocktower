@@ -56,8 +56,8 @@ export function useGame (app: Application): void {
   })
 
   app.post('/kick_player', (req, res) => {
-    const { playerId, gameId } = req.body
-    kickPlayer(gameId, playerId)
+    const { player, gameId } = req.body
+    kickPlayer(gameId, player)
     res.status(200)
     res.send({})
   })

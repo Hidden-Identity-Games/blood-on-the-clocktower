@@ -24,36 +24,24 @@ import { GiBootKick, GiFeather, GiRaiseZombie } from "react-icons/gi";
 import { PiKnifeBold } from "react-icons/pi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
-import {
-  BrokenOrderedPlayers,
-  Role,
-  WellOrderedPlayers,
-} from "@hidden-identity/server";
 import React, { ReactNode } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, NotesIcons } from "./NotesIcons";
 
-interface PregamePlayerListProps {
-  playersToRoles: Record<string, Role>;
-  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers;
-}
-
-export function PregamePlayerList({
-  playersToRoles,
-  orderedPlayers,
-}: PregamePlayerListProps) {
+export function PregamePlayerList() {
+  const { game } = useDefiniteGame();
   const [, kickPlayerLoading, , handleKickPlayer] = useKickPlayer();
   const seatingProblems =
-    orderedPlayers.problems && orderedPlayers.playerProblems;
+    game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {Object.entries(playersToRoles).length === 0 && (
+      {Object.entries(game.playersToRoles).length === 0 && (
         <Text as="div" className="m-5 text-center">
           No players have joined yet. Share the game by clicking the game code.
         </Text>
       )}
-      {Object.entries(playersToRoles).map(([player, role]) => (
+      {Object.entries(game.playersToRoles).map(([player, role]) => (
         <Flex
           justify="between"
           align="center"
@@ -214,8 +202,6 @@ export function IngamePlayerList({
               <RoleIcon role={role} />
             </MeaningfulIcon>
             <DeadVoteIcon player={player} />
-
-            {/* {game.deadVotes[player] && <AiFillPlusCircle />} */}
 
             <RoleText
               className={classNames(
