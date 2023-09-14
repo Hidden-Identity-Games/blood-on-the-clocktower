@@ -31,7 +31,7 @@ import {
 } from "@hidden-identity/server";
 import React, { ReactNode } from "react";
 import { useDefiniteGame } from "../store/GameContext";
-import { NotesIcons } from "./NotesIcons";
+import { DeadVoteIcon, NotesIcons } from "./NotesIcons";
 
 interface PregamePlayerListProps {
   playersToRoles: Record<string, Role>;
@@ -176,7 +176,11 @@ export function IngamePlayerList({
             <MeaningfulIcon
               className="aspect-square h-4"
               size="1"
-              color="purple"
+              color={
+                ["Townsfolk", "Outsider"].includes(getRole(role).team)
+                  ? "cyan"
+                  : "crimson"
+              }
               header={
                 <div className="flex items-center justify-center gap-1">
                   <RoleIcon role={role} />
@@ -207,8 +211,9 @@ export function IngamePlayerList({
                 }
               })()}
             >
-              <RoleIcon role={role} dead={game.deadPlayers[player]} />
+              <RoleIcon role={role} />
             </MeaningfulIcon>
+            <DeadVoteIcon player={player} />
 
             {/* {game.deadVotes[player] && <AiFillPlusCircle />} */}
 
@@ -223,17 +228,6 @@ export function IngamePlayerList({
             </RoleText>
 
             <NotesIcons player={player} />
-            <PlayerNoteInput
-              player={player}
-              handleAddNote={(note) =>
-                setPlayerNote(player, "add", {
-                  type: "custom",
-                  message: note,
-                  id: `${player}-${note}`,
-                })
-              }
-              disabled={playerNotesLoading}
-            />
 
             <Dialog.Root>
               <Dialog.Trigger>
@@ -244,6 +238,23 @@ export function IngamePlayerList({
 
               <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
+                  <Dialog.Close>
+                    <PlayerMenuItem
+                      id="dead-alive"
+                      label={game.deadPlayers[player] ? "Revive" : "Kill"}
+                      icon={
+                        game.deadPlayers[player] ? (
+                          <GiRaiseZombie />
+                        ) : (
+                          <PiKnifeBold />
+                        )
+                      }
+                      onClick={() =>
+                        handleDecideFate(player, !game.deadPlayers[player])
+                      }
+                      disabled={decideFateLoading}
+                    />
+                  </Dialog.Close>
                   <PlayerMenuItem
                     id="player-note"
                     label="Add Note"
@@ -262,34 +273,6 @@ export function IngamePlayerList({
                     onClick={() => {}}
                     disabled={playerNotesLoading}
                   />
-                  {/* <PlayerNoteInput
-                      player={player}
-                      handleAddNote={(note) =>
-                        setPlayerNote(player, "add", {
-                          type: "custom",
-                          message: note,
-                          id: `${player}-${note}`,
-                        })
-                      }
-                      disabled={playerNotesLoading}
-                    /> */}
-                  <Dialog.Close>
-                    <PlayerMenuItem
-                      id="dead-alive"
-                      label={game.deadPlayers[player] ? "Revive" : "Kill"}
-                      icon={
-                        game.deadPlayers[player] ? (
-                          <GiRaiseZombie />
-                        ) : (
-                          <PiKnifeBold />
-                        )
-                      }
-                      onClick={() =>
-                        handleDecideFate(player, !game.deadPlayers[player])
-                      }
-                      disabled={decideFateLoading}
-                    />
-                  </Dialog.Close>
                   <Dialog.Close>
                     <PlayerMenuItem
                       id="set-poison"
@@ -316,7 +299,7 @@ export function IngamePlayerList({
                       }
                     />
                   </Dialog.Close>
-                  {game.deadPlayers[player] && (
+                  {game.deadPlayers[player] && game.deadVotes[player] && (
                     <Dialog.Close>
                       <PlayerMenuItem
                         id="dead-vote"
@@ -332,9 +315,7 @@ export function IngamePlayerList({
                             <AiFillMinusCircle />
                           )
                         }
-                        onClick={() =>
-                          setDeadVote(player, !game.deadVotes[player])
-                        }
+                        onClick={() => setDeadVote(player, false)}
                         disabled={deadVoteLoading}
                       />
                     </Dialog.Close>
