@@ -6,7 +6,7 @@ import { useAction, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
-import { Note } from "@hidden-identity/server";
+import { Note, Script } from "@hidden-identity/server";
 import { GameStatus } from "@hidden-identity/server";
 
 function randomUppercase() {
@@ -29,6 +29,24 @@ export function useCreateGame() {
     }
     const parsedResponse = response.data as UnifiedGame;
     navigate(`/${playerSecretHash}/gm/${parsedResponse.gmSecretHash}`);
+  });
+}
+
+export function useSetScript() {
+  const { gameId } = useGame();
+
+  return useAction(async (script: Script) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/set_script"), {
+      script,
+      gameId,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
   });
 }
 

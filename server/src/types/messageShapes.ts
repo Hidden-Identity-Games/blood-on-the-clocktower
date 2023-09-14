@@ -1,4 +1,4 @@
-import { type UnifiedGame } from './types.ts'
+import { type UnifiedGame } from './UnifiedGame.ts'
 
 export interface ListenToGameMessage {
   type: 'ListenToGame'
