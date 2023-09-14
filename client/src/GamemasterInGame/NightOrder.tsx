@@ -49,8 +49,6 @@ export function NightOrder() {
       )}
 
       <IngamePlayerList
-        playersToRoles={game.playersToRoles}
-        deadPlayers={game.deadPlayers}
         night={
           nightTime ? (game.gameStatus === "Setup" ? "first" : "other") : null
         }

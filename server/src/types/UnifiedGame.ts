@@ -4,7 +4,7 @@ export interface UnifiedGame extends BaseUnifiedGame {
 }
 export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
 export type NoteType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', message: string } | { type: 'bluffing', as: string }
-export type Note = NoteType extends any ? NoteType & { id: string } : never
+export type Note = NoteType & { id: string }
 export interface BaseUnifiedGame {
   playersToRoles: Record<string, Role>
   partialPlayerOrdering: Record<string, Neighbors | null>

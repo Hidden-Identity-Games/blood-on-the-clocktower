@@ -91,8 +91,8 @@ export function useGame (app: Application): void {
   })
 
   app.post('/clear_note', (req, res) => {
-    const { player, gameId, note } = req.body
-    clearNote(gameId, player, note)
+    const { player, gameId, noteId } = req.body
+    clearNote(gameId, player, noteId)
     res.status(200)
     res.send({})
   })
