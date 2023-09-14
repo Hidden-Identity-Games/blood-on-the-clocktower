@@ -23,7 +23,9 @@ export function setupTestGames (): void {
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
-    playerNotes: {},
+    playerNotes: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
+    },
     deadVotes: {},
   }))
 
@@ -42,7 +44,9 @@ export function setupTestGames (): void {
       wrongway: { rightNeighbor: 'correct2' },
     },
     deadPlayers: {},
-    playerNotes: {},
+    playerNotes: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
+    },
     deadVotes: {},
   }))
 

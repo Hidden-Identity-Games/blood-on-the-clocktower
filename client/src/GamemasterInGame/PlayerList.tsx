@@ -6,7 +6,6 @@ import {
   IconButton,
   Text,
   TextFieldInput,
-  Tooltip,
 } from "@radix-ui/themes";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import { getRole, getRoleExtension } from "../assets/game_data/gameData";
@@ -27,12 +26,12 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
 import {
   BrokenOrderedPlayers,
-  Note,
   Role,
   WellOrderedPlayers,
 } from "@hidden-identity/server";
 import React, { ReactNode } from "react";
 import { useDefiniteGame } from "../store/GameContext";
+import { NotesIcons } from "./NotesIcons";
 
 interface PregamePlayerListProps {
   playersToRoles: Record<string, Role>;
@@ -223,7 +222,18 @@ export function IngamePlayerList({
               {player}
             </RoleText>
 
-            <PlayerStatus playerNotes={game.playerNotes[player]} />
+            <NotesIcons player={player} />
+            <PlayerNoteInput
+              player={player}
+              handleAddNote={(note) =>
+                setPlayerNote(player, "add", {
+                  type: "custom",
+                  message: note,
+                  id: `${player}-${note}`,
+                })
+              }
+              disabled={playerNotesLoading}
+            />
 
             <Dialog.Root>
               <Dialog.Trigger>
@@ -412,30 +422,5 @@ function PlayerNoteInput({
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
-  );
-}
-
-interface PlayerStatusProps {
-  playerNotes: Note[];
-}
-
-function PlayerStatus({ playerNotes }: PlayerStatusProps) {
-  return (
-    <Flex gap="1">
-      {playerNotes?.find(({ type }) => type === "poison") && (
-        <Tooltip content="Poisoned">
-          <span className="text-red-600">
-            <FaVial />
-          </span>
-        </Tooltip>
-      )}
-      {playerNotes?.find(({ type }) => type === "drunk") && (
-        <Tooltip content="Drunk">
-          <span className="text-red-600">
-            <IoIosBeer />
-          </span>
-        </Tooltip>
-      )}
-    </Flex>
   );
 }

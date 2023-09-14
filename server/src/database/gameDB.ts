@@ -240,12 +240,15 @@ export function addNote (gameId: string, player: string, note: Note): void {
 export function clearNote (gameId: string, player: string, noteId: string): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
+  console.log(noteId, gameInstance.playerNotes[player])
 
   updateGameWithComputes(game, {
     ...gameInstance,
     playerNotes: {
       ...gameInstance.playerNotes,
-      [player]: [...(gameInstance.playerNotes[player] || []).filter(({ id }) => id !== noteId)],
+      [player]: [
+        ...(gameInstance.playerNotes[player] || []).filter(({ id }) => id !== noteId),
+      ],
     },
   })
 }

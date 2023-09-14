@@ -31,3 +31,25 @@ export function MeaningfulIcon(props: MeaningfulIconProps) {
     </Dialog.Root>
   );
 }
+export function MeaningfulStatusIcon(props: MeaningfulIconProps) {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger className={props.className}>
+        <IconButton
+          variant="soft"
+          color={props.color}
+          radius="full"
+          size={props.size}
+        >
+          {props.children}
+        </IconButton>
+      </Dialog.Trigger>
+      <Dialog.Content className="m-2">
+        <DialogHeader>{props.header}</DialogHeader>
+        <Text as="div" className="mt-3">
+          {props.explanation}
+        </Text>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+}
