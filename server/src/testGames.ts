@@ -18,7 +18,7 @@ export function setupTestGames (): void {
     'cameron',
   ]
   addGame('test-game', computedValues({
-    gameStarted: false,
+    gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
     deadPlayers: {},
@@ -30,7 +30,7 @@ export function setupTestGames (): void {
   }))
 
   addGame('tg-wrong-way', computedValues({
-    gameStarted: false,
+    gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
       correct1: UNASSIGNED,
@@ -51,7 +51,7 @@ export function setupTestGames (): void {
   }))
 
   addGame('tg-broken-link', computedValues({
-    gameStarted: false,
+    gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
       excluded: UNASSIGNED,
@@ -69,7 +69,7 @@ export function setupTestGames (): void {
     deadVotes: {},
   }))
   addGame('tg-excluded', computedValues({
-    gameStarted: false,
+    gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
       correct1: UNASSIGNED,

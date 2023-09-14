@@ -49,23 +49,23 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   return (
     <>
       <GameHeader />
-      {script ? (
-        game.gameStarted ? (
-          <NightOrder />
-        ) : (
+      {game.gameStatus === "PlayersJoining" &&
+        (script ? (
           <Lobby rolesList={script} />
-        )
-      ) : (
-        <ScriptSelect
-          handleSubmit={(script: Script) => {
-            setSearchParams((prev) => {
-              const next = new URLSearchParams(prev);
-              next.set("script", JSON.stringify(script.map(({ id }) => id)));
-              return next;
-            });
-          }}
-        />
-      )}
+        ) : (
+          <ScriptSelect
+            handleSubmit={(script: Script) => {
+              setSearchParams((prev) => {
+                const next = new URLSearchParams(prev);
+                next.set("script", JSON.stringify(script.map(({ id }) => id)));
+                return next;
+              });
+            }}
+          />
+        ))}
+      {(game.gameStatus === "Setup" ||
+        game.gameStatus === "Started" ||
+        game.gameStatus === "Finished") && <NightOrder />}
     </>
   );
 }

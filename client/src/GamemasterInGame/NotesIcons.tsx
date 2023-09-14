@@ -154,7 +154,7 @@ export function DeadVoteIcon({ player }: { player: string }) {
       {showVote && (
         <IconButton
           size="1"
-          color={game.deadPlayers[player] ? "amber" : "cyan"}
+          color={game.deadPlayers[player] ? "amber" : "grass"}
           radius="full"
           variant="surface"
           onClick={() => {

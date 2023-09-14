@@ -356,7 +356,7 @@ function PlayerMenuItem({
       >
         {icon}
       </IconButton>
-      <label htmlFor={id} className="p-1">
+      <label htmlFor={id} className="flex-1 p-1">
         {label}
       </label>
     </Flex>

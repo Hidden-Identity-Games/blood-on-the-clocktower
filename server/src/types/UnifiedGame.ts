@@ -2,14 +2,14 @@ export interface UnifiedGame extends BaseUnifiedGame {
   orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
 
 }
-
+export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
 export type NoteType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', message: string } | { type: 'bluffing', as: string }
 export type Note = NoteType & { id: string }
 export interface BaseUnifiedGame {
   playersToRoles: Record<string, Role>
   partialPlayerOrdering: Record<string, Neighbors | null>
   gmSecretHash: string
-  gameStarted: boolean
+  gameStatus: GameStatus
   nextGameId?: string
   deadPlayers: Record<string, boolean>
   playerNotes: Record<string, Note[]>

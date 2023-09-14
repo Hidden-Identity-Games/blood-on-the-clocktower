@@ -7,6 +7,7 @@ import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
 import { Note } from "@hidden-identity/server";
+import { GameStatus } from "@hidden-identity/server";
 
 function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
@@ -60,6 +61,39 @@ export function useDecideFate() {
     const response = await axios.post(apiUrl("/decide_fate"), {
       dead,
       player,
+      gameId,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
+}
+export function useSetGameStatus() {
+  const { gameId } = useGame();
+
+  return useAction(async (status: GameStatus) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/manual_status"), {
+      gameId,
+      status,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
+}
+export function useEndFirstNight() {
+  const { gameId } = useGame();
+
+  return useAction(async () => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/end_first_night"), {
       gameId,
     });
     if (response.status !== 200) {

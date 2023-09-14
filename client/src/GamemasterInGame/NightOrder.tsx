@@ -3,20 +3,15 @@ import { getRole, getRoleExtension } from "../assets/game_data/gameData";
 import { IngamePlayerList } from "./PlayerList";
 import { Button, Flex } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
-
-// interface NightOrderProps {
-//   playersToRoles: Record<string, Role>;
-//   deadPlayers: Record<string, boolean>;
-// }
+import { useSetGameStatus } from "../store/useStore";
 
 export function NightOrder() {
   const { game } = useDefiniteGame();
   const [checkedPlayers, setCheckedPlayers] = React.useState<
     Record<string, boolean>
   >({});
-  const [nightTime, setNightTime] = React.useState<null | "first" | "other">(
-    null,
-  );
+  const [nightTime, setNightTime] = React.useState(false);
+  const [, , , setGameStatus] = useSetGameStatus();
 
   const playerOrder = Object.entries(game.playersToRoles).map(
     ([player, role]) => ({
@@ -27,14 +22,14 @@ export function NightOrder() {
     }),
   );
 
-  const startNight = (startingFirstNight: boolean) => {
-    setNightTime(startingFirstNight ? "first" : "other");
+  const startNight = () => {
+    setNightTime(true);
     setCheckedPlayers(
       Object.fromEntries(
         playerOrder
           .filter(({ player }) => !game.deadPlayers[player])
           .filter(({ firstNight, otherNight }) =>
-            startingFirstNight ? firstNight !== 0 : otherNight !== 0,
+            game.gameStatus === "Setup" ? firstNight !== 0 : otherNight !== 0,
           )
           .map(({ player }) => [player, true]),
       ),
@@ -44,24 +39,44 @@ export function NightOrder() {
   return (
     <Flex gap="2" direction="column" p="2" className="w-full">
       {!nightTime && (
-        <Button onClick={() => startNight(true)}>Start first night</Button>
+        <Button
+          onClick={() => {
+            startNight();
+          }}
+        >
+          Start {game.gameStatus === "Started" ? "" : "first"} night
+        </Button>
       )}
-      {!nightTime && (
-        <Button onClick={() => startNight(false)}>Start other night</Button>
-      )}
+
       <IngamePlayerList
-        night={nightTime}
+        night={
+          nightTime ? (game.gameStatus === "Setup" ? "first" : "other") : null
+        }
         checkedPlayers={checkedPlayers}
         setCheckedPlayers={setCheckedPlayers}
       />
       {nightTime && (
         <Button
           onClick={() => {
-            setNightTime(null);
+            if (game.gameStatus === "Setup") {
+              setGameStatus("Started");
+            }
+            setNightTime(false);
             setCheckedPlayers({});
           }}
         >
           Day time
+        </Button>
+      )}
+      {nightTime && (
+        <Button
+          onClick={() => {
+            setGameStatus("Setup");
+            setNightTime(false);
+            setCheckedPlayers({});
+          }}
+        >
+          Back to first day
         </Button>
       )}
     </Flex>

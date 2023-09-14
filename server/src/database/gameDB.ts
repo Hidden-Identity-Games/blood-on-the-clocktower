@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note } from '../types/types.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus } from '../types/types.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -45,7 +45,7 @@ export function subscribeToGame (
 
 function createGame (): UnifiedGame {
   return {
-    gameStarted: false,
+    gameStatus: 'PlayersJoining',
     gmSecretHash: generate(3).join('-'),
     playersToRoles: {},
     partialPlayerOrdering: {},
@@ -210,7 +210,7 @@ export function assignRoles (
 
   updateGameWithComputes(game, {
     ...gameInstance,
-    gameStarted: true,
+    gameStatus: 'Setup',
     playersToRoles: roles
       .map((item) => ({ item, random: Math.random() }))
       .sort((a, b) => a.random - b.random)
@@ -262,6 +262,16 @@ export function toggleDeadvote (gameId: string, player: string, voteUsed: boolea
       ...gameInstance.deadVotes,
       [player]: voteUsed,
     },
+  })
+}
+
+export function updateStatus (gameId: string, status: GameStatus): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    gameStatus: status,
   })
 }
 
