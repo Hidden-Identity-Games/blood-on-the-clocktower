@@ -31,8 +31,7 @@ import {
   Role,
   WellOrderedPlayers,
 } from "@hidden-identity/server";
-import { IconType } from "react-icons";
-import React from "react";
+import React, { ReactNode } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 
 interface PregamePlayerListProps {
@@ -102,7 +101,7 @@ export function PregamePlayerList({
                     <PlayerMenuItem
                       id="kick-player"
                       label="Kick Player"
-                      icon={GiBootKick}
+                      icon={<GiBootKick />}
                       onClick={() => handleKickPlayer(player)}
                       disabled={kickPlayerLoading}
                     />
@@ -226,20 +225,6 @@ export function IngamePlayerList({
 
             <PlayerStatus playerNotes={game.playerNotes[player]} />
 
-            <Flex>
-              <PlayerNoteInput
-                player={player}
-                handleAddNote={(note) =>
-                  setPlayerNote(player, "add", {
-                    type: "custom",
-                    message: note,
-                    id: `${player}-${note}`,
-                  })
-                }
-                disabled={playerNotesLoading}
-              />
-            </Flex>
-
             <Dialog.Root>
               <Dialog.Trigger>
                 <IconButton variant="ghost">
@@ -249,12 +234,45 @@ export function IngamePlayerList({
 
               <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
+                  <PlayerMenuItem
+                    id="player-note"
+                    label="Add Note"
+                    icon={
+                      <PlayerNoteInput
+                        player={player}
+                        handleAddNote={(note) =>
+                          setPlayerNote(player, "add", {
+                            type: "custom",
+                            message: note,
+                            id: `${player}-${note}`,
+                          })
+                        }
+                      />
+                    }
+                    onClick={() => {}}
+                    disabled={playerNotesLoading}
+                  />
+                  {/* <PlayerNoteInput
+                      player={player}
+                      handleAddNote={(note) =>
+                        setPlayerNote(player, "add", {
+                          type: "custom",
+                          message: note,
+                          id: `${player}-${note}`,
+                        })
+                      }
+                      disabled={playerNotesLoading}
+                    /> */}
                   <Dialog.Close>
                     <PlayerMenuItem
                       id="dead-alive"
                       label={game.deadPlayers[player] ? "Revive" : "Kill"}
                       icon={
-                        game.deadPlayers[player] ? GiRaiseZombie : PiKnifeBold
+                        game.deadPlayers[player] ? (
+                          <GiRaiseZombie />
+                        ) : (
+                          <PiKnifeBold />
+                        )
                       }
                       onClick={() =>
                         handleDecideFate(player, !game.deadPlayers[player])
@@ -266,7 +284,7 @@ export function IngamePlayerList({
                     <PlayerMenuItem
                       id="set-poison"
                       label="Poisoned"
-                      icon={FaVial}
+                      icon={<FaVial />}
                       onClick={() =>
                         setPlayerNote(player, "add", {
                           type: "poison",
@@ -279,7 +297,7 @@ export function IngamePlayerList({
                     <PlayerMenuItem
                       id="set-drunk"
                       label="Drunk"
-                      icon={IoIosBeer}
+                      icon={<IoIosBeer />}
                       onClick={() =>
                         setPlayerNote(player, "add", {
                           type: "drunk",
@@ -298,9 +316,11 @@ export function IngamePlayerList({
                             : "Use Dead Vote"
                         }
                         icon={
-                          game.deadVotes[player]
-                            ? AiFillPlusCircle
-                            : AiFillMinusCircle
+                          game.deadVotes[player] ? (
+                            <AiFillPlusCircle />
+                          ) : (
+                            <AiFillMinusCircle />
+                          )
                         }
                         onClick={() =>
                           setDeadVote(player, !game.deadVotes[player])
@@ -322,7 +342,7 @@ export function IngamePlayerList({
 interface PlayerMenuItemProps {
   id: string;
   label: string;
-  icon: IconType;
+  icon: ReactNode;
   onClick: () => void;
   disabled?: boolean;
 }
@@ -343,7 +363,7 @@ function PlayerMenuItem({
         disabled={disabled}
         onClick={onClick}
       >
-        {React.createElement(icon)}
+        {icon}
       </IconButton>
       <label htmlFor={id} className="p-1">
         {label}
