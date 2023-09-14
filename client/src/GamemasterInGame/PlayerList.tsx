@@ -149,7 +149,7 @@ export function IngamePlayerList({
           key={player}
           asChild
         >
-          <Text size="2">
+          <Text size="3">
             {night && (
               <Checkbox
                 id={`${player}-done`}
@@ -206,6 +206,7 @@ export function IngamePlayerList({
             >
               <RoleIcon role={role} />
             </MeaningfulIcon>
+
             <DeadVoteIcon player={player} />
 
             <RoleText
@@ -296,7 +297,7 @@ export function IngamePlayerList({
                         id="dead-vote"
                         label={
                           game.deadVotes[player]
-                            ? "Refund Dead Vote"
+                            ? "Return Dead Vote"
                             : "Use Dead Vote"
                         }
                         icon={
