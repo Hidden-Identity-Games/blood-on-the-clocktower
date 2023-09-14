@@ -20,7 +20,7 @@ import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import { FaVial } from "react-icons/fa6";
 import { IoIosBeer } from "react-icons/io";
-import { GiBootKick, GiRaiseZombie } from "react-icons/gi";
+import { GiBootKick, GiFeather, GiRaiseZombie } from "react-icons/gi";
 // import { MdDriveFileRenameOutline } from "react-icons/md";
 import { PiKnifeBold } from "react-icons/pi";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -229,7 +229,13 @@ export function IngamePlayerList({
             <Flex>
               <PlayerNoteInput
                 player={player}
-                handleAddNote={(note) => setPlayerNote(player, "add", note)}
+                handleAddNote={(note) =>
+                  setPlayerNote(player, "add", {
+                    type: "custom",
+                    message: note,
+                    id: `${player}-${note}`,
+                  })
+                }
                 disabled={playerNotesLoading}
               />
             </Flex>
@@ -261,7 +267,12 @@ export function IngamePlayerList({
                       id="set-poison"
                       label="Poisoned"
                       icon={FaVial}
-                      onClick={() => {}}
+                      onClick={() =>
+                        setPlayerNote(player, "add", {
+                          type: "poison",
+                          id: `${player}-poisoned`,
+                        })
+                      }
                     />
                   </Dialog.Close>
                   <Dialog.Close>
@@ -269,7 +280,12 @@ export function IngamePlayerList({
                       id="set-drunk"
                       label="Drunk"
                       icon={IoIosBeer}
-                      onClick={() => {}}
+                      onClick={() =>
+                        setPlayerNote(player, "add", {
+                          type: "drunk",
+                          id: `${player}-drunk`,
+                        })
+                      }
                     />
                   </Dialog.Close>
                   {game.deadPlayers[player] && (
@@ -352,10 +368,9 @@ function PlayerNoteInput({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button variant="ghost" disabled={disabled}>
-          <AiFillPlusCircle />
-          Add Note
-        </Button>
+        <IconButton variant="ghost" disabled={disabled}>
+          <GiFeather />
+        </IconButton>
       </Dialog.Trigger>
 
       <Dialog.Content className="m-2">

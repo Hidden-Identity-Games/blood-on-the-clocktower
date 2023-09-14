@@ -6,6 +6,7 @@ import { useAction, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
+import { Note } from "@hidden-identity/server";
 
 function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
@@ -142,17 +143,23 @@ export function usePlayerNotes() {
   const { gameId } = useGame();
 
   return useAction(
-    async (player: string, action: "add" | "remove", note: string) => {
+    async (player: string, action: "add" | "remove", note: Note) => {
       if (!gameId) {
         throw new Error("GameId not ready");
       }
 
-      const endPoint = action === "add" ? "/add_note" : "/clear_note";
-      const response = await axios.post(apiUrl(endPoint), {
-        player,
-        gameId,
-        note,
-      });
+      const response =
+        action === "add"
+          ? await axios.post(apiUrl("/add_note"), {
+              player,
+              gameId,
+              note,
+            })
+          : await axios.post(apiUrl("/clear_note"), {
+              player,
+              gameId,
+              noteId: note.id,
+            });
       if (response.status !== 200) {
         throw new Error(response.statusText);
       }
