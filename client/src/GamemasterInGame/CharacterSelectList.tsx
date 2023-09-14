@@ -27,6 +27,7 @@ export interface CharacterSelectState {
 
 // doing some wonky shit because we cannot elave the tab mounted when we switch.
 // so if we don't hoist state we lose data when switching tabs.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCharacterSelectState(
   availableCharacters?: Role[],
 ): CharacterSelectState {
