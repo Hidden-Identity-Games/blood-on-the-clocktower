@@ -136,6 +136,8 @@ export function IngamePlayerList({
       );
   }, [night, game.playersToRoles]);
 
+  console.log(nightOrder);
+
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       {nightOrder.map(({ role, player: player, ...rowData }) => (
@@ -190,12 +192,15 @@ export function IngamePlayerList({
                       </div>
                     );
                   case "other":
-                    <div>
+                    return (
                       <div>
-                        {!rowData.otherNightReminder && "DOES NOT ACT TONIGHT"}
+                        <div>
+                          {!rowData.otherNightReminder &&
+                            "DOES NOT ACT TONIGHT"}
+                        </div>
+                        {rowData.otherNightReminder || rowData.ability}
                       </div>
-                      {rowData.otherNightReminder || rowData.ability}
-                    </div>;
+                    );
                 }
               })()}
             >
