@@ -50,8 +50,6 @@ export function NightOrder() {
         <Button onClick={() => startNight(false)}>Start other night</Button>
       )}
       <IngamePlayerList
-        playersToRoles={game.playersToRoles}
-        deadPlayers={game.deadPlayers}
         night={nightTime}
         checkedPlayers={checkedPlayers}
         setCheckedPlayers={setCheckedPlayers}

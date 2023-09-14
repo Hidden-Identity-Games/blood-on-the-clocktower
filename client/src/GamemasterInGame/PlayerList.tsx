@@ -1,15 +1,25 @@
 import {
+  Button,
   Checkbox,
   Dialog,
   Flex,
   IconButton,
   Text,
+  TextFieldInput,
   Tooltip,
 } from "@radix-ui/themes";
 import { RoleIcon, RoleName, RoleText } from "../shared/RoleIcon";
 import { getRole, getRoleExtension } from "../assets/game_data/gameData";
-import { useDecideFate, useKickPlayer } from "../store/useStore";
+import {
+  usePlayerNotes,
+  useDeadVote,
+  useDecideFate,
+  useKickPlayer,
+} from "../store/useStore";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
+import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
+import { FaVial } from "react-icons/fa6";
+import { IoIosBeer } from "react-icons/io";
 import { GiBootKick, GiRaiseZombie } from "react-icons/gi";
 // import { MdDriveFileRenameOutline } from "react-icons/md";
 import { PiKnifeBold } from "react-icons/pi";
@@ -17,11 +27,13 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
 import {
   BrokenOrderedPlayers,
+  Note,
   Role,
   WellOrderedPlayers,
 } from "@hidden-identity/server";
 import { IconType } from "react-icons";
 import React from "react";
+import { useDefiniteGame } from "../store/GameContext";
 
 interface PregamePlayerListProps {
   playersToRoles: Record<string, Role>;
@@ -77,7 +89,7 @@ export function PregamePlayerList({
                   <RxHamburgerMenu />
                 </IconButton>
               </Dialog.Trigger>
-              <Dialog.Content>
+              <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
                   {/* <PlayerMenuItem
                     id="rename"
@@ -106,9 +118,6 @@ export function PregamePlayerList({
 }
 
 interface IngamePlayerListProps {
-  // playerDisplayOrder: string[];
-  playersToRoles: Record<string, Role>;
-  deadPlayers: Record<string, boolean>;
   night: null | "first" | "other";
   checkedPlayers: Record<string, boolean>;
   setCheckedPlayers: React.Dispatch<
@@ -117,16 +126,17 @@ interface IngamePlayerListProps {
 }
 
 export function IngamePlayerList({
-  playersToRoles,
-  deadPlayers,
   night,
   checkedPlayers,
   setCheckedPlayers,
 }: IngamePlayerListProps) {
+  const { game } = useDefiniteGame();
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
+  const [, deadVoteLoading, , setDeadVote] = useDeadVote();
+  const [, playerNotesLoading, , setPlayerNote] = usePlayerNotes();
 
   const nightOrder = React.useMemo(() => {
-    return Object.entries(playersToRoles)
+    return Object.entries(game.playersToRoles)
       .map(([player, role]) => ({
         player,
         role,
@@ -138,7 +148,7 @@ export function IngamePlayerList({
           ? a.firstNight - b.firstNight
           : a.otherNight - b.otherNight,
       );
-  }, [night, playersToRoles]);
+  }, [night, game.playersToRoles]);
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
@@ -151,50 +161,7 @@ export function IngamePlayerList({
           key={player}
           asChild
         >
-          <Text
-            className={classNames(deadPlayers[player] && "line-through")}
-            size="2"
-          >
-            <Tooltip content={role}>
-              <MeaningfulIcon
-                className="aspect-square h-4"
-                size="1"
-                color="purple"
-                header={
-                  <div className="flex items-center justify-center gap-1">
-                    <RoleIcon role={role} />
-                    {RoleName(role)}
-                  </div>
-                }
-                explanation={(() => {
-                  switch (night) {
-                    case null:
-                      return rowData.ability;
-                    case "first":
-                      return (
-                        <div>
-                          <div>
-                            {!rowData.firstNightReminder &&
-                              "DOES NOT ACT TONIGHT"}
-                          </div>
-                          {rowData.firstNightReminder || rowData.ability}
-                        </div>
-                      );
-                    case "other":
-                      <div>
-                        <div>
-                          {!rowData.otherNightReminder &&
-                            "DOES NOT ACT TONIGHT"}
-                        </div>
-                        {rowData.otherNightReminder || rowData.ability}
-                      </div>;
-                  }
-                })()}
-              >
-                <RoleIcon role={role} dead={deadPlayers[player]} />
-              </MeaningfulIcon>
-            </Tooltip>
-
+          <Text size="2">
             {night && (
               <Checkbox
                 id={`${player}-done`}
@@ -208,17 +175,64 @@ export function IngamePlayerList({
               />
             )}
 
-            <RoleText className="flex-1" role={playersToRoles[player]}>
+            <MeaningfulIcon
+              className="aspect-square h-4"
+              size="1"
+              color="purple"
+              header={
+                <div className="flex items-center justify-center gap-1">
+                  <RoleIcon role={role} />
+                  {RoleName(role)}
+                </div>
+              }
+              explanation={(() => {
+                switch (night) {
+                  case null:
+                    return rowData.ability;
+                  case "first":
+                    return (
+                      <div>
+                        <div>
+                          {!rowData.firstNightReminder &&
+                            "DOES NOT ACT TONIGHT"}
+                        </div>
+                        {rowData.firstNightReminder || rowData.ability}
+                      </div>
+                    );
+                  case "other":
+                    <div>
+                      <div>
+                        {!rowData.otherNightReminder && "DOES NOT ACT TONIGHT"}
+                      </div>
+                      {rowData.otherNightReminder || rowData.ability}
+                    </div>;
+                }
+              })()}
+            >
+              <RoleIcon role={role} dead={game.deadPlayers[player]} />
+            </MeaningfulIcon>
+
+            {/* {game.deadVotes[player] && <AiFillPlusCircle />} */}
+
+            <RoleText
+              className={classNames(
+                "flex-1",
+                game.deadPlayers[player] && "line-through",
+              )}
+              role={game.playersToRoles[player]}
+            >
               {player}
             </RoleText>
-            <div
-              className="truncate capitalize"
-              style={{
-                flex: 2,
-              }}
-            >
-              {RoleName(playersToRoles[player])}
-            </div>
+
+            <PlayerStatus playerNotes={game.playerNotes[player]} />
+
+            <Flex>
+              <PlayerNoteInput
+                player={player}
+                handleAddNote={(note) => setPlayerNote(player, "add", note)}
+                disabled={playerNotesLoading}
+              />
+            </Flex>
 
             <Dialog.Root>
               <Dialog.Trigger>
@@ -226,19 +240,59 @@ export function IngamePlayerList({
                   <RxHamburgerMenu />
                 </IconButton>
               </Dialog.Trigger>
-              <Dialog.Content>
+
+              <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
                   <Dialog.Close>
                     <PlayerMenuItem
                       id="dead-alive"
-                      label={deadPlayers[player] ? "Revive" : "Kill"}
-                      icon={deadPlayers[player] ? GiRaiseZombie : PiKnifeBold}
+                      label={game.deadPlayers[player] ? "Revive" : "Kill"}
+                      icon={
+                        game.deadPlayers[player] ? GiRaiseZombie : PiKnifeBold
+                      }
                       onClick={() =>
-                        handleDecideFate(player, !deadPlayers[player])
+                        handleDecideFate(player, !game.deadPlayers[player])
                       }
                       disabled={decideFateLoading}
                     />
                   </Dialog.Close>
+                  <Dialog.Close>
+                    <PlayerMenuItem
+                      id="set-poison"
+                      label="Poisoned"
+                      icon={FaVial}
+                      onClick={() => {}}
+                    />
+                  </Dialog.Close>
+                  <Dialog.Close>
+                    <PlayerMenuItem
+                      id="set-drunk"
+                      label="Drunk"
+                      icon={IoIosBeer}
+                      onClick={() => {}}
+                    />
+                  </Dialog.Close>
+                  {game.deadPlayers[player] && (
+                    <Dialog.Close>
+                      <PlayerMenuItem
+                        id="dead-vote"
+                        label={
+                          game.deadVotes[player]
+                            ? "Refund Dead Vote"
+                            : "Use Dead Vote"
+                        }
+                        icon={
+                          game.deadVotes[player]
+                            ? AiFillPlusCircle
+                            : AiFillMinusCircle
+                        }
+                        onClick={() =>
+                          setDeadVote(player, !game.deadVotes[player])
+                        }
+                        disabled={deadVoteLoading}
+                      />
+                    </Dialog.Close>
+                  )}
                 </Flex>
               </Dialog.Content>
             </Dialog.Root>
@@ -278,6 +332,75 @@ function PlayerMenuItem({
       <label htmlFor={id} className="p-1">
         {label}
       </label>
+    </Flex>
+  );
+}
+
+interface PlayerNoteInputProps {
+  player: string;
+  handleAddNote: (note: string) => void;
+  disabled?: boolean;
+}
+
+function PlayerNoteInput({
+  player,
+  handleAddNote,
+  disabled = false,
+}: PlayerNoteInputProps) {
+  const [note, setNote] = React.useState("");
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button variant="ghost" disabled={disabled}>
+          <AiFillPlusCircle />
+          Add Note
+        </Button>
+      </Dialog.Trigger>
+
+      <Dialog.Content className="m-2">
+        <Dialog.Title className="capitalize">{player}: Add Note</Dialog.Title>
+        <Flex direction="column" gap="4">
+          <TextFieldInput
+            value={note}
+            onChange={(event) => setNote(event.currentTarget.value)}
+          />
+          <Flex justify="between">
+            <Dialog.Close>
+              <Button>Cancel</Button>
+            </Dialog.Close>
+
+            <Dialog.Close>
+              <Button onClick={() => handleAddNote(note)}>Add</Button>
+            </Dialog.Close>
+          </Flex>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+}
+
+interface PlayerStatusProps {
+  playerNotes: Note[];
+}
+
+function PlayerStatus({ playerNotes }: PlayerStatusProps) {
+  return (
+    <Flex gap="1">
+      {playerNotes?.find(({ type }) => type === "poison") && (
+        <Tooltip content="Poisoned">
+          <span className="text-red-600">
+            <FaVial />
+          </span>
+        </Tooltip>
+      )}
+      {playerNotes?.find(({ type }) => type === "drunk") && (
+        <Tooltip content="Drunk">
+          <span className="text-red-600">
+            <IoIosBeer />
+          </span>
+        </Tooltip>
+      )}
     </Flex>
   );
 }

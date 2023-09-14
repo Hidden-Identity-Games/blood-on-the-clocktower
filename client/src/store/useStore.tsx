@@ -33,13 +33,13 @@ export function useCreateGame() {
 export function useKickPlayer() {
   const { gameId } = useGame();
 
-  return useAction(async (playerId: string) => {
+  return useAction(async (player: string) => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
 
     const response = await axios.post(apiUrl("/kick_player"), {
-      playerId,
+      player,
       gameId,
     });
     if (response.status !== 200) {
@@ -60,6 +60,25 @@ export function useDecideFate() {
       dead,
       player,
       gameId,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
+}
+
+export function useDeadVote() {
+  const { gameId } = useGame();
+
+  return useAction(async (player: string, voteUsed: boolean) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/dead_vote"), {
+      player,
+      gameId,
+      voteUsed,
     });
     if (response.status !== 200) {
       throw new Error(response.statusText);
@@ -117,6 +136,28 @@ export function useAddPlayer() {
       throw e;
     }
   });
+}
+
+export function usePlayerNotes() {
+  const { gameId } = useGame();
+
+  return useAction(
+    async (player: string, action: "add" | "remove", note: string) => {
+      if (!gameId) {
+        throw new Error("GameId not ready");
+      }
+
+      const endPoint = action === "add" ? "/add_note" : "/clear_note";
+      const response = await axios.post(apiUrl(endPoint), {
+        player,
+        gameId,
+        note,
+      });
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+    },
+  );
 }
 
 class PlayerCountError extends Error {
