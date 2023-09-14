@@ -12,7 +12,6 @@ import { FaMasksTheater } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { PregamePlayerList } from "./PlayerList";
-import { NightOrder } from "./NightOrder";
 
 export interface LobbyProps {
   rolesList: Role[];
@@ -20,11 +19,9 @@ export interface LobbyProps {
 
 export function Lobby({ rolesList }: LobbyProps) {
   const { game } = useDefiniteGame();
-  const [_selectedTab, setSelectedTab] = useState<string>("roles");
+  const [selectedTab, setSelectedTab] = useState<string>("roles");
 
   const characterSelectState = useCharacterSelectState(rolesList);
-  const assignedRoles = Object.values(game.playersToRoles);
-  const selectedTab = game.gameStarted ? "nightOrder" : _selectedTab;
 
   return (
     <Flex
@@ -37,13 +34,9 @@ export function Lobby({ rolesList }: LobbyProps) {
         selectedRoles={characterSelectState.selectedRoles.value}
       />
       <TeamDistributionBar
-        charsSelected={
-          game.gameStarted
-            ? assignedRoles
-            : Object.entries(characterSelectState.selectedRoles.value)
-                .filter(([_, value]) => !!value)
-                .map(([key]) => key)
-        }
+        charsSelected={Object.entries(characterSelectState.selectedRoles.value)
+          .filter(([_, value]) => !!value)
+          .map(([key]) => key)}
       />
       <Tabs.Root
         className="flex flex-1 flex-col"
@@ -59,29 +52,21 @@ export function Lobby({ rolesList }: LobbyProps) {
               <BsPeopleFill />
             </Text>
           </Tabs.Trigger>
-          {game.gameStarted ? (
-            <Tabs.Trigger className="max-w-[200px] flex-1" value="night-order">
-              <Text className="mr-1">Night Order</Text>
-              <Text color="red" asChild>
-                <FaMasksTheater />
-              </Text>
-            </Tabs.Trigger>
-          ) : (
-            <Tabs.Trigger className="max-w-[200px] flex-1" value="roles">
-              <Text className="mr-1">
-                Roles(
-                {
-                  Object.values(
-                    characterSelectState.selectedRoles.value,
-                  ).filter((selected) => selected).length
-                }
-                )
-              </Text>
-              <Text color="red" asChild>
-                <FaMasksTheater />
-              </Text>
-            </Tabs.Trigger>
-          )}
+
+          <Tabs.Trigger className="max-w-[200px] flex-1" value="roles">
+            <Text className="mr-1">
+              Roles(
+              {
+                Object.values(characterSelectState.selectedRoles.value).filter(
+                  (selected) => selected,
+                ).length
+              }
+              )
+            </Text>
+            <Text color="red" asChild>
+              <FaMasksTheater />
+            </Text>
+          </Tabs.Trigger>
         </Tabs.List>
         <div className="relative flex-1 overflow-x-hidden">
           <AnimatePresence>
@@ -129,26 +114,8 @@ export function Lobby({ rolesList }: LobbyProps) {
                 >
                   <CharacterSelectList
                     state={characterSelectState}
-                    readOnly={game.gameStarted}
+                    readOnly={false}
                   />
-                </Tabs.Content>
-              </motion.div>
-            )}
-            {selectedTab === "night-order" && (
-              <motion.div
-                className="absolute h-full w-full"
-                key="night-order"
-                initial={{ x: "-100%", opacity: 0.3 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "-100%", opacity: 0.3 }}
-                transition={{ type: "tween" }}
-              >
-                <Tabs.Content
-                  forceMount
-                  className="h-full overflow-y-auto"
-                  value="night-order"
-                >
-                  <NightOrder />
                 </Tabs.Content>
               </motion.div>
             )}

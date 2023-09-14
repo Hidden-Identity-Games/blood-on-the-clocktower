@@ -11,7 +11,7 @@ export function GameHeader() {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ url, title: url, text: "aaa" });
+        await navigator.share({ url, title: url, text: url });
       } catch (error) {
         console.log("Failed to share.");
       }
@@ -39,13 +39,8 @@ export function GameHeader() {
           <Text color="amber">Game:</Text> {gameId}
           <BsShare className="ml-.5 inline text-xs" />
         </Link>
-        <Heading size="2" className="shrink truncate">
-          Status:{" "}
-          {(() => {
-            if (game?.nextGameId) return "Ended";
-            if (game?.gameStarted) return "Started";
-            return "Gathering";
-          })()}
+        <Heading size="2" className="shrink truncate capitalize">
+          Status: {game?.gameStatus}
         </Heading>
       </Flex>
       {game?.nextGameId && (
