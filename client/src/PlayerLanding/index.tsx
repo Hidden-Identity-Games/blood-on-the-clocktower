@@ -9,6 +9,7 @@ import { PlayerWaiting } from "./PlayerWaiting";
 import { useGame } from "../store/GameContext";
 import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
+import { PlayerInGame } from "./PlayerInGame";
 
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -40,7 +41,7 @@ function PlayerLanding() {
 
   if (!game) return <LoadingExperience>Loading...</LoadingExperience>;
 
-  if (!player)
+  if (!player) {
     return (
       <>
         {kicked && (
@@ -54,17 +55,19 @@ function PlayerLanding() {
         <AddPlayer />
       </>
     );
-
-  if (!role) {
-    return;
   }
 
-  if (!role || role === "unassigned")
+  if (!role || role === "unassigned") {
     return (
       <>
         <PlayerWaiting />
       </>
     );
+  }
 
-  return <PlayerRole role={role} />;
+  if (game.gameStatus === "Setup") {
+    return <PlayerRole role={role} />;
+  }
+
+  return <PlayerInGame />;
 }

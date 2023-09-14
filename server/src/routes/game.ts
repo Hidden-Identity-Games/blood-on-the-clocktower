@@ -11,6 +11,7 @@ import {
   setPlayerFate,
   setPlayerOrder,
   toggleDeadvote,
+  updateStatus,
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
 
@@ -99,6 +100,13 @@ export function useGame (app: Application): void {
   app.post('/dead_vote', (req, res) => {
     const { player, gameId, voteUsed } = req.body
     toggleDeadvote(gameId, player, voteUsed)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/manual_status', (req, res) => {
+    const { gameId, status } = req.body
+    updateStatus(gameId, status)
     res.status(200)
     res.send({})
   })

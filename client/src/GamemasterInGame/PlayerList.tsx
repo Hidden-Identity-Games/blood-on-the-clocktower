@@ -167,28 +167,27 @@ export function IngamePlayerList({
                   </div>
                 }
                 explanation={(() => {
+                  let ability = "";
                   switch (night) {
                     case null:
-                      return rowData.ability;
+                      ability = rowData.ability;
+                      break;
                     case "first":
-                      return (
-                        <div>
-                          <div>
-                            {!rowData.firstNightReminder &&
-                              "DOES NOT ACT TONIGHT"}
-                          </div>
-                          {rowData.firstNightReminder || rowData.ability}
-                        </div>
-                      );
+                      ability = rowData.firstNightReminder;
+                      break;
                     case "other":
-                      <div>
-                        <div>
-                          {!rowData.otherNightReminder &&
-                            "DOES NOT ACT TONIGHT"}
-                        </div>
-                        {rowData.otherNightReminder || rowData.ability}
-                      </div>;
+                      ability = rowData.otherNightReminder;
+                      break;
                   }
+
+                  return ability ? (
+                    <div>{ability}</div>
+                  ) : (
+                    <div>
+                      <div>DOES NOT ACT TONIGHT</div>
+                      <div>{rowData.ability}</div>
+                    </div>
+                  );
                 })()}
               >
                 <RoleIcon role={role} dead={deadPlayers[player]} />
@@ -208,17 +207,20 @@ export function IngamePlayerList({
               />
             )}
 
-            <RoleText className="flex-1" role={playersToRoles[player]}>
-              {player}
-            </RoleText>
-            <div
+            <label htmlFor={`${player}-done`}>
+              <RoleText className="flex-1" role={playersToRoles[player]}>
+                {player}
+              </RoleText>
+            </label>
+            <label
+              htmlFor={`${player}-done`}
               className="truncate capitalize"
               style={{
                 flex: 2,
               }}
             >
               {RoleName(playersToRoles[player])}
-            </div>
+            </label>
 
             <Dialog.Root>
               <Dialog.Trigger>
@@ -226,7 +228,7 @@ export function IngamePlayerList({
                   <RxHamburgerMenu />
                 </IconButton>
               </Dialog.Trigger>
-              <Dialog.Content>
+              <Dialog.Content className="w-fit">
                 <Flex direction="column" gap="2">
                   <Dialog.Close>
                     <PlayerMenuItem
@@ -275,7 +277,7 @@ function PlayerMenuItem({
       >
         {React.createElement(icon)}
       </IconButton>
-      <label htmlFor={id} className="p-1">
+      <label htmlFor={id} className="flex-1 p-1">
         {label}
       </label>
     </Flex>
