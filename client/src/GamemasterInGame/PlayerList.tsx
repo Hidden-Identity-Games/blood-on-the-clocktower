@@ -136,8 +136,6 @@ export function IngamePlayerList({
       );
   }, [night, game.playersToRoles]);
 
-  console.log(nightOrder);
-
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       {nightOrder.map(({ role, player: player, ...rowData }, idx) => (
