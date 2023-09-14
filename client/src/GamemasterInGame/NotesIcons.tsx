@@ -148,20 +148,16 @@ export function NotesIcons({ player }: { player: string }) {
 export function DeadVoteIcon({ player }: { player: string }) {
   const { game } = useDefiniteGame();
   const [, , , clearDeadVote] = useDeadVote();
-  const showVote = !(game.deadPlayers[player] && game.deadVotes[player]);
+  const showVote = game.deadPlayers[player];
   return (
     <div className="w-4">
       {showVote && (
         <IconButton
           size="1"
-          color={game.deadPlayers[player] ? "grass" : "gray"}
+          color={game.deadVotes[player] ? "gray" : "grass"}
           radius="full"
           variant="surface"
-          onClick={() => {
-            if (game.deadPlayers[player]) {
-              clearDeadVote(player, true);
-            }
-          }}
+          onClick={() => clearDeadVote(player, true)}
         >
           <LiaVoteYeaSolid className="h-2" />
         </IconButton>

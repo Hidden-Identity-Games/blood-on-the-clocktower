@@ -235,7 +235,7 @@ export function IngamePlayerList({
                 <Flex direction="column" gap="2">
                   <Dialog.Close>
                     <PlayerMenuItem
-                      id="dead-alive"
+                      id={`${player}-toggle-dead`}
                       label={game.deadPlayers[player] ? "Revive" : "Kill"}
                       icon={
                         game.deadPlayers[player] ? (
@@ -251,7 +251,7 @@ export function IngamePlayerList({
                     />
                   </Dialog.Close>
                   <PlayerMenuItem
-                    id="player-note"
+                    id={`${player}-add-note`}
                     label="Add Note"
                     icon={
                       <PlayerNoteInput
@@ -270,7 +270,7 @@ export function IngamePlayerList({
                   />
                   <Dialog.Close>
                     <PlayerMenuItem
-                      id="set-poison"
+                      id={`${player}-set-poison`}
                       label="Poisoned"
                       icon={<FaVial />}
                       onClick={() =>
@@ -283,7 +283,7 @@ export function IngamePlayerList({
                   </Dialog.Close>
                   <Dialog.Close>
                     <PlayerMenuItem
-                      id="set-drunk"
+                      id={`${player}-set-drunk`}
                       label="Drunk"
                       icon={<IoIosBeer />}
                       onClick={() =>
@@ -297,12 +297,8 @@ export function IngamePlayerList({
                   {game.deadVotes[player] && (
                     <Dialog.Close>
                       <PlayerMenuItem
-                        id="dead-vote"
-                        label={
-                          game.deadVotes[player]
-                            ? "Return Dead Vote"
-                            : "Use Dead Vote"
-                        }
+                        id={`${player}-return-dead-vote`}
+                        label="Return Dead Vote"
                         icon={
                           game.deadVotes[player] ? (
                             <AiFillPlusCircle />
