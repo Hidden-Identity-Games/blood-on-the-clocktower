@@ -140,8 +140,9 @@ export function IngamePlayerList({
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {nightOrder.map(({ role, player: player, ...rowData }) => (
+      {nightOrder.map(({ role, player: player, ...rowData }, idx) => (
         <Flex
+          className={classNames(idx % 2 === 0 && "bg-zinc-900")}
           justify="between"
           align="center"
           px="3"
@@ -209,21 +210,23 @@ export function IngamePlayerList({
 
             <DeadVoteIcon player={player} />
 
-            <RoleText
-              className={classNames(
-                "flex-1",
-                game.deadPlayers[player] && "line-through",
-              )}
-              role={game.playersToRoles[player]}
-            >
-              {player}
-            </RoleText>
+            <label className="flex-1" htmlFor={`${player}-menu-btn`}>
+              <RoleText
+                className={classNames(
+                  "flex-1",
+                  game.deadPlayers[player] && "line-through",
+                )}
+                role={game.playersToRoles[player]}
+              >
+                {player}
+              </RoleText>
+            </label>
 
             <NotesIcons player={player} />
 
             <Dialog.Root>
               <Dialog.Trigger>
-                <IconButton variant="ghost">
+                <IconButton id={`${player}-menu-btn`} variant="ghost">
                   <RxHamburgerMenu />
                 </IconButton>
               </Dialog.Trigger>
@@ -291,7 +294,7 @@ export function IngamePlayerList({
                       }
                     />
                   </Dialog.Close>
-                  {game.deadPlayers[player] && game.deadVotes[player] && (
+                  {game.deadVotes[player] && (
                     <Dialog.Close>
                       <PlayerMenuItem
                         id="dead-vote"
