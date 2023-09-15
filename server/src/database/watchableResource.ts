@@ -1,17 +1,29 @@
 type Callback<ResourceShape> = (value: ResourceShape | null) => void
-export class WatchableResource<ResourceShape> {
-  private value: ResourceShape
-  private callbacks: Array<Callback<ResourceShape>> = []
-  constructor (resource: ResourceShape) {
-    this.value = resource
+type Computer<ResourceShape, ComputedValues> = { [K in keyof ComputedValues]: (resource: ResourceShape) => ComputedValues[K] }
+
+export class WatchableResource<BaseResourceShape, ComputedValues> {
+  private value!: BaseResourceShape & ComputedValues
+  private callbacks: Array<Callback<BaseResourceShape & ComputedValues>> = []
+  private readonly computer: Computer<BaseResourceShape, ComputedValues>
+  constructor (resource: BaseResourceShape, computer: Computer<BaseResourceShape, ComputedValues>) {
+    this.computer = computer
+    this.setValue(resource)
   }
 
-  update (newValue: ResourceShape): void {
-    this.value = newValue
+  private setValue (nextValue: BaseResourceShape): void {
+    this.value = Object.entries(this.computer).reduce<BaseResourceShape & ComputedValues>((combined, [key, compute]) => ({
+      ...combined,
+      [key]: compute,
+    // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
+    }), nextValue as BaseResourceShape & ComputedValues)
+  }
+
+  update (_newValue: BaseResourceShape): void {
+    this.setValue(_newValue)
     const callbacksToRemove: unknown[] = []
     this.callbacks.forEach((cb) => {
       try {
-        cb(this.value)
+        cb(this.readOnce())
       } catch (e) {
         console.error(e)
         callbacksToRemove.push(cb)
@@ -22,15 +34,15 @@ export class WatchableResource<ResourceShape> {
     )
   }
 
-  subscribe (callback: Callback<ResourceShape>): () => void {
+  subscribe (callback: Callback<BaseResourceShape & ComputedValues>): () => void {
     this.callbacks = [...this.callbacks, callback]
-    callback(this.value)
+    callback(this.readOnce())
     return () => {
       this.callbacks = this.callbacks.filter((cb) => cb !== callback)
     }
   }
 
-  readOnce (): ResourceShape {
+  readOnce (): BaseResourceShape & ComputedValues {
     return this.value
   }
 }
