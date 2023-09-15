@@ -17,11 +17,13 @@ export interface LobbyProps {
   rolesList: Role[];
 }
 
-export function Lobby({ rolesList }: LobbyProps) {
-  const { game } = useDefiniteGame();
+export function Lobby() {
+  const { game, script } = useDefiniteGame();
   const [selectedTab, setSelectedTab] = useState<string>("roles");
 
-  const characterSelectState = useCharacterSelectState(rolesList);
+  const characterSelectState = useCharacterSelectState(
+    script.map(({ id }) => id),
+  );
 
   return (
     <Flex

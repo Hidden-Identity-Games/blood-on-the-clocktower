@@ -2,6 +2,7 @@ import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrdere
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
+import { addScript } from './scriptDB.ts'
 
 export const UNASSIGNED: Role = 'unassigned' as Role
 
@@ -30,11 +31,14 @@ export function getGame (gameId: string): UnifiedGame {
 }
 
 export function addGame (gameId: string, game?: BaseUnifiedGame): boolean {
+  console.log(`adding ${gameId}`)
   if (gameExists(gameId)) {
     throw new Error('Game already exists')
   }
 
   gameDB[gameId] = new WatchableResource(game ?? createGame(), gameComputer)
+  addScript(gameId)
+
   return true
 }
 

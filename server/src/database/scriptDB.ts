@@ -1,5 +1,5 @@
 import { type Script } from '../types/index.ts'
-import { type WatchableResource } from './watchableResource.ts'
+import { WatchableResource } from './watchableResource.ts'
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ComputedScript {}
 
@@ -21,4 +21,22 @@ export function retrievescript (gameId: string): WatchableScript {
 export function setScript (gameId: string, newScript: Script): void {
   const script = retrievescript(gameId)
   script.update(newScript)
+}
+
+export function addScript (gameId: string): void {
+  if (scriptExists(gameId)) {
+    throw new Error(`Script for game ${gameId} already exists"`)
+  }
+  scriptDB[gameId] = new WatchableResource([] as Script, {})
+}
+
+export function subscribeToScript (
+  gameId: string,
+  callback: (value: Script | null) => void,
+): () => void {
+  if (!scriptExists(gameId)) {
+    throw new Error(`${gameId} not found`)
+  }
+
+  return scriptDB[gameId].subscribe(callback)
 }

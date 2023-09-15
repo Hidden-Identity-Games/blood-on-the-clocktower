@@ -1,10 +1,14 @@
 import { type Application } from 'express-ws'
 import { parseMessage, createMessage } from '../messenger.ts'
 import { subscribeToGame } from '../database/gameDB.ts'
+import { subscribeToScript } from '../database/scriptDB.ts'
 
 export function useSocket (app: Application): void {
-  app.ws('/socket', (ws) => {
-    console.log('Connection esablished')
+  app.ws('/socket', (ws, req) => {
+    console.log(`Connection esablished ${req.ip}`)
+    ws.on('close', () => {
+      console.log(`Closed: ${req.ip}`)
+    })
     ws.on('message', (rawMsg) => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-base-to-string
@@ -19,6 +23,16 @@ export function useSocket (app: Application): void {
                 objectType: 'game',
                 updatedId: parsedMessage.gameId,
                 nextObj: game,
+              }),
+            )
+          })
+          subscribeToScript(parsedMessage.gameId, (script) => {
+            ws.send(
+              createMessage({
+                type: 'ObjectUpdated',
+                objectType: 'script',
+                updatedId: parsedMessage.gameId,
+                nextObj: script,
               }),
             )
           })

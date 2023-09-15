@@ -5,6 +5,8 @@ import { createMessage, parseMessage } from "./messenger";
 import { Callout } from "@radix-ui/themes";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { LoadingExperience } from "../shared/LoadingExperience";
+import { Script } from "@hidden-identity/server";
+import { exhaustiveCheck } from "../utils/exhaustiveCheck";
 
 export function GameProvider({
   gameId,
@@ -14,14 +16,16 @@ export function GameProvider({
   children: React.ReactNode;
 }) {
   const [game, setGame] = useState<UnifiedGame | null>(null);
+  const [script, setScript] = useState<Script | null>(null);
   const unmounted = useRef(false);
 
   const contextValue = useMemo(
     () => ({
       gameId,
-      game: game ?? null,
+      game: game,
+      script: script,
     }),
-    [gameId, game],
+    [gameId, game, script],
   );
 
   const { lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(
@@ -58,12 +62,21 @@ export function GameProvider({
       return;
     }
     const parsedMessage = parseMessage(lastJsonMessage);
-    if (
-      parsedMessage.type === "ObjectUpdated" &&
-      parsedMessage.objectType === "game" &&
-      parsedMessage.updatedId === gameId
-    ) {
-      setGame(parsedMessage.nextObj);
+    switch (parsedMessage.objectType) {
+      case "game": {
+        if (parsedMessage.updatedId === gameId) {
+          setGame(parsedMessage.nextObj);
+        }
+        return;
+      }
+      case "script": {
+        if (parsedMessage.updatedId === gameId) {
+          setScript(parsedMessage.nextObj);
+        }
+        return;
+      }
+      default:
+        exhaustiveCheck(parsedMessage);
     }
   }, [gameId, lastJsonMessage]);
 

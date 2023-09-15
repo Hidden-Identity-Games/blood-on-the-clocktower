@@ -17,7 +17,7 @@ export function setupTestGames (): void {
     'nadir',
     'cameron',
   ]
-  addGame('test-game', ({
+  addGame('test-game', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
@@ -27,9 +27,9 @@ export function setupTestGames (): void {
       alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
     },
     deadVotes: {},
-  }))
+  })
 
-  addGame('tg-wrong-way', ({
+  addGame('tg-wrong-way', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -48,9 +48,9 @@ export function setupTestGames (): void {
       alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
     },
     deadVotes: {},
-  }))
+  })
 
-  addGame('tg-broken-link', ({
+  addGame('tg-broken-link', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -67,8 +67,8 @@ export function setupTestGames (): void {
     deadPlayers: {},
     playerNotes: {},
     deadVotes: {},
-  }))
-  addGame('tg-excluded', ({
+  })
+  addGame('tg-excluded', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -86,5 +86,5 @@ export function setupTestGames (): void {
     deadPlayers: {},
     playerNotes: {},
     deadVotes: {},
-  }))
+  })
 }
