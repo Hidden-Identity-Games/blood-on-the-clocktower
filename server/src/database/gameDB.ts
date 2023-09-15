@@ -1,17 +1,23 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus, type Script } from '../types/UnifiedGame.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus, type UnifiedGameComputed } from '../types/index.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
 
 export const UNASSIGNED: Role = 'unassigned' as Role
 
-const gameDB: Record<string, WatchableResource<UnifiedGame>> = {}
+const gameComputer = {
+  orderedPlayers: getOrderedPlayers,
+}
+
+type WatchableGame = WatchableResource<BaseUnifiedGame, UnifiedGameComputed>
+
+const gameDB: Record<string, WatchableGame> = {}
 
 export function gameExists (gameId: string): boolean {
   return !!gameDB[gameId]
 }
 
-export function retrieveGame (gameId: string): WatchableResource<UnifiedGame> {
+export function retrieveGame (gameId: string): WatchableGame {
   if (!gameExists(gameId)) {
     throw new Error(`${JSON.stringify(gameId)} not found`)
   }
@@ -23,12 +29,12 @@ export function getGame (gameId: string): UnifiedGame {
   return retrieveGame(gameId).readOnce()
 }
 
-export function addGame (gameId: string, game?: UnifiedGame): boolean {
+export function addGame (gameId: string, game?: BaseUnifiedGame): boolean {
   if (gameExists(gameId)) {
     throw new Error('Game already exists')
   }
 
-  gameDB[gameId] = new WatchableResource(game ?? createGame())
+  gameDB[gameId] = new WatchableResource(game ?? createGame(), gameComputer)
   return true
 }
 
@@ -56,13 +62,6 @@ function createGame (): UnifiedGame {
   }
 }
 
-export function setScript (gameId: string, script: Script): void {
-  const game = retrieveGame(gameId)
-  const gameInstance = game.readOnce()
-
-  updateGameWithComputes(game, { ...gameInstance, script })
-}
-
 export function addPlayer (
   gameId: string,
   player: string,
@@ -77,7 +76,7 @@ export function addPlayer (
     )
   }
 
-  updateGameWithComputes(game, {
+  game.update({
     ...gameInstance,
     partialPlayerOrdering: {
       ...gameInstance.partialPlayerOrdering,
@@ -105,7 +104,7 @@ export function kickPlayer (gameId: string, player: string): void {
     )
   }
 
-  updateGameWithComputes(game, {
+  game.update({
     ...gameInstance,
     playersToRoles: removeKey(gameInstance.playersToRoles, player),
     partialPlayerOrdering: removeKey(gameInstance.partialPlayerOrdering, player),
@@ -120,7 +119,7 @@ export function setPlayerFate (
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  updateGameWithComputes(game, { ...gameInstance, deadPlayers: { ...gameInstance.deadPlayers, [player]: dead } })
+  game.update({ ...gameInstance, deadPlayers: { ...gameInstance.deadPlayers, [player]: dead } })
 }
 
 export function setPlayerOrder (
@@ -131,13 +130,7 @@ export function setPlayerOrder (
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  updateGameWithComputes(game, { ...gameInstance, partialPlayerOrdering: { ...gameInstance.partialPlayerOrdering, [player]: { rightNeighbor } } })
-}
-export function computedValues (game: Omit<UnifiedGame, 'orderedPlayers'>): UnifiedGame {
-  return {
-    ...game,
-    orderedPlayers: getOrderedPlayers(game),
-  }
+  game.update({ ...gameInstance, partialPlayerOrdering: { ...gameInstance.partialPlayerOrdering, [player]: { rightNeighbor } } })
 }
 
 function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
@@ -215,7 +208,7 @@ export function assignRoles (
     throw new Error(`Player role count mistmatch, ${playerIdList.length} players, ${roles.length} roles.`)
   }
 
-  updateGameWithComputes(game, {
+  game.update({
     ...gameInstance,
     gameStatus: 'Setup',
     playersToRoles: roles
@@ -236,7 +229,7 @@ export function addNote (gameId: string, player: string, note: Note): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  updateGameWithComputes(game, {
+  game.update({
     ...gameInstance,
     playerNotes: {
       ...gameInstance.playerNotes,
@@ -249,7 +242,7 @@ export function clearNote (gameId: string, player: string, noteId: string): void
   const gameInstance = game.readOnce()
   console.log(noteId, gameInstance.playerNotes[player])
 
-  updateGameWithComputes(game, {
+  game.update({
     ...gameInstance,
     playerNotes: {
       ...gameInstance.playerNotes,
@@ -263,7 +256,7 @@ export function toggleDeadvote (gameId: string, player: string, voteUsed: boolea
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  updateGameWithComputes(game, {
+  game.update({
     ...gameInstance,
     deadVotes: {
       ...gameInstance.deadVotes,
@@ -276,13 +269,8 @@ export function updateStatus (gameId: string, status: GameStatus): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  updateGameWithComputes(game, {
+  game.update({
     ...gameInstance,
     gameStatus: status,
   })
-}
-
-function updateGameWithComputes (game: WatchableResource<UnifiedGame>, newValue: UnifiedGame): void {
-  newValue.orderedPlayers = getOrderedPlayers(newValue)
-  game.update(newValue)
 }

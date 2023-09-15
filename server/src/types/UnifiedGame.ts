@@ -1,10 +1,18 @@
-export interface UnifiedGame extends BaseUnifiedGame {
-  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
+import { type Role } from './Role.ts'
+import { type Script } from './Script.ts'
 
-}
 export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
 export type NoteType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', message: string } | { type: 'bluffing', as: string }
 export type Note = NoteType & { id: string }
+
+export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {
+}
+
+export interface UnifiedGameComputed {
+  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
+
+}
+
 export interface BaseUnifiedGame {
   script?: Script
   playersToRoles: Record<string, Role>
@@ -36,21 +44,12 @@ export interface Neighbors {
   rightNeighbor: string | null
 }
 
-export type Role = string & {
-  __is_char_id: true
-}
-
 export interface Character {
   id: Role
   name: string
   team: CharacterType
   imageSrc?: string
 }
-
-export interface ScriptItem {
-  id: Role
-}
-export type Script = ScriptItem[]
 
 export const CharacterTypes = [
   'Townsfolk',

@@ -1,4 +1,4 @@
-import { UNASSIGNED, addGame, computedValues } from './database/gameDB.ts'
+import { UNASSIGNED, addGame } from './database/gameDB.ts'
 
 export function setupTestGames (): void {
   const players = [
@@ -17,7 +17,7 @@ export function setupTestGames (): void {
     'nadir',
     'cameron',
   ]
-  addGame('test-game', computedValues({
+  addGame('test-game', ({
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
@@ -29,7 +29,7 @@ export function setupTestGames (): void {
     deadVotes: {},
   }))
 
-  addGame('tg-wrong-way', computedValues({
+  addGame('tg-wrong-way', ({
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -50,7 +50,7 @@ export function setupTestGames (): void {
     deadVotes: {},
   }))
 
-  addGame('tg-broken-link', computedValues({
+  addGame('tg-broken-link', ({
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -68,7 +68,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
   }))
-  addGame('tg-excluded', computedValues({
+  addGame('tg-excluded', ({
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {

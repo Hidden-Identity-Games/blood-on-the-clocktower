@@ -10,7 +10,6 @@ import {
   retrieveGame,
   setPlayerFate,
   setPlayerOrder,
-  setScript,
   toggleDeadvote,
   updateStatus,
 } from '../database/gameDB.ts'
@@ -47,12 +46,12 @@ export function useGame (app: Application): void {
     res.send(game)
   })
 
-  app.post('/set_script', (req, res) => {
-    const { gameId, script } = req.body
-    setScript(gameId, script)
-    res.status(200)
-    res.send({})
-  })
+  // app.post('/set_script', (req, res) => {
+  //   const { gameId, script } = req.body
+  //   setScript(gameId, script)
+  //   res.status(200)
+  //   res.send({})
+  // })
 
   app.post('/add_player', (req, res) => {
     const { player, gameId } = req.body
