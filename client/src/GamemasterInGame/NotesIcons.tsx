@@ -38,6 +38,7 @@ function NotesIconList({
         case "drunk":
           return (
             <IconButton
+              key={note.id}
               {...buttonProps}
               onClick={() => {
                 updatePlayerNote(player, "remove", note);
@@ -49,6 +50,7 @@ function NotesIconList({
         case "poison":
           return (
             <IconButton
+              key={note.id}
               {...buttonProps}
               onClick={() => {
                 updatePlayerNote(player, "remove", note);
@@ -60,6 +62,7 @@ function NotesIconList({
         case "bluffing":
           return (
             <MeaningfulStatusIcon
+              key={note.id}
               size={size}
               color={buttonProps.color}
               header={
@@ -89,6 +92,7 @@ function NotesIconList({
         case "custom":
           return (
             <MeaningfulStatusIcon
+              key={note.id}
               size={size}
               color="violet"
               header={

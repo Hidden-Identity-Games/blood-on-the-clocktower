@@ -9,7 +9,7 @@ export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {
 
 export interface UnifiedGameComputed {
   orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
-
+  playerList: string[]
 }
 
 export interface BaseUnifiedGame {
