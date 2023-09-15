@@ -25,7 +25,6 @@ export const roleExtensions: Record<Role, RoleExtension> = Object.fromEntries(
     role as RoleExtension,
   ]),
 );
-console.log(Object.keys(roleExtensions).filter((role) => !roles[role]));
 
 export function getRoleExtension(role: Role): RoleExtension {
   return (
