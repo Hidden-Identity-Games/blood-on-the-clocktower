@@ -27,6 +27,7 @@ export interface CharacterSelectState {
 
 // doing some wonky shit because we cannot elave the tab mounted when we switch.
 // so if we don't hoist state we lose data when switching tabs.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCharacterSelectState(
   availableCharacters?: Role[],
 ): CharacterSelectState {
@@ -119,10 +120,7 @@ export function CharacterSelectList({
                       }));
                     }}
                   />
-                  <RoleIcon
-                    role={role}
-                    style={{ height: "3em", aspectRatio: 1 }}
-                  />
+                  <RoleIcon role={role} className="h-4" />
                   <span className="capitalize">{RoleName(role)}</span>
                 </label>
               </Flex>

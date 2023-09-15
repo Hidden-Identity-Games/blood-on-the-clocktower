@@ -1,12 +1,18 @@
 import { type Application } from 'express-ws'
 import {
   addGame,
+  addNote,
   addPlayer,
   assignRoles,
+  clearNote,
   getGame,
   kickPlayer,
   retrieveGame,
+  setPlayerFate,
   setPlayerOrder,
+  setScript,
+  toggleDeadvote,
+  updateStatus,
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
 
@@ -41,6 +47,13 @@ export function useGame (app: Application): void {
     res.send(game)
   })
 
+  app.post('/set_script', (req, res) => {
+    const { gameId, script } = req.body
+    setScript(gameId, script)
+    res.status(200)
+    res.send({})
+  })
+
   app.post('/add_player', (req, res) => {
     const { player, gameId } = req.body
     addPlayer(gameId, player)
@@ -51,8 +64,8 @@ export function useGame (app: Application): void {
   })
 
   app.post('/kick_player', (req, res) => {
-    const { playerId, gameId } = req.body
-    kickPlayer(gameId, playerId)
+    const { player, gameId } = req.body
+    kickPlayer(gameId, player)
     res.status(200)
     res.send({})
   })
@@ -67,6 +80,41 @@ export function useGame (app: Application): void {
   app.post('/assign_roles', (req, res) => {
     const { roles, gameId } = req.body
     assignRoles(gameId, roles)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/decide_fate', (req, res) => {
+    const { player, gameId, dead } = req.body
+    setPlayerFate(gameId, player, dead)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/add_note', (req, res) => {
+    const { player, gameId, note } = req.body
+    addNote(gameId, player, note)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/clear_note', (req, res) => {
+    const { player, gameId, noteId } = req.body
+    clearNote(gameId, player, noteId)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/dead_vote', (req, res) => {
+    const { player, gameId, voteUsed } = req.body
+    toggleDeadvote(gameId, player, voteUsed)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/manual_status', (req, res) => {
+    const { gameId, status } = req.body
+    updateStatus(gameId, status)
     res.status(200)
     res.send({})
   })

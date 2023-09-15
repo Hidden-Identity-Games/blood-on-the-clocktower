@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame } from '../types/types.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus, type Script } from '../types/UnifiedGame.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -45,12 +45,22 @@ export function subscribeToGame (
 
 function createGame (): UnifiedGame {
   return {
-    gameStarted: false,
+    gameStatus: 'PlayersJoining',
     gmSecretHash: generate(3).join('-'),
     playersToRoles: {},
     partialPlayerOrdering: {},
     orderedPlayers: { fullList: [], problems: false },
+    deadPlayers: {},
+    playerNotes: {},
+    deadVotes: {},
   }
+}
+
+export function setScript (gameId: string, script: Script): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, { ...gameInstance, script })
 }
 
 export function addPlayer (
@@ -77,6 +87,10 @@ export function addPlayer (
       ...gameInstance.playersToRoles,
       [player]: UNASSIGNED,
     },
+    deadPlayers: {
+      ...gameInstance.deadPlayers,
+      [player]: false,
+    },
   })
 }
 
@@ -96,6 +110,17 @@ export function kickPlayer (gameId: string, player: string): void {
     playersToRoles: removeKey(gameInstance.playersToRoles, player),
     partialPlayerOrdering: removeKey(gameInstance.partialPlayerOrdering, player),
   })
+}
+
+export function setPlayerFate (
+  gameId: string,
+  player: string,
+  dead: boolean,
+): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, { ...gameInstance, deadPlayers: { ...gameInstance.deadPlayers, [player]: dead } })
 }
 
 export function setPlayerOrder (
@@ -136,7 +161,7 @@ function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
 
 function getProblems (game: BaseUnifiedGame, player: string): Problem | null {
   const neighbor = game.partialPlayerOrdering[player]?.rightNeighbor
-  if (!neighbor) {
+  if (!(neighbor && game.playersToRoles[neighbor])) {
     return { type: 'broken-link' }
   }
 
@@ -192,7 +217,7 @@ export function assignRoles (
 
   updateGameWithComputes(game, {
     ...gameInstance,
-    gameStarted: true,
+    gameStatus: 'Setup',
     playersToRoles: roles
       .map((item) => ({ item, random: Math.random() }))
       .sort((a, b) => a.random - b.random)
@@ -204,6 +229,56 @@ export function assignRoles (
       }),
       {},
     ),
+  })
+}
+
+export function addNote (gameId: string, player: string, note: Note): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    playerNotes: {
+      ...gameInstance.playerNotes,
+      [player]: [...(gameInstance.playerNotes[player] || []), note],
+    },
+  })
+}
+export function clearNote (gameId: string, player: string, noteId: string): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+  console.log(noteId, gameInstance.playerNotes[player])
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    playerNotes: {
+      ...gameInstance.playerNotes,
+      [player]: [
+        ...(gameInstance.playerNotes[player] || []).filter(({ id }) => id !== noteId),
+      ],
+    },
+  })
+}
+export function toggleDeadvote (gameId: string, player: string, voteUsed: boolean): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    deadVotes: {
+      ...gameInstance.deadVotes,
+      [player]: voteUsed,
+    },
+  })
+}
+
+export function updateStatus (gameId: string, status: GameStatus): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, {
+    ...gameInstance,
+    gameStatus: status,
   })
 }
 

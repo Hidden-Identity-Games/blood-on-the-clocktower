@@ -10,15 +10,16 @@ export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
 }
 export function RoleIcon({ role, ...props }: RoleIconProps) {
   return (
-    <img
-      src={roles[role]?.imageSrc ?? DefaultRoleImageSrc}
-      style={{
-        objectFit: "contain",
-        maxHeight: "100%",
-        ...(props.style ?? {}),
-      }}
+    <div
       {...props}
-    />
+      className={classNames(
+        props.className,
+        "bg-center bg-contain h-4 w-4 flex items-center justify-center",
+      )}
+      style={{
+        backgroundImage: `url(${roles[role]?.imageSrc ?? DefaultRoleImageSrc})`,
+      }}
+    ></div>
   );
 }
 export function RoleName(role: string) {

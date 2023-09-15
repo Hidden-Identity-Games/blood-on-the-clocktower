@@ -1,13 +1,11 @@
-import { useGame } from "../store/useStore";
+import { useGame, useSetScript } from "../store/useStore";
 import { useParams } from "react-router-dom";
 import { GameProvider } from "../store/GameContextProvider";
 import { Lobby } from "./Lobby";
 import { ScriptSelect } from "./ScriptSelect";
-import { Script } from "../types/script";
-import { useSearchParams } from "react-router-dom";
-import { Role } from "@hidden-identity/server";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
+import { NightOrder } from "./NightOrder";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
@@ -17,50 +15,30 @@ export function GameMasterRoot() {
     </GameProvider>
   );
 }
-function useScript() {
-  try {
-    const [params] = useSearchParams();
-    const _script = params.get("script");
-    if (_script === null) {
-      return null;
-    }
-
-    const script = JSON.parse(_script) as Role[];
-    return script;
-  } catch (e) {
-    return null;
-  }
-}
 
 function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
-  const script = useScript();
-  const [, setSearchParams] = useSearchParams();
-
   const { game } = useGame();
+  const [, loadingSetScript, , setScript] = useSetScript();
 
-  if (!game) {
+  if (!game || loadingSetScript) {
     return <LoadingExperience>Loading...</LoadingExperience>;
   }
   if (providedGMHash !== game.gmSecretHash) {
-    return <div>You are in the wrong place</div>;
+    return <div>You are in the wrong place.</div>;
   }
 
   return (
     <>
       <GameHeader />
-      {script ? (
-        <Lobby rolesList={script} />
-      ) : (
-        <ScriptSelect
-          handleSubmit={(script: Script) => {
-            setSearchParams((prev) => {
-              const next = new URLSearchParams(prev);
-              next.set("script", JSON.stringify(script.map(({ id }) => id)));
-              return next;
-            });
-          }}
-        />
-      )}
+      {game.gameStatus === "PlayersJoining" &&
+        (game.script ? (
+          <Lobby rolesList={game.script.map(({ id }) => id)} />
+        ) : (
+          <ScriptSelect handleSubmit={setScript} />
+        ))}
+      {(game.gameStatus === "Setup" ||
+        game.gameStatus === "Started" ||
+        game.gameStatus === "Finished") && <NightOrder />}
     </>
   );
 }
