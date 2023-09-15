@@ -41,7 +41,7 @@ export function PlayerInGame() {
         ?.map(({ id }) => ({ ...getRole(id), ...getRoleExtension(id) }))
         .map((character) => character) ?? [];
 
-    const nightOrder = [...allCharacters]
+    const nightOrder = allCharacters
       .filter((character) => character.otherNight > 0)
       .sort((a, b) => a.otherNight - b.otherNight);
 
