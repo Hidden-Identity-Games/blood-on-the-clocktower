@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus } from '../types/types.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus, type Script } from '../types/UnifiedGame.ts'
 import { generate } from 'random-words'
 import { WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -54,6 +54,13 @@ function createGame (): UnifiedGame {
     playerNotes: {},
     deadVotes: {},
   }
+}
+
+export function setScript (gameId: string, script: Script): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  updateGameWithComputes(game, { ...gameInstance, script })
 }
 
 export function addPlayer (
