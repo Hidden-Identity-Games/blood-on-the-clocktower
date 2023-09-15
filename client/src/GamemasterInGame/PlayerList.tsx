@@ -24,36 +24,24 @@ import { GiBootKick, GiFeather, GiRaiseZombie } from "react-icons/gi";
 import { PiKnifeBold } from "react-icons/pi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
-import {
-  BrokenOrderedPlayers,
-  Role,
-  WellOrderedPlayers,
-} from "@hidden-identity/server";
 import React, { ReactNode } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, NotesIcons } from "./NotesIcons";
 
-interface PregamePlayerListProps {
-  playersToRoles: Record<string, Role>;
-  orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers;
-}
-
-export function PregamePlayerList({
-  playersToRoles,
-  orderedPlayers,
-}: PregamePlayerListProps) {
+export function PregamePlayerList() {
+  const { game } = useDefiniteGame();
   const [, kickPlayerLoading, , handleKickPlayer] = useKickPlayer();
   const seatingProblems =
-    orderedPlayers.problems && orderedPlayers.playerProblems;
+    game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {Object.entries(playersToRoles).length === 0 && (
+      {Object.entries(game.playersToRoles).length === 0 && (
         <Text as="div" className="m-5 text-center">
           No players have joined yet. Share the game by clicking the game code.
         </Text>
       )}
-      {Object.entries(playersToRoles).map(([player, role]) => (
+      {Object.entries(game.playersToRoles).map(([player, role]) => (
         <Flex
           justify="between"
           align="center"
@@ -150,8 +138,9 @@ export function IngamePlayerList({
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {nightOrder.map(({ role, player: player, ...rowData }) => (
+      {nightOrder.map(({ role, player: player, ...rowData }, idx) => (
         <Flex
+          className={classNames(idx % 2 === 0 && "bg-zinc-900")}
           justify="between"
           align="center"
           px="3"
@@ -159,7 +148,7 @@ export function IngamePlayerList({
           key={player}
           asChild
         >
-          <Text size="2">
+          <Text size="3">
             {night && (
               <Checkbox
                 id={`${player}-done`}
@@ -202,36 +191,40 @@ export function IngamePlayerList({
                       </div>
                     );
                   case "other":
-                    <div>
+                    return (
                       <div>
-                        {!rowData.otherNightReminder && "DOES NOT ACT TONIGHT"}
+                        <div>
+                          {!rowData.otherNightReminder &&
+                            "DOES NOT ACT TONIGHT"}
+                        </div>
+                        {rowData.otherNightReminder || rowData.ability}
                       </div>
-                      {rowData.otherNightReminder || rowData.ability}
-                    </div>;
+                    );
                 }
               })()}
             >
               <RoleIcon role={role} />
             </MeaningfulIcon>
+
             <DeadVoteIcon player={player} />
 
-            {/* {game.deadVotes[player] && <AiFillPlusCircle />} */}
-
-            <RoleText
-              className={classNames(
-                "flex-1",
-                game.deadPlayers[player] && "line-through",
-              )}
-              role={game.playersToRoles[player]}
-            >
-              {player}
-            </RoleText>
+            <label className="flex-1" htmlFor={`${player}-menu-btn`}>
+              <RoleText
+                className={classNames(
+                  "flex-1",
+                  game.deadPlayers[player] && "line-through",
+                )}
+                role={game.playersToRoles[player]}
+              >
+                {player}
+              </RoleText>
+            </label>
 
             <NotesIcons player={player} />
 
             <Dialog.Root>
               <Dialog.Trigger>
-                <IconButton variant="ghost">
+                <IconButton id={`${player}-menu-btn`} variant="ghost">
                   <RxHamburgerMenu />
                 </IconButton>
               </Dialog.Trigger>
@@ -240,7 +233,7 @@ export function IngamePlayerList({
                 <Flex direction="column" gap="2">
                   <Dialog.Close>
                     <PlayerMenuItem
-                      id="dead-alive"
+                      id={`${player}-toggle-dead`}
                       label={game.deadPlayers[player] ? "Revive" : "Kill"}
                       icon={
                         game.deadPlayers[player] ? (
@@ -256,7 +249,7 @@ export function IngamePlayerList({
                     />
                   </Dialog.Close>
                   <PlayerMenuItem
-                    id="player-note"
+                    id={`${player}-add-note`}
                     label="Add Note"
                     icon={
                       <PlayerNoteInput
@@ -275,7 +268,7 @@ export function IngamePlayerList({
                   />
                   <Dialog.Close>
                     <PlayerMenuItem
-                      id="set-poison"
+                      id={`${player}-set-poison`}
                       label="Poisoned"
                       icon={<FaVial />}
                       onClick={() =>
@@ -288,7 +281,7 @@ export function IngamePlayerList({
                   </Dialog.Close>
                   <Dialog.Close>
                     <PlayerMenuItem
-                      id="set-drunk"
+                      id={`${player}-set-drunk`}
                       label="Drunk"
                       icon={<IoIosBeer />}
                       onClick={() =>
@@ -299,15 +292,11 @@ export function IngamePlayerList({
                       }
                     />
                   </Dialog.Close>
-                  {game.deadPlayers[player] && game.deadVotes[player] && (
+                  {game.deadVotes[player] && (
                     <Dialog.Close>
                       <PlayerMenuItem
-                        id="dead-vote"
-                        label={
-                          game.deadVotes[player]
-                            ? "Refund Dead Vote"
-                            : "Use Dead Vote"
-                        }
+                        id={`${player}-return-dead-vote`}
+                        label="Return Dead Vote"
                         icon={
                           game.deadVotes[player] ? (
                             <AiFillPlusCircle />
