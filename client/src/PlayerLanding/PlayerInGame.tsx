@@ -1,14 +1,20 @@
-import { Button, Flex, Table, Tabs, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Tabs, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
 import { useMe } from "../store/secretKey";
-import { BsPeopleFill } from "react-icons/bs";
+import {
+  BsFillMoonFill,
+  BsFillMoonStarsFill,
+  BsPeopleFill,
+} from "react-icons/bs";
 import { GiScrollQuill } from "react-icons/gi";
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { getRoleExtension } from "../assets/game_data/gameData";
+import { getRole, getRoleExtension } from "../assets/game_data/gameData";
+import { colorMap } from "../shared/CharacterTypes";
+import { CharacterType } from "../types/script";
 
 const filters = ["dead", "can vote", "alive", "all"] as const;
 type Filters = (typeof filters)[number];
@@ -29,18 +35,26 @@ export function PlayerInGame() {
   };
   const players = playerFilters[filter];
 
-  const script: Record<CharacterType, RoleExtension[]> = React.useMemo(() => {
-    const allCharacters = game.script
-      ?.map(({ id }) => getRoleExtension(id))
-      .map((character) => character);
+  const [nightOrder, charactersByType] = React.useMemo(() => {
+    const allCharacters =
+      game.script
+        ?.map(({ id }) => ({ ...getRole(id), ...getRoleExtension(id) }))
+        .map((character) => character) ?? [];
 
-    return {
-      Townsfolk: allCharacters?.filter(({ team }) => team === "townsfolk"),
-      Outsider: allCharacters?.filter(({ team }) => team === "outsider"),
-      Minion: allCharacters?.filter(({ team }) => team === "minion"),
-      Demon: allCharacters?.filter(({ team }) => team === "demon"),
-      // Unknown: allCharacters?.filter(({ team }) => team === "Unknown"),
-    };
+    const nightOrder = [...allCharacters]
+      .filter((character) => character.otherNight > 0)
+      .sort((a, b) => a.otherNight - b.otherNight);
+
+    return [
+      nightOrder,
+      {
+        Townsfolk: allCharacters.filter(({ team }) => team === "Townsfolk"),
+        Outsider: allCharacters.filter(({ team }) => team === "Outsider"),
+        Minion: allCharacters.filter(({ team }) => team === "Minion"),
+        Demon: allCharacters.filter(({ team }) => team === "Demon"),
+        // Unknown: allCharacters.filter(({ team }) => team === "Unknown"),
+      },
+    ];
   }, [game.script]);
 
   return (
@@ -50,17 +64,65 @@ export function PlayerInGame() {
       onValueChange={setSelectedTab}
     >
       <Tabs.List>
-        <Tabs.Trigger value="script">
-          Script
-          <Text color="red" asChild>
-            <GiScrollQuill />
-          </Text>
+        <Tabs.Trigger className="min-w-[100px] flex-1" value="script">
+          <motion.div layout>
+            <Text className="mr-1" color="red" asChild>
+              <GiScrollQuill />
+            </Text>
+          </motion.div>
+          <AnimatePresence>
+            <motion.div layout transition={{ duration: 0 }}>
+              {selectedTab === "script" && (
+                <motion.div
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ type: "tween" }}
+                >
+                  Script
+                </motion.div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </Tabs.Trigger>
-        <Tabs.Trigger value="players">
-          Players
-          <Text color="red" asChild>
-            <BsPeopleFill />
-          </Text>
+        <Tabs.Trigger className="flex-1" value="night-order">
+          <motion.div layout>
+            <Text className="mr-1" color="red" asChild>
+              <BsFillMoonStarsFill />
+            </Text>
+          </motion.div>
+          <AnimatePresence>
+            <motion.div layout transition={{ duration: 0 }}>
+              {selectedTab === "night-order" && (
+                <motion.div
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ type: "tween" }}
+                >
+                  Night Order
+                </motion.div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </Tabs.Trigger>
+        <Tabs.Trigger className="flex-1" value="players">
+          <motion.div layout>
+            <Text className="mr-1" color="red" asChild>
+              <BsPeopleFill />
+            </Text>
+          </motion.div>
+          <AnimatePresence>
+            <motion.div layout transition={{ duration: 0 }}>
+              {selectedTab === "players" && (
+                <motion.div
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ type: "tween" }}
+                >
+                  Players
+                </motion.div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </Tabs.Trigger>
       </Tabs.List>
 
@@ -68,11 +130,11 @@ export function PlayerInGame() {
         <AnimatePresence>
           {selectedTab === "script" && (
             <motion.div
-              className="absolute h-full w-full"
               key="script"
-              initial={{ x: "-100%", opacity: 0.3 }}
+              className="absolute h-full w-full"
+              initial={{ x: "-100%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "-100%", opacity: 0.3 }}
+              exit={{ x: "-100%", opacity: 0 }}
               transition={{ type: "tween" }}
             >
               <Tabs.Content
@@ -80,19 +142,104 @@ export function PlayerInGame() {
                 className="h-full overflow-y-auto"
                 value="script"
               >
-                {<Table.Root>{Object.entries(script)
-        .filter(([_, characters]) => characters.length > 0)
-        .map(([team, characters]) => ()}</Table.Root>}
+                <Flex className="m-2" direction="column" gap="3">
+                  {Object.entries(charactersByType)
+                    .filter(([_, characters]) => characters.length > 0)
+                    .map(([team, characters]) => (
+                      <React.Fragment key={team}>
+                        <Flex justify="end">
+                          <Heading
+                            size="3"
+                            align="right"
+                            color={colorMap[team as CharacterType]}
+                            asChild
+                          >
+                            <Flex gap="2">
+                              <span className="scale-x-[-1]">
+                                <BsFillMoonFill />
+                              </span>
+                              {team === "Townsfolk" ? `${team}` : `${team}s`}
+                            </Flex>
+                          </Heading>
+                        </Flex>
+                        {characters.map((char, idx) => (
+                          <Flex
+                            key={char.id}
+                            className={classNames(
+                              idx % 2 === 0 && "bg-stone-900",
+                            )}
+                            gap="2"
+                          >
+                            <Flex direction="column">
+                              {/* <img src={char.imageSrc} className="h-5 w-5" /> */}
+                              <Heading
+                                size="2"
+                                className="flex-1"
+                                color={colorMap[team as CharacterType]}
+                              >
+                                {char.name}
+                              </Heading>
+                            </Flex>
+                            <Text size="1" weight="light" className="flex-[5]">
+                              {char.ability}
+                            </Text>
+                          </Flex>
+                        ))}
+                      </React.Fragment>
+                    ))}
+                </Flex>
               </Tabs.Content>
             </motion.div>
           )}
+
+          {selectedTab === "night-order" && (
+            <motion.div
+              key="night-order"
+              className="absolute h-full w-full"
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0 }}
+              transition={{ type: "tween" }}
+            >
+              <Tabs.Content
+                forceMount
+                className="h-full overflow-y-auto"
+                value="night-order"
+              >
+                <Flex className="m-2" direction="column" gap="3">
+                  {nightOrder.map((character, idx) => (
+                    <Flex
+                      key={character.id}
+                      className={classNames(idx % 2 === 0 && "bg-stone-900")}
+                      gap="2"
+                    >
+                      <Flex direction="column">
+                        {/* <img src={char.imageSrc} className="h-5 w-5" /> */}
+                        <Heading
+                          size="2"
+                          className="flex-1"
+                          color={colorMap[character.team as CharacterType]}
+                        >
+                          {character.name}
+                        </Heading>
+                      </Flex>
+                      <Text size="1" weight="light" className="flex-[5]">
+                        {character.ability}
+                      </Text>
+                    </Flex>
+                  ))}
+                </Flex>
+              </Tabs.Content>
+            </motion.div>
+          )}
+
           {selectedTab === "players" && (
             <motion.div
-              className="absolute h-full w-full"
               key="players"
-              initial={{ x: "100%", opacity: 0.3 }}
+              className="absolute h-full w-full"
+              initial={{ x: "100%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "100%", opacity: 0.3 }}
+              exit={{ x: "100%", opacity: 0 }}
               transition={{ type: "tween" }}
             >
               <Tabs.Content
@@ -125,6 +272,7 @@ export function PlayerInGame() {
                     <Flex gap="1" wrap="wrap-reverse">
                       {filters.map((f) => (
                         <Button
+                          key={f}
                           size="1"
                           color="red"
                           onClick={() => setFilter(f)}
@@ -144,6 +292,7 @@ export function PlayerInGame() {
                   >
                     {players.map((player) => (
                       <Flex
+                        key={player}
                         gap="1"
                         // justify="between"
                         className={classNames(
