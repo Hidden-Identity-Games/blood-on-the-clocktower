@@ -20,7 +20,7 @@ const filters = ["dead", "can vote", "alive", "all"] as const;
 type Filters = (typeof filters)[number];
 
 export function PlayerInGame() {
-  const { game } = useDefiniteGame();
+  const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
   const [filter, setFilter] = React.useState<Filters>(filters[0]);
@@ -37,7 +37,7 @@ export function PlayerInGame() {
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
     const allCharacters =
-      game.script
+      script
         ?.map(({ id }) => ({ ...getRole(id), ...getRoleExtension(id) }))
         .map((character) => character) ?? [];
 
@@ -55,7 +55,7 @@ export function PlayerInGame() {
         // Unknown: allCharacters.filter(({ team }) => team === "Unknown"),
       },
     ];
-  }, [game.script]);
+  }, [script]);
 
   return (
     <Tabs.Root
