@@ -1,4 +1,7 @@
 import { UNASSIGNED, addGame } from './database/gameDB.ts'
+import { setScript } from './database/scriptDB.ts'
+import { type Script } from './types/Script.ts'
+import { type BaseUnifiedGame } from './types/UnifiedGame.ts'
 
 export function setupTestGames (): void {
   const players = [
@@ -17,7 +20,7 @@ export function setupTestGames (): void {
     'nadir',
     'cameron',
   ]
-  addGame('test-game', {
+  addTestGame('test-game', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
@@ -29,7 +32,7 @@ export function setupTestGames (): void {
     deadVotes: {},
   })
 
-  addGame('tg-wrong-way', {
+  addTestGame('tg-wrong-way', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -50,7 +53,7 @@ export function setupTestGames (): void {
     deadVotes: {},
   })
 
-  addGame('tg-broken-link', {
+  addTestGame('tg-broken-link', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -68,7 +71,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
   })
-  addGame('tg-excluded', {
+  addTestGame('tg-excluded', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -87,4 +90,45 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
   })
+
+  addTestGame('tg-f-night', ({
+    gameStatus: 'Setup',
+    gmSecretHash: 't',
+    playersToRoles: Object.fromEntries(players.map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
+    deadPlayers: {},
+    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
+    playerNotes: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
+    },
+    deadVotes: {},
+  }))
+}
+
+const tbScript = [{ id: 'washerwoman' },
+  { id: 'librarian' },
+  { id: 'investigator' },
+  { id: 'chef' },
+  { id: 'empath' },
+  { id: 'fortune_teller' },
+  { id: 'undertaker' },
+  { id: 'monk' },
+  { id: 'ravenkeeper' },
+  { id: 'virgin' },
+  { id: 'slayer' },
+  { id: 'soldier' },
+  { id: 'mayor' },
+  { id: 'butler' },
+  { id: 'recluse' },
+  { id: 'saint' },
+  { id: 'poisoner' },
+  { id: 'spy' },
+  { id: 'scarlet_woman' },
+  { id: 'baron' },
+  { id: 'imp' }] as Script
+
+function addTestGame (name: string, game: BaseUnifiedGame): void {
+  addGame(name, game)
+  if (game.gameStatus !== 'PlayersJoining') {
+    setScript(name, tbScript)
+  }
 }

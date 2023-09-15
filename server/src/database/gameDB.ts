@@ -1,13 +1,14 @@
 import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus, type UnifiedGameComputed } from '../types/index.ts'
 import { generate } from 'random-words'
-import { WatchableResource } from './watchableResource.ts'
+import { type Computer, WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
 import { addScript } from './scriptDB.ts'
 
 export const UNASSIGNED: Role = 'unassigned' as Role
 
-const gameComputer = {
+const gameComputer: Computer<BaseUnifiedGame, UnifiedGameComputed> = {
   orderedPlayers: getOrderedPlayers,
+  playerList: (game) => Object.keys(game.playersToRoles).sort(),
 }
 
 type WatchableGame = WatchableResource<BaseUnifiedGame, UnifiedGameComputed>
@@ -53,13 +54,12 @@ export function subscribeToGame (
   return gameDB[gameId].subscribe(callback)
 }
 
-function createGame (): UnifiedGame {
+function createGame (): BaseUnifiedGame {
   return {
     gameStatus: 'PlayersJoining',
     gmSecretHash: generate(3).join('-'),
     playersToRoles: {},
     partialPlayerOrdering: {},
-    orderedPlayers: { fullList: [], problems: false },
     deadPlayers: {},
     playerNotes: {},
     deadVotes: {},

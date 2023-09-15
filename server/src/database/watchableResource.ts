@@ -1,5 +1,5 @@
 type Callback<ResourceShape> = (value: ResourceShape | null) => void
-type Computer<ResourceShape, ComputedValues> = { [K in keyof ComputedValues]: (resource: ResourceShape) => ComputedValues[K] }
+export type Computer<ResourceShape, ComputedValues> = { [K in keyof ComputedValues]: (resource: ResourceShape) => ComputedValues[K] }
 
 export class WatchableResource<BaseResourceShape, ComputedValues> {
   private value!: BaseResourceShape & ComputedValues
