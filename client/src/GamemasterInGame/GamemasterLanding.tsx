@@ -17,7 +17,7 @@ export function GameMasterRoot() {
 }
 
 function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
-  const { game } = useGame();
+  const { game, script } = useGame();
   const [, loadingSetScript, , setScript] = useSetScript();
 
   if (!game || loadingSetScript) {
@@ -31,8 +31,8 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
     <>
       <GameHeader />
       {game.gameStatus === "PlayersJoining" &&
-        (game.script ? (
-          <Lobby rolesList={game.script.map(({ id }) => id)} />
+        (script?.length ? (
+          <Lobby />
         ) : (
           <ScriptSelect handleSubmit={setScript} />
         ))}

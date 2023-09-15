@@ -1,4 +1,4 @@
-import { type UnifiedGame } from './types.ts'
+import { type Script, type UnifiedGame } from './types.ts'
 
 export interface ListenToGameMessage {
   type: 'ListenToGame'
@@ -6,16 +6,18 @@ export interface ListenToGameMessage {
 }
 export type MessageFromClient = ListenToGameMessage
 
-export type ObjectType = 'game'
+export type ObjectType = keyof ObjectShapeMap
 export interface ObjectShapeMap {
   game: UnifiedGame
+  script: Script
 }
 
-export interface ObjectUpdatedMessage<ObjectType extends keyof ObjectShapeMap> {
+export interface ObjectUpdatedMessageGeneric<ObjectType extends keyof ObjectShapeMap> {
   type: 'ObjectUpdated'
   objectType: ObjectType
   updatedId: string
   nextObj: ObjectShapeMap[ObjectType] | null
 }
 
-export type MessageFromServer = ObjectUpdatedMessage<keyof ObjectShapeMap>
+// map over each type in the union and generate a type
+export type MessageFromServer = { [K in keyof ObjectShapeMap]: ObjectUpdatedMessageGeneric<K> }[keyof ObjectShapeMap]

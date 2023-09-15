@@ -1,13 +1,17 @@
 import { createContext, useContext, useState } from "react";
 import { UnifiedGame } from "./Game";
+import { Script } from "@hidden-identity/server";
 
+type NonNullableValues<T> = { [K in keyof T]: NonNullable<T[K]> };
 export interface GameContext {
   gameId: string | null;
   game: UnifiedGame | null;
+  script: Script | null;
 }
 
 export const UnifiedGameContext = createContext<GameContext>({
   game: null,
+  script: null,
   gameId: null,
 });
 
@@ -15,12 +19,12 @@ export function useGame() {
   const game = useContext(UnifiedGameContext);
   return game;
 }
-export function useDefiniteGame(): { game: UnifiedGame; gameId: string } {
-  const game = useContext(UnifiedGameContext);
-  if (!game.game) {
+export function useDefiniteGame(): NonNullableValues<GameContext> {
+  const context = useContext(UnifiedGameContext);
+  if (!context.game || !context.script || !context.gameId) {
     throw new Error("Not in a game?");
   }
-  return game as { game: UnifiedGame; gameId: string };
+  return context as NonNullableValues<GameContext>;
 }
 
 export function useAction<Args extends Array<unknown>>(

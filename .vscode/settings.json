@@ -6,6 +6,16 @@
         "client", "server"
     ],
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "search.useIgnoreFiles": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "declarations/**/*": true,
+    },
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },

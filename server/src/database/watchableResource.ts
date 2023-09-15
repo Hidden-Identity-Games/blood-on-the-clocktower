@@ -11,9 +11,9 @@ export class WatchableResource<BaseResourceShape, ComputedValues> {
   }
 
   private setValue (nextValue: BaseResourceShape): void {
-    this.value = Object.entries(this.computer).reduce<BaseResourceShape & ComputedValues>((combined, [key, compute]) => ({
+    this.value = Object.keys(this.computer).reduce<BaseResourceShape & ComputedValues>((combined, computeKey) => ({
       ...combined,
-      [key]: compute,
+      [computeKey]: this.computer[computeKey as keyof ComputedValues](nextValue),
     // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
     }), nextValue as BaseResourceShape & ComputedValues)
   }

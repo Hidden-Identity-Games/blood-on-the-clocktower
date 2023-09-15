@@ -1,5 +1,4 @@
 import { type Role } from './Role.ts'
-import { type Script } from './Script.ts'
 
 export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
 export type NoteType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', message: string } | { type: 'bluffing', as: string }
@@ -14,7 +13,6 @@ export interface UnifiedGameComputed {
 }
 
 export interface BaseUnifiedGame {
-  script?: Script
   playersToRoles: Record<string, Role>
   partialPlayerOrdering: Record<string, Neighbors | null>
   gmSecretHash: string
