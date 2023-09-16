@@ -2,7 +2,7 @@ import { Checkbox, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
 import { useKickPlayer } from "../store/useStore";
-import { GiBootKick } from "react-icons/gi";
+import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
 import React, { useState } from "react";
@@ -10,6 +10,7 @@ import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
 import { PlayerMenuItem } from "./PlayerListComponents/PlayerActions";
+import { PlayerNoteInput } from "./PlayerListComponents/PlayerNoteInput";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -58,15 +59,16 @@ export function PregamePlayerList() {
               </Dialog.Trigger>
               <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
-                  <Dialog.Close>
-                    <PlayerMenuItem
-                      id="kick-player"
-                      label="Kick Player"
-                      icon={<GiBootKick />}
-                      onClick={() => handleKickPlayer(player)}
-                      disabled={kickPlayerLoading}
-                    />
-                  </Dialog.Close>
+                  <PlayerMenuItem id="kick-player" label="Kick Player">
+                    <Dialog.Close>
+                      <IconButton
+                        onClick={() => handleKickPlayer(player)}
+                        disabled={kickPlayerLoading}
+                      >
+                        <GiBootKick />
+                      </IconButton>{" "}
+                    </Dialog.Close>
+                  </PlayerMenuItem>
                 </Flex>
               </Dialog.Content>
             </Dialog.Root>
@@ -144,16 +146,57 @@ export function IngamePlayerList() {
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       {playerList.map((player) => (
-        <Text size="3" asChild>
-          <Flex key={player} justify="between" align="center" px="3" gap="3">
-            <PlayerList.RoleIcon player={player} />
-            <DeadVoteIcon player={player} />
-            <PlayerList.Name player={player} />
-            <PlayerStatusIcons player={player} />
-            <PlayerList.Actions player={player} />
-          </Flex>
-        </Text>
+        <Flex direction="column" key={player}>
+          <Text size="4" asChild>
+            <Flex justify="between" align="center" px="3" gap="3">
+              <PlayerList.RoleIcon player={player} />
+              <PlayerList.Name player={player} />
+              <PlayerNoteInput player={player} note={game.playerNotes[player]}>
+                <IconButton variant="soft" size="1" radius="full">
+                  <GiFeather />
+                </IconButton>
+              </PlayerNoteInput>
+              <DeadVoteIcon player={player} />
+              <PlayerList.Actions player={player} />
+            </Flex>
+          </Text>
+
+          <PlayerNotes player={player} />
+        </Flex>
       ))}
     </Flex>
+  );
+}
+
+interface PlayerNotesProps {
+  player: string;
+}
+
+function PlayerNotes({ player }: PlayerNotesProps) {
+  const { game } = useDefiniteGame();
+  const statuses = game.playerPlayerStatuses[player] ?? [];
+  const notes = game.playerNotes[player] ?? "";
+  if (!notes && !statuses.length) return;
+
+  return (
+    <Text size="2" weight="light" asChild>
+      <Flex className="px-[3em] py-1" direction="column" gap="2">
+        {statuses.length > 0 && (
+          <Flex gap="3">
+            <PlayerStatusIcons player={player} />
+          </Flex>
+        )}
+        {notes && (
+          <Flex ml="1" gap="2">
+            <GiFeather />
+            <PlayerNoteInput player={player} note={notes}>
+              <button className="flex-1 whitespace-pre-line text-left">
+                {notes}
+              </button>
+            </PlayerNoteInput>
+          </Flex>
+        )}
+      </Flex>
+    </Text>
   );
 }

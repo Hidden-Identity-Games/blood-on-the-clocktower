@@ -3,7 +3,6 @@ import { type Role } from './Role.ts'
 export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
 export type PlayerStatusType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', desc: string }
 export type PlayerStatus = PlayerStatusType & { id: string }
-export interface PlayerNote { id: string, message: string }
 
 export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {
 }
@@ -21,7 +20,7 @@ export interface BaseUnifiedGame {
   nextGameId?: string
   deadPlayers: Record<string, boolean>
   playerPlayerStatuses: Record<string, PlayerStatus[]>
-  playerNotes: Record<string, PlayerNote[]>
+  playerNotes: Record<string, string>
   deadVotes: Record<string, boolean>
 }
 

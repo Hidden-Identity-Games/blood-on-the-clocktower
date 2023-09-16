@@ -6,8 +6,7 @@ import { useAction, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
-import { PlayerNote, Script, PlayerStatus } from "@hidden-identity/server";
-import { GameStatus } from "@hidden-identity/server";
+import { GameStatus, PlayerStatus, Script } from "@hidden-identity/server";
 
 function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
@@ -226,29 +225,20 @@ export function usePlayerStatuses() {
 export function usePlayerNotes() {
   const { gameId } = useGame();
 
-  return useAction(
-    async (player: string, action: "add" | "remove", note: PlayerNote) => {
-      if (!gameId) {
-        throw new Error("GameId not ready");
-      }
+  return useAction(async (player: string, note: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
 
-      const response =
-        action === "add"
-          ? await axios.post(apiUrl("/add_player_note"), {
-              player,
-              gameId,
-              note,
-            })
-          : await axios.post(apiUrl("/clear_player_note"), {
-              player,
-              gameId,
-              noteId: note.id,
-            });
-      if (response.status !== 200) {
-        throw new Error(response.statusText);
-      }
-    },
-  );
+    const response = await axios.post(apiUrl("/set_player_note"), {
+      player,
+      gameId,
+      note,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
 }
 
 class PlayerCountError extends Error {

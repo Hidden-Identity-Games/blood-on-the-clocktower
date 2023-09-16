@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type PlayerStatus, type GameStatus, type UnifiedGameComputed, type PlayerNote } from '../types/index.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type PlayerStatus, type GameStatus, type UnifiedGameComputed } from '../types/index.ts'
 import { generate } from 'random-words'
 import { type Computer, WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -258,7 +258,7 @@ export function clearPlayerStatus (gameId: string, player: string, playerStatusI
   })
 }
 
-export function addPlayerNote (gameId: string, player: string, note: PlayerNote): void {
+export function setPlayerNote (gameId: string, player: string, note: string): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
@@ -266,22 +266,7 @@ export function addPlayerNote (gameId: string, player: string, note: PlayerNote)
     ...gameInstance,
     playerNotes: {
       ...gameInstance.playerNotes,
-      [player]: [...(gameInstance.playerNotes[player] || []), note],
-    },
-  })
-}
-
-export function clearPlayerNote (gameId: string, player: string, noteId: string): void {
-  const game = retrieveGame(gameId)
-  const gameInstance = game.readOnce()
-
-  game.update({
-    ...gameInstance,
-    playerNotes: {
-      ...gameInstance.playerNotes,
-      [player]: [
-        ...(gameInstance.playerNotes[player] || []).filter(({ id }) => id !== noteId),
-      ],
+      [player]: note,
     },
   })
 }
