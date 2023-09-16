@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "start-prod": "",
     "type-check": "tsc",
-    "test": "type-check && pnpm run lint"
+    "test": "pnpm run type-check && pnpm run lint"
   },
   "dependencies": {
     "@hidden-identity/server": "workspace:*",

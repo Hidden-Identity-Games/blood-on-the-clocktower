@@ -20,7 +20,7 @@
     "dev": "concurrently \"pnpm run build-client --watch\" \"PORT=6001 nodemon --esm src/index.ts\"",
     "lint": "eslint --fix ./src/**/*",
     "type-check": "tsc",
-    "test": "type-check && pnpm run lint"
+    "test": "pnpm run type-check && pnpm run lint"
   },
   "keywords": [],
   "author": "",
