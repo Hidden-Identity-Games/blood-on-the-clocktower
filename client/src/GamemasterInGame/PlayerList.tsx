@@ -2,7 +2,7 @@ import { Checkbox, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
 import { useKickPlayer } from "../store/useStore";
-import { GiBootKick } from "react-icons/gi";
+import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
 import React, { useState } from "react";
@@ -144,15 +144,28 @@ export function IngamePlayerList() {
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       {playerList.map((player) => (
-        <Text size="3" asChild>
-          <Flex key={player} justify="between" align="center" px="3" gap="3">
-            <PlayerList.RoleIcon player={player} />
-            <DeadVoteIcon player={player} />
-            <PlayerList.Name player={player} />
-            <PlayerStatusIcons player={player} />
-            <PlayerList.Actions player={player} />
-          </Flex>
-        </Text>
+        <Flex direction="column" key={player}>
+          <Text size="3" asChild>
+            <Flex justify="between" align="center" px="3" gap="3">
+              <PlayerList.RoleIcon player={player} />
+              <DeadVoteIcon player={player} />
+              <PlayerList.Name player={player} />
+              <PlayerStatusIcons player={player} />
+              <PlayerList.Actions player={player} />
+            </Flex>
+          </Text>
+
+          <Text size="1" weight="regular">
+            <Flex direction="column">
+              {game.playerNotes[player].map((note) => (
+                <Flex gap="2" px="4" key={note.id}>
+                  <GiFeather />
+                  {note.message}
+                </Flex>
+              ))}
+            </Flex>
+          </Text>
+        </Flex>
       ))}
     </Flex>
   );
