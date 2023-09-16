@@ -6,7 +6,7 @@ import { useAction, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
-import { Note, Script } from "@hidden-identity/server";
+import { PlayerNote, Script, PlayerStatus } from "@hidden-identity/server";
 import { GameStatus } from "@hidden-identity/server";
 
 function randomUppercase() {
@@ -191,23 +191,55 @@ export function useAddPlayer() {
   });
 }
 
-export function usePlayerNotes() {
+export function usePlayerStatuses() {
   const { gameId } = useGame();
 
   return useAction(
-    async (player: string, action: "add" | "remove", note: Note) => {
+    async (
+      player: string,
+      action: "add" | "remove",
+      playerStatus: PlayerStatus,
+    ) => {
       if (!gameId) {
         throw new Error("GameId not ready");
       }
 
       const response =
         action === "add"
-          ? await axios.post(apiUrl("/add_note"), {
+          ? await axios.post(apiUrl("/add_status_effect"), {
+              player,
+              gameId,
+              playerStatus,
+            })
+          : await axios.post(apiUrl("/clear_status_effect"), {
+              player,
+              gameId,
+              playerStatusId: playerStatus.id,
+            });
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+    },
+  );
+}
+
+export function usePlayerNotes() {
+  const { gameId } = useGame();
+
+  return useAction(
+    async (player: string, action: "add" | "remove", note: PlayerNote) => {
+      if (!gameId) {
+        throw new Error("GameId not ready");
+      }
+
+      const response =
+        action === "add"
+          ? await axios.post(apiUrl("/add_player_note"), {
               player,
               gameId,
               note,
             })
-          : await axios.post(apiUrl("/clear_note"), {
+          : await axios.post(apiUrl("/clear_player_note"), {
               player,
               gameId,
               noteId: note.id,

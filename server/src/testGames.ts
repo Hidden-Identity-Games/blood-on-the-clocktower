@@ -26,9 +26,10 @@ export function setupTestGames (): void {
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
-    playerNotes: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
+    playerPlayerStatuses: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
     },
+    playerNotes: {},
     deadVotes: {},
   })
 
@@ -47,9 +48,10 @@ export function setupTestGames (): void {
       wrongway: { rightNeighbor: 'correct2' },
     },
     deadPlayers: {},
-    playerNotes: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
+    playerPlayerStatuses: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
     },
+    playerNotes: {},
     deadVotes: {},
   })
 
@@ -68,9 +70,11 @@ export function setupTestGames (): void {
       brokenLink: null,
     },
     deadPlayers: {},
+    playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
   })
+
   addTestGame('tg-excluded', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
@@ -87,6 +91,7 @@ export function setupTestGames (): void {
       excluded: { rightNeighbor: 'correct1' },
     },
     deadPlayers: {},
+    playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
   })
@@ -97,9 +102,10 @@ export function setupTestGames (): void {
     playersToRoles: Object.fromEntries(players.map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
-    playerNotes: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'bluffing', id: 'bluff_1', as: 'Demon' }, { type: 'custom', message: 'look at me!', id: 'custom1' }],
+    playerPlayerStatuses: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
     },
+    playerNotes: {},
     deadVotes: {},
   }))
 }

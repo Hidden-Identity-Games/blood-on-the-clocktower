@@ -7,7 +7,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
 import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
-import { DeadVoteIcon, NotesIcons } from "./NotesIcons";
+import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
 import { PlayerMenuItem } from "./PlayerListComponents/PlayerActions";
 
@@ -123,7 +123,7 @@ export function NightPlayerList() {
               />
               <PlayerList.RoleIcon night player={player} />
               <PlayerList.Name player={player} />
-              <NotesIcons player={player} />
+              <PlayerStatusIcons player={player} />
               <PlayerList.ShowMessage player={player} />
               <PlayerList.Actions player={player} />
             </Flex>
@@ -149,7 +149,7 @@ export function IngamePlayerList() {
             <PlayerList.RoleIcon player={player} />
             <DeadVoteIcon player={player} />
             <PlayerList.Name player={player} />
-            <NotesIcons player={player} />
+            <PlayerStatusIcons player={player} />
             <PlayerList.Actions player={player} />
           </Flex>
         </Text>

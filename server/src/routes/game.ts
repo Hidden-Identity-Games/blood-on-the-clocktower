@@ -1,10 +1,12 @@
 import { type Application } from 'express-ws'
 import {
   addGame,
-  addNote,
+  addPlayerStatus,
+  addPlayerNote,
   addPlayer,
   assignRoles,
-  clearNote,
+  clearPlayerStatus,
+  clearPlayerNote,
   getGame,
   kickPlayer,
   retrieveGame,
@@ -83,16 +85,30 @@ export function useGame (app: Application): void {
     res.send({})
   })
 
-  app.post('/add_note', (req, res) => {
-    const { player, gameId, note } = req.body
-    addNote(gameId, player, note)
+  app.post('/add_status_effect', (req, res) => {
+    const { player, gameId, playerStatus } = req.body
+    addPlayerStatus(gameId, player, playerStatus)
     res.status(200)
     res.send({})
   })
 
-  app.post('/clear_note', (req, res) => {
+  app.post('/clear_status_effect', (req, res) => {
+    const { player, gameId, playerStatusId } = req.body
+    clearPlayerStatus(gameId, player, playerStatusId)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/add_player_note', (req, res) => {
+    const { player, gameId, note } = req.body
+    addPlayerNote(gameId, player, note)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/clear_player_note', (req, res) => {
     const { player, gameId, noteId } = req.body
-    clearNote(gameId, player, noteId)
+    clearPlayerNote(gameId, player, noteId)
     res.status(200)
     res.send({})
   })
