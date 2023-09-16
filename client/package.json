@@ -15,7 +15,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
     "preview": "vite preview",
     "start-prod": "",
-    "test": "tsc && pnpm run lint"
+    "type-check": "tsc",
+    "test": "pnpm run type-check && pnpm run lint"
   },
   "dependencies": {
     "@hidden-identity/server": "workspace:*",

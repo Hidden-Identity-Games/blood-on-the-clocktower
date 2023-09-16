@@ -11,7 +11,7 @@ import {
 } from "react-icons/bs";
 import { GiScrollQuill } from "react-icons/gi";
 import React from "react";
-import { getRole, getRoleExtension } from "../assets/game_data/gameData";
+import { getCharacter } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
 
@@ -35,10 +35,7 @@ export function PlayerInGame() {
   const players = playerFilters[filter];
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
-    const allCharacters =
-      script
-        ?.map(({ id }) => ({ ...getRole(id), ...getRoleExtension(id) }))
-        .map((character) => character) ?? [];
+    const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
 
     const nightOrder = allCharacters
       .filter((character) => character.otherNight > 0)

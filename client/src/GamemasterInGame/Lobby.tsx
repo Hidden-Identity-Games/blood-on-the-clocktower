@@ -38,7 +38,7 @@ export function Lobby() {
       <TeamDistributionBar
         charsSelected={Object.entries(characterSelectState.selectedRoles.value)
           .filter(([_, value]) => !!value)
-          .map(([key]) => key)}
+          .map(([key]) => key as Role)}
       />
       <Tabs.Root
         className="flex flex-1 flex-col"

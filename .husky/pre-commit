@@ -3,3 +3,4 @@
 
 pnpm install --frozen-lockfile
 pnpm lint-staged
+pnpm type-check

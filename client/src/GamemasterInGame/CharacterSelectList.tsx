@@ -12,7 +12,7 @@ import React from "react";
 import { colorMap } from "../shared/CharacterTypes";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
 import { Role } from "@hidden-identity/server";
-import { getRole } from "../assets/game_data/gameData";
+import { getCharacter } from "../assets/game_data/gameData";
 import classNames from "classnames";
 
 interface StateContainer<T> {
@@ -79,11 +79,15 @@ export function CharacterSelectList({
       ...state.additionalCharacters.value,
     ];
     return {
-      Townsfolk: allCharacters.filter((c) => getRole(c).team === "Townsfolk"),
-      Outsider: allCharacters.filter((c) => getRole(c).team === "Outsider"),
-      Minion: allCharacters.filter((c) => getRole(c).team === "Minion"),
-      Demon: allCharacters.filter((c) => getRole(c).team === "Demon"),
-      Unknown: allCharacters.filter((c) => getRole(c).team === "Unknown"),
+      Townsfolk: allCharacters.filter(
+        (c) => getCharacter(c).team === "Townsfolk",
+      ),
+      Outsider: allCharacters.filter(
+        (c) => getCharacter(c).team === "Outsider",
+      ),
+      Minion: allCharacters.filter((c) => getCharacter(c).team === "Minion"),
+      Demon: allCharacters.filter((c) => getCharacter(c).team === "Demon"),
+      Unknown: allCharacters.filter((c) => getCharacter(c).team === "Unknown"),
     };
   }, [state.characters, state.additionalCharacters.value]);
 

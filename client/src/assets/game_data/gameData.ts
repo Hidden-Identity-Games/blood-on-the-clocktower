@@ -1,27 +1,23 @@
 import {
   Character,
+  CharacterType,
   Role,
-  RoleExtension,
   Script,
 } from "@hidden-identity/server";
-import rolesJson from "./roles.json";
 import scriptsJson from "./scripts.json";
 import defaultRoleImage from "../default_role.svg";
-import roleExtensionsJSON from "./role-info.json";
+import rolesCombinedJSON from "./rolesCombined.json";
 
-export const roles: Record<string, Character> = Object.fromEntries(
-  rolesJson.characters.map((role) => [role.id, role as Character]),
-);
-export const roleExtensions: Record<Role, RoleExtension> = Object.fromEntries(
-  roleExtensionsJSON.map((role) => [
-    role.name.toLocaleLowerCase().replace(" ", "_"),
-    role as unknown as RoleExtension,
+const characters: Record<Role, Character> = Object.fromEntries(
+  rolesCombinedJSON.map((role) => [
+    role.id as Role,
+    { ...role, id: role.id as Role, team: role.team as CharacterType },
   ]),
 );
 
-export function getRoleExtension(role: Role): RoleExtension {
+export function getCharacter(role: Role): Character {
   return (
-    roleExtensions[role] ??
+    characters[role] ??
     ({
       id: role,
       name: role,
@@ -32,18 +28,7 @@ export function getRoleExtension(role: Role): RoleExtension {
       otherNightReminder: "Custom Character",
       setup: true,
       ability: "Custom character",
-    } satisfies RoleExtension)
-  );
-}
-
-export function getRole(role: Role): Character {
-  return (
-    roles[role] ??
-    ({
-      id: role,
-      name: role,
       imageSrc: defaultRoleImage,
-      team: "Unknown",
     } satisfies Character)
   );
 }
