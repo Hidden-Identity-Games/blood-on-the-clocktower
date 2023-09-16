@@ -3,9 +3,14 @@ import { PlayerRoot } from "./PlayerLanding";
 import { GameMasterRoot } from "./GamemasterInGame/GamemasterLanding";
 // import { Landing as GamemasterInGame } from "./GamemasterInGame";
 import { NewGameLanding } from "./NewGamePage";
+import { PlayerMessagePage } from "./PlayerMessagePage";
 
 function MainRouter() {
   const router = createBrowserRouter([
+    {
+      path: "/:gameId/note",
+      element: <PlayerMessagePage />,
+    },
     {
       path: "/:gameId",
       element: <PlayerRoot />,

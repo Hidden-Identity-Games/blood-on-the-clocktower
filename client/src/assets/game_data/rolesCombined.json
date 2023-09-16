@@ -386,7 +386,13 @@
     "setup": false,
     "ability": "Each night*, choose a player: they die. If you kill yourself this way, a Minion becomes the Imp.",
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/5c/Icon_imp.png",
-    "firstNight": null,
+    "firstNight": {
+      "reminder": "Tell the demon who their minions are.",
+      "order": 24,
+      "playerMessage": {
+        "type": "demon-first-night"
+      }
+    },
     "otherNight": {
       "reminder": "The Imp points to a player. That player dies. If the Imp chose themselves: Replace the character of 1 alive minion with a spare Imp token. Show the 'You are' card, then the Imp token.",
       "order": 24
@@ -418,7 +424,12 @@
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/a/ad/Icon_investigator.png",
     "firstNight": {
       "reminder": "Show the character token of a Minion in play. Point to two players, one of which is that character.",
-      "order": 35
+      "order": 35,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 2,
+        "restriction": "Minion"
+      }
     },
     "otherNight": null
   },
@@ -460,7 +471,12 @@
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/e/e0/Icon_librarian.png",
     "firstNight": {
       "reminder": "Show the character token of an Outsider in play. Point to two players, one of which is that character.",
-      "order": 34
+      "order": 34,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 2,
+        "restriction": "Outsider"
+      }
     },
     "otherNight": null
   },
@@ -980,7 +996,12 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If a player was executed today: Show that player’s character token.",
-      "order": 55
+      "order": 55,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 1,
+        "restriction": "dead"
+      }
     }
   },
   {
@@ -1036,7 +1057,12 @@
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/8/85/Icon_washerwoman.png",
     "firstNight": {
       "reminder": "Show the character token of a Townsfolk in play. Point to two players, one of which is that character.",
-      "order": 33
+      "order": 33,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 2,
+        "restriction": "Townsfolk"
+      }
     },
     "otherNight": null
   },

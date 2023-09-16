@@ -104,26 +104,27 @@ export function setupTestGames (): void {
   }))
 }
 
-const tbScript = [{ id: 'washerwoman' },
-  { id: 'librarian' },
-  { id: 'investigator' },
+const tbScript = [
+  { id: 'baron' },
   { id: 'chef' },
   { id: 'empath' },
   { id: 'fortune_teller' },
   { id: 'undertaker' },
   { id: 'monk' },
-  { id: 'ravenkeeper' },
   { id: 'virgin' },
   { id: 'slayer' },
   { id: 'soldier' },
   { id: 'mayor' },
+  { id: 'librarian' },
+  { id: 'investigator' },
+  { id: 'ravenkeeper' },
+  { id: 'washerwoman' },
   { id: 'butler' },
   { id: 'recluse' },
   { id: 'saint' },
   { id: 'poisoner' },
   { id: 'spy' },
   { id: 'scarlet_woman' },
-  { id: 'baron' },
   { id: 'imp' }] as Script
 
 function addTestGame (name: string, game: BaseUnifiedGame): void {

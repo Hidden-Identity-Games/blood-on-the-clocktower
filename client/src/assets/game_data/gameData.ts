@@ -1,5 +1,6 @@
 import {
   Character,
+  CharacterNightData,
   CharacterType,
   Role,
   Script,
@@ -11,7 +12,13 @@ import rolesCombinedJSON from "./rolesCombined.json";
 const characters: Record<Role, Character> = Object.fromEntries(
   rolesCombinedJSON.map((role) => [
     role.id as Role,
-    { ...role, id: role.id as Role, team: role.team as CharacterType },
+    {
+      ...role,
+      id: role.id as Role,
+      team: role.team as CharacterType,
+      firstNight: role.firstNight as CharacterNightData | null,
+      otherNight: role.firstNight as CharacterNightData | null,
+    },
   ]),
 );
 

@@ -15,6 +15,7 @@ export type Role = string & {
 export interface CharacterNightData {
   order: number
   reminder: string
+  playerMessage?: PlayerMessage
 }
 
 export interface Character {
@@ -27,3 +28,18 @@ export interface Character {
   imageSrc: string
   team: CharacterType
 }
+
+export type Restriction = string
+
+export interface PlayerMessageMap {
+  'reveal-role': {
+    type: 'reveal-role'
+    count: number
+    restriction: Restriction
+  }
+  'demon-first-night': {
+    type: 'demon-first-night'
+  }
+}
+
+export type PlayerMessage = PlayerMessageMap[keyof PlayerMessageMap]
