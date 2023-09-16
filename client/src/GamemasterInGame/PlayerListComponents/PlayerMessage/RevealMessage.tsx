@@ -1,7 +1,7 @@
 import { PlayerMessageMap, Role } from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
-import { Flex, Heading, IconButton, Text } from "@radix-ui/themes";
+import { Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useState } from "react";
 import { PlayerSelect, RoleSelect } from "./RoleSelect";
 import { pick, pluck } from "../../../utils/shuffleList";
@@ -41,7 +41,7 @@ export function RevealMessage({ message, player }: RevealMessageProps) {
         gameId={gameId}
       />
       <Heading>Role</Heading>
-      <Text>Restrictions: {message.restriction}</Text>
+      {/* <Text>Restrictions: {message.restriction}</Text> */}
       <RoleSelect
         currentRole={role}
         onSelect={(nextRole) => setRole(nextRole)}

@@ -1,24 +1,12 @@
-import {
-  Character,
-  CharacterNightData,
-  CharacterType,
-  Role,
-  Script,
-} from "@hidden-identity/server";
+import { Character, Role, Script } from "@hidden-identity/server";
 import scriptsJson from "./scripts.json";
 import defaultRoleImage from "../default_role.svg";
-import rolesCombinedJSON from "./rolesCombined.json";
+import { characters as charactersList } from "./characterData";
 
 const characters: Record<Role, Character> = Object.fromEntries(
-  rolesCombinedJSON.map((role) => [
+  charactersList.map((role) => [
     role.id as Role,
-    {
-      ...role,
-      id: role.id as Role,
-      team: role.team as CharacterType,
-      firstNight: role.firstNight as CharacterNightData | null,
-      otherNight: role.otherNight as CharacterNightData | null,
-    },
+    { ...role, id: role.id as Role },
   ]),
 );
 
