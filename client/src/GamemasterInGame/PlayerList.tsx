@@ -9,7 +9,6 @@ import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
-import { PlayerNoteInput } from "./PlayerListComponents/PlayerNoteInput";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -152,12 +151,14 @@ export function IngamePlayerList() {
               <PlayerList.RoleIcon player={player}>
                 {getCharacter(game.playersToRoles[player]).ability}
               </PlayerList.RoleIcon>
-              <PlayerList.Name player={player} />
-              <PlayerNoteInput player={player} note={game.playerNotes[player]}>
-                <IconButton variant="soft" size="1" radius="full">
-                  <GiFeather />
-                </IconButton>
-              </PlayerNoteInput>
+              <PlayerList.NoteInputModal
+                player={player}
+                note={game.playerNotes[player]}
+              >
+                <button className="flex-1 text-left">
+                  <PlayerList.Name player={player} />
+                </button>
+              </PlayerList.NoteInputModal>
               <DeadVoteIcon player={player} />
               <PlayerList.Actions player={player} />
             </Flex>
@@ -191,11 +192,11 @@ function PlayerNotes({ player }: PlayerNotesProps) {
         {notes && (
           <Flex ml="1" gap="2">
             <GiFeather />
-            <PlayerNoteInput player={player} note={notes}>
+            <PlayerList.NoteInputModal player={player} note={notes}>
               <button className="flex-1 whitespace-pre-line text-left">
                 {notes}
               </button>
-            </PlayerNoteInput>
+            </PlayerList.NoteInputModal>
           </Flex>
         )}
       </Flex>

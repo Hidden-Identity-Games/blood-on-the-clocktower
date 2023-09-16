@@ -15,9 +15,10 @@ export function PlayerNoteInput({
 }: PlayerNoteInputProps) {
   const [, playerNotesLoading, , setPlayerNote] = usePlayerNotes();
   const [newNote, setNewNote] = React.useState(note);
+  const inputRef = React.useRef<HTMLTextAreaElement | null>(null);
 
   return (
-    <Dialog.Root onOpenChange={() => setNewNote(note)}>
+    <Dialog.Root onOpenChange={() => setNewNote(note ? `${note}\n` : note)}>
       <Dialog.Trigger disabled={playerNotesLoading}>{children}</Dialog.Trigger>
 
       <Dialog.Content className="m-2">
@@ -26,15 +27,16 @@ export function PlayerNoteInput({
             <label className="flex-1" htmlFor="note-input">
               {player}: Notes
             </label>
-            <Dialog.Close>
-              <Button
-                type="reset"
-                variant="surface"
-                onClick={() => setPlayerNote(player, "")}
-              >
-                Clear
-              </Button>
-            </Dialog.Close>
+            <Button
+              type="reset"
+              variant="surface"
+              onClick={() => {
+                setNewNote("");
+                inputRef.current?.focus();
+              }}
+            >
+              Clear
+            </Button>
           </Flex>
         </Dialog.Title>
         <Flex className="w-full" direction="column" gap="4" asChild>
@@ -53,6 +55,7 @@ export function PlayerNoteInput({
                 )
               }
               id="note-input"
+              ref={inputRef}
               className=" h-[50vh] rounded-l"
               value={newNote}
               onChange={(event) => {
