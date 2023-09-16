@@ -1,10 +1,4 @@
 {
-  "./server/**/*.{ts,tsx}": [
-    "pnpm run --filter \"@hidden-identity/client\" tsc"
-  ],
-  "./client/**/*.{ts,tsx}": [
-    "pnpm run --filter \"@hidden-identity/server\" tsc"
-  ],
   "*.{ts, tsx,js,jsx}": ["eslint --fix"],
   "*.{md,json}": "prettier --write"
 }
