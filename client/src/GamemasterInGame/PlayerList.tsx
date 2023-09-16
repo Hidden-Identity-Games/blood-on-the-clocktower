@@ -9,7 +9,6 @@ import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
-import { PlayerMenuItem } from "./PlayerListComponents/PlayerActions";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -59,7 +58,7 @@ export function PregamePlayerList() {
               <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
                   <Dialog.Close>
-                    <PlayerMenuItem
+                    <PlayerList.MenuItem
                       id="kick-player"
                       label="Kick Player"
                       icon={<GiBootKick />}
@@ -121,10 +120,11 @@ export function NightPlayerList() {
                   })
                 }
               />
-              <PlayerList.RoleIcon night player={player} />
+              <PlayerList.RoleIcon player={player}>
+                <PlayerList.NightReminder player={player} />
+              </PlayerList.RoleIcon>
               <PlayerList.Name player={player} />
               <PlayerStatusIcons player={player} />
-              <PlayerList.ShowMessage player={player} />
               <PlayerList.Actions player={player} />
             </Flex>
           </Text>
@@ -144,9 +144,11 @@ export function IngamePlayerList() {
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       {playerList.map((player) => (
-        <Text size="3" asChild>
-          <Flex key={player} justify="between" align="center" px="3" gap="3">
-            <PlayerList.RoleIcon player={player} />
+        <Text size="3" key={player} asChild>
+          <Flex justify="between" align="center" px="3" gap="3">
+            <PlayerList.RoleIcon player={player}>
+              {getCharacter(game.playersToRoles[player]).ability}
+            </PlayerList.RoleIcon>
             <DeadVoteIcon player={player} />
             <PlayerList.Name player={player} />
             <PlayerStatusIcons player={player} />

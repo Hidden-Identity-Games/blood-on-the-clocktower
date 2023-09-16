@@ -50,6 +50,7 @@ export function RevealMessage({ message, player }: RevealMessageProps) {
       {players.map((currentPlayer, index) => (
         <PlayerSelect
           clearable
+          key={currentPlayer}
           currentPlayer={currentPlayer}
           onSelect={(nextPlayer) => {
             setPlayers((lastPlayers) => {
