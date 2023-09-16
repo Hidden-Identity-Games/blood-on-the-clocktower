@@ -51,10 +51,11 @@ export function RoleText({ role, children, className, size }: RoleTextProps) {
 export interface CharacterNameProps {
   role: Role;
   size?: "1" | "2" | "3";
+  className?: string;
 }
-export function CharacterName({ role, size }: CharacterNameProps) {
+export function CharacterName({ role, size, className }: CharacterNameProps) {
   return (
-    <Flex gap="1">
+    <Flex gap="1" className={className}>
       <RoleIcon role={role} />
       <RoleText role={role} size={size}>
         {getCharacter(role).name}
