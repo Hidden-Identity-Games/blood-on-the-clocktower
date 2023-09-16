@@ -38,8 +38,8 @@ export function PlayerInGame() {
     const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
 
     const nightOrder = allCharacters
-      .filter((character) => character.otherNight > 0)
-      .sort((a, b) => a.otherNight - b.otherNight);
+      .filter((character) => character.otherNight?.order ?? 0 > 0)
+      .sort((a, b) => (a.otherNight?.order ?? 0) - (b.otherNight?.order ?? 0));
 
     return [
       nightOrder,

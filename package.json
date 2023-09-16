@@ -8,6 +8,7 @@
     "node": ">=16.0.0 <17.0.0"
   },
   "scripts": {
+    "updateJson": "node ./client/src/assets/game_data/modifyJson.cjs",
     "dev": "pnpm run -r --parallel dev",
     "build-client": "pnpm run -r build-client",
     "build-server": "pnpm run -r build-server",

@@ -87,15 +87,13 @@ export function NightPlayerList() {
         role: game.playersToRoles[player],
         ...getCharacter(game.playersToRoles[player]),
       }))
-      .sort((a, b) => a[nightKey] - b[nightKey]);
+      .sort((a, b) => (a[nightKey]?.order ?? 0) - (b[nightKey]?.order ?? 0));
   }, [nightKey, game]);
   const [checkedPlayers, setCheckedPlayers] = useState<Record<string, boolean>>(
     Object.fromEntries(
       nightOrder
         .filter(({ player }) => !game.deadPlayers[player])
-        .filter(({ firstNight, otherNight }) =>
-          game.gameStatus === "Setup" ? firstNight !== 0 : otherNight !== 0,
-        )
+        .filter((character) => character[nightKey])
         .map(({ player }) => [player, true]),
     ),
   );
