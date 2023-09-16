@@ -211,7 +211,7 @@ export function NightPlayerList() {
 
           {action.type === "character" && (
             <PlayerNotes
-              className="my-[-4px] px-[5em]"
+              className="mt-[-0.5em] px-[5em] py-1"
               player={action.player}
             />
           )}
