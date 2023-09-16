@@ -6,7 +6,7 @@ import { useAction, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
-import { PlayerNote, Script, StatusEffect } from "@hidden-identity/server";
+import { PlayerNote, Script, PlayerStatus } from "@hidden-identity/server";
 import { GameStatus } from "@hidden-identity/server";
 
 function randomUppercase() {
@@ -191,14 +191,14 @@ export function useAddPlayer() {
   });
 }
 
-export function useStatusEffects() {
+export function usePlayerStatuses() {
   const { gameId } = useGame();
 
   return useAction(
     async (
       player: string,
       action: "add" | "remove",
-      statusEffect: StatusEffect,
+      playerStatus: PlayerStatus,
     ) => {
       if (!gameId) {
         throw new Error("GameId not ready");
@@ -209,12 +209,12 @@ export function useStatusEffects() {
           ? await axios.post(apiUrl("/add_status_effect"), {
               player,
               gameId,
-              statusEffect,
+              playerStatus,
             })
           : await axios.post(apiUrl("/clear_status_effect"), {
               player,
               gameId,
-              statusEffectId: statusEffect.id,
+              playerStatusId: playerStatus.id,
             });
       if (response.status !== 200) {
         throw new Error(response.statusText);

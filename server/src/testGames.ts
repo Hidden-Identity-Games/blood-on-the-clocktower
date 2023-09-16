@@ -26,7 +26,7 @@ export function setupTestGames (): void {
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
-    playerStatusEffects: {
+    playerPlayerStatuses: {
       alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
     },
     playerNotes: {},
@@ -48,7 +48,7 @@ export function setupTestGames (): void {
       wrongway: { rightNeighbor: 'correct2' },
     },
     deadPlayers: {},
-    playerStatusEffects: {
+    playerPlayerStatuses: {
       alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
     },
     playerNotes: {},
@@ -70,7 +70,7 @@ export function setupTestGames (): void {
       brokenLink: null,
     },
     deadPlayers: {},
-    playerStatusEffects: {},
+    playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
   })
@@ -91,7 +91,7 @@ export function setupTestGames (): void {
       excluded: { rightNeighbor: 'correct1' },
     },
     deadPlayers: {},
-    playerStatusEffects: {},
+    playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
   })
@@ -102,7 +102,7 @@ export function setupTestGames (): void {
     playersToRoles: Object.fromEntries(players.map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
-    playerStatusEffects: {
+    playerPlayerStatuses: {
       alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
     },
     playerNotes: {},

@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type StatusEffect, type GameStatus, type UnifiedGameComputed, type PlayerNote } from '../types/index.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type PlayerStatus, type GameStatus, type UnifiedGameComputed, type PlayerNote } from '../types/index.ts'
 import { generate } from 'random-words'
 import { type Computer, WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -61,7 +61,7 @@ function createGame (): BaseUnifiedGame {
     playersToRoles: {},
     partialPlayerOrdering: {},
     deadPlayers: {},
-    playerStatusEffects: {},
+    playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
   }
@@ -230,29 +230,29 @@ export function assignRoles (
   })
 }
 
-export function addStatusEffect (gameId: string, player: string, statusEffect: StatusEffect): void {
+export function addPlayerStatus (gameId: string, player: string, playerStatus: PlayerStatus): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({
     ...gameInstance,
-    playerStatusEffects: {
-      ...gameInstance.playerStatusEffects,
-      [player]: [...(gameInstance.playerStatusEffects[player] || []), statusEffect],
+    playerPlayerStatuses: {
+      ...gameInstance.playerPlayerStatuses,
+      [player]: [...(gameInstance.playerPlayerStatuses[player] || []), playerStatus],
     },
   })
 }
 
-export function clearStatusEffect (gameId: string, player: string, statusEffectId: string): void {
+export function clearPlayerStatus (gameId: string, player: string, playerStatusId: string): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({
     ...gameInstance,
-    playerStatusEffects: {
-      ...gameInstance.playerStatusEffects,
+    playerPlayerStatuses: {
+      ...gameInstance.playerPlayerStatuses,
       [player]: [
-        ...(gameInstance.playerStatusEffects[player] || []).filter(({ id }) => id !== statusEffectId),
+        ...(gameInstance.playerPlayerStatuses[player] || []).filter(({ id }) => id !== playerStatusId),
       ],
     },
   })

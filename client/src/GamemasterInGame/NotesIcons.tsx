@@ -6,23 +6,23 @@ import { LiaVoteYeaSolid } from "react-icons/lia";
 import { MeaningfulStatusIcon } from "../shared/MeaningfulIcon";
 import { useDefiniteGame } from "../store/GameContext";
 import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
-import { StatusEffect } from "@hidden-identity/server";
-import { useDeadVote, useStatusEffects } from "../store/useStore";
+import { PlayerStatus } from "@hidden-identity/server";
+import { useDeadVote, usePlayerStatuses } from "../store/useStore";
 
-function StatusEffectsIconList({
-  statusEffects,
+function PlayerStatusIconList({
+  playerStatuses,
   size,
   player,
 }: {
   player: string;
-  statusEffects: StatusEffect[];
+  playerStatuses: PlayerStatus[];
   size: "1" | "2" | "3";
 }) {
   const className = "h-2";
 
-  const [, , , updateStatusEffect] = useStatusEffects();
+  const [, , , updatePlayerStatus] = usePlayerStatuses();
 
-  return [...statusEffects]
+  return [...playerStatuses]
     .sort((a, b) => (a.type > b.type ? -1 : 1))
     .map((status) => {
       const buttonProps = {
@@ -38,7 +38,7 @@ function StatusEffectsIconList({
               key={status.id}
               {...buttonProps}
               onClick={() => {
-                updateStatusEffect(player, "remove", status);
+                updatePlayerStatus(player, "remove", status);
               }}
             >
               <IoIosBeer className={className} />
@@ -50,7 +50,7 @@ function StatusEffectsIconList({
               key={status.id}
               {...buttonProps}
               onClick={() => {
-                updateStatusEffect(player, "remove", status);
+                updatePlayerStatus(player, "remove", status);
               }}
             >
               <FaVial className={className} />
@@ -74,7 +74,7 @@ function StatusEffectsIconList({
                   <Dialog.Close>
                     <Button
                       onClick={() => {
-                        updateStatusEffect(player, "remove", status);
+                        updatePlayerStatus(player, "remove", status);
                       }}
                     >
                       Clear Status
@@ -90,11 +90,11 @@ function StatusEffectsIconList({
     });
 }
 
-export function StatusEffectsIcons({ player }: { player: string }) {
+export function PlayerStatusIcons({ player }: { player: string }) {
   const { game } = useDefiniteGame();
 
-  const statusEffects = game.playerStatusEffects[player] ?? [];
-  if (statusEffects.length > 3) {
+  const playerStatuses = game.playerPlayerStatuses[player] ?? [];
+  if (playerStatuses.length > 3) {
     return (
       <MeaningfulStatusIcon
         size="1"
@@ -105,8 +105,8 @@ export function StatusEffectsIcons({ player }: { player: string }) {
         }
         explanation={
           <Flex justify="between">
-            <StatusEffectsIconList
-              statusEffects={statusEffects}
+            <PlayerStatusIconList
+              playerStatuses={playerStatuses}
               player={player}
               size="3"
             />
@@ -118,8 +118,8 @@ export function StatusEffectsIcons({ player }: { player: string }) {
     );
   }
   return (
-    <StatusEffectsIconList
-      statusEffects={statusEffects}
+    <PlayerStatusIconList
+      playerStatuses={playerStatuses}
       player={player}
       size="1"
     />

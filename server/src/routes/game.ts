@@ -1,11 +1,11 @@
 import { type Application } from 'express-ws'
 import {
   addGame,
-  addStatusEffect,
+  addPlayerStatus,
   addPlayerNote,
   addPlayer,
   assignRoles,
-  clearStatusEffect,
+  clearPlayerStatus,
   clearPlayerNote,
   getGame,
   kickPlayer,
@@ -86,15 +86,15 @@ export function useGame (app: Application): void {
   })
 
   app.post('/add_status_effect', (req, res) => {
-    const { player, gameId, statusEffect } = req.body
-    addStatusEffect(gameId, player, statusEffect)
+    const { player, gameId, playerStatus } = req.body
+    addPlayerStatus(gameId, player, playerStatus)
     res.status(200)
     res.send({})
   })
 
   app.post('/clear_status_effect', (req, res) => {
-    const { player, gameId, statusEffectId } = req.body
-    clearStatusEffect(gameId, player, statusEffectId)
+    const { player, gameId, playerStatusId } = req.body
+    clearPlayerStatus(gameId, player, playerStatusId)
     res.status(200)
     res.send({})
   })

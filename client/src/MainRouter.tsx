@@ -1,7 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { PlayerRoot } from "./PlayerLanding";
 import { GameMasterRoot } from "./GamemasterInGame/GamemasterLanding";
-// import { Landing as GamemasterInGame } from "./GamemasterInGame";
 import { NewGameLanding } from "./NewGamePage";
 import { PlayerMessagePage } from "./PlayerMessagePage";
 
