@@ -1,14 +1,23 @@
-import { Checkbox, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+} from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
 import { useKickPlayer } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
-import classNames from "classnames";
 import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
+import { DemonMessage } from "./PlayerListComponents/PlayerMessage/DemonMessage";
+import { DialogHeader } from "../shared/DialogHeader";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -76,57 +85,120 @@ export function PregamePlayerList() {
     </Flex>
   );
 }
-
+type Action =
+  | {
+      type: "character";
+      name: string;
+      player: string;
+      order: number;
+    }
+  | {
+      type: "game-action";
+      name: string;
+      order: number;
+    };
+const gameActionsByNight = {
+  firstNight: [
+    { type: "game-action", name: "minions", order: 7 },
+    { type: "game-action", name: "demon", order: 8 },
+  ] as Action[],
+  otherNight: [] as Action[],
+};
 export function NightPlayerList() {
   const { game } = useDefiniteGame();
   const nightKey = game.gameStatus === "Setup" ? "firstNight" : "otherNight";
-  const nightOrder = React.useMemo(() => {
-    return game.playerList
+  const nightActions = React.useMemo(() => {
+    const playerActions = game.playerList
       .map((player) => ({
         player,
         role: game.playersToRoles[player],
         ...getCharacter(game.playersToRoles[player]),
       }))
-      .sort((a, b) => (a[nightKey]?.order ?? 0) - (b[nightKey]?.order ?? 0));
+      .filter((character) => !!character[nightKey])
+      .map<Action>(({ player, id, ...character }) => ({
+        type: "character",
+        name: `${player}-${id}`,
+        player,
+        order: character[nightKey]!.order,
+      }));
+    const gameActions = gameActionsByNight[nightKey];
+    return [...playerActions, ...gameActions].sort((a, b) => a.order - b.order);
   }, [nightKey, game]);
-  const [checkedPlayers, setCheckedPlayers] = useState<Record<string, boolean>>(
-    Object.fromEntries(
-      nightOrder
-        .filter(({ player }) => !game.deadPlayers[player])
-        .filter((character) => character[nightKey])
-        .map(({ player }) => [player, true]),
-    ),
+  const leftoverPlayers = game.playerList
+    .filter(
+      (player) => !getCharacter(game.playersToRoles[player])[nightKey]?.order,
+    )
+    .sort()
+    .map((player) => ({
+      type: "character",
+      name: `${player}_undone`,
+      player,
+      order: 1000,
+    }));
+
+  const [checkedActions, setCheckedActions] = useState<Record<string, boolean>>(
+    Object.fromEntries(nightActions.map((action) => [action.name, true])),
   );
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {nightOrder.map(({ player }, idx) => (
-        <React.Fragment key={player}>
+      {[...nightActions, ...leftoverPlayers].map((action) => (
+        <React.Fragment key={action.name}>
           <Text size="3" asChild>
-            <Flex
-              className={classNames(idx % 2 === 0 && "bg-zinc-900")}
-              justify="between"
-              align="center"
-              px="3"
-              gap="3"
-              key={player}
-            >
+            <Flex justify="between" align="center" px="3" gap="3">
               <Checkbox
-                id={`${player}-done`}
-                checked={checkedPlayers[player]}
+                id={`${action.name}-done`}
+                checked={checkedActions[action.name]}
                 onClick={() =>
-                  setCheckedPlayers({
-                    ...checkedPlayers,
-                    [player]: !checkedPlayers[player],
+                  setCheckedActions({
+                    ...checkedActions,
+                    [action.name]: !checkedActions[action.name],
                   })
                 }
               />
-              <PlayerList.RoleIcon player={player}>
-                <PlayerList.NightReminder player={player} />
-              </PlayerList.RoleIcon>
-              <PlayerList.Name player={player} />
-              <PlayerStatusIcons player={player} />
-              <PlayerList.Actions player={player} />
+              {action.type === "character" && (
+                <>
+                  <PlayerList.RoleIcon player={action.player}>
+                    <PlayerList.NightReminder player={action.player} />
+                  </PlayerList.RoleIcon>
+                  <PlayerList.Name player={action.player} />
+                  <PlayerList.Actions player={action.player} />
+                </>
+              )}
+              {action.type === "game-action" && (
+                <Dialog.Root>
+                  <Dialog.Trigger>
+                    <Button variant="soft" className="flex-1 capitalize">
+                      {action.name}
+                    </Button>
+                  </Dialog.Trigger>
+                  <Dialog.Content>
+                    {action.name === "demon" && (
+                      <>
+                        <DialogHeader>Demon</DialogHeader>
+                        <DemonMessage
+                          message={{ type: "demon-first-night" }}
+                          player={
+                            game.playerList.find(
+                              (p) =>
+                                getCharacter(game.playersToRoles[p]).team ===
+                                "Demon",
+                            ) ?? undefined
+                          }
+                        />
+                      </>
+                    )}
+                    {action.name === "minions" && (
+                      <>
+                        <DialogHeader>Minions</DialogHeader>
+                        <Heading>
+                          Wake up the minions, and show them who their demon is.
+                        </Heading>
+                      </>
+                    )}
+                  </Dialog.Content>
+                </Dialog.Root>
+              )}
             </Flex>
           </Text>
         </React.Fragment>

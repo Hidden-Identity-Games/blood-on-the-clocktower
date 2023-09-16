@@ -9,7 +9,7 @@ import { PlayerSelect, RoleSelect } from "./RoleSelect";
 
 export interface DemonMessageProps {
   message: PlayerMessageMap["demon-first-night"];
-  player: string;
+  player?: string;
 }
 export function DemonMessage({ player }: DemonMessageProps) {
   const { gameId, game, script } = useDefiniteGame();
