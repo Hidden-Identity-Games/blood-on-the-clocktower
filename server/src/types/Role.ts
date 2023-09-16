@@ -29,16 +29,51 @@ export interface Character {
   team: CharacterType
 }
 
-export type Restriction = string
+export interface Restriction {
+  role?: string
+  team?: CharacterType | 'Good' | 'Evil'
+  alive?: boolean
+  inPlay?: boolean
+  guess?: boolean
+}
 
 export interface PlayerMessageMap {
+  'demon-first-night': {
+    type: 'demon-first-night'
+  }
+  'character-selected-you': {
+    type: 'character-selected-you'
+    restriction?: Restriction
+  }
   'reveal-role': {
     type: 'reveal-role'
     count: number
-    restriction: Restriction
+    restriction?: Restriction
   }
-  'demon-first-night': {
-    type: 'demon-first-night'
+  'reveal-team': {
+    type: 'reveal-team'
+    restriction?: Restriction
+    count: number
+  }
+  'reveal-player': {
+    type: 'reveal-player'
+    restriction?: Restriction
+    count: number
+  }
+  'role-change': {
+    type: 'role-change'
+    teamChange: boolean
+    restriction?: Restriction
+  }
+  'team-change': {
+    type: 'team-change'
+    restriction?: Restriction
+  }
+  'madness': {
+    type: 'madness'
+  }
+  'revivded': {
+    type: 'revived'
   }
 }
 

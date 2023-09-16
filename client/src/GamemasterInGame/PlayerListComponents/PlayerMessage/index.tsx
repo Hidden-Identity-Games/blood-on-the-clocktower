@@ -1,5 +1,5 @@
 import { PlayerMessage } from "@hidden-identity/server";
-import { exhaustiveCheck } from "../../../utils/exhaustiveCheck";
+// import { exhaustiveCheck } from "../../../utils/exhaustiveCheck";
 import { RevealMessage } from "./RevealMessage";
 import { DemonMessage } from "./DemonMessage";
 
@@ -14,6 +14,6 @@ export function PlayerMessageFlow({ message, player }: PlayerMessageFlowProps) {
     case "demon-first-night":
       return <DemonMessage message={message} player={player} />;
     default:
-      exhaustiveCheck(message);
+    // exhaustiveCheck(message);
   }
 }

@@ -38,7 +38,13 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If the Barber died today: Wake the Demon. Show the 'This character selected you' card, then Barber token. The Demon either shows a 'no' head signal, or points to 2 players. If they chose players: Swap the character tokens. Wake each player. Show 'You are', then their new character token.",
-      "order": 40
+      "order": 40,
+      "playerMessage": {
+        "type": "character-selected-you",
+        "restriction": {
+          "role": "barber"
+        }
+      }
     }
   },
   {
@@ -82,11 +88,17 @@
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/4/45/Icon_cerenovus.png",
     "firstNight": {
       "reminder": "The Cerenovus points to a player, then to a character on their sheet. Wake that player. Show the 'This character selected you' card, then the Cerenovus token. Show the selected character token. If the player is not mad about being that character tomorrow, they can be executed.",
-      "order": 25
+      "order": 25,
+      "playerMessage": {
+        "type": "madness"
+      }
     },
     "otherNight": {
       "reminder": "The Cerenovus points to a player, then to a character on their sheet. Wake that player. Show the 'This character selected you' card, then the Cerenovus token. Show the selected character token. If the player is not mad about being that character tomorrow, they can be executed.",
-      "order": 15
+      "order": 15,
+      "playerMessage": {
+        "type": "madness"
+      }
     }
   },
   {
@@ -188,7 +200,11 @@
     },
     "otherNight": {
       "reminder": "The Dreamer points to a player. Show 1 good and 1 evil character token; one of these is correct.",
-      "order": 56
+      "order": 56,
+      "playerMessage": {
+        "type": "reveal-player",
+        "count": 2
+      }
     }
   },
   {
@@ -236,7 +252,14 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "The Exorcist points to a player, different from the previous night. If that player is the Demon: Wake the Demon. Show the Exorcist token. Point to the Exorcist. The Demon does not act tonight.",
-      "order": 21
+      "order": 21,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 1,
+        "restriction": {
+          "role": "exorcist"
+        }
+      }
     }
   },
   {
@@ -251,7 +274,10 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "The Fang Gu points to a player. That player dies. Or, if that player was an Outsider and there are no other Fang Gu in play: The Fang Gu dies instead of the chosen player. The chosen player is now an evil Fang Gu. Wake the new Fang Gu. Show the 'You are' card, then the Fang Gu token. Show the 'You are' card, then the thumb-down 'evil' hand sign.",
-      "order": 29
+      "order": 29,
+      "playerMessage": {
+        "type": "role-change"
+      }
     }
   },
   {
@@ -663,7 +689,11 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "The Pit-Hag points to a player and a character on the sheet. If this character is not in play, wake that player and show them the 'You are' card and the relevant character token. If the character is in play, nothing happens.",
-      "order": 16
+      "order": 16,
+      "playerMessage": {
+        "type": "role-change",
+        "team-change": false
+      }
     }
   },
   {
@@ -711,7 +741,10 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If the Professor has not used their ability: The Professor either shakes their head no, or points to a player. If that player is a Townsfolk, they are now alive.",
-      "order": 43
+      "order": 43,
+      "playerMessage": {
+        "type": "revived"
+      }
     }
   },
   {
@@ -776,7 +809,14 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If the Sage was killed by a Demon: Point to two players, one of which is that Demon.",
-      "order": 42
+      "order": 42,
+      "playerMessage": {
+        "type": "team-reveal",
+        "count": 2,
+        "restriction": {
+          "team": "Demon"
+        }
+      }
     }
   },
   {
@@ -833,7 +873,11 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If the Scarlet Woman became the Demon today: Show the 'You are' card, then the demon token.",
-      "order": 19
+      "order": 19,
+      "playerMessage": {
+        "type": "role-change",
+        "team-change": true
+      }
     }
   },
   {
@@ -866,7 +910,10 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "One player that the Shabaloth chose the previous night might be resurrected. The Shabaloth points to two players. Those players die.",
-      "order": 27
+      "order": 27,
+      "playerMessage": {
+        "type": "revived"
+      }
     }
   },
   {
@@ -892,11 +939,19 @@
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/0/08/Icon_snakecharmer.png",
     "firstNight": {
       "reminder": "The Snake Charmer points to a player. If that player is the Demon: swap the Demon and Snake Charmer character and alignments. Wake each player to inform them of their new role and alignment. The new Snake Charmer is poisoned.",
-      "order": 20
+      "order": 20,
+      "playerMessage": {
+        "type": "role-change",
+        "team-change": true
+      }
     },
     "otherNight": {
       "reminder": "The Snake Charmer points to a player. If that player is the Demon: swap the Demon and Snake Charmer character and alignments. Wake each player to inform them of their new role and alignment. The new Snake Charmer is poisoned.",
-      "order": 11
+      "order": 11,
+      "playerMessage": {
+        "type": "role-change",
+        "team-change": true
+      }
     }
   },
   {
@@ -1112,7 +1167,14 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Show the Alchemist a not-in-play Minion token",
-      "order": 3
+      "order": 3,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 0,
+        "restriction": {
+          "in-play": true
+        }
+      }
     },
     "otherNight": null
   },
@@ -1163,11 +1225,19 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Choose a character type. Point to a player whose character is of that type. Place the Balloonist's Seen reminder next to that character.",
-      "order": 45
+      "order": 45,
+      "playerMessage": {
+        "type": "team-reveal",
+        "count": 1
+      }
     },
     "otherNight": {
       "reminder": "Choose a character type that does not yet have a Seen reminder next to a character of that type. Point to a player whose character is of that type, if there are any. Place the Balloonist's Seen reminder next to that character.",
-      "order": 62
+      "order": 62,
+      "playerMessage": {
+        "type": "team-reveal",
+        "count": 1
+      }
     }
   },
   {
@@ -1181,7 +1251,10 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Point to 1 evil player. Wake the townsfolk who is evil and show them the 'You are' card and the thumbs down evil sign.",
-      "order": 46
+      "order": 46,
+      "playerMessage": {
+        "type": "team-change"
+      }
     },
     "otherNight": {
       "reminder": "If the known evil player has died, point to another evil player. ",
@@ -1212,7 +1285,14 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If the King was killed by the Demon, wake the Choirboy and point to the Demon player.",
-      "order": 44
+      "order": 44,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 1,
+        "restriction": {
+          "role": "Demon"
+        }
+      }
     }
   },
   {
@@ -1226,11 +1306,17 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "If the cult leader changed alignment, show them the thumbs up good signal of the thumbs down evil signal accordingly.",
-      "order": 48
+      "order": 48,
+      "playerMessage": {
+        "type": "team-change"
+      }
     },
     "otherNight": {
       "reminder": "If the cult leader changed alignment, show them the thumbs up good signal of the thumbs down evil signal accordingly.",
-      "order": 66
+      "order": 66,
+      "playerMessage": {
+        "type": "team-change"
+      }
     }
   },
   {
@@ -1244,11 +1330,19 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "The Engineer shows a 'no' head signal, or points to a Demon or points to the relevant number of Minions. If the Engineer chose characters, replace the Demon or Minions with the choices, then wake the relevant players and show them the You are card and the relevant character tokens.",
-      "order": 13
+      "order": 13,
+      "playerMessage": {
+        "type": "role-change",
+        "team-change": false
+      }
     },
     "otherNight": {
       "reminder": "The Engineer shows a 'no' head signal, or points to a Demon or points to the relevant number of Minions. If the Engineer chose characters, replace the Demon or Minions with the choices, then wake the relevant players and show them the 'You are' card and the relevant character tokens.",
-      "order": 5
+      "order": 5,
+      "playerMessage": {
+        "type": "role-change",
+        "team-change": false
+      }
     }
   },
   {
@@ -1263,7 +1357,11 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If a Farmer died tonight, choose another good player and make them the Farmer. Wake this player, show them the 'You are' card and the Farmer character token.",
-      "order": 48
+      "order": 48,
+      "playerMessage": {
+        "type": "role-change",
+        "team-change": false
+      }
     }
   },
   {
@@ -1307,11 +1405,25 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
-      "order": 30
+      "order": 30,
+      "playerMessage": {
+        "type": "role-change",
+        "restriction": {
+          "in-play": false,
+          "team": "Townsfolk"
+        }
+      }
     },
     "otherNight": {
       "reminder": "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
-      "order": 45
+      "order": 45,
+      "playerMessage": {
+        "type": "role-change",
+        "restriction": {
+          "in-play": false,
+          "team": "Townsfolk"
+        }
+      }
     }
   },
   {
@@ -1325,11 +1437,19 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Wake the Demon, show them the 'This character selected you' card, show the King token and point to the King player.",
-      "order": 10
+      "order": 10,
+      "playerMessage": {
+        "type": "character-selected-you",
+        "role": "king"
+      }
     },
     "otherNight": {
       "reminder": "If there are more dead than living, show the King a character token of a living player.",
-      "order": 63
+      "order": 63,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 0
+      }
     }
   },
   {
@@ -1357,7 +1477,7 @@
     "ability": "The Demon thinks you are a Minion. Minions think you are a Demon.",
     "imageSrc": "",
     "firstNight": {
-      "reminder": "",
+      "reminder": "When you wake the minions, show them both the magician and the demon.  When you wake the Demon, show them all minions and the magician",
       "order": 5
     },
     "otherNight": null
@@ -1377,7 +1497,14 @@
     },
     "otherNight": {
       "reminder": "The Nightwatchman may point to a player. Wake that player, show the 'This character selected you' card and the Nightwatchman token, then point to the Nightwatchman player.",
-      "order": 65
+      "order": 65,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 1,
+        "restriction": {
+          "role": "nightwatchman"
+        }
+      }
     }
   },
   {
@@ -1391,7 +1518,14 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Point to 3 players including one evil player, in no particular order.",
-      "order": 44
+      "order": 44,
+      "playerMessage": {
+        "type": "team-reveal",
+        "count": 3,
+        "restriction": {
+          "guess": false
+        }
+      }
     },
     "otherNight": null
   },
@@ -1406,7 +1540,14 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Show the Pixie 1 in-play Townsfolk character token.",
-      "order": 29
+      "order": 29,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 1,
+        "restriction": {
+          "team": "Townsfolk"
+        }
+      }
     },
     "otherNight": null
   },
@@ -1425,7 +1566,10 @@
     },
     "otherNight": {
       "reminder": "If the Poppy Grower has died, show the Minions/Demon who each other are.",
-      "order": 3
+      "order": 3,
+      "playerMessage": {
+        "type": "demon-first-night"
+      }
     }
   },
   {
@@ -1439,11 +1583,17 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "The Preacher chooses a player. If a Minion is chosen, wake the Minion and show the 'This character selected you' card and then the Preacher token.",
-      "order": 14
+      "order": 14,
+      "playerMessage": {
+        "type": "character-selected-you"
+      }
     },
     "otherNight": {
       "reminder": "The Preacher chooses a player. If a Minion is chosen, wake the Minion and show the 'This character selected you' card and then the Preacher token.",
-      "order": 6
+      "order": 6,
+      "playerMessage": {
+        "type": "character-selected-you"
+      }
     }
   },
   {
@@ -1472,11 +1622,21 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Wake all the Minions, show them the 'This character selected you' card and the Damsel token.",
-      "order": 31
+      "order": 31,
+      "playerMessage": {
+        "type": "character-selected-you"
+      }
     },
     "otherNight": {
       "reminder": "If selected by the Huntsman, wake the Damsel, show 'You are' card and a not-in-play Townsfolk token.",
-      "order": 46
+      "order": 46,
+      "playerMessage": {
+        "type": "role-change",
+        "restriction": {
+          "in-play": false,
+          "team": "Townsfolk"
+        }
+      }
     }
   },
   {
@@ -1538,7 +1698,10 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "After Minion info wake each Minion and show them three not-in-play character tokens. These may be the same or different to each other and the ones shown to the Demon.",
-      "order": 7
+      "order": 7,
+      "playerMessage": {
+        "type": "demon-first-night"
+      }
     },
     "otherNight": null
   },
@@ -1636,7 +1799,14 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Select one of the good players next to the Demon and place the Is the Marionette reminder token. Wake the Demon and show them the Marionette.",
-      "order": 12
+      "order": 12,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 1,
+        "restriction": {
+          "role": "marionette"
+        }
+      }
     },
     "otherNight": null
   },
@@ -1655,7 +1825,13 @@
     },
     "otherNight": {
       "reminder": "Wake the 1st good player that said the Mezepheles' secret word and show them the 'You are' card and the thumbs down evil signal.",
-      "order": 18
+      "order": 18,
+      "playerMessage": {
+        "type": "team-change",
+        "restriction": {
+          "team": "Evil"
+        }
+      }
     }
   },
   {
@@ -1712,7 +1888,14 @@
     "imageSrc": "",
     "firstNight": {
       "reminder": "Show the Grimoire to the Widow for as long as they need. The Widow points to a player. That player is poisoned. Wake a good player. Show the 'These characters are in play' card, then the Widow character token.",
-      "order": 18
+      "order": 18,
+      "playerMessage": {
+        "type": "character-selected-you",
+        "count": 1,
+        "restriction": {
+          "role": "witch"
+        }
+      }
     },
     "otherNight": null
   }
