@@ -6,7 +6,7 @@ export interface Reveal {
 }
 
 export interface PlayerMessageScreenMessage {
-  player: string
+  player?: string
   message: string
   reveal?: Record<string, Reveal[]>
 }

@@ -4,6 +4,7 @@ import { PlayerNightReminder } from "./NightReminder";
 import { PlayerRoleIcon } from "./PlayerRole";
 import { PlayerNoteInput } from "./PlayerNoteInput";
 import { PlayerMenuItem } from "./PlayerMenuItem";
+import { PlayerMessageFlow } from "./PlayerMessage";
 
 export const PlayerList = {
   RoleIcon: PlayerRoleIcon,
@@ -12,4 +13,5 @@ export const PlayerList = {
   Actions: PlayerActions,
   MenuItem: PlayerMenuItem,
   NoteInputModal: PlayerNoteInput,
+  PlayerMessage: PlayerMessageFlow,
 };
