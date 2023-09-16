@@ -1,18 +1,28 @@
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Tabs, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
-import { useState } from "react";
 import { useMe } from "../store/secretKey";
+import {
+  BsFillMoonFill,
+  BsFillMoonStarsFill,
+  BsPeopleFill,
+} from "react-icons/bs";
+import { GiScrollQuill } from "react-icons/gi";
+import React from "react";
+import { getRole, getRoleExtension } from "../assets/game_data/gameData";
+import { colorMap } from "../shared/CharacterTypes";
+import { CharacterType } from "../types/script";
 
 const filters = ["dead", "can vote", "alive", "all"] as const;
 type Filters = (typeof filters)[number];
 
 export function PlayerInGame() {
-  const { game } = useDefiniteGame();
+  const { game, script } = useDefiniteGame();
   const me = useMe();
-  const [filter, setFilter] = useState<Filters>(filters[0]);
+  const [selectedTab, setSelectedTab] = React.useState("script");
+  const [filter, setFilter] = React.useState<Filters>(filters[0]);
   const allPlayers = Object.keys(game.playersToRoles).sort();
   const playerFilters = {
     all: allPlayers,
@@ -24,61 +34,200 @@ export function PlayerInGame() {
   };
   const players = playerFilters[filter];
 
+  const [nightOrder, charactersByType] = React.useMemo(() => {
+    const allCharacters =
+      script
+        ?.map(({ id }) => ({ ...getRole(id), ...getRoleExtension(id) }))
+        .map((character) => character) ?? [];
+
+    const nightOrder = allCharacters
+      .filter((character) => character.otherNight > 0)
+      .sort((a, b) => a.otherNight - b.otherNight);
+
+    return [
+      nightOrder,
+      {
+        Townsfolk: allCharacters.filter(({ team }) => team === "Townsfolk"),
+        Outsider: allCharacters.filter(({ team }) => team === "Outsider"),
+        Minion: allCharacters.filter(({ team }) => team === "Minion"),
+        Demon: allCharacters.filter(({ team }) => team === "Demon"),
+        // Unknown: allCharacters.filter(({ team }) => team === "Unknown"),
+      },
+    ];
+  }, [script]);
+
   return (
-    <Flex direction="column" gap="1" className="flex-1 overflow-hidden">
-      <Flex direction="column" gap="1" className="border-b border-red-700 p-2">
-        <Flex justify="between" p="2">
-          <Text className="capitalize">{me}</Text>
-          <Text className="capitalize">
-            {game.deadPlayers[me] ? "Dead" : "Alive"}
+    <Tabs.Root
+      className="flex flex-1 flex-col"
+      value={selectedTab}
+      onValueChange={setSelectedTab}
+    >
+      <Tabs.List>
+        <Tabs.Trigger className="min-w-[100px] flex-1" value="script">
+          <Text className="mr-1" color="red" asChild>
+            <GiScrollQuill />
           </Text>
-          <Text className="capitalize">
-            {!(game.deadPlayers[me] && game.deadVotes[me])
-              ? "Vote available"
-              : "Cannot vote"}
+          {selectedTab === "script" && "Script"}
+        </Tabs.Trigger>
+        <Tabs.Trigger className="flex-1" value="night-order">
+          <Text className="mr-1" color="red" asChild>
+            <BsFillMoonStarsFill />
           </Text>
-        </Flex>
+          {selectedTab === "night-order" && "Night Order"}
+        </Tabs.Trigger>
+        <Tabs.Trigger className="flex-1" value="players">
+          <Text className="mr-1" color="red" asChild>
+            <BsPeopleFill />
+          </Text>
+          {selectedTab === "players" && "Players"}
+        </Tabs.Trigger>
+      </Tabs.List>
 
-        <Flex gap="1" wrap="wrap-reverse">
-          {filters.map((f) => (
-            <Button
-              size="1"
-              color="red"
-              onClick={() => setFilter(f)}
-              className="min-w-fit flex-1 capitalize"
-              variant={f === filter ? "solid" : "surface"}
-            >
-              {f}({playerFilters[f].length})
-            </Button>
-          ))}
-        </Flex>
-      </Flex>
-      <Flex direction="column" gap="3" p="2" className="flex-1 overflow-y-auto">
-        {players.map((player) => (
-          <Flex
-            gap="1"
-            // justify="between"
-            className={classNames(game.deadPlayers[player] && "line-through")}
-          >
-            <div className="w-5">
-              {game.deadPlayers[player] && !game.deadVotes[player] && (
-                <MeaningfulIcon
-                  size="1"
-                  // color="violet"
-                  header="Player has a deadvote"
-                  explanation="Each player gets one vote after they die.  This player has used theirs."
-                >
-                  <LiaVoteYeaSolid className="h-2" />
-                </MeaningfulIcon>
-              )}
-            </div>
-
-            <Text as="div" className="flex-1 capitalize">
-              {player}
-            </Text>
+      <div className="relative flex-1 overflow-x-hidden">
+        <Tabs.Content className="h-full overflow-y-auto" value="script">
+          <Flex className="m-2" direction="column" gap="3">
+            {Object.entries(charactersByType)
+              .filter(([_, characters]) => characters.length > 0)
+              .map(([team, characters]) => (
+                <React.Fragment key={team}>
+                  <Flex justify="end">
+                    <Heading
+                      size="3"
+                      align="right"
+                      color={colorMap[team as CharacterType]}
+                      asChild
+                    >
+                      <Flex gap="2">
+                        <span className="scale-x-[-1]">
+                          <BsFillMoonFill />
+                        </span>
+                        {team === "Townsfolk" ? `${team}` : `${team}s`}
+                      </Flex>
+                    </Heading>
+                  </Flex>
+                  {characters.map((char, idx) => (
+                    <Flex
+                      key={char.id}
+                      className={classNames(idx % 2 === 0 && "bg-stone-900")}
+                      gap="2"
+                    >
+                      <Flex direction="column">
+                        {/* <img src={char.imageSrc} className="h-5 w-5" /> */}
+                        <Heading
+                          size="2"
+                          className="flex-1"
+                          color={colorMap[team as CharacterType]}
+                        >
+                          {char.name}
+                        </Heading>
+                      </Flex>
+                      <Text size="1" weight="light" className="flex-[5]">
+                        {char.ability}
+                      </Text>
+                    </Flex>
+                  ))}
+                </React.Fragment>
+              ))}
           </Flex>
-        ))}
-      </Flex>
-    </Flex>
+        </Tabs.Content>
+
+        <Tabs.Content className="h-full overflow-y-auto" value="night-order">
+          <Flex className="m-2" direction="column" gap="3">
+            {nightOrder.map((character, idx) => (
+              <Flex
+                key={character.id}
+                className={classNames(idx % 2 === 0 && "bg-stone-900")}
+                gap="2"
+              >
+                <Flex direction="column">
+                  {/* <img src={char.imageSrc} className="h-5 w-5" /> */}
+                  <Heading
+                    size="2"
+                    className="flex-1"
+                    color={colorMap[character.team as CharacterType]}
+                  >
+                    {character.name}
+                  </Heading>
+                </Flex>
+                <Text size="1" weight="light" className="flex-[5]">
+                  {character.ability}
+                </Text>
+              </Flex>
+            ))}
+          </Flex>
+        </Tabs.Content>
+
+        <Tabs.Content className="h-full overflow-y-auto" value="players">
+          <Flex direction="column" gap="1" className="flex-1 overflow-hidden">
+            <Flex
+              direction="column"
+              gap="1"
+              className="border-b border-red-700 p-2"
+            >
+              <Flex justify="between" p="2">
+                <Text className="capitalize">{me}</Text>
+                <Text className="capitalize">
+                  {game.deadPlayers[me] ? "Dead" : "Alive"}
+                </Text>
+                <Text className="capitalize">
+                  {!(game.deadPlayers[me] && game.deadVotes[me])
+                    ? "Vote available"
+                    : "Cannot vote"}
+                </Text>
+              </Flex>
+
+              <Flex gap="1" wrap="wrap-reverse">
+                {filters.map((f) => (
+                  <Button
+                    key={f}
+                    size="1"
+                    color="red"
+                    onClick={() => setFilter(f)}
+                    className="min-w-fit flex-1 capitalize"
+                    variant={f === filter ? "solid" : "surface"}
+                  >
+                    {f}({playerFilters[f].length})
+                  </Button>
+                ))}
+              </Flex>
+            </Flex>
+            <Flex
+              direction="column"
+              gap="3"
+              p="2"
+              className="flex-1 overflow-y-auto"
+            >
+              {players.map((player) => (
+                <Flex
+                  key={player}
+                  gap="1"
+                  // justify="between"
+                  className={classNames(
+                    game.deadPlayers[player] && "line-through",
+                  )}
+                >
+                  <div className="w-5">
+                    {game.deadPlayers[player] && !game.deadVotes[player] && (
+                      <MeaningfulIcon
+                        size="1"
+                        // color="violet"
+                        header="Player has a deadvote"
+                        explanation="Each player gets one vote after they die.  This player has used theirs."
+                      >
+                        <LiaVoteYeaSolid className="h-2" />
+                      </MeaningfulIcon>
+                    )}
+                  </div>
+
+                  <Text as="div" className="flex-1 capitalize">
+                    {player}
+                  </Text>
+                </Flex>
+              ))}
+            </Flex>
+          </Flex>
+        </Tabs.Content>
+      </div>
+    </Tabs.Root>
   );
 }
