@@ -24,7 +24,7 @@ export function MeaningfulIcon(props: MeaningfulIconProps) {
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
         <DialogHeader>{props.header}</DialogHeader>
-        <Text as="div" className="mt-3">
+        <Text as="div" className="">
           {props.explanation}
         </Text>
       </Dialog.Content>
@@ -46,7 +46,7 @@ export function MeaningfulStatusIcon(props: MeaningfulIconProps) {
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
         <DialogHeader>{props.header}</DialogHeader>
-        <Text as="div" className="mt-3">
+        <Text as="div" className="">
           {props.explanation}
         </Text>
       </Dialog.Content>

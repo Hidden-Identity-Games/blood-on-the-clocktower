@@ -12,13 +12,16 @@ export type Role = string & {
   __is_char_id: true
 }
 
+export interface CharacterNightData {
+  order: number
+  reminder: string
+}
+
 export interface Character {
   id: Role
   name: string
-  firstNight: number
-  firstNightReminder: string
-  otherNight: number
-  otherNightReminder: string
+  firstNight: CharacterNightData | null
+  otherNight: CharacterNightData | null
   setup: boolean
   ability: string
   imageSrc: string
