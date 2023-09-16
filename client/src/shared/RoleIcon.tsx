@@ -1,7 +1,7 @@
 import { getCharacter } from "../assets/game_data/gameData";
 import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { colorMap } from "./CharacterTypes";
-import { Text } from "@radix-ui/themes";
+import { Flex, Text } from "@radix-ui/themes";
 import { Role } from "@hidden-identity/server";
 import classNames from "classnames";
 
@@ -13,8 +13,8 @@ export function RoleIcon({ role, ...props }: RoleIconProps) {
     <div
       {...props}
       className={classNames(
+        "bg-center bg-contain h-[1.5em] aspect-square flex items-center justify-center bg-no-repeat",
         props.className,
-        "bg-center bg-contain h-4 w-4 flex items-center justify-center",
       )}
       style={{
         backgroundImage: `url(${
@@ -32,16 +32,33 @@ export interface RoleTextProps {
   role: Role;
   children?: React.ReactNode;
   className?: string;
+  size?: "1" | "2" | "3";
 }
 
-export function RoleText({ role, children, className }: RoleTextProps) {
+export function RoleText({ role, children, className, size }: RoleTextProps) {
   const charType = getCharacter(role)?.team;
   return (
     <Text
+      size={size}
       color={colorMap[charType] ?? undefined}
       className={classNames("capitalize", className)}
     >
       {children ?? getCharacter(role).name ?? role}
     </Text>
+  );
+}
+
+export interface CharacterNameProps {
+  role: Role;
+  size?: "1" | "2" | "3";
+}
+export function CharacterName({ role, size }: CharacterNameProps) {
+  return (
+    <Flex gap="1">
+      <RoleIcon role={role} />
+      <RoleText role={role} size={size}>
+        {getCharacter(role).name}
+      </RoleText>
+    </Flex>
   );
 }

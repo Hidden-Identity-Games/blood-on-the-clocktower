@@ -124,6 +124,7 @@ export function NightPlayerList() {
               <PlayerList.RoleIcon night player={player} />
               <PlayerList.Name player={player} />
               <NotesIcons player={player} />
+              <PlayerList.ShowMessage player={player} />
               <PlayerList.Actions player={player} />
             </Flex>
           </Text>

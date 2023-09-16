@@ -23,7 +23,7 @@ export function PlayerRoleIcon({
           : "crimson"
       }
       header={
-        <div className="flex items-center justify-center gap-1">
+        <div className="flex items-center justify-center gap-1 text-xs">
           <RoleIcon role={role} />
           {RoleName(role)}
         </div>
