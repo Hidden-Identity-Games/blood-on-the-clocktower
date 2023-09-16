@@ -1,7 +1,8 @@
 import { Checkbox, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
-import { useKickPlayer } from "../store/useStore";
+import { useKickPlayer, usePlayerNotes } from "../store/useStore";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
@@ -10,6 +11,9 @@ import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
 import { PlayerMenuItem } from "./PlayerListComponents/PlayerActions";
+import { PlayerNote } from "@hidden-identity/server";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { PlayerNoteInput } from "./PlayerListComponents/PlayerNoteInput";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -58,15 +62,16 @@ export function PregamePlayerList() {
               </Dialog.Trigger>
               <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
-                  <Dialog.Close>
-                    <PlayerMenuItem
-                      id="kick-player"
-                      label="Kick Player"
-                      icon={<GiBootKick />}
-                      onClick={() => handleKickPlayer(player)}
-                      disabled={kickPlayerLoading}
-                    />
-                  </Dialog.Close>
+                  <PlayerMenuItem id="kick-player" label="Kick Player">
+                    <Dialog.Close>
+                      <IconButton
+                        onClick={() => handleKickPlayer(player)}
+                        disabled={kickPlayerLoading}
+                      >
+                        <GiBootKick />
+                      </IconButton>{" "}
+                    </Dialog.Close>
+                  </PlayerMenuItem>
                 </Flex>
               </Dialog.Content>
             </Dialog.Root>
@@ -150,23 +155,44 @@ export function IngamePlayerList() {
               <PlayerList.RoleIcon player={player} />
               <DeadVoteIcon player={player} />
               <PlayerList.Name player={player} />
-              <PlayerStatusIcons player={player} />
+              <PlayerNoteInput player={player} id="">
+                <IconButton variant="soft" size="1" radius="full">
+                  +
+                </IconButton>
+              </PlayerNoteInput>
               <PlayerList.Actions player={player} />
             </Flex>
           </Text>
 
-          <Text size="1" weight="regular">
-            <Flex direction="column">
-              {game.playerNotes[player].map((note) => (
-                <Flex gap="2" px="4" key={note.id}>
-                  <GiFeather />
-                  {note.message}
-                </Flex>
-              ))}
-            </Flex>
-          </Text>
+          <PlayerNotes player={player} />
         </Flex>
       ))}
     </Flex>
+  );
+}
+
+interface PlayerNotesProps {
+  player: string;
+}
+
+function PlayerNotes({ player }: PlayerNotesProps) {
+  const { game } = useDefiniteGame();
+  const notes = game.playerNotes[player] ?? [];
+  const statuses = game.playerStatusEffects[player] ?? [];
+  if (!notes?.length && !statuses.length) return;
+
+  return (
+    <Text size="2" weight="regular" asChild>
+      <Flex className="py-1 pl-[120px]" direction="column" gap="2">
+        <PlayerStatusIcons player={player} />
+        {notes.map((note) => (
+          <Flex gap="2" px="2" align="center" key={note.message}>
+            <PlayerNoteInput player={player} id={note.id}>
+              <button>{note.message}</button>
+            </PlayerNoteInput>
+          </Flex>
+        ))}
+      </Flex>
+    </Text>
   );
 }

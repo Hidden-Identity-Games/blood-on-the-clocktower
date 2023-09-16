@@ -266,7 +266,12 @@ export function addPlayerNote (gameId: string, player: string, note: PlayerNote)
     ...gameInstance,
     playerNotes: {
       ...gameInstance.playerNotes,
-      [player]: [...(gameInstance.playerNotes[player] || []), note],
+      [player]: [
+        ...(gameInstance.playerNotes[player] || [])
+          .filter(n =>
+            n.message !== note.id && n.message !== note.message),
+        { ...note, id: note.message },
+      ].filter(Boolean),
     },
   })
 }
