@@ -386,13 +386,7 @@
     "setup": false,
     "ability": "Each night*, choose a player: they die. If you kill yourself this way, a Minion becomes the Imp.",
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/5/5c/Icon_imp.png",
-    "firstNight": {
-      "reminder": "Tell the demon who their minions are.",
-      "order": 24,
-      "playerMessage": {
-        "type": "demon-first-night"
-      }
-    },
+    "firstNight": null,
     "otherNight": {
       "reminder": "The Imp points to a player. That player dies. If the Imp chose themselves: Replace the character of 1 alive minion with a spare Imp token. Show the 'You are' card, then the Imp token.",
       "order": 24
@@ -490,8 +484,11 @@
     "ability": "You think you are a Demon, but you are not. The Demon knows who you are & who you choose at night.",
     "imageSrc": "https://wiki.bloodontheclocktower.com/images/6/64/Icon_lunatic.png",
     "firstNight": {
-      "reminder": "If 7 or more players: Show the Lunatic a number of arbitrary 'Minions', players equal to the number of Minions in play. Show 3 character tokens of arbitrary good characters. If the token received by the Lunatic is a Demon that would wake tonight: Allow the Lunatic to do the Demon actions. Place their 'attack' markers. Wake the Demon. Show the Demon’s real character token. Show them the Lunatic player. If the Lunatic attacked players: Show the real demon each marked player. Remove any Lunatic 'attack' markers.",
-      "order": 8
+      "reminder": "First, wake the minions, show them who their demon.  Then, wake the demon, and show them whon their minions are.",
+      "order": 8,
+      "playerMessage": {
+        "type": "demon-first-night"
+      }
     },
     "otherNight": {
       "reminder": "Allow the Lunatic to do the actions of the Demon. Place their 'attack' markers. If the Lunatic selected players: Wake the Demon. Show the 'attack' marker, then point to each marked player. Remove any Lunatic 'attack' markers.",
@@ -1702,21 +1699,6 @@
     "imageSrc": "",
     "firstNight": null,
     "otherNight": null
-  },
-  {
-    "id": "shabaloth",
-    "name": "Shabaloth",
-    "edition": "bmr",
-    "team": "Demon",
-    "reminders": ["Dead", "Alive"],
-    "setup": false,
-    "ability": "Each night*, choose 2 players: they die. A dead player you chose last night might be regurgitated.",
-    "imageSrc": "",
-    "firstNight": null,
-    "otherNight": {
-      "reminder": "One player that the Shabaloth chose the previous night might be resurrected. The Shabaloth points to two players. Those players die.",
-      "order": 27
-    }
   },
   {
     "id": "widow",
