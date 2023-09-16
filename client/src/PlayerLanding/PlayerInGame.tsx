@@ -35,10 +35,7 @@ export function PlayerInGame() {
   const players = playerFilters[filter];
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
-    const allCharacters =
-      script
-        ?.map(({ id }) => ({ ...getCharacter(id), ...getCharacter(id) }))
-        .map((character) => character) ?? [];
+    const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
 
     const nightOrder = allCharacters
       .filter((character) => character.otherNight > 0)
