@@ -2,15 +2,14 @@ import { type Application } from 'express-ws'
 import {
   addGame,
   addPlayerStatus,
-  addPlayerNote,
   addPlayer,
   assignRoles,
   clearPlayerStatus,
-  clearPlayerNote,
   getGame,
   kickPlayer,
   retrieveGame,
   setPlayerFate,
+  setPlayerNote,
   setPlayerOrder,
   toggleDeadvote,
   updateStatus,
@@ -99,16 +98,9 @@ export function useGame (app: Application): void {
     res.send({})
   })
 
-  app.post('/add_player_note', (req, res) => {
+  app.post('/set_player_note', (req, res) => {
     const { player, gameId, note } = req.body
-    addPlayerNote(gameId, player, note)
-    res.status(200)
-    res.send({})
-  })
-
-  app.post('/clear_player_note', (req, res) => {
-    const { player, gameId, noteId } = req.body
-    clearPlayerNote(gameId, player, noteId)
+    setPlayerNote(gameId, player, note)
     res.status(200)
     res.send({})
   })

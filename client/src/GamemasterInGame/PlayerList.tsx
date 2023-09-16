@@ -1,8 +1,7 @@
 import { Checkbox, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
-import { useKickPlayer, usePlayerNotes } from "../store/useStore";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useKickPlayer } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import classNames from "classnames";
@@ -11,8 +10,6 @@ import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
 import { PlayerMenuItem } from "./PlayerListComponents/PlayerActions";
-import { PlayerNote } from "@hidden-identity/server";
-import { Cross1Icon } from "@radix-ui/react-icons";
 import { PlayerNoteInput } from "./PlayerListComponents/PlayerNoteInput";
 
 export function PregamePlayerList() {
@@ -150,16 +147,16 @@ export function IngamePlayerList() {
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       {playerList.map((player) => (
         <Flex direction="column" key={player}>
-          <Text size="3" asChild>
+          <Text size="4" asChild>
             <Flex justify="between" align="center" px="3" gap="3">
               <PlayerList.RoleIcon player={player} />
-              <DeadVoteIcon player={player} />
               <PlayerList.Name player={player} />
-              <PlayerNoteInput player={player} id="">
+              <PlayerNoteInput player={player} note={game.playerNotes[player]}>
                 <IconButton variant="soft" size="1" radius="full">
-                  +
+                  <GiFeather />
                 </IconButton>
               </PlayerNoteInput>
+              <DeadVoteIcon player={player} />
               <PlayerList.Actions player={player} />
             </Flex>
           </Text>
@@ -177,21 +174,28 @@ interface PlayerNotesProps {
 
 function PlayerNotes({ player }: PlayerNotesProps) {
   const { game } = useDefiniteGame();
-  const notes = game.playerNotes[player] ?? [];
-  const statuses = game.playerStatusEffects[player] ?? [];
-  if (!notes?.length && !statuses.length) return;
+  const statuses = game.playerPlayerStatuses[player] ?? [];
+  const notes = game.playerNotes[player] ?? "";
+  if (!notes && !statuses.length) return;
 
   return (
-    <Text size="2" weight="regular" asChild>
-      <Flex className="py-1 pl-[120px]" direction="column" gap="2">
-        <PlayerStatusIcons player={player} />
-        {notes.map((note) => (
-          <Flex gap="2" px="2" align="center" key={note.message}>
-            <PlayerNoteInput player={player} id={note.id}>
-              <button>{note.message}</button>
+    <Text size="2" weight="light" asChild>
+      <Flex className="px-[3em] py-1" direction="column" gap="2">
+        {statuses.length > 0 && (
+          <Flex gap="3">
+            <PlayerStatusIcons player={player} />
+          </Flex>
+        )}
+        {notes && (
+          <Flex ml="1" gap="2">
+            <GiFeather />
+            <PlayerNoteInput player={player} note={notes}>
+              <button className="flex-1 whitespace-pre-line text-left">
+                {notes}
+              </button>
             </PlayerNoteInput>
           </Flex>
-        ))}
+        )}
       </Flex>
     </Text>
   );

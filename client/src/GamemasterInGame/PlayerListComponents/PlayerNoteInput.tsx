@@ -1,58 +1,70 @@
 import React from "react";
 import { usePlayerNotes } from "../../store/useStore";
-import {
-  Button,
-  Dialog,
-  Flex,
-  IconButton,
-  TextFieldInput,
-} from "@radix-ui/themes";
-import { Cross1Icon } from "@radix-ui/react-icons";
+import { Button, Dialog, Flex, TextArea } from "@radix-ui/themes";
 
 interface PlayerNoteInputProps {
   player: string;
   children: React.ReactNode;
-  id: string;
+  note?: string;
 }
 
 export function PlayerNoteInput({
   player,
   children,
-  id,
+  note = "",
 }: PlayerNoteInputProps) {
   const [, playerNotesLoading, , setPlayerNote] = usePlayerNotes();
-  const [note, setNote] = React.useState(id);
+  const [newNote, setNewNote] = React.useState(note);
 
   return (
-    <Dialog.Root onOpenChange={(e) => (e ? setNote(id) : setNote(""))}>
+    <Dialog.Root onOpenChange={() => setNewNote(note)}>
       <Dialog.Trigger disabled={playerNotesLoading}>{children}</Dialog.Trigger>
 
       <Dialog.Content className="m-2">
-        <Dialog.Title className="capitalize">{player}: Add Note</Dialog.Title>
+        <Dialog.Title className="capitalize">
+          <Flex justify="between">
+            <label className="flex-1" htmlFor="note-input">
+              {player}: Notes
+            </label>
+            <Dialog.Close>
+              <Button
+                type="reset"
+                variant="surface"
+                onClick={() => setPlayerNote(player, "")}
+              >
+                Clear
+              </Button>
+            </Dialog.Close>
+          </Flex>
+        </Dialog.Title>
         <Flex className="w-full" direction="column" gap="4" asChild>
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              setPlayerNote(player, "add", {
-                message: note,
-                id: id,
-              });
+              setPlayerNote(player, newNote);
             }}
           >
-            <Flex className="w-full" gap="2" align="center">
-              <Dialog.Close>
-                <IconButton size="1" variant="surface" radius="full">
-                  <Cross1Icon />
-                </IconButton>
-              </Dialog.Close>
-              <TextFieldInput
-                value={note}
-                onChange={(event) => setNote(event.currentTarget.value)}
-              />
-            </Flex>
+            <TextArea
+              autoFocus
+              onFocus={(e) =>
+                e.currentTarget.setSelectionRange(
+                  e.currentTarget.value.length,
+                  e.currentTarget.value.length,
+                )
+              }
+              id="note-input"
+              className=" h-[50vh] rounded-l"
+              value={newNote}
+              onChange={(event) => {
+                setNewNote(event.currentTarget.value);
+              }}
+            />
+
             <Flex justify="between">
               <Dialog.Close>
-                <Button type="reset">Cancel</Button>
+                <Button type="reset" variant="surface">
+                  Cancel
+                </Button>
               </Dialog.Close>
 
               <Dialog.Close>
