@@ -23,8 +23,11 @@ export function RoleSelect({
   onSelect,
   clearable,
 }: RoleSelectProps) {
-  const { script } = useDefiniteGame();
+  const { script, game } = useDefiniteGame();
   const roles = script.map(({ id }) => id);
+  const rolesToCharacters = Object.fromEntries(
+    game.playerList.map((p) => [game.playersToRoles[p], p]),
+  );
 
   return (
     <Dialog.Root>
@@ -54,7 +57,12 @@ export function RoleSelect({
                 variant={role === currentRole ? "soft" : "outline"}
                 onClick={() => onSelect(role)}
               >
-                <CharacterName role={role} />
+                <CharacterName role={role} className="" />
+                {rolesToCharacters[role] && (
+                  <span className="-ml-1 capitalize">
+                    - {rolesToCharacters[role]}
+                  </span>
+                )}
               </Button>
             </Dialog.Close>
           ))}
