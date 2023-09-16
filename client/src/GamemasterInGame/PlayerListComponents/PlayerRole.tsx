@@ -1,4 +1,4 @@
-import { getRole } from "../../assets/game_data/gameData";
+import { getCharacter } from "../../assets/game_data/gameData";
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { RoleIcon, RoleName } from "../../shared/RoleIcon";
 import { useDefiniteGame } from "../../store/GameContext";
@@ -18,7 +18,7 @@ export function PlayerRoleIcon({
       className="aspect-square h-4"
       size="1"
       color={
-        ["Townsfolk", "Outsider"].includes(getRole(role).team)
+        ["Townsfolk", "Outsider"].includes(getCharacter(role).team)
           ? "cyan"
           : "crimson"
       }

@@ -1,6 +1,6 @@
 import { Checkbox, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
-import { getRole, getRoleExtension } from "../assets/game_data/gameData";
+import { getCharacter } from "../assets/game_data/gameData";
 import { useKickPlayer } from "../store/useStore";
 import { GiBootKick } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -85,8 +85,8 @@ export function NightPlayerList() {
       .map((player) => ({
         player,
         role: game.playersToRoles[player],
-        ...getRole(game.playersToRoles[player]),
-        ...getRoleExtension(game.playersToRoles[player]),
+        ...getCharacter(game.playersToRoles[player]),
+        ...getCharacter(game.playersToRoles[player]),
       }))
       .sort((a, b) => a[nightKey] - b[nightKey]);
   }, [nightKey, game]);

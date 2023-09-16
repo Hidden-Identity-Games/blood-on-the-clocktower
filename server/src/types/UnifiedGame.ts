@@ -41,20 +41,3 @@ export interface BrokenOrderedPlayers {
 export interface Neighbors {
   rightNeighbor: string | null
 }
-
-export interface Character {
-  id: Role
-  name: string
-  team: CharacterType
-  imageSrc?: string
-}
-
-export const CharacterTypes = [
-  'Townsfolk',
-  'Outsider',
-  'Minion',
-  'Demon',
-] as const
-
-export type CharacterType = (typeof CharacterTypes)[number] | 'Unknown'
-export type KnownCharacterType = (typeof CharacterTypes)[number]

@@ -1,6 +1,6 @@
 import { UnifiedGame } from "@hidden-identity/server";
 import { Text } from "@radix-ui/themes";
-import { getRoleExtension } from "../../assets/game_data/gameData";
+import { getCharacter } from "../../assets/game_data/gameData";
 import { useDefiniteGame } from "../../store/GameContext";
 
 type AbilityKey = "ability" | "firstNightReminder" | "otherNightReminder";
@@ -23,7 +23,7 @@ export function PlayerAbility({
   night?: boolean;
 }) {
   const { game } = useDefiniteGame();
-  const character = getRoleExtension(game.playersToRoles[player]);
+  const character = getCharacter(game.playersToRoles[player]);
   const abilityKey = getAbilityKey(game, night);
   const ability = character[abilityKey];
 

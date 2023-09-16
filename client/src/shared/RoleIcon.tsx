@@ -1,4 +1,4 @@
-import { getRole, roles } from "../assets/game_data/gameData";
+import { getCharacter } from "../assets/game_data/gameData";
 import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { colorMap } from "./CharacterTypes";
 import { Text } from "@radix-ui/themes";
@@ -6,7 +6,7 @@ import { Role } from "@hidden-identity/server";
 import classNames from "classnames";
 
 export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
-  role: string;
+  role: Role;
 }
 export function RoleIcon({ role, ...props }: RoleIconProps) {
   return (
@@ -17,13 +17,15 @@ export function RoleIcon({ role, ...props }: RoleIconProps) {
         "bg-center bg-contain h-4 w-4 flex items-center justify-center",
       )}
       style={{
-        backgroundImage: `url(${roles[role]?.imageSrc ?? DefaultRoleImageSrc})`,
+        backgroundImage: `url(${
+          getCharacter(role)?.imageSrc ?? DefaultRoleImageSrc
+        })`,
       }}
     ></div>
   );
 }
-export function RoleName(role: string) {
-  return roles[role]?.name ?? role;
+export function RoleName(role: Role) {
+  return getCharacter(role as Role)?.name ?? role;
 }
 
 export interface RoleTextProps {
@@ -33,13 +35,13 @@ export interface RoleTextProps {
 }
 
 export function RoleText({ role, children, className }: RoleTextProps) {
-  const charType = roles[role]?.team;
+  const charType = getCharacter(role)?.team;
   return (
     <Text
       color={colorMap[charType] ?? undefined}
       className={classNames("capitalize", className)}
     >
-      {children ?? getRole(role).name ?? role}
+      {children ?? getCharacter(role).name ?? role}
     </Text>
   );
 }

@@ -3,7 +3,7 @@ import "./PlayerRole.css";
 import tokenBack from "../assets/token_logo.png";
 import tokenBlank from "../assets/token_blank.png";
 import fingerprintImage from "../assets/fingerprint.png";
-import { getRole } from "../assets/game_data/gameData";
+import { getCharacter } from "../assets/game_data/gameData";
 import { Role } from "@hidden-identity/server";
 import { useState } from "react";
 import { RoleText } from "../shared/RoleIcon";
@@ -82,7 +82,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
           <div data-card-side="back" className="h-full w-full text-center">
             <img
               className="h-full w-full"
-              src={getRole(role).imageSrc}
+              src={getCharacter(role).imageSrc}
               onContextMenu={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
