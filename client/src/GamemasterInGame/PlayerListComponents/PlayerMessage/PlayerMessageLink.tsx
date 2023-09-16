@@ -16,7 +16,7 @@ export function PlayerMessageLink({
       <a
         {...linkProps}
         href={`/${gameId}/note?playerMessage=${JSON.stringify(note)}`}
-        target="player_note"
+        target="_blank"
       >
         Go to note
       </a>
