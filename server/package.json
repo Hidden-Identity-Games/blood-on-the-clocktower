@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "packageManager": "pnpm@8.6.12",
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },
@@ -24,7 +25,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
