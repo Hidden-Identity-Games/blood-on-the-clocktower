@@ -1,7 +1,7 @@
 import { Role } from "@hidden-identity/server";
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { CharacterName } from "../../../shared/RoleIcon";
+import { CharacterName, RoleIcon } from "../../../shared/RoleIcon";
 
 interface BaseRoleSelectProps {
   currentRole: Role;
@@ -23,8 +23,11 @@ export function RoleSelect({
   onSelect,
   clearable,
 }: RoleSelectProps) {
-  const { script } = useDefiniteGame();
+  const { script, game } = useDefiniteGame();
   const roles = script.map(({ id }) => id);
+  const rolesToCharacters = Object.fromEntries(
+    game.playerList.map((p) => [game.playersToRoles[p], p]),
+  );
 
   return (
     <Dialog.Root>
@@ -54,7 +57,12 @@ export function RoleSelect({
                 variant={role === currentRole ? "soft" : "outline"}
                 onClick={() => onSelect(role)}
               >
-                <CharacterName role={role} />
+                <CharacterName role={role} className="" />
+                {rolesToCharacters[role] && (
+                  <span className="-ml-1 capitalize">
+                    - {rolesToCharacters[role]}
+                  </span>
+                )}
               </Button>
             </Dialog.Close>
           ))}
@@ -91,7 +99,10 @@ export function PlayerSelect({
     <Dialog.Root>
       <Dialog.Trigger>
         <Button variant="outline" size="3" className="capitalize">
-          {currentPlayer}
+          <Flex className="w-full text-center" align="center" justify="center">
+            {currentPlayer}
+            <RoleIcon role={game.playersToRoles[currentPlayer]} />
+          </Flex>
         </Button>
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
@@ -116,7 +127,14 @@ export function PlayerSelect({
                 variant={player === currentPlayer ? "soft" : "outline"}
                 onClick={() => onSelect(player)}
               >
-                {player}
+                <Flex
+                  className="w-full text-center"
+                  align="center"
+                  justify="center"
+                >
+                  {player}
+                  <RoleIcon role={game.playersToRoles[player]} />
+                </Flex>
               </Button>
             </Dialog.Close>
           ))}

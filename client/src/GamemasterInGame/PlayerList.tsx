@@ -9,7 +9,6 @@ import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
-import { PlayerMenuItem } from "./PlayerListComponents/PlayerActions";
 import { PlayerNoteInput } from "./PlayerListComponents/PlayerNoteInput";
 
 export function PregamePlayerList() {
@@ -59,7 +58,7 @@ export function PregamePlayerList() {
               </Dialog.Trigger>
               <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
-                  <PlayerMenuItem id="kick-player" label="Kick Player">
+                  <PlayerList.MenuItem id="kick-player" label="Kick Player">
                     <Dialog.Close>
                       <IconButton
                         onClick={() => handleKickPlayer(player)}
@@ -68,7 +67,7 @@ export function PregamePlayerList() {
                         <GiBootKick />
                       </IconButton>{" "}
                     </Dialog.Close>
-                  </PlayerMenuItem>
+                  </PlayerList.MenuItem>
                 </Flex>
               </Dialog.Content>
             </Dialog.Root>
@@ -123,10 +122,11 @@ export function NightPlayerList() {
                   })
                 }
               />
-              <PlayerList.RoleIcon night player={player} />
+              <PlayerList.RoleIcon player={player}>
+                <PlayerList.NightReminder player={player} />
+              </PlayerList.RoleIcon>
               <PlayerList.Name player={player} />
               <PlayerStatusIcons player={player} />
-              <PlayerList.ShowMessage player={player} />
               <PlayerList.Actions player={player} />
             </Flex>
           </Text>
@@ -149,7 +149,9 @@ export function IngamePlayerList() {
         <Flex direction="column" key={player}>
           <Text size="4" asChild>
             <Flex justify="between" align="center" px="3" gap="3">
-              <PlayerList.RoleIcon player={player} />
+              <PlayerList.RoleIcon player={player}>
+                {getCharacter(game.playersToRoles[player]).ability}
+              </PlayerList.RoleIcon>
               <PlayerList.Name player={player} />
               <PlayerNoteInput player={player} note={game.playerNotes[player]}>
                 <IconButton variant="soft" size="1" radius="full">

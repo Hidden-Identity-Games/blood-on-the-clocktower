@@ -747,7 +747,12 @@
     "firstNight": null,
     "otherNight": {
       "reminder": "If the Ravenkeeper died tonight: The Ravenkeeper points to a player. Show that player’s character token.",
-      "order": 52
+      "order": 52,
+      "playerMessage": {
+        "type": "reveal-role",
+        "count": 1,
+        "restriction": "dead"
+      }
     }
   },
   {
@@ -999,8 +1004,7 @@
       "order": 55,
       "playerMessage": {
         "type": "reveal-role",
-        "count": 1,
-        "restriction": "dead"
+        "count": 1
       }
     }
   },

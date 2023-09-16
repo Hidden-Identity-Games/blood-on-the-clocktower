@@ -1,10 +1,11 @@
 import { PlayerMessageMap, Role } from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
-import { Flex, Heading, Text } from "@radix-ui/themes";
+import { Flex, Heading, IconButton, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { PlayerSelect, RoleSelect } from "./RoleSelect";
 import { pick, pluck } from "../../../utils/shuffleList";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export interface RevealMessageProps {
   message: PlayerMessageMap["reveal-role"];
@@ -46,10 +47,27 @@ export function RevealMessage({ message, player }: RevealMessageProps) {
         onSelect={(nextRole) => setRole(nextRole)}
       />
 
-      <Heading>Player</Heading>
+      <Heading className="flex items-center gap-1">
+        Player{" "}
+        <IconButton
+          variant="ghost"
+          radius="full"
+          className="pt-1"
+          onClick={() => {
+            setPlayers((lastPlayers) => [
+              ...lastPlayers,
+              pluck(game.playerList.filter((p) => !lastPlayers.includes(p))),
+            ]);
+          }}
+        >
+          <PlusIcon />
+        </IconButton>
+      </Heading>
+
       {players.map((currentPlayer, index) => (
         <PlayerSelect
           clearable
+          key={currentPlayer}
           currentPlayer={currentPlayer}
           onSelect={(nextPlayer) => {
             setPlayers((lastPlayers) => {
