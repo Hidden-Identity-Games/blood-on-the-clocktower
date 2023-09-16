@@ -86,7 +86,6 @@ export function NightPlayerList() {
         player,
         role: game.playersToRoles[player],
         ...getCharacter(game.playersToRoles[player]),
-        ...getCharacter(game.playersToRoles[player]),
       }))
       .sort((a, b) => a[nightKey] - b[nightKey]);
   }, [nightKey, game]);
