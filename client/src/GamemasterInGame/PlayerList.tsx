@@ -12,7 +12,7 @@ import { getCharacter } from "../assets/game_data/gameData";
 import { useKickPlayer } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
-import React, { useState } from "react";
+import React, { HTMLAttributes, useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
@@ -144,7 +144,7 @@ export function NightPlayerList() {
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       {[...nightActions, ...leftoverPlayers].map((action) => (
         <React.Fragment key={action.name}>
-          <Text size="3" asChild>
+          <Text size="4" asChild>
             <Flex justify="between" align="center" px="3" gap="3">
               <Checkbox
                 id={`${action.name}-done`}
@@ -161,7 +161,14 @@ export function NightPlayerList() {
                   <PlayerList.RoleIcon player={action.player}>
                     <PlayerList.NightReminder player={action.player} />
                   </PlayerList.RoleIcon>
-                  <PlayerList.Name player={action.player} />
+                  <PlayerList.NoteInputModal
+                    player={action.player}
+                    note={game.playerNotes[action.player]}
+                  >
+                    <button className="flex-1 text-left">
+                      <PlayerList.Name player={action.player} />
+                    </button>
+                  </PlayerList.NoteInputModal>
                   <PlayerList.Actions player={action.player} />
                 </>
               )}
@@ -201,6 +208,13 @@ export function NightPlayerList() {
               )}
             </Flex>
           </Text>
+
+          {action.type === "character" && (
+            <PlayerNotes
+              className="mt-[-0.5em] px-[5em] py-1"
+              player={action.player}
+            />
+          )}
         </React.Fragment>
       ))}
     </Flex>
@@ -236,18 +250,18 @@ export function IngamePlayerList() {
             </Flex>
           </Text>
 
-          <PlayerNotes player={player} />
+          <PlayerNotes className="px-[3em] py-1" player={player} />
         </Flex>
       ))}
     </Flex>
   );
 }
 
-interface PlayerNotesProps {
+interface PlayerNotesProps extends HTMLAttributes<HTMLDivElement> {
   player: string;
 }
 
-function PlayerNotes({ player }: PlayerNotesProps) {
+function PlayerNotes({ player, ...props }: PlayerNotesProps) {
   const { game } = useDefiniteGame();
   const statuses = game.playerPlayerStatuses[player] ?? [];
   const notes = game.playerNotes[player] ?? "";
@@ -255,21 +269,21 @@ function PlayerNotes({ player }: PlayerNotesProps) {
 
   return (
     <Text size="2" weight="light" asChild>
-      <Flex className="px-[3em] py-1" direction="column" gap="2">
+      <Flex direction="column" gap="2" {...props}>
         {statuses.length > 0 && (
           <Flex gap="3">
             <PlayerStatusIcons player={player} />
           </Flex>
         )}
         {notes && (
-          <Flex ml="1" gap="2">
-            <GiFeather />
-            <PlayerList.NoteInputModal player={player} note={notes}>
-              <button className="flex-1 whitespace-pre-line text-left">
+          <PlayerList.NoteInputModal player={player} note={notes}>
+            <button className="ml-1 flex-1 whitespace-pre-line text-left">
+              <Flex gap="2">
+                <GiFeather />
                 {notes}
-              </button>
-            </PlayerList.NoteInputModal>
-          </Flex>
+              </Flex>
+            </button>
+          </PlayerList.NoteInputModal>
         )}
       </Flex>
     </Text>
