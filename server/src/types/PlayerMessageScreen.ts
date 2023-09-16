@@ -5,7 +5,7 @@ export interface Reveal {
   player?: string
 }
 
-export interface NotesScreenNote {
+export interface PlayerMessageScreenMessage {
   player: string
   message: string
   reveal?: Record<string, Reveal[]>

@@ -1,13 +1,13 @@
 import { Flex, Heading, TextArea } from "@radix-ui/themes";
 import { useSearchParams } from "react-router-dom";
 import { CharacterName } from "../shared/RoleIcon";
-import { NotesScreenNote } from "@hidden-identity/server";
+import { PlayerMessageScreenMessage } from "@hidden-identity/server";
 
-export function PlayerNotePage() {
+export function PlayerMessagePage() {
   const [queryParams] = useSearchParams();
   const unparsed = queryParams.get("playerMessage") ?? "";
   console.log(unparsed);
-  const parsedMessage = JSON.parse(unparsed) as NotesScreenNote;
+  const parsedMessage = JSON.parse(unparsed) as PlayerMessageScreenMessage;
   const { message, reveal } = parsedMessage;
 
   return (

@@ -1,6 +1,6 @@
 import { PlayerMessageMap, Role } from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { NoteLink } from "./NoteLink";
+import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { PlayerSelect, RoleSelect } from "./RoleSelect";
@@ -28,7 +28,7 @@ export function RevealMessage({ message, player }: RevealMessageProps) {
 
   return (
     <Flex direction="column" gap="2">
-      <NoteLink
+      <PlayerMessageLink
         className="mb-2"
         note={{
           player,

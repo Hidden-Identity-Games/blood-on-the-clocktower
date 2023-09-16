@@ -1,7 +1,7 @@
 import { PlayerMessageMap, Role } from "@hidden-identity/server";
 import { Flex, Heading } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { NoteLink } from "./NoteLink";
+import { PlayerMessageLink } from "./PlayerMessageLink";
 import { getCharacter } from "../../../assets/game_data/gameData";
 import { useState } from "react";
 import { pick } from "../../../utils/shuffleList";
@@ -37,7 +37,7 @@ export function DemonMessage({ player }: DemonMessageProps) {
 
   return (
     <Flex direction="column" gap="2">
-      <NoteLink
+      <PlayerMessageLink
         className="mb-2"
         gameId={gameId}
         note={{
