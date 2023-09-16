@@ -1,7 +1,7 @@
 import { Role } from "@hidden-identity/server";
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { CharacterName } from "../../../shared/RoleIcon";
+import { CharacterName, RoleIcon } from "../../../shared/RoleIcon";
 
 interface BaseRoleSelectProps {
   currentRole: Role;
@@ -91,7 +91,10 @@ export function PlayerSelect({
     <Dialog.Root>
       <Dialog.Trigger>
         <Button variant="outline" size="3" className="capitalize">
-          {currentPlayer}
+          <Flex className="w-full text-center" align="center" justify="center">
+            {currentPlayer}
+            <RoleIcon role={game.playersToRoles[currentPlayer]} />
+          </Flex>
         </Button>
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
@@ -116,7 +119,14 @@ export function PlayerSelect({
                 variant={player === currentPlayer ? "soft" : "outline"}
                 onClick={() => onSelect(player)}
               >
-                {player}
+                <Flex
+                  className="w-full text-center"
+                  align="center"
+                  justify="center"
+                >
+                  {player}
+                  <RoleIcon role={game.playersToRoles[player]} />
+                </Flex>
               </Button>
             </Dialog.Close>
           ))}

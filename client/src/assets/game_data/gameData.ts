@@ -17,7 +17,7 @@ const characters: Record<Role, Character> = Object.fromEntries(
       id: role.id as Role,
       team: role.team as CharacterType,
       firstNight: role.firstNight as CharacterNightData | null,
-      otherNight: role.firstNight as CharacterNightData | null,
+      otherNight: role.otherNight as CharacterNightData | null,
     },
   ]),
 );
