@@ -10,6 +10,7 @@ import {
   useDeadVote,
   useDecideFate,
   usePlayerNotes,
+  useStatusEffects,
 } from "../../store/useStore";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useDefiniteGame } from "../../store/GameContext";
@@ -100,6 +101,8 @@ export function PlayerActions({ player }: { player: string }) {
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const [, deadVoteLoading, , setDeadVote] = useDeadVote();
   const [, playerNotesLoading, , setPlayerNote] = usePlayerNotes();
+  const [, statusEffectsLoading, , setStatusEffect] = useStatusEffects();
+
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -130,7 +133,6 @@ export function PlayerActions({ player }: { player: string }) {
                 player={player}
                 handleAddNote={(note) =>
                   setPlayerNote(player, "add", {
-                    type: "custom",
                     message: note,
                     id: `${player}-${note}`,
                   })
@@ -146,11 +148,12 @@ export function PlayerActions({ player }: { player: string }) {
               label="Poisoned"
               icon={<FaVial />}
               onClick={() =>
-                setPlayerNote(player, "add", {
+                setStatusEffect(player, "add", {
                   type: "poison",
                   id: `${player}-poisoned`,
                 })
               }
+              disabled={statusEffectsLoading}
             />
           </Dialog.Close>
           <Dialog.Close>
@@ -159,11 +162,12 @@ export function PlayerActions({ player }: { player: string }) {
               label="Drunk"
               icon={<IoIosBeer />}
               onClick={() =>
-                setPlayerNote(player, "add", {
+                setStatusEffect(player, "add", {
                   type: "drunk",
                   id: `${player}-drunk`,
                 })
               }
+              disabled={statusEffectsLoading}
             />
           </Dialog.Close>
           {game.deadVotes[player] && (

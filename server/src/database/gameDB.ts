@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type Note, type GameStatus, type UnifiedGameComputed } from '../types/index.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type StatusEffect, type GameStatus, type UnifiedGameComputed, type PlayerNote } from '../types/index.ts'
 import { generate } from 'random-words'
 import { type Computer, WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -61,6 +61,7 @@ function createGame (): BaseUnifiedGame {
     playersToRoles: {},
     partialPlayerOrdering: {},
     deadPlayers: {},
+    playerStatusEffects: {},
     playerNotes: {},
     deadVotes: {},
   }
@@ -229,7 +230,35 @@ export function assignRoles (
   })
 }
 
-export function addNote (gameId: string, player: string, note: Note): void {
+export function addStatusEffect (gameId: string, player: string, statusEffect: StatusEffect): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  game.update({
+    ...gameInstance,
+    playerStatusEffects: {
+      ...gameInstance.playerStatusEffects,
+      [player]: [...(gameInstance.playerStatusEffects[player] || []), statusEffect],
+    },
+  })
+}
+
+export function clearStatusEffect (gameId: string, player: string, statusEffectId: string): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  game.update({
+    ...gameInstance,
+    playerStatusEffects: {
+      ...gameInstance.playerStatusEffects,
+      [player]: [
+        ...(gameInstance.playerStatusEffects[player] || []).filter(({ id }) => id !== statusEffectId),
+      ],
+    },
+  })
+}
+
+export function addPlayerNote (gameId: string, player: string, note: PlayerNote): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
@@ -241,10 +270,10 @@ export function addNote (gameId: string, player: string, note: Note): void {
     },
   })
 }
-export function clearNote (gameId: string, player: string, noteId: string): void {
+
+export function clearPlayerNote (gameId: string, player: string, noteId: string): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
-  console.log(noteId, gameInstance.playerNotes[player])
 
   game.update({
     ...gameInstance,
@@ -256,6 +285,7 @@ export function clearNote (gameId: string, player: string, noteId: string): void
     },
   })
 }
+
 export function toggleDeadvote (gameId: string, player: string, voteUsed: boolean): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()

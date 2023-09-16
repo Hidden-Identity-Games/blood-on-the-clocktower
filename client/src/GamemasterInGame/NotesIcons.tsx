@@ -3,45 +3,42 @@ import { FaVial } from "react-icons/fa6";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { GiFeather } from "react-icons/gi";
 import { LiaVoteYeaSolid } from "react-icons/lia";
-
-import { BsFillPersonBadgeFill } from "react-icons/bs";
-
 import { MeaningfulStatusIcon } from "../shared/MeaningfulIcon";
 import { useDefiniteGame } from "../store/GameContext";
 import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
-import { Note } from "@hidden-identity/server";
-import { useDeadVote, usePlayerNotes } from "../store/useStore";
+import { StatusEffect } from "@hidden-identity/server";
+import { useDeadVote, useStatusEffects } from "../store/useStore";
 
-function NotesIconList({
-  notes,
+function StatusEffectsIconList({
+  statusEffects,
   size,
   player,
 }: {
   player: string;
-  notes: (Note | { type: "adead-vote"; id: string })[];
+  statusEffects: StatusEffect[];
   size: "1" | "2" | "3";
 }) {
   const className = "h-2";
 
-  const [, , , updatePlayerNote] = usePlayerNotes();
+  const [, , , updateStatusEffect] = useStatusEffects();
 
-  return [...notes]
+  return [...statusEffects]
     .sort((a, b) => (a.type > b.type ? -1 : 1))
-    .map((note) => {
+    .map((status) => {
       const buttonProps = {
         size,
         radius: "full",
         variant: "soft",
         color: "violet",
       } as const;
-      switch (note.type) {
+      switch (status.type) {
         case "drunk":
           return (
             <IconButton
-              key={note.id}
+              key={status.id}
               {...buttonProps}
               onClick={() => {
-                updatePlayerNote(player, "remove", note);
+                updateStatusEffect(player, "remove", status);
               }}
             >
               <IoIosBeer className={className} />
@@ -50,67 +47,37 @@ function NotesIconList({
         case "poison":
           return (
             <IconButton
-              key={note.id}
+              key={status.id}
               {...buttonProps}
               onClick={() => {
-                updatePlayerNote(player, "remove", note);
+                updateStatusEffect(player, "remove", status);
               }}
             >
               <FaVial className={className} />
             </IconButton>
           );
-        case "bluffing":
-          return (
-            <MeaningfulStatusIcon
-              key={note.id}
-              size={size}
-              color={buttonProps.color}
-              header={
-                <Flex gap="1">
-                  <BsFillPersonBadgeFill />
-                  <div>Bluffing</div>
-                </Flex>
-              }
-              explanation={
-                <>
-                  <Text as="div">This person is bluffing as {note.as}.</Text>
-                  <Dialog.Close>
-                    <Button
-                      onClick={() => {
-                        updatePlayerNote(player, "remove", note);
-                      }}
-                    >
-                      Clear Note
-                    </Button>
-                  </Dialog.Close>
-                </>
-              }
-            >
-              <BsFillPersonBadgeFill className={className} />
-            </MeaningfulStatusIcon>
-          );
         case "custom":
           return (
             <MeaningfulStatusIcon
-              key={note.id}
+              key={status.id}
               size={size}
               color="violet"
               header={
                 <Flex gap="1">
                   <GiFeather />
-                  <div>Custom note</div>
+                  <div>Custom Status</div>
                 </Flex>
               }
               explanation={
                 <>
-                  <Text as="div">{note.message}</Text>
+                  <Text as="div">{status.desc}</Text>
                   <Dialog.Close>
                     <Button
                       onClick={() => {
-                        updatePlayerNote(player, "remove", note);
+                        updateStatusEffect(player, "remove", status);
                       }}
                     >
-                      Clear Note
+                      Clear Status
                     </Button>
                   </Dialog.Close>
                 </>
@@ -123,11 +90,11 @@ function NotesIconList({
     });
 }
 
-export function NotesIcons({ player }: { player: string }) {
+export function StatusEffectsIcons({ player }: { player: string }) {
   const { game } = useDefiniteGame();
 
-  const notes = game.playerNotes[player] ?? [];
-  if (notes.length > 3) {
+  const statusEffects = game.playerStatusEffects[player] ?? [];
+  if (statusEffects.length > 3) {
     return (
       <MeaningfulStatusIcon
         size="1"
@@ -138,7 +105,11 @@ export function NotesIcons({ player }: { player: string }) {
         }
         explanation={
           <Flex justify="between">
-            <NotesIconList notes={notes} player={player} size="3" />
+            <StatusEffectsIconList
+              statusEffects={statusEffects}
+              player={player}
+              size="3"
+            />
           </Flex>
         }
       >
@@ -146,7 +117,13 @@ export function NotesIcons({ player }: { player: string }) {
       </MeaningfulStatusIcon>
     );
   }
-  return <NotesIconList notes={notes} player={player} size="1" />;
+  return (
+    <StatusEffectsIconList
+      statusEffects={statusEffects}
+      player={player}
+      size="1"
+    />
+  );
 }
 
 export function DeadVoteIcon({ player }: { player: string }) {
