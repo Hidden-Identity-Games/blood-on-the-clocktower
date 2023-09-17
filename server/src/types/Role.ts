@@ -72,7 +72,7 @@ export interface PlayerMessageMap {
   'madness': {
     type: 'madness'
   }
-  'revivded': {
+  'revived': {
     type: 'revived'
   }
 }

@@ -1,17 +1,14 @@
-import { PlayerMessageMap, Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/server";
 import { Flex, Heading } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { getCharacter } from "../../../assets/game_data/gameData";
 import { useState } from "react";
 import { pick } from "../../../utils/shuffleList";
-import { PlayerSelect, RoleSelect } from "./RoleSelect";
+import { PlayerSelect, RoleSelect } from "../Selectors";
 
-export interface DemonMessageProps {
-  message: PlayerMessageMap["demon-first-night"];
-  player?: string;
-}
-export function DemonMessage({ player }: DemonMessageProps) {
+export interface DemonMessageProps {}
+export function DemonMessage(_props: DemonMessageProps) {
   const { gameId, game, script } = useDefiniteGame();
   const [minions, setMinions] = useState(() =>
     game.playerList.filter(
@@ -41,7 +38,6 @@ export function DemonMessage({ player }: DemonMessageProps) {
         className="mb-2"
         gameId={gameId}
         note={{
-          player,
           reveal: {
             minions: minions.map((minion) => ({ player: minion })),
             bluffs: bluffs.map((bluff) => ({
