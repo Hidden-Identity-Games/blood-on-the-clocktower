@@ -18,6 +18,7 @@ import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
 import { DemonMessage } from "./PlayerListComponents/PlayerMessage/DemonMessage";
 import { DialogHeader } from "../shared/DialogHeader";
+import { PlayerListFilters } from "../shared/PlayerListFilters";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -223,6 +224,7 @@ export function NightPlayerList() {
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
+  const [filteredPlayers, setFilteredPlayers] = React.useState<string[]>([]);
 
   const playerList = game.orderedPlayers.problems
     ? game.playerList
@@ -230,7 +232,11 @@ export function IngamePlayerList() {
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {playerList.map((player) => (
+      <PlayerListFilters
+        playerList={playerList}
+        setFilteredPlayers={setFilteredPlayers}
+      />
+      {filteredPlayers.map((player) => (
         <Flex direction="column" key={player}>
           <Text size="4" asChild>
             <Flex justify="between" align="center" px="3" gap="3">
