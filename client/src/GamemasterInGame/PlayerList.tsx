@@ -183,16 +183,7 @@ export function NightPlayerList() {
                     {action.name === "demon" && (
                       <>
                         <DialogHeader>Demon</DialogHeader>
-                        <DemonMessage
-                          message={{ type: "demon-first-night" }}
-                          player={
-                            game.playerList.find(
-                              (p) =>
-                                getCharacter(game.playersToRoles[p]).team ===
-                                "Demon",
-                            ) ?? undefined
-                          }
-                        />
+                        <DemonMessage />
                       </>
                     )}
                     {action.name === "minions" && (
