@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Tabs, Text } from "@radix-ui/themes";
+import { Flex, Heading, Tabs, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
@@ -14,25 +14,13 @@ import React from "react";
 import { getCharacter } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
-
-const filters = ["dead", "can vote", "alive", "all"] as const;
-type Filters = (typeof filters)[number];
+import { PlayerListFilters } from "../shared/PlayerListFilters";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
-  const [filter, setFilter] = React.useState<Filters>(filters[0]);
-  const allPlayers = Object.keys(game.playersToRoles).sort();
-  const playerFilters = {
-    all: allPlayers,
-    alive: allPlayers.filter((p) => !game.deadPlayers[p]),
-    dead: allPlayers.filter((p) => game.deadPlayers[p]),
-    "can vote": allPlayers.filter(
-      (p) => !(game.deadPlayers[p] && game.deadVotes[p]),
-    ),
-  };
-  const players = playerFilters[filter];
+  const [filteredPlayers, setFilteredPlayers] = React.useState(game.playerList);
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
     const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
@@ -173,20 +161,10 @@ export function PlayerInGame() {
                 </Text>
               </Flex>
 
-              <Flex gap="1" wrap="wrap-reverse">
-                {filters.map((f) => (
-                  <Button
-                    key={f}
-                    size="1"
-                    color="red"
-                    onClick={() => setFilter(f)}
-                    className="min-w-fit flex-1 capitalize"
-                    variant={f === filter ? "solid" : "surface"}
-                  >
-                    {f}({playerFilters[f].length})
-                  </Button>
-                ))}
-              </Flex>
+              <PlayerListFilters
+                playerList={game.playerList}
+                setFilteredPlayers={setFilteredPlayers}
+              />
             </Flex>
             <Flex
               direction="column"
@@ -194,7 +172,7 @@ export function PlayerInGame() {
               p="2"
               className="flex-1 overflow-y-auto"
             >
-              {players.map((player) => (
+              {filteredPlayers.map((player) => (
                 <Flex
                   key={player}
                   gap="1"
