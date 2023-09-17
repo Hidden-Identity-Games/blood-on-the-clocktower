@@ -6,7 +6,12 @@ import { useAction, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
-import { GameStatus, PlayerStatus, Script } from "@hidden-identity/server";
+import {
+  GameStatus,
+  PlayerStatus,
+  Role,
+  Script,
+} from "@hidden-identity/server";
 
 function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
@@ -271,6 +276,24 @@ export function useDistributeRoles() {
       }
 
       throw e;
+    }
+  });
+}
+export function useAssignRole() {
+  const { gameId } = useGame();
+
+  return useAction(async (player: string, role: Role) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/assign_role"), {
+      gameId,
+      player,
+      role,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
     }
   });
 }
