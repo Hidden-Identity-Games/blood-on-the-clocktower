@@ -108,6 +108,22 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
   }))
+
+  const selectorsPlayers = players.slice(0, testSelectorsScript.length)
+  addTestGame('tg-selectors', {
+    gameStatus: 'Setup',
+    gmSecretHash: 't',
+    playersToRoles: Object.fromEntries(selectorsPlayers.map((p, idx) => [p, testSelectorsScript[testSelectorsScript.length - idx - 1].id])),
+    deadPlayers: {},
+    partialPlayerOrdering: Object.fromEntries(selectorsPlayers.map((p, i) => [p, { rightNeighbor: selectorsPlayers[(i + 1) % selectorsPlayers.length] }])),
+    playerPlayerStatuses: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+    },
+    playerNotes: {},
+    deadVotes: {},
+  }, [...testSelectorsScript, { id: 'ravenkeeper' },
+    { id: 'washerwoman' },
+    { id: 'butler' }] as Script)
 }
 
 const tbScript = [
@@ -133,9 +149,21 @@ const tbScript = [
   { id: 'scarlet_woman' },
   { id: 'imp' }] as Script
 
-function addTestGame (name: string, game: BaseUnifiedGame): void {
+const testSelectorsScript = [
+  { id: 'riot' },
+  { id: 'widow' },
+  { id: 'cerenovus' },
+  { id: 'undertaker' },
+  { id: 'marionette' },
+  { id: 'damsel' },
+  { id: 'snitch' },
+  { id: 'shabaloth' },
+  { id: 'noble' },
+  { id: 'mezepheles' }] as Script
+
+function addTestGame (name: string, game: BaseUnifiedGame, script: Script = tbScript): void {
   addGame(name, game)
   if (game.gameStatus !== 'PlayersJoining') {
-    setScript(name, tbScript)
+    setScript(name, script)
   }
 }

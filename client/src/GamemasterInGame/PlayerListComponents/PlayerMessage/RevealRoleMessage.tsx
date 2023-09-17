@@ -13,7 +13,7 @@ export interface RevealRoleMessageProps {
   player: string;
 }
 export function RevealRoleMessage({ message, player }: RevealRoleMessageProps) {
-  const { game, gameId, script } = useDefiniteGame();
+  const { game, script } = useDefiniteGame();
   const [role, setRole] = useState<Role>(() =>
     pluck(
       script
@@ -40,7 +40,6 @@ export function RevealRoleMessage({ message, player }: RevealRoleMessageProps) {
           },
           message: "",
         }}
-        gameId={gameId}
       />
       <Heading>Role</Heading>
       <Restrictions restrictions={message.restriction} />

@@ -2,6 +2,13 @@ import { PlayerMessage, PlayerMessageMap } from "@hidden-identity/server";
 // import { exhaustiveCheck } from "../../../utils/exhaustiveCheck";
 import { RevealRoleMessage } from "./RevealRoleMessage";
 import { DemonMessage } from "./DemonMessage";
+import { RevealPlayerMessage } from "./RevealPlayerMessage";
+import { RevealTeamMessage } from "./RevealTeamMessage";
+import { MadnessMessage } from "./MadnessMessage";
+import { RevivedMessage } from "./RevivedMessage";
+import { RoleChangeMessage } from "./RoleChangeMessage";
+import { TeamChangeMessage } from "./TeamChangeMessage";
+import { CharacterSelectedYouMessage } from "./CharacterSelectedYouMessage";
 import { ComponentType } from "react";
 
 interface PlayerMessageFlowProps {
@@ -16,13 +23,13 @@ const ComponentMap: {
 } = {
   "demon-first-night": DemonMessage,
   "reveal-role": RevealRoleMessage,
-  "reveal-player": () => null,
-  "reveal-team": () => null,
-  "character-selected-you": () => null,
-  madness: () => null,
-  revived: () => null,
-  "role-change": () => null,
-  "team-change": () => null,
+  "reveal-player": RevealPlayerMessage,
+  "reveal-team": RevealTeamMessage,
+  "character-selected-you": CharacterSelectedYouMessage,
+  madness: MadnessMessage,
+  revived: RevivedMessage,
+  "role-change": RoleChangeMessage,
+  "team-change": TeamChangeMessage,
 };
 
 export function PlayerMessageFlow({ message, player }: PlayerMessageFlowProps) {

@@ -1,7 +1,8 @@
-import { Flex, Heading, TextArea } from "@radix-ui/themes";
+import { Flex, Heading, Text, TextArea } from "@radix-ui/themes";
 import { useSearchParams } from "react-router-dom";
 import { CharacterName } from "../shared/RoleIcon";
 import { PlayerMessageScreenMessage } from "@hidden-identity/server";
+import { teamColorMap } from "../shared/CharacterTypes";
 
 export function PlayerMessagePage() {
   const [queryParams] = useSearchParams();
@@ -22,6 +23,15 @@ export function PlayerMessagePage() {
               )}
               {revealItem.player && (
                 <div className="capitalize">{revealItem.player}</div>
+              )}
+              {revealItem.team && (
+                <Text
+                  as="div"
+                  color={teamColorMap[revealItem.team]}
+                  className="capitalize"
+                >
+                  {revealItem.team}
+                </Text>
               )}
             </Flex>
           ))}

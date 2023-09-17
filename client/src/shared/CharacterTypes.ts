@@ -10,4 +10,5 @@ export const teamColorMap = {
   ...colorMap,
   Good: "blue",
   Evil: "crimson",
+  Unknown: "amber",
 } as const;

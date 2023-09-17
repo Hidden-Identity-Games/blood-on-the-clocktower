@@ -9,7 +9,7 @@ import { PlayerSelect, RoleSelect } from "../Selectors";
 
 export interface DemonMessageProps {}
 export function DemonMessage(_props: DemonMessageProps) {
-  const { gameId, game, script } = useDefiniteGame();
+  const { game, script } = useDefiniteGame();
   const [minions, setMinions] = useState(() =>
     game.playerList.filter(
       (player) => getCharacter(game.playersToRoles[player]).team === "Minion",
@@ -36,7 +36,6 @@ export function DemonMessage(_props: DemonMessageProps) {
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
-        gameId={gameId}
         note={{
           reveal: {
             minions: minions.map((minion) => ({ player: minion })),
