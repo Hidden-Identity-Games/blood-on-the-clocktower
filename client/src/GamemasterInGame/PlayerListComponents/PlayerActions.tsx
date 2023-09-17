@@ -15,6 +15,7 @@ import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PlayerList } from ".";
 import { RoleSelect } from "./Selectors";
 import { UnifiedGame } from "@hidden-identity/server";
+import { TravelerSelect } from "./Selectors/TravelerSelect";
 
 export function PlayerActions({ player }: { player: string }) {
   const { game } = useDefiniteGame();
@@ -94,6 +95,16 @@ export function PlayerActions({ player }: { player: string }) {
           <PlayerList.MenuItem id="not_needed" label="Change role">
             <RolechangeMenuItem game={game} player={player} />
           </PlayerList.MenuItem>
+          {game.travelers[player] && (
+            <PlayerList.MenuItem id={`${player}-toggle-dead`} label={""}>
+              <Dialog.Close>
+                <TravelerSelect
+                  currentRole={game.playersToRoles[player]}
+                  onSelect={() => {}}
+                />
+              </Dialog.Close>
+            </PlayerList.MenuItem>
+          )}
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

@@ -23,6 +23,7 @@ export interface BaseUnifiedGame {
   playerPlayerStatuses: Record<string, PlayerStatus[]>
   playerNotes: Record<string, string>
   deadVotes: Record<string, boolean>
+  travelers: Record<string, boolean>
 }
 
 export interface WellOrderedPlayers {

@@ -2166,6 +2166,249 @@ export const characters: CharacterDefinition[] = [
     },
     otherNight: null,
   },
+
+  {
+    id: "bureaucrat",
+    name: "Bureaucrat",
+    edition: "tb",
+    team: "Traveler",
+    reminders: ["3 votes"],
+    setup: false,
+    ability:
+      "Each night, choose a player (not yourself): their vote counts as 3 votes tomorrow.",
+    firstNight: {
+      reminder:
+        "The Bureaucrat points to a player. Put the Bureaucrat's '3 votes' reminder by the chosen player's character token.",
+      order: 1,
+    },
+    otherNight: {
+      reminder:
+        "The Bureaucrat points to a player. Put the Bureaucrat's '3 votes' reminder by the chosen player's character token.",
+      order: 1,
+    },
+    imageSrc: "",
+  },
+  {
+    id: "thief",
+    name: "Thief",
+    edition: "tb",
+    team: "Traveler",
+    reminders: ["Negative vote"],
+    setup: false,
+    ability:
+      "Each night, choose a player (not yourself): their vote counts negatively tomorrow.",
+    firstNight: {
+      reminder:
+        "The Thief points to a player. Put the Thief's 'Negative vote' reminder by the chosen player's character token.",
+      order: 1,
+    },
+    otherNight: {
+      reminder:
+        "The Thief points to a player. Put the Thief's 'Negative vote' reminder by the chosen player's character token.",
+      order: 1,
+    },
+    imageSrc: "",
+  },
+  {
+    id: "gunslinger",
+    name: "Gunslinger",
+    edition: "tb",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability:
+      "Each day, after the 1st vote has been tallied, you may choose a player that voted: they die.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "scapegoat",
+    name: "Scapegoat",
+    edition: "tb",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability:
+      "If a player of your alignment is executed, you might be executed instead.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "beggar",
+    name: "Beggar",
+    edition: "tb",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability:
+      "You must use a vote token to vote. Dead players may choose to give you theirs. If so, you learn their alignment. You are sober & healthy.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "apprentice",
+    name: "Apprentice",
+    edition: "bmr",
+    team: "Traveler",
+    reminders: ["Is the Apprentice"],
+    setup: false,
+    ability:
+      "On your 1st night, you gain a Townsfolk ability (if good), or a Minion ability (if evil).",
+    firstNight: {
+      reminder:
+        "Show the Apprentice the 'You are' card, then a Townsfolk or Minion token. In the Grimoire, replace the Apprentice token with that character token, and put the Apprentice's 'Is the Apprentice' reminder by that character token.",
+      order: 1,
+    },
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "matron",
+    name: "Matron",
+    edition: "bmr",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability:
+      "Each day, you may choose up to 3 sets of 2 players to swap seats. Players may not leave their seats to talk in private.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "judge",
+    name: "Judge",
+    edition: "bmr",
+    team: "Traveler",
+    reminders: ["No ability"],
+    setup: false,
+    ability:
+      "Once per game, if another player nominated, you may choose to force the current execution to pass or fail.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "bishop",
+    name: "Bishop",
+    edition: "bmr",
+    team: "Traveler",
+    reminders: ["Nominate good", "Nominate evil"],
+    setup: false,
+    ability:
+      "Only the Storyteller can nominate. At least 1 opposite player must be nominated each day.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "voudon",
+    name: "Voudon",
+    edition: "bmr",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability:
+      "Only you and the dead can vote. They don't need a vote token to do so. A 50% majority is not required.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "barista",
+    name: "Barista",
+    edition: "snv",
+    team: "Traveler",
+    reminders: ["Sober & Healthy", "Ability twice"],
+    setup: false,
+    ability:
+      "Each night, until dusk, 1) a player becomes sober, healthy and gets true info, or 2) their ability works twice. They learn which.",
+    firstNight: {
+      reminder:
+        "Choose a player, wake them and tell them which Barista power is affecting them. Treat them accordingly (sober/healthy/true info or activate their ability twice).",
+      order: 1,
+    },
+    otherNight: {
+      reminder:
+        "Choose a player, wake them and tell them which Barista power is affecting them. Treat them accordingly (sober/healthy/true info or activate their ability twice).",
+      order: 1,
+    },
+    imageSrc: "",
+  },
+  {
+    id: "harlot",
+    name: "Harlot",
+    edition: "snv",
+    team: "Traveler",
+    reminders: ["Dead"],
+    setup: false,
+    ability:
+      "Each night*, choose a living player: if they agree, you learn their character, but you both might die.",
+    firstNight: null,
+    otherNight: {
+      reminder:
+        "The Harlot points at any player. Then, put the Harlot to sleep. Wake the chosen player, show them the 'This character selected you' token, then the Harlot token. That player either nods their head yes or shakes their head no. If they nodded their head yes, wake the Harlot and show them the chosen player's character token. Then, you may decide that both players die.",
+      order: 1,
+    },
+    imageSrc: "",
+  },
+  {
+    id: "butcher",
+    name: "Butcher",
+    edition: "snv",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability: "Each day, after the 1st execution, you may nominate again.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "bonecollector",
+    name: "Bone Collector",
+    edition: "snv",
+    team: "Traveler",
+    reminders: ["No ability", "Has ability"],
+    setup: false,
+    ability:
+      "Once per game, at night, choose a dead player: they regain their ability until dusk.",
+    firstNight: null,
+    otherNight: {
+      reminder:
+        "The Bone Collector either shakes their head no or points at any dead player. If they pointed at any dead player, put the Bone Collector's 'Has Ability' reminder by the chosen player's character token. (They may need to be woken tonight to use it.)",
+      order: 1,
+    },
+    imageSrc: "",
+  },
+  {
+    id: "deviant",
+    name: "Deviant",
+    edition: "snv",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability: "If you were funny today, you cannot die by exile.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
+  {
+    id: "gangster",
+    name: "Gangster",
+    edition: "",
+    team: "Traveler",
+    reminders: [],
+    setup: false,
+    ability:
+      "Once per day, you may choose to kill an alive neighbour, if your other alive neighbour agrees.",
+    firstNight: null,
+    otherNight: null,
+    imageSrc: "",
+  },
 ];
 
 // console.log(

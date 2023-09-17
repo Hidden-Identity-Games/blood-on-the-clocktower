@@ -10,6 +10,10 @@ const characters: Record<Role, Character> = Object.fromEntries(
   ]),
 );
 
+const travelers: Role[] = charactersList
+  .filter((role) => role.team === "Traveler")
+  .map(({ id }) => id as Role);
+
 export function getCharacter(role: Role): Character {
   return (
     characters[role] ??
@@ -48,4 +52,8 @@ export function getScriptImg(scriptID: string): string | undefined {
 
 export function getScriptNames() {
   return Object.keys(scripts);
+}
+
+export function allTravelers() {
+  return travelers;
 }

@@ -71,15 +71,20 @@ function createGame (): BaseUnifiedGame {
     playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
   }
 }
 
 export function addPlayer (
   gameId: string,
   player: string,
+  traveler?: boolean,
 ): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
+  const gameStarted = gameInstance.gameStatus === 'Started'
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const travelling = traveler || gameStarted
 
   // player already exists
   if (gameInstance.playersToRoles[player]) {
@@ -101,6 +106,10 @@ export function addPlayer (
     deadPlayers: {
       ...gameInstance.deadPlayers,
       [player]: false,
+    },
+    travelers: {
+      ...gameInstance.travelers,
+      ...(travelling && { [player]: true }),
     },
   })
 }
@@ -226,7 +235,7 @@ export function assignRoles (
 ): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
-  const playerIdList = Object.keys(gameInstance.playersToRoles)
+  const playerIdList = gameInstance.playerList
   if (playerIdList.length !== roles.length) {
     throw new Error(`Player role count mistmatch, ${playerIdList.length} players, ${roles.length} roles.`)
   }

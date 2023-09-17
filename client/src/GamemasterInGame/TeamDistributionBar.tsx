@@ -86,17 +86,17 @@ const DistributionsByPlayerCount: Record<
   number,
   Record<KnownCharacterType, number>
 > = {
-  5: { Townsfolk: 3, Outsider: 0, Minion: 1, Demon: 1 },
-  6: { Townsfolk: 3, Outsider: 1, Minion: 1, Demon: 1 },
-  7: { Townsfolk: 5, Outsider: 0, Minion: 1, Demon: 1 },
-  8: { Townsfolk: 5, Outsider: 1, Minion: 1, Demon: 1 },
-  9: { Townsfolk: 5, Outsider: 2, Minion: 1, Demon: 1 },
-  10: { Townsfolk: 7, Outsider: 0, Minion: 2, Demon: 1 },
-  11: { Townsfolk: 7, Outsider: 1, Minion: 2, Demon: 1 },
-  12: { Townsfolk: 7, Outsider: 2, Minion: 2, Demon: 1 },
-  13: { Townsfolk: 9, Outsider: 0, Minion: 3, Demon: 1 },
-  14: { Townsfolk: 9, Outsider: 1, Minion: 3, Demon: 1 },
-  15: { Townsfolk: 9, Outsider: 2, Minion: 3, Demon: 1 },
+  5: { Townsfolk: 3, Outsider: 0, Minion: 1, Demon: 1, Traveler: 0 },
+  6: { Townsfolk: 3, Outsider: 1, Minion: 1, Demon: 1, Traveler: 0 },
+  7: { Townsfolk: 5, Outsider: 0, Minion: 1, Demon: 1, Traveler: 0 },
+  8: { Townsfolk: 5, Outsider: 1, Minion: 1, Demon: 1, Traveler: 0 },
+  9: { Townsfolk: 5, Outsider: 2, Minion: 1, Demon: 1, Traveler: 0 },
+  10: { Townsfolk: 7, Outsider: 0, Minion: 2, Demon: 1, Traveler: 0 },
+  11: { Townsfolk: 7, Outsider: 1, Minion: 2, Demon: 1, Traveler: 0 },
+  12: { Townsfolk: 7, Outsider: 2, Minion: 2, Demon: 1, Traveler: 0 },
+  13: { Townsfolk: 9, Outsider: 0, Minion: 3, Demon: 1, Traveler: 0 },
+  14: { Townsfolk: 9, Outsider: 1, Minion: 3, Demon: 1, Traveler: 0 },
+  15: { Townsfolk: 9, Outsider: 2, Minion: 3, Demon: 1, Traveler: 0 },
 };
 
 function getDistribution(
