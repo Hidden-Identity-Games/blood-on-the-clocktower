@@ -215,7 +215,11 @@ export function NightPlayerList() {
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
-  const [filteredPlayers, setFilteredPlayers] = React.useState<string[]>([]);
+  const [filteredPlayers, setFilteredPlayers] = React.useState<string[]>(
+    game.orderedPlayers.problems
+      ? game.playerList
+      : game.orderedPlayers.fullList,
+  );
 
   const playerList = game.orderedPlayers.problems
     ? game.playerList
