@@ -15,12 +15,14 @@ import { getCharacter } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
 import { PlayerListFilters } from "../shared/PlayerListFilters";
+import { usePlayerFilters } from "../store/useStore";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
-  const [filteredPlayers, setFilteredPlayers] = React.useState(game.playerList);
+  const [filteredPlayers, selectedFilter, allFilters, setSelectedFilter] =
+    usePlayerFilters();
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
     const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
@@ -162,8 +164,9 @@ export function PlayerInGame() {
               </Flex>
 
               <PlayerListFilters
-                playerList={game.playerList}
-                setFilteredPlayers={setFilteredPlayers}
+                allFilters={allFilters}
+                selectedFilter={selectedFilter}
+                setSelectedFilter={setSelectedFilter as (f: string) => void}
               />
             </Flex>
             <Flex

@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
-import { useKickPlayer } from "../store/useStore";
+import { useKickPlayer, usePlayerFilters } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
@@ -215,21 +215,15 @@ export function NightPlayerList() {
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
-  const [filteredPlayers, setFilteredPlayers] = React.useState<string[]>(
-    game.orderedPlayers.problems
-      ? game.playerList
-      : game.orderedPlayers.fullList,
-  );
-
-  const playerList = game.orderedPlayers.problems
-    ? game.playerList
-    : game.orderedPlayers.fullList;
+  const [filteredPlayers, selectedFilter, allFilters, setSelectedFilter] =
+    usePlayerFilters();
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       <PlayerListFilters
-        playerList={playerList}
-        setFilteredPlayers={setFilteredPlayers}
+        allFilters={allFilters}
+        selectedFilter={selectedFilter}
+        setSelectedFilter={setSelectedFilter as (f: string) => void}
       />
       {filteredPlayers.map((player) => (
         <Flex direction="column" key={player}>

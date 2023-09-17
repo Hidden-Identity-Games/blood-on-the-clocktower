@@ -1,49 +1,29 @@
-import React from "react";
-import { useDefiniteGame } from "../store/GameContext";
 import { Button, Flex } from "@radix-ui/themes";
 
-const filters = ["alive", "dead", "can vote", "all"] as const;
-type Filters = (typeof filters)[number];
-
 interface PlayerListFiltersProps {
-  playerList: string[];
-  setFilteredPlayers: (filteredPlayers: string[]) => void;
+  allFilters: Record<string, string[]>;
+  selectedFilter: string;
+  setSelectedFilter: (filter: string) => void;
 }
 
 export function PlayerListFilters({
-  playerList,
-  setFilteredPlayers,
+  allFilters,
+  selectedFilter,
+  setSelectedFilter,
 }: PlayerListFiltersProps) {
-  const { game } = useDefiniteGame();
-  const [filter, setFilter] = React.useState<Filters>(filters[0]);
-
-  const playerFilters = React.useMemo(() => {
-    const playerFilters = {
-      all: playerList,
-      alive: playerList.filter((p) => !game.deadPlayers[p]),
-      dead: playerList.filter((p) => game.deadPlayers[p]),
-      "can vote": playerList.filter(
-        (p) => !(game.deadPlayers[p] && game.deadVotes[p]),
-      ),
-    };
-
-    return playerFilters;
-  }, [game.deadPlayers, game.deadVotes, playerList]);
-
   return (
     <Flex gap="1" wrap="wrap-reverse">
-      {filters.map((f) => (
+      {Object.entries(allFilters).map(([filter, players]) => (
         <Button
-          key={f}
+          key={filter}
           size="1"
           onClick={() => {
-            setFilter(f);
-            setFilteredPlayers(playerFilters[f]);
+            setSelectedFilter(filter);
           }}
           className="min-w-fit flex-1 capitalize"
-          variant={f === filter ? "solid" : "surface"}
+          variant={filter === selectedFilter ? "solid" : "surface"}
         >
-          {f}({playerFilters[f].length})
+          {filter}({players.length})
         </Button>
       ))}
     </Flex>
