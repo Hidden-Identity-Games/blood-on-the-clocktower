@@ -2,7 +2,7 @@ import React from "react";
 import { useDefiniteGame } from "../store/GameContext";
 import { Button, Flex } from "@radix-ui/themes";
 
-const filters = ["all", "alive", "dead", "can vote"] as const;
+const filters = ["alive", "dead", "can vote", "all"] as const;
 type Filters = (typeof filters)[number];
 
 interface PlayerListFiltersProps {
