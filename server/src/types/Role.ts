@@ -1,3 +1,5 @@
+import { type PlayerStatusType } from './UnifiedGame.ts'
+
 export const CharacterTypes = [
   'Townsfolk',
   'Outsider',
@@ -21,6 +23,7 @@ export interface CharacterNightData {
   order: number
   reminder: string
   playerMessage?: PlayerMessage
+  status?: PlayerStatusType
 }
 
 export interface Character {
