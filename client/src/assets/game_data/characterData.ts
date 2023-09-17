@@ -855,11 +855,13 @@ export const characters: CharacterDefinition[] = [
     firstNight: {
       reminder: "The Poisoner points to a player. That player is poisoned.",
       order: 17,
+      status: { type: "poison" },
     },
     otherNight: {
       reminder:
         "The previously poisoned player is no longer poisoned. The Poisoner points to a player. That player is poisoned.",
       order: 7,
+      status: { type: "poison" },
     },
   },
   {

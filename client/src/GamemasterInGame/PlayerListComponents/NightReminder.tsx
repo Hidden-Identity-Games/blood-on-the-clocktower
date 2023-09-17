@@ -2,7 +2,9 @@ import { UnifiedGame } from "@hidden-identity/server";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { getCharacter } from "../../assets/game_data/gameData";
 import { useDefiniteGame } from "../../store/GameContext";
-import { PlayerMessageFlow } from "./PlayerMessage";
+import { PlayerList } from ".";
+import { NightAction } from "./NightAction";
+import { PlayerStatusIcon } from "../NotesIcons";
 
 type AbilityKey = "firstNight" | "otherNight";
 
@@ -18,12 +20,24 @@ export function PlayerNightReminder({ player }: { player: string }) {
 
   return (
     <Flex direction="column" gap="2">
+      <Text size="3" asChild>
+        <Flex gap="1">
+          {game.playerPlayerStatuses[player] && (
+            <>
+              Status:
+              {game.playerPlayerStatuses[player]?.map((status) => (
+                <PlayerStatusIcon statusType={status.type} className="mt-.5" />
+              ))}
+            </>
+          )}
+        </Flex>
+      </Text>
       {nightAbility ? (
         <>
           <Text as="div">{nightAbility.reminder}</Text>
-
+          <NightAction nightData={nightAbility} />
           {nightAbility.playerMessage && (
-            <PlayerMessageFlow
+            <PlayerList.PlayerMessage
               message={nightAbility.playerMessage}
               player={player}
             />

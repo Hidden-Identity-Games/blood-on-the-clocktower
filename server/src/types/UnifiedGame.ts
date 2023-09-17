@@ -1,7 +1,13 @@
 import { type Role } from './Role.ts'
 
 export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
-export type PlayerStatusType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', desc: string }
+
+export interface PlayerStatusTypeMap {
+  'poison': { type: 'poison' }
+  'drunk': { type: 'drunk' }
+  'custom': { type: 'custom', desc: string }
+}
+export type PlayerStatusType = PlayerStatusTypeMap[keyof PlayerStatusTypeMap]
 export type PlayerStatus = PlayerStatusType & { id: string }
 
 export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {

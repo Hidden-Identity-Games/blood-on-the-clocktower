@@ -35,7 +35,7 @@ const ComponentMap: {
 export function PlayerMessageFlow({ message, player }: PlayerMessageFlowProps) {
   const Component = ComponentMap[message.type] as React.ComponentType<{
     player: string;
-    message: PlayerMessage;
+    message: PlayerMessageMap[typeof message.type];
   }>;
   return <Component player={player} message={message} />;
 }

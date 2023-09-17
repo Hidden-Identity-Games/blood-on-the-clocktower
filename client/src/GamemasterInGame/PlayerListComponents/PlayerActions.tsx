@@ -12,6 +12,7 @@ import { FaVial } from "react-icons/fa6";
 import { IoIosBeer } from "react-icons/io";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PlayerList } from ".";
+import { v4 } from "uuid";
 
 export function PlayerActions({ player }: { player: string }) {
   const { game } = useDefiniteGame();
@@ -49,7 +50,7 @@ export function PlayerActions({ player }: { player: string }) {
                 onClick={() =>
                   setPlayerStatus(player, "add", {
                     type: "poison",
-                    id: `${player}-poisoned`,
+                    id: v4(),
                   })
                 }
                 disabled={playerStatusesLoading}

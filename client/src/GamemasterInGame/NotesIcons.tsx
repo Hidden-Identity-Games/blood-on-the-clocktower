@@ -8,6 +8,26 @@ import { useDefiniteGame } from "../store/GameContext";
 import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { PlayerStatus } from "@hidden-identity/server";
 import { useDeadVote, usePlayerStatuses } from "../store/useStore";
+import { IconBaseProps } from "react-icons";
+
+const StatusIconMap: Record<
+  PlayerStatus["type"],
+  React.ComponentType<IconBaseProps>
+> = {
+  poison: FaVial,
+  drunk: IoIosBeer,
+  custom: GiFeather,
+};
+interface PlayerStatusIconProps extends IconBaseProps {
+  statusType: PlayerStatus["type"];
+}
+export function PlayerStatusIcon({
+  statusType,
+  ...iconProps
+}: PlayerStatusIconProps) {
+  const Icon = StatusIconMap[statusType];
+  return <Icon {...iconProps} />;
+}
 
 function PlayerStatusIconList({
   playerStatuses,
@@ -41,7 +61,7 @@ function PlayerStatusIconList({
                 updatePlayerStatus(player, "remove", status);
               }}
             >
-              <IoIosBeer className={className} />
+              <PlayerStatusIcon statusType="drunk" className={className} />
             </IconButton>
           );
         case "poison":
@@ -53,7 +73,7 @@ function PlayerStatusIconList({
                 updatePlayerStatus(player, "remove", status);
               }}
             >
-              <FaVial className={className} />
+              <PlayerStatusIcon statusType="poison" className={className} />
             </IconButton>
           );
         case "custom":
@@ -64,7 +84,7 @@ function PlayerStatusIconList({
               color="violet"
               header={
                 <Flex gap="1">
-                  <GiFeather />
+                  <PlayerStatusIcon statusType="custom" className={className} />
                   <div>Custom Status</div>
                 </Flex>
               }
@@ -83,7 +103,7 @@ function PlayerStatusIconList({
                 </>
               }
             >
-              <GiFeather className={className} />
+              <PlayerStatusIcon statusType="custom" className={className} />
             </MeaningfulStatusIcon>
           );
       }
