@@ -286,7 +286,7 @@ export function usePlayerFilters(): [
   >,
 ] {
   const { game } = useDefiniteGame();
-  const [selectedFilter, setSelectedFilter] = useState<Filters>(filters[0]);
+  const [selectedFilter, setSelectedFilter] = useState<Filters>("all");
 
   const playerFilters = useMemo(() => {
     const playerList = game.orderedPlayers.problems
