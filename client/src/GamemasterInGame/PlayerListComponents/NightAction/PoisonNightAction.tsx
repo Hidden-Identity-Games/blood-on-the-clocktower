@@ -4,7 +4,7 @@ import { useDefiniteGame } from "../../../store/GameContext";
 import { useMemo } from "react";
 import { usePlayerStatuses } from "../../../store/useStore";
 import { v4 } from "uuid";
-import { PlayerName } from "../../../shared/RoleIcon";
+import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
 import { PlayerStatusIcon } from "../../NotesIcons";
 
 export function PoisonActon() {
@@ -60,7 +60,7 @@ function PlayerActionSelect({ status }: PlayerActionSelect) {
             }
           }}
         >
-          <PlayerName role={game.playersToRoles[player]} player={player} />
+          <PlayerNameWithRoleIcon player={player} />
           {playerHasStatus(player) && (
             <PlayerStatusIcon statusType={status.type} />
           )}
