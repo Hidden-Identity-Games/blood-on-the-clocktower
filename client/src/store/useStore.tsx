@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { UnifiedGame } from "./Game";
-import { useAction, useDefiniteGame, useGame } from "./GameContext";
+import { useAction, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
@@ -273,44 +273,6 @@ export function useDistributeRoles() {
       throw e;
     }
   });
-}
-
-const filters = ["alive", "dead", "can vote", "all"] as const;
-type Filters = (typeof filters)[number];
-export function usePlayerFilters(): [
-  players: string[],
-  selectedFilter: Filters,
-  allFilters: Record<Filters, string[]>,
-  setFilter: React.Dispatch<
-    React.SetStateAction<"alive" | "dead" | "can vote" | "all">
-  >,
-] {
-  const { game } = useDefiniteGame();
-  const [selectedFilter, setSelectedFilter] = useState<Filters>("all");
-
-  const playerFilters = useMemo(() => {
-    const playerList = game.orderedPlayers.problems
-      ? game.playerList
-      : game?.orderedPlayers.fullList;
-
-    const playerFilters = {
-      alive: playerList.filter((p) => !game.deadPlayers[p]),
-      dead: playerList.filter((p) => game.deadPlayers[p]),
-      "can vote": playerList.filter(
-        (p) => !(game.deadPlayers[p] && game.deadVotes[p]),
-      ),
-      all: playerList,
-    };
-
-    return playerFilters;
-  }, [game.deadPlayers, game.deadVotes, game.playerList, game.orderedPlayers]);
-
-  return [
-    playerFilters[selectedFilter],
-    selectedFilter,
-    playerFilters,
-    setSelectedFilter,
-  ];
 }
 
 export { useGame };
