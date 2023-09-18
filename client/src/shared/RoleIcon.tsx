@@ -63,3 +63,20 @@ export function CharacterName({ role, size, className }: CharacterNameProps) {
     </Flex>
   );
 }
+
+export interface PlayerNameProps {
+  role: Role;
+  player: string;
+  size?: "1" | "2" | "3";
+  className?: string;
+}
+export function PlayerName({ role, size, className, player }: PlayerNameProps) {
+  return (
+    <Flex gap="1" className={className}>
+      <RoleText role={role} size={size}>
+        {player}
+      </RoleText>
+      <RoleIcon role={role} />
+    </Flex>
+  );
+}

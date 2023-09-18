@@ -1,16 +1,16 @@
 import { PlayerMessageScreenMessage } from "@hidden-identity/server";
 import { Button } from "@radix-ui/themes";
+import { useDefiniteGame } from "../../../store/GameContext";
 
 export interface PlayerMessageLinkProps
   extends React.HTMLAttributes<HTMLAnchorElement> {
-  gameId: string;
   note: PlayerMessageScreenMessage;
 }
 export function PlayerMessageLink({
   note,
-  gameId,
   ...linkProps
 }: PlayerMessageLinkProps) {
+  const { gameId } = useDefiniteGame();
   return (
     <Button asChild>
       <a

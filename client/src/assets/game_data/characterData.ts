@@ -921,11 +921,8 @@ export const characters: CharacterDefinition[] = [
         "If the Ravenkeeper died tonight: The Ravenkeeper points to a player. Show that player’s character token.",
       order: 52,
       playerMessage: {
-        type: "reveal-role",
+        type: "reveal-player",
         count: 1,
-        restriction: {
-          alive: false,
-        },
       },
     },
   },
@@ -1233,7 +1230,7 @@ export const characters: CharacterDefinition[] = [
         "If a player was executed today: Show that player’s character token.",
       order: 55,
       playerMessage: {
-        type: "reveal-role",
+        type: "reveal-player",
         count: 1,
       },
     },
@@ -1759,6 +1756,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-team",
         count: 3,
         restriction: {
+          team: "Evil",
           guess: false,
         },
       },
@@ -2169,3 +2167,19 @@ export const characters: CharacterDefinition[] = [
     otherNight: null,
   },
 ];
+
+// console.log(
+//   JSON.stringify(
+//     Object.values(
+//       Object.fromEntries(
+//         characters.map((c) => [
+//           c.otherNight?.playerMessage?.type ??
+//             c.firstNight?.playerMessage?.type,
+//           c,
+//         ]),
+//       ),
+//     ).map((value) => ({
+//       id: value.id,
+//     })),
+//   ),
+// );

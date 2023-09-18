@@ -28,7 +28,7 @@ export function useDynamicList<T>(
   useEffect(() => {
     setValue(initialState);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...mustInclude]);
+  }, [...mustInclude, ...recommended]);
   return {
     value,
     replace: (replaceValue, index) => {

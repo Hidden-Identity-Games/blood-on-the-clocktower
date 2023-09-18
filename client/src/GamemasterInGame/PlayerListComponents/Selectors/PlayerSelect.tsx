@@ -1,6 +1,6 @@
 import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { RoleIcon } from "../../../shared/RoleIcon";
+import { PlayerName } from "../../../shared/RoleIcon";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 interface PlayerSelectProps {
@@ -15,11 +15,16 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button variant="outline" size="3" className="capitalize">
-          <Flex className="w-full text-center" align="center" justify="center">
-            {currentPlayer}
-            <RoleIcon role={game.playersToRoles[currentPlayer]} />
-          </Flex>
+        <Button
+          variant="outline"
+          size="3"
+          className="capitalize"
+          color="violet"
+        >
+          <PlayerName
+            role={game.playersToRoles[currentPlayer]}
+            player={currentPlayer}
+          />
         </Button>
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
@@ -39,17 +44,14 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
               <Button
                 className="capitalize"
                 size="3"
+                color="violet"
                 variant={player === currentPlayer ? "soft" : "outline"}
                 onClick={() => onSelect(player)}
               >
-                <Flex
-                  className="w-full text-center"
-                  align="center"
-                  justify="center"
-                >
-                  {player}
-                  <RoleIcon role={game.playersToRoles[player]} />
-                </Flex>
+                <PlayerName
+                  role={game.playersToRoles[player]}
+                  player={player}
+                />
               </Button>
             </Dialog.Close>
           ))}
