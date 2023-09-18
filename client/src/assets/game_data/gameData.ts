@@ -40,10 +40,7 @@ const travelers: Role[] = charactersList
   .map(({ id }) => id as Role);
 
 export function getCharacter(role: Role): Character {
-  if (!characters[role]) {
-    throw new Error(`Character not found for role${role}`);
-  }
-  return characters[role];
+  return characters[role ?? "unassigned"];
 }
 
 const scripts: Record<string, Script> = Object.fromEntries(
