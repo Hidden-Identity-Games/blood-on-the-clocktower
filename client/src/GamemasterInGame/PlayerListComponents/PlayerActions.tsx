@@ -65,7 +65,7 @@ export function PlayerActions({ player }: { player: string }) {
                 onClick={() =>
                   setPlayerStatus(player, "add", {
                     type: "drunk",
-                    id: `${player}-drunk`,
+                    id: v4(),
                   })
                 }
                 disabled={playerStatusesLoading}
