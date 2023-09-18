@@ -12,6 +12,7 @@ import {
 import { colorMap } from "../../../shared/CharacterTypes";
 
 interface RoleSelectProps {
+  ghost?: boolean;
   traveler?: boolean;
   currentRole: Role;
   onSelect: (nextrole: Role | null) => void;
@@ -21,6 +22,7 @@ export function RoleSelect({
   currentRole,
   onSelect,
   traveler,
+  ghost,
 }: RoleSelectProps) {
   const { script, game } = useDefiniteGame();
   const roles = useMemo(() => {
@@ -37,14 +39,14 @@ export function RoleSelect({
     <Dialog.Root>
       <Dialog.Trigger>
         <Button
-          variant="outline"
+          variant={ghost ? "ghost" : "outline"}
           size="3"
-          className="w-full"
+          className="w-full flex-[2]"
           color={colorMap[getCharacter(currentRole).team]}
         >
           <CharacterName role={currentRole} size="3" />
           {!!game.rolesToPlayers[currentRole]?.length && (
-            <span className="-ml-1 truncate capitalize">
+            <span className="truncate capitalize">
               - {game.rolesToPlayers[currentRole].join(",")}
             </span>
           )}

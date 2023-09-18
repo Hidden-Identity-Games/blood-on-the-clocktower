@@ -16,9 +16,9 @@ export function AlignmentSelect({
     <Dialog.Root>
       <Dialog.Trigger>
         <Button
-          variant="soft"
+          variant="ghost"
           size="3"
-          className="capitalize"
+          className="flex-1 capitalize"
           color={alignmentColorMap[currentAlignment]}
         >
           <Flex className="w-full text-center" align="center" justify="center">

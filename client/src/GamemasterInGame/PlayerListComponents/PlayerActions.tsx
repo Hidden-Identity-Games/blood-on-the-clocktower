@@ -1,4 +1,4 @@
-import { Dialog, Flex, IconButton } from "@radix-ui/themes";
+import { Dialog, Flex, IconButton, Separator } from "@radix-ui/themes";
 import { GiRaiseZombie } from "react-icons/gi";
 import {
   useAssignPlayerAlignment,
@@ -33,6 +33,11 @@ export function PlayerActions({ player }: { player: string }) {
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
         <Flex direction="column" gap="2">
+          <Flex>
+            <RoleChangeMenuItem game={game} player={player} />
+            <AlignmentChangeMenuItem player={player} />
+          </Flex>
+          <Separator className="w-full" size={"0" as "1"} m="2" />
           <PlayerList.MenuItem
             id={`${player}-toggle-dead`}
             label={game.deadPlayers[player] ? "Revive" : "Kill"}
@@ -93,8 +98,6 @@ export function PlayerActions({ player }: { player: string }) {
               </Dialog.Close>
             </PlayerList.MenuItem>
           )}
-          <RoleChangeMenuItem game={game} player={player} />
-          <AlignmentChangeMenuItem player={player} />
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
@@ -112,6 +115,7 @@ function RoleChangeMenuItem({
 
   return (
     <RoleSelect
+      ghost
       traveler={game.travelers[player]}
       currentRole={game.playersToRoles[player]}
       onSelect={(next) => next && setPlayerRole(player, next)}
