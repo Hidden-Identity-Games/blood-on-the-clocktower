@@ -6,7 +6,7 @@ import { Role } from "@hidden-identity/server";
 import classNames from "classnames";
 import { useDefiniteGame } from "../store/GameContext";
 import { useGetPlayerAlignment } from "../store/useStore";
-import { ExtnesionProps, RadixTextProps } from "../types/radixTypes";
+import { ExtensionProps, RadixTextProps } from "../types/radixTypes";
 
 export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
   role: Role;
@@ -57,14 +57,20 @@ export function AlignmentText({
 export type RoleTextProps = {
   role: Role;
   children?: React.ReactNode;
-} & ExtnesionProps["Text"];
+} & ExtensionProps["Text"];
 
-export function RoleText({ role, children, className, size }: RoleTextProps) {
+export function RoleText({
+  role,
+  children,
+  className,
+  size,
+  color,
+}: RoleTextProps) {
   const charType = getCharacter(role).team;
   return (
     <Text
       size={size}
-      color={colorMap[charType] ?? undefined}
+      color={color ?? colorMap[charType] ?? undefined}
       className={classNames("capitalize", className)}
     >
       {children ?? getCharacter(role).name ?? role}
@@ -72,23 +78,30 @@ export function RoleText({ role, children, className, size }: RoleTextProps) {
   );
 }
 
-export interface CharacterNameProps {
+export type CharacterNameProps = {
   role: Role;
   size?: "1" | "2" | "3";
+  gap?: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
   className?: string;
-}
-export function CharacterName({ role, size, className }: CharacterNameProps) {
+} & ExtensionProps["Text"];
+export function CharacterName({
+  role,
+  size,
+  gap = "1",
+  className,
+  color,
+}: CharacterNameProps) {
   return (
-    <Flex gap="1" className={className}>
+    <Flex gap={gap} className={className}>
       <RoleIcon role={role} />
-      <RoleText role={role} size={size}>
+      <RoleText role={role} size={size} color={color}>
         {getCharacter(role).name}
       </RoleText>
     </Flex>
   );
 }
 
-export type PlayerNameProps = ExtnesionProps["Text"] & {
+export type PlayerNameProps = ExtensionProps["Text"] & {
   player: string;
   className?: string;
   children?: React.ReactNode;

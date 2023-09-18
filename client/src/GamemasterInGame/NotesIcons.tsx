@@ -8,7 +8,7 @@ import { useDefiniteGame } from "../store/GameContext";
 import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { PlayerStatus } from "@hidden-identity/server";
 import { useDeadVote, usePlayerStatuses } from "../store/useStore";
-import { ExtnesionProps } from "../types/radixTypes";
+import { ExtensionProps } from "../types/radixTypes";
 import { IconBaseProps } from "react-icons";
 
 const StatusIconMap: Record<
@@ -37,7 +37,7 @@ function PlayerStatusIconList({
 }: {
   player: string;
   playerStatuses: PlayerStatus[];
-} & Omit<ExtnesionProps["IconButton"], "color">) {
+} & Omit<ExtensionProps["IconButton"], "color">) {
   const className = "h-2";
 
   const [, , , updatePlayerStatus] = usePlayerStatuses();

@@ -1,12 +1,11 @@
+import { Dialog, Flex, IconButton, Separator, Text } from "@radix-ui/themes";
 import {
-  Button,
-  Dialog,
-  Flex,
-  IconButton,
-  Separator,
-  Text,
-} from "@radix-ui/themes";
-import { GiAngelOutfit, GiBullHorns, GiRaiseZombie } from "react-icons/gi";
+  GiAngelOutfit,
+  GiBullHorns,
+  GiDominoMask,
+  GiDrippingKnife,
+  GiRaiseZombie,
+} from "react-icons/gi";
 import {
   useAssignPlayerAlignment,
   useAssignRole,
@@ -17,7 +16,6 @@ import {
 } from "../../store/useStore";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useDefiniteGame } from "../../store/GameContext";
-import { PiKnifeBold } from "react-icons/pi";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PlayerList } from ".";
 import { AlignmentSelect, RoleSelect } from "./Selectors";
@@ -26,12 +24,14 @@ import { v4 } from "uuid";
 import { PlayerStatusIcon, PlayerStatusIcons } from "../NotesIcons";
 import { alignmentColorMap } from "../../shared/CharacterTypes";
 import { CharacterName } from "../../shared/RoleIcon";
+import classNames from "classnames";
+import { BiSolidSkull } from "react-icons/bi";
 
 export function PlayerActions({ player }: { player: string }) {
   const { game } = useDefiniteGame();
-  const [, decideFateLoading, , handleDecideFate] = useDecideFate();
-  const [, deadVoteLoading, , setDeadVote] = useDeadVote();
-  const [, playerStatusesLoading, , setPlayerStatus] = usePlayerStatuses();
+  const [, , , handleDecideFate] = useDecideFate();
+  const [, , , setDeadVote] = useDeadVote();
+  const [, , , setPlayerStatus] = usePlayerStatuses();
 
   return (
     <Dialog.Root>
@@ -43,7 +43,7 @@ export function PlayerActions({ player }: { player: string }) {
       <Dialog.Content className="m-2">
         <Flex direction="column" gap="2">
           <Dialog.Title>
-            <RoleChangeMenuItem game={game} player={player} />
+            <PlayerActionsMenuHeader game={game} player={player} />
           </Dialog.Title>
           <Separator size="4" />
 
@@ -51,66 +51,91 @@ export function PlayerActions({ player }: { player: string }) {
             id={`${player}-toggle-dead`}
             label={game.deadPlayers[player] ? "Revive" : "Kill"}
           >
-            <Dialog.Close>
-              <IconButton
-                onClick={() =>
-                  handleDecideFate(player, !game.deadPlayers[player])
-                }
-                disabled={decideFateLoading}
-              >
-                {game.deadPlayers[player] ? <GiRaiseZombie /> : <PiKnifeBold />}
-              </IconButton>
-            </Dialog.Close>
+            <IconButton
+              onClick={() =>
+                handleDecideFate(player, !game.deadPlayers[player])
+              }
+            >
+              {game.deadPlayers[player] ? (
+                <GiRaiseZombie />
+              ) : (
+                <GiDrippingKnife />
+              )}
+            </IconButton>
           </PlayerList.MenuItem>
           <PlayerList.MenuItem id={`${player}-set-poison`} label="Poisoned">
-            <Dialog.Close>
-              <IconButton
-                onClick={() =>
-                  setPlayerStatus(player, "add", {
-                    type: "poison",
-                    id: v4(),
-                  })
-                }
-                disabled={playerStatusesLoading}
-              >
-                <PlayerStatusIcon statusType="poison" />
-              </IconButton>
-            </Dialog.Close>
+            <IconButton
+              onClick={() =>
+                setPlayerStatus(player, "add", {
+                  type: "poison",
+                  id: v4(),
+                })
+              }
+            >
+              <PlayerStatusIcon statusType="poison" />
+            </IconButton>
           </PlayerList.MenuItem>
           <PlayerList.MenuItem id={`${player}-set-drunk`} label="Drunk">
-            <Dialog.Close>
-              <IconButton
-                onClick={() =>
-                  setPlayerStatus(player, "add", {
-                    type: "drunk",
-                    id: v4(),
-                  })
-                }
-                disabled={playerStatusesLoading}
-              >
-                <PlayerStatusIcon statusType="drunk" />
-              </IconButton>
-            </Dialog.Close>
+            <IconButton
+              onClick={() =>
+                setPlayerStatus(player, "add", {
+                  type: "drunk",
+                  id: v4(),
+                })
+              }
+            >
+              <PlayerStatusIcon statusType="drunk" />
+            </IconButton>
           </PlayerList.MenuItem>
           {game.deadVotes[player] && (
             <PlayerList.MenuItem
               id={`${player}-return-dead-vote`}
               label="Return Dead Vote"
             >
-              <Dialog.Close>
-                <IconButton
-                  onClick={() => setDeadVote(player, false)}
-                  disabled={deadVoteLoading}
-                >
-                  <LiaVoteYeaSolid />
-                </IconButton>
-              </Dialog.Close>
+              <IconButton onClick={() => setDeadVote(player, false)}>
+                <LiaVoteYeaSolid />
+              </IconButton>
             </PlayerList.MenuItem>
           )}
           <AlignmentChangeMenuItem player={player} />
+          <RoleChangeMenuItem game={game} player={player} />
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
+  );
+}
+
+function PlayerActionsMenuHeader({
+  game,
+  player,
+}: {
+  game: UnifiedGame;
+  player: string;
+}) {
+  const getPlayerAlignment = useGetPlayerAlignment();
+  const alignment = getPlayerAlignment(player);
+  const role = game.playersToRoles[player];
+  const isDead = game.deadPlayers[player];
+
+  return (
+    <Text color={alignmentColorMap[alignment]} asChild>
+      <Flex className="w-full capitalize" justify="between">
+        <Flex className="px-1" direction="column" gap="0">
+          <Flex className="ml-[6px]" align="center" gap="4">
+            <BiSolidSkull className={classNames(isDead || "opacity-0")} />
+            <PlayerList.Name player={player} />
+          </Flex>
+          <CharacterName
+            color={alignmentColorMap[alignment]}
+            role={role}
+            gap="3"
+          />
+        </Flex>
+        <Flex gap="2">
+          <PlayerStatusIcons player={player} />
+        </Flex>
+      </Flex>
+    </Text>
   );
 }
 
@@ -122,8 +147,6 @@ function RoleChangeMenuItem({
   player: string;
 }) {
   const [, , , setPlayerRole] = useAssignRole();
-  const getPlayerAlignment = useGetPlayerAlignment();
-  const alignment = getPlayerAlignment(player);
   const role = game.playersToRoles[player];
 
   return (
@@ -132,19 +155,13 @@ function RoleChangeMenuItem({
       currentRole={role}
       onSelect={(next) => next && setPlayerRole(player, next)}
     >
-      <Button className="w-full flex-1 capitalize" variant="ghost" size="4">
-        <Text color={alignmentColorMap[alignment]} asChild>
-          <Flex className="w-full" direction="column" gap="2">
-            <Flex className="flex-1 px-1" align="center" justify="between">
-              <CharacterName role={role} />
-              <Flex gap="2">
-                <PlayerStatusIcons player={player} />
-              </Flex>
-            </Flex>
-            <Flex className="px-5">{player}</Flex>
-          </Flex>
-        </Text>
-      </Button>
+      <PlayerList.MenuItem id={`${player}-role-select`} label="Change Role">
+        <Dialog.Trigger>
+          <IconButton>
+            <GiDominoMask />
+          </IconButton>
+        </Dialog.Trigger>
+      </PlayerList.MenuItem>
     </RoleSelect>
   );
 }
@@ -163,7 +180,7 @@ function AlignmentChangeMenuItem({ player }: { player: string }) {
         label="Change Alignment"
       >
         <Dialog.Trigger>
-          <IconButton color={alignmentColorMap[alignment]}>
+          <IconButton>
             {alignment === "Good" ? <GiAngelOutfit /> : <GiBullHorns />}
           </IconButton>
         </Dialog.Trigger>

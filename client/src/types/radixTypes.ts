@@ -15,7 +15,7 @@ export type RadixButtonProps = Pick<
   "size" | "color"
 > & { className?: string };
 
-export type ExtnesionProps = {
+export type ExtensionProps = {
   Button: RadixButtonProps;
   IconButton: RadixIconButtonProps;
   Text: RadixTextProps;
