@@ -1,51 +1,71 @@
-import React from "react";
-import { useDefiniteGame } from "../store/GameContext";
 import { Button, Flex } from "@radix-ui/themes";
+import { useMemo } from "react";
+import { useDefiniteGame } from "../store/GameContext";
 
-const filters = ["alive", "dead", "can vote", "all"] as const;
-type Filters = (typeof filters)[number];
-
-interface PlayerListFiltersProps {
-  playerList: string[];
-  setFilteredPlayers: (filteredPlayers: string[]) => void;
+interface PlayerListFiltersProps<T extends string> {
+  allFilters: Record<T, unknown[]>;
+  selectedFilter: T | null;
+  setSelectedFilter: (filter: T) => void;
 }
 
-export function PlayerListFilters({
-  playerList,
-  setFilteredPlayers,
-}: PlayerListFiltersProps) {
-  const { game } = useDefiniteGame();
-  const [filter, setFilter] = React.useState<Filters>(filters[0]);
-
-  const playerFilters = React.useMemo(() => {
-    const playerFilters = {
-      all: playerList,
-      alive: playerList.filter((p) => !game.deadPlayers[p]),
-      dead: playerList.filter((p) => game.deadPlayers[p]),
-      "can vote": playerList.filter(
-        (p) => !(game.deadPlayers[p] && game.deadVotes[p]),
-      ),
-    };
-
-    return playerFilters;
-  }, [game.deadPlayers, game.deadVotes, playerList]);
-
+export function PlayerListFilters<T extends string>({
+  allFilters,
+  selectedFilter,
+  setSelectedFilter,
+}: PlayerListFiltersProps<T>) {
   return (
     <Flex gap="1" wrap="wrap-reverse">
-      {filters.map((f) => (
+      {Object.entries<unknown[]>(allFilters).map(([filter, players]) => (
         <Button
-          key={f}
+          key={filter}
           size="1"
           onClick={() => {
-            setFilter(f);
-            setFilteredPlayers(playerFilters[f]);
+            setSelectedFilter(filter as T);
           }}
           className="min-w-fit flex-1 capitalize"
-          variant={f === filter ? "solid" : "surface"}
+          variant={filter === selectedFilter ? "solid" : "surface"}
         >
-          {f}({playerFilters[f].length})
+          {filter}({players.length})
         </Button>
       ))}
     </Flex>
   );
+}
+
+const filters = ["alive", "dead", "can vote", "all"] as const;
+
+type Filters = (typeof filters)[number];
+export type PlayerFilter = Filters;
+export function usePlayerFilters(playerList: string[]) {
+  const { game } = useDefiniteGame();
+  const filters = useMemo(
+    () => ({
+      alive: (p: string) => !game.deadPlayers[p],
+      dead: (p: string) => !!game.deadPlayers[p],
+      "can vote": (p: string) => !(game.deadPlayers[p] && game.deadVotes[p]),
+      all: () => true,
+    }),
+    [game.deadPlayers, game.deadVotes],
+  );
+  const filtered = useFilters(playerList, filters);
+
+  return filtered;
+}
+
+function useFilters<Filter extends string, ListItem>(
+  fullList: ListItem[],
+  filters: Record<Filter, (t: ListItem) => boolean>,
+) {
+  const filteredLists = useMemo(
+    () =>
+      Object.keys(fullList).reduce<Record<Filter, ListItem[]>>(
+        (acc, filter) => ({
+          ...acc,
+          [filter]: fullList.filter(filters[filter as Filter]),
+        }),
+        {} as Record<Filter, ListItem[]>,
+      ),
+    [fullList, filters],
+  );
+  return filteredLists;
 }
