@@ -6,7 +6,6 @@ import {
   Script,
 } from "@hidden-identity/server";
 import scriptsJson from "./scripts.json";
-import defaultRoleImage from "../default_role.svg";
 import { characters as charactersList } from "./characterData";
 
 const characters: Record<Role, Character> = Object.fromEntries(
@@ -15,7 +14,7 @@ const characters: Record<Role, Character> = Object.fromEntries(
     {
       ...role,
       id: role.id as Role,
-      imageSrc: role.imageSrc || defaultRoleImage,
+      imageSrc: new URL(`../icon/role/${role.imageSrc}`, import.meta.url).href,
     },
   ]),
 );

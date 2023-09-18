@@ -17,8 +17,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, during the day, privately ask the Storyteller any yes/no question.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/1a/Icon_artist.png",
+    imageSrc: "artist.png",
     firstNight: null,
     otherNight: null,
   },
@@ -31,8 +30,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, at night*, choose a player: they die, even if for some reason they could not.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/4/49/Icon_assassin.png",
+    imageSrc: "assassin.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -49,8 +47,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If you died today or tonight, the Demon may choose 2 players (not another Demon) to swap characters.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/16/Icon_barber.png",
+    imageSrc: "barber.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -72,8 +69,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: true,
     ability: "There are extra Outsiders in play. [+2 Outsiders]",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/6/6d/Icon_baron.png",
+    imageSrc: "baron.png",
     firstNight: null,
     otherNight: null,
   },
@@ -86,8 +82,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player (not yourself): tomorrow, you may only vote if they are voting too.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/19/Icon_butler.png",
+    imageSrc: "butler.png",
     firstNight: {
       reminder: "The Butler points to a player. Mark that player as 'Master'.",
       order: 39,
@@ -106,8 +101,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player & a good character: they are “mad” they are this character tomorrow, or might be executed.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/4/45/Icon_cerenovus.png",
+    imageSrc: "cerenovus.png",
     firstNight: {
       reminder:
         "The Cerenovus points to a player, then to a character on their sheet. Wake that player. Show the 'This character selected you' card, then the Cerenovus token. Show the selected character token. If the player is not mad about being that character tomorrow, they can be executed.",
@@ -134,8 +128,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose 2 alive players (not yourself): you learn how many woke tonight due to their ability.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/8/87/Icon_chambermaid.png",
+    imageSrc: "chambermaid.png",
     firstNight: {
       reminder:
         "The Chambermaid points to two players. Show the number signal (0, 1, 2, …) for how many of those players wake tonight for their ability.",
@@ -155,7 +148,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "You start knowing how many pairs of evil players there are.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/d/d5/Icon_chef.png",
+    imageSrc: "chef.png",
     firstNight: {
       reminder:
         "Show the finger signal (0, 1, 2, …) for the number of pairs of neighbouring evil players.",
@@ -172,8 +165,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You start knowing how many steps from the Demon to its nearest Minion.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/3/3d/Icon_clockmaker.png",
+    imageSrc: "clockmaker.png",
     firstNight: {
       reminder:
         "Show the hand signal for the number (1, 2, 3, etc.) of places from Demon to closest Minion.",
@@ -190,8 +182,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, at night, choose a character: they are drunk for 3 nights & 3 days.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/e/e0/Icon_courtier.png",
+    imageSrc: "courtier.png",
     firstNight: {
       reminder:
         "The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
@@ -212,8 +203,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a living player (different to last night): if executed tomorrow, they don't die.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/0/09/Icon_devilsadvocate.png",
+    imageSrc: "devilsadvocate.png",
     firstNight: {
       reminder:
         "The Devil’s Advocate points to a living player. That player survives execution tomorrow.",
@@ -234,8 +224,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player (not yourself or Travelers): you learn 1 good and 1 evil character, 1 of which is correct.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/f/f2/Icon_dreamer.png",
+    imageSrc: "dreamer.png",
     firstNight: {
       reminder:
         "The Dreamer points to a player. Show 1 good and 1 evil character token; one of these is correct.",
@@ -260,8 +249,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, you learn how many of your 2 alive neighbours are evil.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/13/Icon_empath.png",
+    imageSrc: "empath.png",
     firstNight: {
       reminder:
         "Show the finger signal (0, 1, 2) for the number of evil alive neighbours of the Empath.",
@@ -282,8 +270,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You & an opposing player know each other. If the good player is executed, evil wins. Good can't win if you both live.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/f/f4/Icon_eviltwin.png",
+    imageSrc: "eviltwin.png",
     firstNight: {
       reminder:
         "Wake the Evil Twin and their twin. Confirm that they have acknowledged each other. Point to the Evil Twin. Show their Evil Twin token to the twin player. Point to the twin. Show their character token to the Evil Twin player.",
@@ -300,8 +287,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player (different to last night): the Demon, if chosen, learns who you are then doesn't wake tonight.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/c/c2/Icon_exorcist.png",
+    imageSrc: "exorcist.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -325,8 +311,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "Each night*, choose a player: they die. The 1st Outsider this kills becomes an evil Fang Gu & you die instead. [+1 Outsider]",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/0/0e/Icon_fanggu.png",
+    imageSrc: "fanggu.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -346,8 +331,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Demon voted", "Demon not voted"],
     setup: false,
     ability: "Each night*, you learn if a Demon voted today.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/a/ac/Icon_flowergirl.png",
+    imageSrc: "flowergirl.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -363,7 +347,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["No ability"],
     setup: false,
     ability: "The first time you die, you don't.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/d/d9/Icon_fool.png",
+    imageSrc: "fool.png",
     firstNight: null,
     otherNight: null,
   },
@@ -376,8 +360,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose 2 players: you learn if either is a Demon. There is a good player that registers as a Demon to you.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/c/c3/Icon_fortune_teller.png",
+    imageSrc: "fortuneteller.png",
     firstNight: {
       reminder:
         "The Fortune Teller points to two players. Give the head signal (nod yes, shake no) for whether one of those players is the Demon. ",
@@ -398,8 +381,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player & guess their character: if you guess wrong, you die.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/f/fd/Icon_gambler.png",
+    imageSrc: "gambler.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -416,8 +398,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "You start knowing which Outsiders are in play. If 1 died today, choose a player tonight: they die. [−1 or +1 Outsider]",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/d/d0/Icon_godfather.png",
+    imageSrc: "godfather.png",
     firstNight: {
       reminder: "Show each of the Outsider tokens in play.",
       order: 21,
@@ -437,7 +418,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, the 1st player to choose you with their ability is drunk until dusk. You become their alignment.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/6/6f/Icon_goon.png",
+    imageSrc: "goon.png",
     firstNight: null,
     otherNight: null,
   },
@@ -450,8 +431,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each day, you may make a public statement. Tonight, if it was true, a player dies.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/c/c7/Icon_gossip.png",
+    imageSrc: "gossip.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -468,8 +448,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You start knowing a good player & their character. If the Demon kills them, you die too.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/2/26/Icon_grandmother.png",
+    imageSrc: "grandmother.png",
     firstNight: {
       reminder: "Show the marked character token. Point to the marked player.",
       order: 40,
@@ -489,7 +468,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player: they die. If you kill yourself this way, a Minion becomes the Imp.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/5/5c/Icon_imp.png",
+    imageSrc: "imp.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -506,8 +485,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose 2 players: they can't die tonight, but 1 is drunk until dusk.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/0/0c/Icon_innkeeper.png",
+    imageSrc: "innkeeper.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -523,8 +501,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Minion", "Wrong"],
     setup: false,
     ability: "You start knowing that 1 of 2 players is a particular Minion.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/a/ad/Icon_investigator.png",
+    imageSrc: "investigator.png",
     firstNight: {
       reminder:
         "Show the character token of a Minion in play. Point to two players, one of which is that character.",
@@ -548,8 +525,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "On your 1st day, publicly guess up to 5 players' characters. That night, you learn how many you got correct.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/4/42/Icon_juggler.png",
+    imageSrc: "juggler.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -566,8 +542,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "When you learn that you died, publicly choose 1 alive player: if they are evil, your team loses.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/b/bc/Icon_klutz.png",
+    imageSrc: "klutz.png",
     firstNight: null,
     otherNight: null,
   },
@@ -580,8 +555,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You start knowing that 1 of 2 players is a particular Outsider. (Or that zero are in play.)",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/e/e0/Icon_librarian.png",
+    imageSrc: "librarian.png",
     firstNight: {
       reminder:
         "Show the character token of an Outsider in play. Point to two players, one of which is that character.",
@@ -605,8 +579,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You think you are a Demon, but you are not. The Demon knows who you are & who you choose at night.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/6/64/Icon_lunatic.png",
+    imageSrc: "lunatic.png",
     firstNight: {
       reminder:
         "First, wake the minions, show them who their demon.  Then, wake the demon, and show them whon their minions are.",
@@ -630,8 +603,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If the Demon dies by execution (ending the game), play for 1 more day. If a player is then executed, their team loses.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/d/d5/Icon_mastermind.png",
+    imageSrc: "mastermind.png",
     firstNight: null,
     otherNight: null,
   },
@@ -644,8 +616,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, you learn how many players’ abilities worked abnormally (since dawn) due to another character's ability.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/f/f1/Icon_mathematician.png",
+    imageSrc: "mathematician.png",
     firstNight: {
       reminder:
         "Show the hand signal for the number (0, 1, 2, etc.) of players whose ability malfunctioned due to other abilities.",
@@ -666,8 +637,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If only 3 players live & no execution occurs, your team wins. If you die at night, another player might die instead.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/a/a1/Icon_mayor.png",
+    imageSrc: "mayor.png",
     firstNight: null,
     otherNight: null,
   },
@@ -679,9 +649,8 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Everyone drunk"],
     setup: false,
     ability:
-      "When a Minion dies by execution, all other players (except Travelers) are drunk until dusk tomorrow.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/2/24/Icon_minstrel.png",
+      "When a Minion dies by execution, all other players (except Travellers) are drunk until dusk tomorrow.",
+    imageSrc: "minstrel.png",
     firstNight: null,
     otherNight: null,
   },
@@ -694,7 +663,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player (not yourself): they are safe from the Demon tonight.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/7/7c/Icon_monk.png",
+    imageSrc: "monk.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -711,8 +680,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "When you learn that you died, publicly choose 1 alive player. Tonight, if it was a good player, they die.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/d/dc/Icon_moonchild.png",
+    imageSrc: "moonchild.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -728,8 +696,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "If you are “mad” about being an Outsider, you might be executed.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/2/2e/Icon_mutant.png",
+    imageSrc: "mutant.png",
     firstNight: null,
     otherNight: null,
   },
@@ -742,8 +709,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player: they die. Your 2 Townsfolk neighbours are poisoned.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/e/eb/Icon_nodashii.png",
+    imageSrc: "nodashii.png",
     firstNight: null,
     otherNight: {
       reminder: "The No Dashii points to a player. That player dies.",
@@ -758,8 +724,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "Each night*, you learn how many dead players are evil.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/b/bb/Icon_oracle.png",
+    imageSrc: "oracle.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -775,8 +740,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "Executed good players might not die.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/5/5d/Icon_pacifist.png",
+    imageSrc: "pacifist.png",
     firstNight: null,
     otherNight: null,
   },
@@ -789,8 +753,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, at night, choose a good character: gain that ability. If this character is in play, they are drunk.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/5/5d/Icon_philosopher.png",
+    imageSrc: "philosopher.png",
     firstNight: {
       reminder:
         "The Philosopher either shows a 'no' head signal, or points to a good character on their sheet. If they chose a character: Swap the out-of-play character token with the Philosopher token and add the 'Is the Philosopher' reminder. If the character is in play, place the drunk marker by that player.",
@@ -811,8 +774,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player & a character they become (if not-in-play). If a Demon is made, deaths tonight are arbitrary.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/6/6b/Icon_pithag.png",
+    imageSrc: "pithag.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -833,7 +795,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, you may choose a player: they die. If your last choice was no-one, choose 3 players tonight.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/b/b2/Icon_po.png",
+    imageSrc: "po.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -850,8 +812,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player: they are poisoned tonight and tomorrow day.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/b/b1/Icon_poisoner.png",
+    imageSrc: "poisoner.png",
     firstNight: {
       reminder: "The Poisoner points to a player. That player is poisoned.",
       order: 17,
@@ -871,8 +832,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, at night*, choose a dead player: if they are a Townsfolk, they are resurrected.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/6/65/Icon_professor.png",
+    imageSrc: "professor.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -892,8 +852,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player: they are poisoned. The previously poisoned player dies then becomes healthy.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/f/f4/Icon_pukka.png",
+    imageSrc: "pukka.png",
     firstNight: {
       reminder: "The Pukka points to a player. That player is poisoned.",
       order: 28,
@@ -913,8 +872,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If you die at night, you are woken to choose a player: you learn their character.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/e/ef/Icon_ravenkeeper.png",
+    imageSrc: "ravenkeeper.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -934,8 +892,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "You might register as evil & as a Minion or Demon, even if dead.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/6/60/Icon_recluse.png",
+    imageSrc: "recluse.png",
     firstNight: null,
     otherNight: null,
   },
@@ -947,7 +904,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "If the Demon kills you, you learn that it is 1 of 2 players.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/a/a0/Icon_sage.png",
+    imageSrc: "sage.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -971,8 +928,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose an alive player: either you or they are drunk until dusk. You can't die.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/16/Icon_sailor.png",
+    imageSrc: "sailor.png",
     firstNight: {
       reminder:
         "The Sailor points to a living player. Either the Sailor, or the chosen player, is drunk.",
@@ -992,8 +948,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "If you die by execution, your team loses.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/c/c9/Icon_saint.png",
+    imageSrc: "saint.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1006,8 +961,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each day, you may visit the Storyteller to learn 2 things in private: 1 is true & 1 is false.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/d/d5/Icon_savant.png",
+    imageSrc: "savant.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1019,9 +973,8 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Demon"],
     setup: false,
     ability:
-      "If there are 5 or more players alive & the Demon dies, you become the Demon. (Travelers don’t count)",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/5/54/Icon_scarlet_woman.png",
+      "If there are 5 or more players alive & the Demon dies, you become the Demon. (Travellers don’t count)",
+    imageSrc: "scarletwoman.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1042,8 +995,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, at night, choose 2 players (not yourself): you learn if they are the same alignment.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/5/53/Icon_seamstress.png",
+    imageSrc: "seamstress.png",
     firstNight: {
       reminder:
         "The Seamstress either shows a 'no' head signal, or points to two other players. If the Seamstress chose players , nod 'yes' or shake 'no' for whether they are of same alignment.",
@@ -1064,8 +1016,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose 2 players: they die. A dead player you chose last night might be regurgitated.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/1f/Icon_shabaloth.png",
+    imageSrc: "shabaloth.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1085,8 +1036,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, during the day, publicly choose a player: if they are the Demon, they die.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/d/d3/Icon_slayer.png",
+    imageSrc: "slayer.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1099,8 +1049,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose an alive player: a chosen Demon swaps characters & alignments with you & is then poisoned.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/0/08/Icon_snakecharmer.png",
+    imageSrc: "snakecharmer.png",
     firstNight: {
       reminder:
         "The Snake Charmer points to a player. If that player is the Demon: swap the Demon and Snake Charmer character and alignments. Wake each player to inform them of their new role and alignment. The new Snake Charmer is poisoned.",
@@ -1128,8 +1077,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "You are safe from the Demon.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/c/c3/Icon_soldier.png",
+    imageSrc: "soldier.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1142,7 +1090,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, you see the Grimoire. You might register as good & as a Townsfolk or Outsider, even if dead.",
-    imageSrc: "https://wiki.bloodontheclocktower.com/images/5/54/Icon_spy.png",
+    imageSrc: "spy.png",
     firstNight: {
       reminder: "Show the Grimoire to the Spy for as long as they need.",
       order: 49,
@@ -1160,8 +1108,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Drunk"],
     setup: false,
     ability: "When you die, 1 player is drunk from now on.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/6/6a/Icon_sweetheart.png",
+    imageSrc: "sweetheart.png",
     firstNight: null,
     otherNight: {
       reminder: "Choose a player that is drunk.",
@@ -1176,8 +1123,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Can not die"],
     setup: false,
     ability: "If both your alive neighbours are good, they can't die.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/16/Icon_tealady.png",
+    imageSrc: "tealady.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1189,8 +1135,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Dead"],
     setup: false,
     ability: "You might die at any time.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/9/98/Icon_tinker.png",
+    imageSrc: "tinker.png",
     firstNight: null,
     otherNight: {
       reminder: "The Tinker might die.",
@@ -1205,8 +1150,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Minions not nominated", "Minion nominated"],
     setup: false,
     ability: "Each night*, you learn if a Minion nominated today.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/e/ef/Icon_towncrier.png",
+    imageSrc: "towncrier.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1222,8 +1166,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Executed"],
     setup: false,
     ability: "Each night*, you learn which character died by execution today.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/0/05/Icon_undertaker.png",
+    imageSrc: "undertaker.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1244,8 +1187,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "Each night*, choose a player: they die. Minions you kill keep their ability & poison 1 Townsfolk neighbour. [−1 Outsider]",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/1a/Icon_vigormortis.png",
+    imageSrc: "vigormortis.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1262,8 +1204,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "The 1st time you are nominated, if the nominator is a Townsfolk, they are executed immediately.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/d/d3/Icon_virgin.png",
+    imageSrc: "virgin.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1276,8 +1217,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player: they die. Townsfolk abilities yield false info. Each day, if no-one is executed, evil wins.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/8/89/Icon_vortox.png",
+    imageSrc: "vortox.png",
     firstNight: null,
     otherNight: {
       reminder: "The Vortox points to a player. That player dies.",
@@ -1292,8 +1232,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Townsfolk", "Wrong"],
     setup: false,
     ability: "You start knowing that 1 of 2 players is a particular Townsfolk.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/8/85/Icon_washerwoman.png",
+    imageSrc: "washerwoman.png",
     firstNight: {
       reminder:
         "Show the character token of a Townsfolk in play. Point to two players, one of which is that character.",
@@ -1315,8 +1254,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player: if they nominate tomorrow, they die. If just 3 players live, you lose this ability.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/7/7b/Icon_witch.png",
+    imageSrc: "witch.png",
     firstNight: {
       reminder:
         "The Witch points to a player. If that player nominates tomorrow they die immediately.",
@@ -1337,8 +1275,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, if no-one died today, choose a player: they die. The 1st time you die, you live but register as dead.",
-    imageSrc:
-      "https://wiki.bloodontheclocktower.com/images/1/15/Icon_zombuul.png",
+    imageSrc: "zombuul.png",
     firstNight: null,
     otherNight: {
       reminder:
