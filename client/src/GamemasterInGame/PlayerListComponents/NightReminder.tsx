@@ -20,13 +20,13 @@ export function PlayerNightReminder({ player }: { player: string }) {
 
   return (
     <Flex direction="column" gap="2">
-      <Text size="3" asChild>
-        <Flex gap="1">
+      <Text size="5" asChild>
+        <Flex gap="1" align="center">
           {game.playerPlayerStatuses[player] && (
             <>
               Status:
               {game.playerPlayerStatuses[player]?.map((status) => (
-                <PlayerStatusIcon statusType={status.type} className="mt-.5" />
+                <PlayerStatusIcon statusType={status.type} />
               ))}
             </>
           )}
