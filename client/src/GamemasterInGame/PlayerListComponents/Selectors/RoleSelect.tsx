@@ -1,9 +1,15 @@
+import { useMemo } from "react";
 import { Role } from "@hidden-identity/server";
 import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { CharacterName } from "../../../shared/RoleIcon";
 import { PlusIcon } from "@radix-ui/react-icons";
-import { allTravelers } from "../../../assets/game_data/gameData";
+import {
+  allTravelers,
+  getCharacter,
+  getDefaultAlignment,
+} from "../../../assets/game_data/gameData";
+import { colorMap } from "../../../shared/CharacterTypes";
 
 interface RoleSelectProps {
   traveler?: boolean;
@@ -17,12 +23,25 @@ export function RoleSelect({
   traveler,
 }: RoleSelectProps) {
   const { script, game } = useDefiniteGame();
-  const roles = traveler ? allTravelers() : script.map(({ id }) => id);
+  const roles = useMemo(() => {
+    return traveler
+      ? allTravelers()
+      : script
+          .map(({ id }) => id)
+          .sort((a, b) =>
+            getDefaultAlignment(a) > getDefaultAlignment(b) ? -1 : 1,
+          );
+  }, [traveler, script]);
 
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button variant="outline" size="3" className="w-full">
+        <Button
+          variant="outline"
+          size="3"
+          className="w-full"
+          color={colorMap[getCharacter(currentRole).team]}
+        >
           <CharacterName role={currentRole} size="3" />
           {!!game.rolesToPlayers[currentRole]?.length && (
             <span className="-ml-1 truncate capitalize">
@@ -47,6 +66,7 @@ export function RoleSelect({
             <Dialog.Close key={role}>
               <Button
                 size="3"
+                color={colorMap[getCharacter(role).team]}
                 variant={role === currentRole ? "soft" : "outline"}
                 onClick={() => currentRole !== role && onSelect(role)}
               >

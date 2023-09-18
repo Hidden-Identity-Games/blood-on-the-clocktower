@@ -233,7 +233,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability:
-      "Each night, choose a player (not yourself or Travellers): you learn 1 good and 1 evil character, 1 of which is correct.",
+      "Each night, choose a player (not yourself or Travelers): you learn 1 good and 1 evil character, 1 of which is correct.",
     imageSrc:
       "https://wiki.bloodontheclocktower.com/images/f/f2/Icon_dreamer.png",
     firstNight: {
@@ -679,7 +679,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Everyone drunk"],
     setup: false,
     ability:
-      "When a Minion dies by execution, all other players (except Travellers) are drunk until dusk tomorrow.",
+      "When a Minion dies by execution, all other players (except Travelers) are drunk until dusk tomorrow.",
     imageSrc:
       "https://wiki.bloodontheclocktower.com/images/2/24/Icon_minstrel.png",
     firstNight: null,
@@ -1019,7 +1019,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Demon"],
     setup: false,
     ability:
-      "If there are 5 or more players alive & the Demon dies, you become the Demon. (Travellers don’t count)",
+      "If there are 5 or more players alive & the Demon dies, you become the Demon. (Travelers don’t count)",
     imageSrc:
       "https://wiki.bloodontheclocktower.com/images/5/54/Icon_scarlet_woman.png",
     firstNight: null,
@@ -1413,7 +1413,7 @@ export const characters: CharacterDefinition[] = [
       "Seen Outsider",
       "Seen Minion",
       "Seen Demon",
-      "Seen Traveller",
+      "Seen Traveler",
     ],
     setup: true,
     ability:

@@ -6,8 +6,7 @@ import { Flex, Heading } from "@radix-ui/themes";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Restrictions } from "./Restrictions";
 import { RoleSelect } from "../Selectors";
-import { getCharacter } from "../../../assets/game_data/gameData";
-import { useGetPlayerAlignment } from "../../../store/useStore";
+import { getDefaultAlignment } from "../../../assets/game_data/gameData";
 
 export interface RoleChangeMessageProps {
   message: PlayerMessageMap["role-change"];
@@ -15,7 +14,6 @@ export interface RoleChangeMessageProps {
 
 export function RoleChangeMessage({ message }: RoleChangeMessageProps) {
   const { script } = useDefiniteGame();
-  const getPlayerAlignment = useGetPlayerAlignment();
   const [role, setRole] = useState<Role>(() =>
     pluck(script.map(({ id }) => id)),
   );
@@ -29,7 +27,9 @@ export function RoleChangeMessage({ message }: RoleChangeMessageProps) {
             "You are now": [
               {
                 character: role,
-                alignment: getPlayerAlignment(getCharacter(role).team),
+                ...(message.alignmentChange && {
+                  alignment: getDefaultAlignment(role),
+                }),
               },
             ],
           },

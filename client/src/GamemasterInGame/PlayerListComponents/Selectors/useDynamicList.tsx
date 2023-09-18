@@ -16,7 +16,13 @@ export function useDynamicList<T>(
   overwrite: (nextValue: T[]) => void;
 } {
   const initialState = () => {
-    const ideal = [...mustInclude, ...recommended].slice(0, defaultCount);
+    const ideal = [
+      ...mustInclude,
+      ...recommended,
+      ...all.filter(
+        (k) => !(mustInclude.includes(k) || recommended.includes(k)),
+      ),
+    ].slice(0, defaultCount);
     const leftover = Math.max(ideal.length - defaultCount, 0);
     return [
       ...ideal,

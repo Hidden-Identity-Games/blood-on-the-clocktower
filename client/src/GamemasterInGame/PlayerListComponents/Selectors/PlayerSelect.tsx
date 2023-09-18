@@ -2,6 +2,8 @@ import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerName } from "../../../shared/RoleIcon";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { useGetPlayerAlignment } from "../../../store/useStore";
+import { alignmentColorMap } from "../../../shared/CharacterTypes";
 
 interface PlayerSelectProps {
   currentPlayer: string;
@@ -10,6 +12,7 @@ interface PlayerSelectProps {
 
 export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
   const { game } = useDefiniteGame();
+  const getAlignment = useGetPlayerAlignment();
   const playerList = [...game.playerList].sort();
 
   return (
@@ -19,7 +22,7 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
           variant="outline"
           size="3"
           className="capitalize"
-          color="violet"
+          color={alignmentColorMap[getAlignment(currentPlayer)]}
         >
           <PlayerName
             role={game.playersToRoles[currentPlayer]}
@@ -39,22 +42,24 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
               {"Remove"}
             </Button>
           </Dialog.Close>
-          {playerList.map((player) => (
-            <Dialog.Close key={player}>
-              <Button
-                className="capitalize"
-                size="3"
-                color="violet"
-                variant={player === currentPlayer ? "soft" : "outline"}
-                onClick={() => onSelect(player)}
-              >
-                <PlayerName
-                  role={game.playersToRoles[player]}
-                  player={player}
-                />
-              </Button>
-            </Dialog.Close>
-          ))}
+          {[...playerList]
+            .sort((a, b) => (getAlignment(a) > getAlignment(b) ? 1 : -1))
+            .map((player) => (
+              <Dialog.Close key={player}>
+                <Button
+                  className="capitalize"
+                  size="3"
+                  color={alignmentColorMap[getAlignment(player)]}
+                  variant={player === currentPlayer ? "soft" : "outline"}
+                  onClick={() => onSelect(player)}
+                >
+                  <PlayerName
+                    role={game.playersToRoles[player]}
+                    player={player}
+                  />
+                </Button>
+              </Dialog.Close>
+            ))}
         </Dialog.Content>
       </Flex>
     </Dialog.Root>

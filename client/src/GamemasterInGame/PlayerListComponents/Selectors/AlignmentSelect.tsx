@@ -28,21 +28,21 @@ export function AlignmentSelect({
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
         <Dialog.Content>
-          {ALIGNMENTS.map((team) => (
-            <Dialog.Close key={team}>
+          {ALIGNMENTS.map((alignment) => (
+            <Dialog.Close key={alignment}>
               <Button
                 className="capitalize"
                 size="3"
-                color={alignmentColorMap[currentAlignment]}
-                variant={team === currentAlignment ? "soft" : "outline"}
-                onClick={() => onSelect(team)}
+                variant="surface"
+                color={alignmentColorMap[alignment]}
+                onClick={() => onSelect(alignment)}
               >
                 <Flex
                   className="w-full text-center"
                   align="center"
                   justify="center"
                 >
-                  {team}
+                  {alignment}
                 </Flex>
               </Button>
             </Dialog.Close>

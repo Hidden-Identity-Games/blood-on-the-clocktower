@@ -89,7 +89,7 @@ export function addPlayer (
   const gameInstance = game.readOnce()
   const gameStarted = gameInProgress(gameInstance)
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  const travelling = traveler || gameStarted
+  const traveling = traveler || gameStarted
 
   // player already exists
   if (gameInstance.playersToRoles[player]) {
@@ -114,12 +114,12 @@ export function addPlayer (
     },
     travelers: {
       ...gameInstance.travelers,
-      ...(travelling && { [player]: true }),
+      ...(traveling && { [player]: true }),
     },
     alignmentsOverrides: {
       ...gameInstance.alignmentsOverrides,
       // default to good so there's never a character without alignment.
-      ...(travelling && { [player]: 'Good' }),
+      ...(traveling && { [player]: 'Good' }),
     },
   })
 }

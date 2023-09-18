@@ -11,5 +11,5 @@ export const colorMap: Record<CharacterType, RadixColor> = {
 
 export const alignmentColorMap: Record<Alignment, RadixColor> = {
   Good: "blue",
-  Evil: "crimson",
+  Evil: "tomato",
 };
