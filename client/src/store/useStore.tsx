@@ -7,6 +7,7 @@ import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
 import {
+  Alignment,
   GameStatus,
   PlayerStatus,
   Role,
@@ -297,6 +298,24 @@ export function useGetPlayerAlignment() {
   );
 
   return getAlignment;
+}
+export function useAssignPlayerAlignment() {
+  const { gameId } = useGame();
+
+  return useAction(async (player: string, alignment: Alignment) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/set_alignment"), {
+      gameId,
+      player,
+      alignment,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
 }
 export function useAssignRole() {
   const { gameId } = useGame();

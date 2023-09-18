@@ -1,9 +1,11 @@
 import { Dialog, Flex, IconButton } from "@radix-ui/themes";
 import { GiRaiseZombie } from "react-icons/gi";
 import {
+  useAssignPlayerAlignment,
   useAssignRole,
   useDeadVote,
   useDecideFate,
+  useGetPlayerAlignment,
   usePlayerStatuses,
 } from "../../store/useStore";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -13,7 +15,7 @@ import { FaVial } from "react-icons/fa6";
 import { IoIosBeer } from "react-icons/io";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PlayerList } from ".";
-import { RoleSelect } from "./Selectors";
+import { AlignmentSelect, RoleSelect } from "./Selectors";
 import { UnifiedGame } from "@hidden-identity/server";
 
 export function PlayerActions({ player }: { player: string }) {
@@ -91,14 +93,15 @@ export function PlayerActions({ player }: { player: string }) {
               </Dialog.Close>
             </PlayerList.MenuItem>
           )}
-          <RolechangeMenuItem game={game} player={player} />
+          <RoleChangeMenuItem game={game} player={player} />
+          <AlignmentChangeMenuItem player={player} />
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
   );
 }
 
-function RolechangeMenuItem({
+function RoleChangeMenuItem({
   game,
   player,
 }: {
@@ -112,6 +115,17 @@ function RolechangeMenuItem({
       traveler={game.travelers[player]}
       currentRole={game.playersToRoles[player]}
       onSelect={(next) => next && setPlayerRole(player, next)}
+    />
+  );
+}
+function AlignmentChangeMenuItem({ player }: { player: string }) {
+  const getPlayerAlignment = useGetPlayerAlignment();
+  const [, , , setPlayerAlignment] = useAssignPlayerAlignment();
+
+  return (
+    <AlignmentSelect
+      currentAlignment={getPlayerAlignment(player)}
+      onSelect={(next) => next && setPlayerAlignment(player, next)}
     />
   );
 }
