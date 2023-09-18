@@ -51,50 +51,58 @@ export function PlayerActions({ player }: { player: string }) {
             id={`${player}-toggle-dead`}
             label={game.deadPlayers[player] ? "Revive" : "Kill"}
           >
-            <IconButton
-              onClick={() =>
-                handleDecideFate(player, !game.deadPlayers[player])
-              }
-            >
-              {game.deadPlayers[player] ? (
-                <GiRaiseZombie />
-              ) : (
-                <GiDrippingKnife />
-              )}
-            </IconButton>
+            <Dialog.Close>
+              <IconButton
+                onClick={() =>
+                  handleDecideFate(player, !game.deadPlayers[player])
+                }
+              >
+                {game.deadPlayers[player] ? (
+                  <GiRaiseZombie />
+                ) : (
+                  <GiDrippingKnife />
+                )}
+              </IconButton>
+            </Dialog.Close>
           </PlayerList.MenuItem>
           <PlayerList.MenuItem id={`${player}-set-poison`} label="Poisoned">
-            <IconButton
-              onClick={() =>
-                setPlayerStatus(player, "add", {
-                  type: "poison",
-                  id: v4(),
-                })
-              }
-            >
-              <PlayerStatusIcon statusType="poison" />
-            </IconButton>
+            <Dialog.Close>
+              <IconButton
+                onClick={() =>
+                  setPlayerStatus(player, "add", {
+                    type: "poison",
+                    id: v4(),
+                  })
+                }
+              >
+                <PlayerStatusIcon statusType="poison" />
+              </IconButton>
+            </Dialog.Close>
           </PlayerList.MenuItem>
           <PlayerList.MenuItem id={`${player}-set-drunk`} label="Drunk">
-            <IconButton
-              onClick={() =>
-                setPlayerStatus(player, "add", {
-                  type: "drunk",
-                  id: v4(),
-                })
-              }
-            >
-              <PlayerStatusIcon statusType="drunk" />
-            </IconButton>
+            <Dialog.Close>
+              <IconButton
+                onClick={() =>
+                  setPlayerStatus(player, "add", {
+                    type: "drunk",
+                    id: v4(),
+                  })
+                }
+              >
+                <PlayerStatusIcon statusType="drunk" />
+              </IconButton>
+            </Dialog.Close>
           </PlayerList.MenuItem>
           {game.deadVotes[player] && (
             <PlayerList.MenuItem
               id={`${player}-return-dead-vote`}
               label="Return Dead Vote"
             >
-              <IconButton onClick={() => setDeadVote(player, false)}>
-                <LiaVoteYeaSolid />
-              </IconButton>
+              <Dialog.Close>
+                <IconButton onClick={() => setDeadVote(player, false)}>
+                  <LiaVoteYeaSolid />
+                </IconButton>
+              </Dialog.Close>
             </PlayerList.MenuItem>
           )}
           <AlignmentChangeMenuItem player={player} />
