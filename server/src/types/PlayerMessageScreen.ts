@@ -3,7 +3,8 @@ import { type CharacterType, type Role } from './Role.ts'
 export interface Reveal {
   character?: Role
   player?: string
-  team?: CharacterType | 'Good' | 'Evil'
+  team?: CharacterType
+  alignment?: 'Good' | 'Evil'
 }
 
 export interface PlayerMessageScreenMessage {

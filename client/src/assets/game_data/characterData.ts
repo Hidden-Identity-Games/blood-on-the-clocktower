@@ -334,7 +334,7 @@ export const characters: CharacterDefinition[] = [
       order: 29,
       playerMessage: {
         type: "role-change",
-        teamChange: true,
+        alignmentChange: true,
       },
     },
   },
@@ -820,7 +820,7 @@ export const characters: CharacterDefinition[] = [
       order: 16,
       playerMessage: {
         type: "role-change",
-        teamChange: false,
+        alignmentChange: false,
       },
     },
   },
@@ -1029,7 +1029,7 @@ export const characters: CharacterDefinition[] = [
       order: 19,
       playerMessage: {
         type: "role-change",
-        teamChange: true,
+        alignmentChange: true,
       },
     },
   },
@@ -1107,7 +1107,7 @@ export const characters: CharacterDefinition[] = [
       order: 20,
       playerMessage: {
         type: "role-change",
-        teamChange: true,
+        alignmentChange: true,
       },
     },
     otherNight: {
@@ -1116,7 +1116,7 @@ export const characters: CharacterDefinition[] = [
       order: 11,
       playerMessage: {
         type: "role-change",
-        teamChange: true,
+        alignmentChange: true,
       },
     },
   },
@@ -1453,7 +1453,10 @@ export const characters: CharacterDefinition[] = [
         "Point to 1 evil player. Wake the townsfolk who is evil and show them the 'You are' card and the thumbs down evil sign.",
       order: 46,
       playerMessage: {
-        type: "team-change",
+        type: "alignment-change",
+        restriction: {
+          alignment: "Evil",
+        },
       },
     },
     otherNight: {
@@ -1514,7 +1517,7 @@ export const characters: CharacterDefinition[] = [
         "If the cult leader changed alignment, show them the thumbs up good signal of the thumbs down evil signal accordingly.",
       order: 48,
       playerMessage: {
-        type: "team-change",
+        type: "alignment-change",
       },
     },
     otherNight: {
@@ -1522,7 +1525,7 @@ export const characters: CharacterDefinition[] = [
         "If the cult leader changed alignment, show them the thumbs up good signal of the thumbs down evil signal accordingly.",
       order: 66,
       playerMessage: {
-        type: "team-change",
+        type: "alignment-change",
       },
     },
   },
@@ -1542,7 +1545,7 @@ export const characters: CharacterDefinition[] = [
       order: 13,
       playerMessage: {
         type: "role-change",
-        teamChange: false,
+        alignmentChange: false,
       },
     },
     otherNight: {
@@ -1551,7 +1554,7 @@ export const characters: CharacterDefinition[] = [
       order: 5,
       playerMessage: {
         type: "role-change",
-        teamChange: false,
+        alignmentChange: false,
       },
     },
   },
@@ -1571,7 +1574,7 @@ export const characters: CharacterDefinition[] = [
       order: 48,
       playerMessage: {
         type: "role-change",
-        teamChange: false,
+        alignmentChange: false,
       },
     },
   },
@@ -1625,7 +1628,7 @@ export const characters: CharacterDefinition[] = [
       order: 30,
       playerMessage: {
         type: "role-change",
-        teamChange: false,
+        alignmentChange: false,
         restriction: {
           inPlay: false,
           team: "Townsfolk",
@@ -1637,7 +1640,7 @@ export const characters: CharacterDefinition[] = [
         "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
       order: 45,
       playerMessage: {
-        teamChange: false,
+        alignmentChange: false,
         type: "role-change",
         restriction: {
           inPlay: false,
@@ -1877,7 +1880,7 @@ export const characters: CharacterDefinition[] = [
       order: 46,
       playerMessage: {
         type: "role-change",
-        teamChange: false,
+        alignmentChange: false,
         restriction: {
           inPlay: false,
           team: "Townsfolk",
@@ -2089,7 +2092,7 @@ export const characters: CharacterDefinition[] = [
         "Wake the 1st good player that said the Mezepheles' secret word and show them the 'You are' card and the thumbs down evil signal.",
       order: 18,
       playerMessage: {
-        type: "team-change",
+        type: "alignment-change",
         restriction: {
           alignment: "Evil",
         },

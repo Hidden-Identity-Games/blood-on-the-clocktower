@@ -6,7 +6,11 @@ export const CharacterTypes = [
   'Traveler',
 ] as const
 
-export type CharacterType = (typeof CharacterTypes)[number] | 'Unknown'
+const alignments = ['Good', 'Evil'] as const
+export type Alignment = (typeof alignments)[number]
+
+// TODO: Rename TEAM
+export type CharacterType = (typeof CharacterTypes)[number]
 export type KnownCharacterType = (typeof CharacterTypes)[number]
 
 export type Role = string & {
@@ -32,10 +36,11 @@ export interface Character {
 
 export interface Restriction {
   role?: string
-  team?: CharacterType | 'Good' | 'Evil'
+  team?: CharacterType
   alive?: boolean
   inPlay?: boolean
   guess?: boolean
+  alignment?: Alignment
 }
 
 export interface PlayerMessageMap {
@@ -63,12 +68,12 @@ export interface PlayerMessageMap {
   }
   'role-change': {
     type: 'role-change'
-    teamChange: boolean
+    alignmentChange: boolean
     restriction?: Restriction
   }
-  'team-change': {
-    type: 'team-change'
-    restriction?: Restriction
+  'alignment-change': {
+    type: 'alignment-change'
+    restriction?: Pick<Restriction, 'alignment'>
   }
   'madness': {
     type: 'madness'

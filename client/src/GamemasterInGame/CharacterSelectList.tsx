@@ -87,7 +87,6 @@ export function CharacterSelectList({
       ),
       Minion: allCharacters.filter((c) => getCharacter(c).team === "Minion"),
       Demon: allCharacters.filter((c) => getCharacter(c).team === "Demon"),
-      Unknown: allCharacters.filter((c) => getCharacter(c).team === "Unknown"),
       Traveler: allCharacters.filter(
         (c) => getCharacter(c).team === "Traveler",
       ),

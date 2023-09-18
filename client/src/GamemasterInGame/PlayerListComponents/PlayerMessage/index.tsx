@@ -7,7 +7,7 @@ import { RevealTeamMessage } from "./RevealTeamMessage";
 import { MadnessMessage } from "./MadnessMessage";
 import { RevivedMessage } from "./RevivedMessage";
 import { RoleChangeMessage } from "./RoleChangeMessage";
-import { TeamChangeMessage } from "./TeamChangeMessage";
+import { AlignmentChangeMessage } from "./AlignmentChangeMessage";
 import { CharacterSelectedYouMessage } from "./CharacterSelectedYouMessage";
 import { ComponentType } from "react";
 
@@ -29,7 +29,7 @@ const ComponentMap: {
   madness: MadnessMessage,
   revived: RevivedMessage,
   "role-change": RoleChangeMessage,
-  "team-change": TeamChangeMessage,
+  "alignment-change": AlignmentChangeMessage,
 };
 
 export function PlayerMessageFlow({ message, player }: PlayerMessageFlowProps) {

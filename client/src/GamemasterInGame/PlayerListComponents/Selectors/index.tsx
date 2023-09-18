@@ -1,3 +1,3 @@
 export * from "./PlayerSelect";
 export * from "./RoleSelect";
-export * from "./TeamSelect";
+export * from "./AlignmentSelect";

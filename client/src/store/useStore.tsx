@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { UnifiedGame } from "./Game";
-import { useAction, useGame } from "./GameContext";
+import { useAction, useDefiniteGame, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
 import { usePlayer } from "./secretKey";
@@ -12,6 +12,7 @@ import {
   Role,
   Script,
 } from "@hidden-identity/server";
+import { getDefaultAlignment } from "../assets/game_data/gameData";
 
 function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
@@ -278,6 +279,24 @@ export function useDistributeRoles() {
       throw e;
     }
   });
+}
+
+export function useGetPlayerAlignment() {
+  const { game } = useDefiniteGame();
+  const getAlignment = useCallback(
+    (player: string) => {
+      if (game.travelers[player] && !game.alignmentsOverrides[player]) {
+        throw new Error("Found traveler without alignment");
+      }
+      return (
+        game.alignmentsOverrides[player] ??
+        getDefaultAlignment(game.playersToRoles[player])
+      );
+    },
+    [game],
+  );
+
+  return getAlignment;
 }
 export function useAssignRole() {
   const { gameId } = useGame();
