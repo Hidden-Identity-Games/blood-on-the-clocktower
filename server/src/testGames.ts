@@ -31,6 +31,7 @@ export function setupTestGames (): void {
     },
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
   })
 
   addTestGame('tg-wrong-way', {
@@ -53,6 +54,8 @@ export function setupTestGames (): void {
     },
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
+
   })
 
   addTestGame('tg-broken-link', {
@@ -73,6 +76,8 @@ export function setupTestGames (): void {
     playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
+
   })
 
   addTestGame('tg-excluded', {
@@ -94,6 +99,8 @@ export function setupTestGames (): void {
     playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
+
   })
 
   addTestGame('tg-f-night', ({
@@ -107,6 +114,8 @@ export function setupTestGames (): void {
     },
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
+
   }))
 
   const selectorsPlayers = players.slice(0, testSelectorsScript.length)
@@ -121,6 +130,7 @@ export function setupTestGames (): void {
     },
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
   }, [...testSelectorsScript, { id: 'ravenkeeper' },
     { id: 'washerwoman' },
     { id: 'butler' }] as Script)

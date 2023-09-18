@@ -3,6 +3,7 @@ export const CharacterTypes = [
   'Outsider',
   'Minion',
   'Demon',
+  'Traveler',
 ] as const
 
 export type CharacterType = (typeof CharacterTypes)[number] | 'Unknown'

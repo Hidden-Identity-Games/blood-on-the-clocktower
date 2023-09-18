@@ -3,6 +3,8 @@ export const colorMap = {
   Outsider: "cyan",
   Minion: "tomato",
   Demon: "crimson",
+  // TODO
+  Traveler: undefined,
   Unknown: undefined,
 } as const;
 
