@@ -1,17 +1,17 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { CharacterType, CharacterTypes } from "../../../types/script";
-import { colorMap } from "../../../shared/CharacterTypes";
+import { ALIGNMENTS } from "../../../types/script";
+import { alignmentColorMap } from "../../../shared/CharacterTypes";
+import { Alignment } from "@hidden-identity/server";
 
-type Team = CharacterType;
-const teams = CharacterTypes;
-interface TeamSelectProps {
-  currentTeam: Team;
-  onSelect: (nextrole: Team | null) => void;
+interface AlignmentSelectProps {
+  currentAlignment: Alignment;
+  onSelect: (nextrole: Alignment | null) => void;
 }
 
-export function TeamSelect({ currentTeam, onSelect }: TeamSelectProps) {
-  const teamList = teams;
-
+export function AlignmentSelect({
+  currentAlignment,
+  onSelect,
+}: AlignmentSelectProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -19,30 +19,30 @@ export function TeamSelect({ currentTeam, onSelect }: TeamSelectProps) {
           variant="soft"
           size="3"
           className="capitalize"
-          color={colorMap[currentTeam]}
+          color={alignmentColorMap[currentAlignment]}
         >
           <Flex className="w-full text-center" align="center" justify="center">
-            {currentTeam}
+            {currentAlignment}
           </Flex>
         </Button>
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
         <Dialog.Content>
-          {teamList.map((team) => (
-            <Dialog.Close key={team}>
+          {ALIGNMENTS.map((alignment) => (
+            <Dialog.Close key={alignment}>
               <Button
                 className="capitalize"
                 size="3"
-                color={colorMap[team]}
-                variant={team === currentTeam ? "soft" : "outline"}
-                onClick={() => onSelect(team)}
+                variant="surface"
+                color={alignmentColorMap[alignment]}
+                onClick={() => onSelect(alignment)}
               >
                 <Flex
                   className="w-full text-center"
                   align="center"
                   justify="center"
                 >
-                  {team}
+                  {alignment}
                 </Flex>
               </Button>
             </Dialog.Close>

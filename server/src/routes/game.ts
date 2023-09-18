@@ -14,6 +14,7 @@ import {
   toggleDeadvote,
   updateStatus,
   assignPlayerToRole,
+  setAlignment,
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
 
@@ -123,6 +124,12 @@ export function useGame (app: Application): void {
   app.post('/assign_role', (req, res) => {
     const { gameId, player, role } = req.body
     assignPlayerToRole(gameId, player, role)
+    res.status(200)
+    res.send({})
+  })
+  app.post('/set_alignment', (req, res) => {
+    const { gameId, player, alignment } = req.body
+    setAlignment(gameId, player, alignment)
     res.status(200)
     res.send({})
   })

@@ -5,8 +5,8 @@ import { pluck } from "../../../utils/shuffleList";
 import { Flex, Heading } from "@radix-ui/themes";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Restrictions } from "./Restrictions";
-import { RoleSelect, getAlignment } from "../Selectors";
-import { getCharacter } from "../../../assets/game_data/gameData";
+import { RoleSelect } from "../Selectors";
+import { getDefaultAlignment } from "../../../assets/game_data/gameData";
 
 export interface RoleChangeMessageProps {
   message: PlayerMessageMap["role-change"];
@@ -27,7 +27,9 @@ export function RoleChangeMessage({ message }: RoleChangeMessageProps) {
             "You are now": [
               {
                 character: role,
-                team: getAlignment(getCharacter(role).team),
+                ...(message.alignmentChange && {
+                  alignment: getDefaultAlignment(role),
+                }),
               },
             ],
           },

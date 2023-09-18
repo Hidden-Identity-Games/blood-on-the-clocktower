@@ -1,16 +1,15 @@
-export const colorMap = {
+import { Alignment, CharacterType } from "@hidden-identity/server";
+import { RadixColor } from "../types/colors";
+
+export const colorMap: Record<CharacterType, RadixColor> = {
   Townsfolk: "blue",
   Outsider: "cyan",
   Minion: "tomato",
   Demon: "crimson",
-  // TODO
-  Traveler: undefined,
-  Unknown: undefined,
-} as const;
+  Traveler: "amber",
+};
 
-export const teamColorMap = {
-  ...colorMap,
+export const alignmentColorMap: Record<Alignment, RadixColor> = {
   Good: "blue",
-  Evil: "crimson",
-  Unknown: "amber",
-} as const;
+  Evil: "tomato",
+};

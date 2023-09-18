@@ -32,6 +32,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
     travelers: {},
+    alignmentsOverrides: {},
   })
 
   addTestGame('tg-wrong-way', {
@@ -55,6 +56,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
     travelers: {},
+    alignmentsOverrides: {},
 
   })
 
@@ -77,6 +79,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
     travelers: {},
+    alignmentsOverrides: {},
 
   })
 
@@ -100,6 +103,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
     travelers: {},
+    alignmentsOverrides: {},
 
   })
 
@@ -115,6 +119,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
     travelers: {},
+    alignmentsOverrides: {},
 
   }))
 
@@ -131,6 +136,7 @@ export function setupTestGames (): void {
     playerNotes: {},
     deadVotes: {},
     travelers: {},
+    alignmentsOverrides: {},
   }, [...testSelectorsScript, { id: 'ravenkeeper' },
     { id: 'washerwoman' },
     { id: 'butler' }] as Script)

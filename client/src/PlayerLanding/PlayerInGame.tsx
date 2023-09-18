@@ -42,7 +42,6 @@ export function PlayerInGame() {
         Outsider: allCharacters.filter(({ team }) => team === "Outsider"),
         Minion: allCharacters.filter(({ team }) => team === "Minion"),
         Demon: allCharacters.filter(({ team }) => team === "Demon"),
-        // Unknown: allCharacters.filter(({ team }) => team === "Unknown"),
       },
     ];
   }, [script]);

@@ -2,7 +2,7 @@ import { Flex, Heading, Text, TextArea } from "@radix-ui/themes";
 import { useSearchParams } from "react-router-dom";
 import { CharacterName } from "../shared/RoleIcon";
 import { PlayerMessageScreenMessage } from "@hidden-identity/server";
-import { teamColorMap } from "../shared/CharacterTypes";
+import { alignmentColorMap, colorMap } from "../shared/CharacterTypes";
 
 export function PlayerMessagePage() {
   const [queryParams] = useSearchParams();
@@ -27,10 +27,20 @@ export function PlayerMessagePage() {
               {revealItem.team && (
                 <Text
                   as="div"
-                  color={teamColorMap[revealItem.team]}
+                  color={colorMap[revealItem.team]}
                   className="capitalize"
                 >
                   {revealItem.team}
+                </Text>
+              )}
+              {revealItem.alignment && (
+                <Text
+                  size="8"
+                  as="div"
+                  color={alignmentColorMap[revealItem.alignment]}
+                  className="uppercase"
+                >
+                  {revealItem.alignment}
                 </Text>
               )}
             </Flex>

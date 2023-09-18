@@ -1,4 +1,4 @@
-import { type Role } from './Role.ts'
+import { type Alignment, type Role } from './Role.ts'
 
 export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
 export type PlayerStatusType = { type: 'poison' } | { type: 'drunk' } | { type: 'custom', desc: string }
@@ -24,6 +24,7 @@ export interface BaseUnifiedGame {
   playerNotes: Record<string, string>
   deadVotes: Record<string, boolean>
   travelers: Record<string, boolean>
+  alignmentsOverrides: Record<string, Alignment>
 }
 
 export interface WellOrderedPlayers {
