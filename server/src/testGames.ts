@@ -130,6 +130,7 @@ export function setupTestGames (): void {
     },
     playerNotes: {},
     deadVotes: {},
+    travelers: {},
   }, [...testSelectorsScript, { id: 'ravenkeeper' },
     { id: 'washerwoman' },
     { id: 'butler' }] as Script)

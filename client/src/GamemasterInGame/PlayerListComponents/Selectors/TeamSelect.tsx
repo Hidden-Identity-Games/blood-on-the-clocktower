@@ -11,6 +11,7 @@ const teamMap = {
   Outsider: "Good",
   Townsfolk: "Good",
   Unknown: "Good",
+  Traveler: "Good",
 } as const;
 
 export function onSameTeam(team1: Team, team2: Team): boolean {
@@ -24,7 +25,14 @@ export function getAlignment(team: Team): "Evil" | "Good" {
   return teamMap[team];
 }
 
-export const teams = ["Good", ...CharacterTypes, "Evil", "Unknown"] as const;
+export const teams = [
+  "Good",
+  ...CharacterTypes,
+  "Evil",
+  "Unknown",
+  // TODO: get rid of
+  "Traveler",
+] as const;
 export type Team = (typeof teams)[number];
 interface TeamSelectProps {
   currentTeam: Team;

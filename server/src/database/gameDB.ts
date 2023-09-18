@@ -38,6 +38,10 @@ export function getGame (gameId: string): UnifiedGame {
   return retrieveGame(gameId).readOnce()
 }
 
+function gameInProgress (game: UnifiedGame): boolean {
+  return game.gameStatus === 'Started' || game.gameStatus === 'Setup'
+}
+
 export function addGame (gameId: string, game?: BaseUnifiedGame): boolean {
   console.log(`adding ${gameId}`)
   if (gameExists(gameId)) {
@@ -82,7 +86,7 @@ export function addPlayer (
 ): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
-  const gameStarted = gameInstance.gameStatus === 'Started'
+  const gameStarted = gameInProgress(gameInstance)
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const travelling = traveler || gameStarted
 
@@ -150,8 +154,31 @@ export function setPlayerOrder (
 ): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
+  const gameStarted = gameInProgress(gameInstance)
 
-  game.update({ ...gameInstance, partialPlayerOrdering: { ...gameInstance.partialPlayerOrdering, [player]: { rightNeighbor } } })
+  if (gameStarted) {
+    const leftNeighbor = Object.keys(gameInstance.partialPlayerOrdering).find(p => gameInstance.partialPlayerOrdering[p]?.rightNeighbor === player)
+    if (!leftNeighbor) {
+      throw new Error(`Cannot find player on left for ${player}, ${rightNeighbor}, ${JSON.stringify(gameInstance.partialPlayerOrdering)}`)
+    }
+    game.update({
+      ...gameInstance,
+      ...gameInstance,
+      partialPlayerOrdering: {
+        ...gameInstance.partialPlayerOrdering,
+        [player]: { rightNeighbor },
+        [leftNeighbor]: { rightNeighbor: player },
+      },
+    })
+  } else {
+    game.update({
+      ...gameInstance,
+      partialPlayerOrdering: {
+        ...gameInstance.partialPlayerOrdering,
+        [player]: { rightNeighbor },
+      },
+    })
+  }
 }
 
 function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {

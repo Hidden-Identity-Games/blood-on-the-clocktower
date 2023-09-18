@@ -3,15 +3,21 @@ import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { CharacterName } from "../../../shared/RoleIcon";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { allTravelers } from "../../../assets/game_data/gameData";
 
 interface RoleSelectProps {
+  traveler?: boolean;
   currentRole: Role;
   onSelect: (nextrole: Role | null) => void;
 }
 
-export function RoleSelect({ currentRole, onSelect }: RoleSelectProps) {
+export function RoleSelect({
+  currentRole,
+  onSelect,
+  traveler,
+}: RoleSelectProps) {
   const { script, game } = useDefiniteGame();
-  const roles = script.map(({ id }) => id);
+  const roles = traveler ? allTravelers() : script.map(({ id }) => id);
 
   return (
     <Dialog.Root>

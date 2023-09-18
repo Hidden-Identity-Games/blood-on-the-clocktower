@@ -9,13 +9,12 @@ import {
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useDefiniteGame } from "../../store/GameContext";
 import { PiKnifeBold } from "react-icons/pi";
-import { FaMasksTheater, FaVial } from "react-icons/fa6";
+import { FaVial } from "react-icons/fa6";
 import { IoIosBeer } from "react-icons/io";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PlayerList } from ".";
 import { RoleSelect } from "./Selectors";
 import { UnifiedGame } from "@hidden-identity/server";
-import { TravelerSelect } from "./Selectors/TravelerSelect";
 
 export function PlayerActions({ player }: { player: string }) {
   const { game } = useDefiniteGame();
@@ -92,19 +91,7 @@ export function PlayerActions({ player }: { player: string }) {
               </Dialog.Close>
             </PlayerList.MenuItem>
           )}
-          <PlayerList.MenuItem id="not_needed" label="Change role">
-            <RolechangeMenuItem game={game} player={player} />
-          </PlayerList.MenuItem>
-          {game.travelers[player] && (
-            <PlayerList.MenuItem id={`${player}-toggle-dead`} label={""}>
-              <Dialog.Close>
-                <TravelerSelect
-                  currentRole={game.playersToRoles[player]}
-                  onSelect={() => {}}
-                />
-              </Dialog.Close>
-            </PlayerList.MenuItem>
-          )}
+          <RolechangeMenuItem game={game} player={player} />
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
@@ -114,7 +101,6 @@ export function PlayerActions({ player }: { player: string }) {
 function RolechangeMenuItem({
   game,
   player,
-  ...props
 }: {
   game: UnifiedGame;
   player: string;
@@ -122,19 +108,12 @@ function RolechangeMenuItem({
   const [, , , setPlayerRole] = useAssignRole();
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <IconButton {...props}>
-          <FaMasksTheater />
-        </IconButton>
-      </Dialog.Trigger>
-
-      <Dialog.Content>
-        <RoleSelect
-          currentRole={game.playersToRoles[player]}
-          onSelect={(next) => next && setPlayerRole(player, next)}
-        />
-      </Dialog.Content>
-    </Dialog.Root>
+    <PlayerList.MenuItem id={`${player}-toggle-dead`} label={""}>
+      <RoleSelect
+        traveler={game.travelers[player]}
+        currentRole={game.playersToRoles[player]}
+        onSelect={(next) => next && setPlayerRole(player, next)}
+      />
+    </PlayerList.MenuItem>
   );
 }
