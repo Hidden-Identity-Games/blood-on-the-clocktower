@@ -13,6 +13,7 @@ import {
   setPlayerOrder,
   toggleDeadvote,
   updateStatus,
+  assignPlayerToRole,
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
 
@@ -115,6 +116,13 @@ export function useGame (app: Application): void {
   app.post('/manual_status', (req, res) => {
     const { gameId, status } = req.body
     updateStatus(gameId, status)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/assign_role', (req, res) => {
+    const { gameId, player, role } = req.body
+    assignPlayerToRole(gameId, player, role)
     res.status(200)
     res.send({})
   })

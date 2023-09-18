@@ -9,6 +9,13 @@ export const UNASSIGNED: Role = 'unassigned' as Role
 const gameComputer: Computer<BaseUnifiedGame, UnifiedGameComputed> = {
   orderedPlayers: getOrderedPlayers,
   playerList: (game) => Object.keys(game.playersToRoles).sort(),
+  rolesToPlayers: (game) => {
+    const rolesToPlayers: Record<Role, string[]> = {}
+    Object.entries(game.playersToRoles).forEach(([player, role]) => {
+      rolesToPlayers[role] = [...(rolesToPlayers[role] || []), player]
+    })
+    return rolesToPlayers
+  },
 }
 
 type WatchableGame = WatchableResource<BaseUnifiedGame, UnifiedGameComputed>
@@ -200,6 +207,17 @@ export function getOrderedPlayers (
       }
     }, {}),
   }
+}
+export function assignPlayerToRole (gameId: string, player: string, role: Role): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+  game.update({
+    ...gameInstance,
+    playersToRoles: {
+      ...gameInstance.playersToRoles,
+      [player]: role,
+    },
+  })
 }
 
 export function assignRoles (

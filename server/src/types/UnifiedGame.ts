@@ -10,6 +10,7 @@ export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {
 export interface UnifiedGameComputed {
   orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers
   playerList: string[]
+  rolesToPlayers: Record<Role, string[]>
 }
 
 export interface BaseUnifiedGame {

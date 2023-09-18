@@ -12,18 +12,15 @@ interface RoleSelectProps {
 export function RoleSelect({ currentRole, onSelect }: RoleSelectProps) {
   const { script, game } = useDefiniteGame();
   const roles = script.map(({ id }) => id);
-  const rolesToCharacters = Object.fromEntries(
-    game.playerList.map((p) => [game.playersToRoles[p], p]),
-  );
 
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button variant="outline" size="3" className="">
+        <Button variant="outline" size="3" className="w-full">
           <CharacterName role={currentRole} size="3" />
-          {rolesToCharacters[currentRole] && (
-            <span className="-ml-1 capitalize">
-              - {rolesToCharacters[currentRole]}
+          {!!game.rolesToPlayers[currentRole]?.length && (
+            <span className="-ml-1 truncate capitalize">
+              - {game.rolesToPlayers[currentRole].join(",")}
             </span>
           )}
         </Button>
@@ -45,12 +42,12 @@ export function RoleSelect({ currentRole, onSelect }: RoleSelectProps) {
               <Button
                 size="3"
                 variant={role === currentRole ? "soft" : "outline"}
-                onClick={() => onSelect(role)}
+                onClick={() => currentRole !== role && onSelect(role)}
               >
                 <CharacterName role={role} className="" />
-                {rolesToCharacters[role] && (
-                  <span className="-ml-1 capitalize">
-                    - {rolesToCharacters[role]}
+                {!!game.rolesToPlayers[role]?.length && (
+                  <span className="-ml-1 truncate capitalize">
+                    - {game.rolesToPlayers[role].join(",")}
                   </span>
                 )}
               </Button>
