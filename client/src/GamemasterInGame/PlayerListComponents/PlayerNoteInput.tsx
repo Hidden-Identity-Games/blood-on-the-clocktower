@@ -56,7 +56,7 @@ export function PlayerNoteInput({
               }
               id="note-input"
               ref={inputRef}
-              className=" h-[50vh] rounded-l"
+              className=" h-[25vh] rounded-l"
               value={newNote}
               onChange={(event) => {
                 setNewNote(event.currentTarget.value);
