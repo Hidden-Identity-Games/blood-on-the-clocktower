@@ -10,19 +10,23 @@ import {
   BsPeopleFill,
 } from "react-icons/bs";
 import { GiScrollQuill } from "react-icons/gi";
-import React from "react";
+import React, { useState } from "react";
 import { getCharacter } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
-import { PlayerListFilters } from "../shared/PlayerListFilters";
-import { usePlayerFilters } from "../store/useStore";
+import {
+  PlayerFilter,
+  PlayerListFilters,
+  usePlayerFilters,
+} from "../shared/PlayerListFilters";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
-  const [filteredPlayers, selectedFilter, allFilters, setSelectedFilter] =
-    usePlayerFilters();
+  const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
+  const allFilters = usePlayerFilters(game.playerList);
+  const filteredPlayers = allFilters[selectedFilter];
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
     const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
@@ -166,7 +170,7 @@ export function PlayerInGame() {
               <PlayerListFilters
                 allFilters={allFilters}
                 selectedFilter={selectedFilter}
-                setSelectedFilter={setSelectedFilter as (f: string) => void}
+                setSelectedFilter={setSelectedFilter}
               />
             </Flex>
             <Flex

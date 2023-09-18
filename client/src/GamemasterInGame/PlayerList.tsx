@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
-import { useKickPlayer, usePlayerFilters } from "../store/useStore";
+import { useKickPlayer } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
@@ -18,7 +18,11 @@ import { DeadVoteIcon, PlayerStatusIcons } from "./NotesIcons";
 import { PlayerList } from "./PlayerListComponents";
 import { DemonMessage } from "./PlayerListComponents/PlayerMessage/DemonMessage";
 import { DialogHeader } from "../shared/DialogHeader";
-import { PlayerListFilters } from "../shared/PlayerListFilters";
+import {
+  PlayerFilter,
+  PlayerListFilters,
+  usePlayerFilters,
+} from "../shared/PlayerListFilters";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -215,15 +219,16 @@ export function NightPlayerList() {
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
-  const [filteredPlayers, selectedFilter, allFilters, setSelectedFilter] =
-    usePlayerFilters();
+  const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
+  const allFilters = usePlayerFilters(game.playerList);
+  const filteredPlayers = allFilters[selectedFilter];
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
       <PlayerListFilters
         allFilters={allFilters}
         selectedFilter={selectedFilter}
-        setSelectedFilter={setSelectedFilter as (f: string) => void}
+        setSelectedFilter={setSelectedFilter}
       />
       {filteredPlayers.map((player) => (
         <Flex direction="column" key={player}>
