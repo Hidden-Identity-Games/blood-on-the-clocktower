@@ -1,4 +1,4 @@
-import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type PlayerStatus, type GameStatus, type UnifiedGameComputed } from '../types/index.ts'
+import { type Role, type UnifiedGame, type BrokenOrderedPlayers, type WellOrderedPlayers, type Problem, type BaseUnifiedGame, type PlayerStatus, type GameStatus, type UnifiedGameComputed, type Alignment } from '../types/index.ts'
 import { generate } from 'random-words'
 import { type Computer, WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
@@ -76,6 +76,7 @@ function createGame (): BaseUnifiedGame {
     playerNotes: {},
     deadVotes: {},
     travelers: {},
+    alignmentsOverrides: {},
   }
 }
 
@@ -114,6 +115,11 @@ export function addPlayer (
     travelers: {
       ...gameInstance.travelers,
       ...(travelling && { [player]: true }),
+    },
+    alignmentsOverrides: {
+      ...gameInstance.alignmentsOverrides,
+      // default to good so there's never a character without alignment.
+      ...(travelling && { [player]: 'Good' }),
     },
   })
 }
@@ -270,6 +276,7 @@ export function assignRoles (
   game.update({
     ...gameInstance,
     gameStatus: 'Setup',
+
     playersToRoles: roles
       .map((item) => ({ item, random: Math.random() }))
       .sort((a, b) => a.random - b.random)
@@ -345,5 +352,18 @@ export function updateStatus (gameId: string, status: GameStatus): void {
   game.update({
     ...gameInstance,
     gameStatus: status,
+  })
+}
+
+export function setAlignment (gameId: string, player: string, alignment: Alignment): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  game.update({
+    ...gameInstance,
+    alignmentsOverrides: {
+      ...gameInstance.alignmentsOverrides,
+      [player]: alignment,
+    },
   })
 }

@@ -1756,7 +1756,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-team",
         count: 3,
         restriction: {
-          team: "Evil",
+          alignment: "Evil",
           guess: false,
         },
       },
@@ -2091,7 +2091,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "team-change",
         restriction: {
-          team: "Evil",
+          alignment: "Evil",
         },
       },
     },
