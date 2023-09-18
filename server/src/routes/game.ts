@@ -101,8 +101,8 @@ export function useGame (app: Application): void {
   })
 
   app.post('/set_player_note', (req, res) => {
-    const { player, gameId, note } = req.body
-    setPlayerNote(gameId, player, note)
+    const { me, noteworthyPlayer, gameId, note } = req.body
+    setPlayerNote(gameId, me, noteworthyPlayer, note)
     res.status(200)
     res.send({})
   })

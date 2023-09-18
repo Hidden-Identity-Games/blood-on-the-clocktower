@@ -1,5 +1,5 @@
 import React from "react";
-import { usePlayerNotes } from "../../store/useStore";
+import { useEditPlayerNotes } from "../../store/useStore";
 import { Button, Dialog, Flex, TextArea } from "@radix-ui/themes";
 import { PlayerNameWithRoleIcon } from "../../shared/RoleIcon";
 
@@ -7,14 +7,16 @@ interface PlayerNoteInputProps {
   player: string;
   children: React.ReactNode;
   note?: string;
+  hideRole?: boolean;
 }
 
 export function PlayerNoteInput({
   player,
   children,
   note = "",
+  hideRole = false,
 }: PlayerNoteInputProps) {
-  const [, playerNotesLoading, , setPlayerNote] = usePlayerNotes();
+  const [, playerNotesLoading, , setPlayerNote] = useEditPlayerNotes();
   const [newNote, setNewNote] = React.useState(note);
   const inputRef = React.useRef<HTMLTextAreaElement | null>(null);
 
@@ -26,9 +28,13 @@ export function PlayerNoteInput({
         <Dialog.Title className="capitalize">
           <Flex justify="between">
             <label className="flex-1" htmlFor="note-input">
-              <PlayerNameWithRoleIcon player={player}>
-                Notes:
-              </PlayerNameWithRoleIcon>
+              {hideRole ? (
+                `Notes: ${player}`
+              ) : (
+                <PlayerNameWithRoleIcon player={player}>
+                  Notes:
+                </PlayerNameWithRoleIcon>
+              )}
             </label>
             <Button
               type="reset"

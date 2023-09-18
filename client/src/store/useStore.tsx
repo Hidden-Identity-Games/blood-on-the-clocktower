@@ -5,7 +5,7 @@ import { UnifiedGame } from "./Game";
 import { useAction, useDefiniteGame, useGame } from "./GameContext";
 import { apiUrl } from "./urlBuilder";
 import axios, { AxiosError } from "axios";
-import { usePlayer } from "./secretKey";
+import { useMe, usePlayer } from "./secretKey";
 import {
   Alignment,
   GameStatus,
@@ -229,16 +229,24 @@ export function usePlayerStatuses() {
   );
 }
 
-export function usePlayerNotes() {
+export function usePlayerNotes(): Record<string, string> {
+  const me = useMe();
+  const { game } = useGame();
+  return game?.playerNotes[me] ?? {};
+}
+
+export function useEditPlayerNotes() {
+  const me = useMe();
   const { gameId } = useGame();
 
-  return useAction(async (player: string, note: string) => {
+  return useAction(async (noteworthyPlayer: string, note: string) => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
 
     const response = await axios.post(apiUrl("/set_player_note"), {
-      player,
+      me,
+      noteworthyPlayer,
       gameId,
       note,
     });

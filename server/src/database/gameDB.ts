@@ -319,7 +319,7 @@ export function clearPlayerStatus (gameId: string, player: string, playerStatusI
   })
 }
 
-export function setPlayerNote (gameId: string, player: string, note: string): void {
+export function setPlayerNote (gameId: string, me: string, noteworthyPlayer: string, note: string): void {
   const game = retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
@@ -327,7 +327,7 @@ export function setPlayerNote (gameId: string, player: string, note: string): vo
     ...gameInstance,
     playerNotes: {
       ...gameInstance.playerNotes,
-      [player]: note,
+      [me]: { ...gameInstance.playerNotes[me], [noteworthyPlayer]: note },
     },
   })
 }

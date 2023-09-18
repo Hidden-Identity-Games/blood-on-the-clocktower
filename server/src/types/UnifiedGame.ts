@@ -27,7 +27,7 @@ export interface BaseUnifiedGame {
   nextGameId?: string
   deadPlayers: Record<string, boolean>
   playerPlayerStatuses: Record<string, PlayerStatus[]>
-  playerNotes: Record<string, string>
+  playerNotes: Record<string, Record<string, string>>
   deadVotes: Record<string, boolean>
   travelers: Record<string, boolean>
   alignmentsOverrides: Record<string, Alignment>

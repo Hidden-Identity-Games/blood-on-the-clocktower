@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
-import { useKickPlayer } from "../store/useStore";
+import { useKickPlayer, usePlayerNotes } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
@@ -78,7 +78,7 @@ export function PregamePlayerList() {
                         disabled={kickPlayerLoading}
                       >
                         <GiBootKick />
-                      </IconButton>{" "}
+                      </IconButton>
                     </Dialog.Close>
                   </PlayerList.MenuItem>
                 </Flex>
@@ -111,6 +111,7 @@ const gameActionsByNight = {
 };
 export function NightPlayerList() {
   const { game } = useDefiniteGame();
+  const playerNotes = usePlayerNotes();
   const nightKey = game.gameStatus === "Setup" ? "firstNight" : "otherNight";
   const nightActions = React.useMemo(() => {
     const playerActions = game.playerList
@@ -168,7 +169,7 @@ export function NightPlayerList() {
                   </PlayerList.RoleIcon>
                   <PlayerList.NoteInputModal
                     player={action.player}
-                    note={game.playerNotes[action.player]}
+                    note={playerNotes[action.player]}
                   >
                     <button className="flex-1 text-left">
                       <PlayerList.Name player={action.player} />
@@ -219,6 +220,7 @@ export function NightPlayerList() {
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
+  const playerNotes = usePlayerNotes();
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
@@ -239,7 +241,7 @@ export function IngamePlayerList() {
               </PlayerList.RoleIcon>
               <PlayerList.NoteInputModal
                 player={player}
-                note={game.playerNotes[player]}
+                note={playerNotes[player]}
               >
                 <button className="flex-1 text-left">
                   <PlayerList.Name player={player} />
@@ -263,8 +265,9 @@ interface PlayerNotesProps extends HTMLAttributes<HTMLDivElement> {
 
 function PlayerNotes({ player, ...props }: PlayerNotesProps) {
   const { game } = useDefiniteGame();
+  const playerNotes = usePlayerNotes();
   const statuses = game.playerPlayerStatuses[player] ?? [];
-  const notes = game.playerNotes[player] ?? "";
+  const notes = playerNotes[player];
   if (!notes && !statuses.length) return;
 
   return (
