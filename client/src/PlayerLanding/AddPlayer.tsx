@@ -18,7 +18,7 @@ function AddPlayer() {
   const [_, setPlayer] = usePlayer();
   const [rejoinOpen, setRejoinOpen] = useState(false);
   const [error, isLoading, , addPlayer] = useAddPlayer();
-  const parsedName = name.toLowerCase();
+  const parsedName = name.trim().toLowerCase();
 
   const taken = !!game.playersToRoles[parsedName];
 
