@@ -11,12 +11,12 @@ import {
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useDefiniteGame } from "../../store/GameContext";
 import { PiKnifeBold } from "react-icons/pi";
-import { FaVial } from "react-icons/fa6";
-import { IoIosBeer } from "react-icons/io";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PlayerList } from ".";
 import { AlignmentSelect, RoleSelect } from "./Selectors";
 import { UnifiedGame } from "@hidden-identity/server";
+import { v4 } from "uuid";
+import { PlayerStatusIcon } from "../NotesIcons";
 
 export function PlayerActions({ player }: { player: string }) {
   const { game } = useDefiniteGame();
@@ -54,12 +54,12 @@ export function PlayerActions({ player }: { player: string }) {
                 onClick={() =>
                   setPlayerStatus(player, "add", {
                     type: "poison",
-                    id: `${player}-poisoned`,
+                    id: v4(),
                   })
                 }
                 disabled={playerStatusesLoading}
               >
-                <FaVial />
+                <PlayerStatusIcon statusType="poison" />
               </IconButton>
             </Dialog.Close>
           </PlayerList.MenuItem>
@@ -69,12 +69,12 @@ export function PlayerActions({ player }: { player: string }) {
                 onClick={() =>
                   setPlayerStatus(player, "add", {
                     type: "drunk",
-                    id: `${player}-drunk`,
+                    id: v4(),
                   })
                 }
                 disabled={playerStatusesLoading}
               >
-                <IoIosBeer />
+                <PlayerStatusIcon statusType="drunk" />
               </IconButton>
             </Dialog.Close>
           </PlayerList.MenuItem>
