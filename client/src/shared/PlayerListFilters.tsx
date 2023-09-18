@@ -58,7 +58,7 @@ function useFilters<Filter extends string, ListItem>(
 ) {
   const filteredLists = useMemo(
     () =>
-      Object.keys(fullList).reduce<Record<Filter, ListItem[]>>(
+      Object.keys(filters).reduce<Record<Filter, ListItem[]>>(
         (acc, filter) => ({
           ...acc,
           [filter]: fullList.filter(filters[filter as Filter]),
