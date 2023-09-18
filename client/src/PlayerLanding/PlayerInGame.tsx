@@ -1,4 +1,4 @@
-import { Flex, Heading, Tabs, Text } from "@radix-ui/themes";
+import { Flex, Heading, Tabs, Text, TextArea } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
@@ -9,8 +9,8 @@ import {
   BsFillMoonStarsFill,
   BsPeopleFill,
 } from "react-icons/bs";
-import { GiScrollQuill } from "react-icons/gi";
-import React, { useState } from "react";
+import { GiNotebook, GiScrollQuill } from "react-icons/gi";
+import React, { useRef, useState } from "react";
 import { getCharacter } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
@@ -21,12 +21,15 @@ import {
 } from "../shared/PlayerListFilters";
 import { CharacterName } from "../shared/RoleIcon";
 import { ForPlayerPlayerRoleIcon } from "../GamemasterInGame/PlayerListComponents/PlayerRole";
+import { useLocalStorage } from "../store/useLocalStorage";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
+  const [notes, setNotes] = useLocalStorage("notes");
+  const noteInputRef = useRef<HTMLTextAreaElement | null>(null);
   const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
 
@@ -55,7 +58,7 @@ export function PlayerInGame() {
       onValueChange={setSelectedTab}
     >
       <Tabs.List>
-        <Tabs.Trigger className="min-w-[100px] flex-1" value="script">
+        <Tabs.Trigger className="flex-1" value="script">
           <Text className="mr-1" color="red" asChild>
             <GiScrollQuill />
           </Text>
@@ -72,6 +75,16 @@ export function PlayerInGame() {
             <BsPeopleFill />
           </Text>
           {selectedTab === "players" && "Players"}
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          className="flex-1"
+          value="notes"
+          onClick={() => noteInputRef.current?.focus()}
+        >
+          <Text className="mr-1" color="red" asChild>
+            <GiNotebook />
+          </Text>
+          {selectedTab === "notes" && "Notes"}
         </Tabs.Trigger>
       </Tabs.List>
 
@@ -206,6 +219,21 @@ export function PlayerInGame() {
             ))}
           </Flex>
         </Flex>
+      </Tabs.Content>
+
+      <Tabs.Content className="flex-1 overflow-y-auto" value="notes">
+        <TextArea
+          ref={noteInputRef}
+          className="h-full w-full"
+          value={notes ? notes : "Keep your own notes here..."}
+          onChange={(e) => setNotes(e.currentTarget.value)}
+          onFocus={(e) =>
+            e.currentTarget.setSelectionRange(
+              e.currentTarget.value.length,
+              e.currentTarget.value.length,
+            )
+          }
+        />
       </Tabs.Content>
     </Tabs.Root>
   );
