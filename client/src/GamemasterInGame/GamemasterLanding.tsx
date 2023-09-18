@@ -6,13 +6,30 @@ import { ScriptSelect } from "./ScriptSelect";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { NightOrder } from "./NightOrder";
+import { Theme } from "@radix-ui/themes";
+import { CSSProperties } from "react";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
   return (
-    <GameProvider gameId={gameId!}>
-      <GamemasterLanding providedGMHash={gmHash!} />
-    </GameProvider>
+    <Theme
+      appearance="dark"
+      accentColor="purple"
+      panelBackground="solid"
+      hasBackground
+      style={
+        {
+          "--scaling": 1.5,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+        } as CSSProperties
+      }
+    >
+      <GameProvider gameId={gameId!}>
+        <GamemasterLanding providedGMHash={gmHash!} />
+      </GameProvider>
+    </Theme>
   );
 }
 

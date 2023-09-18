@@ -90,16 +90,19 @@ export function CharacterName({ role, size, className }: CharacterNameProps) {
 export type PlayerNameProps = ExtnesionProps["Text"] & {
   player: string;
   className?: string;
+  children?: React.ReactNode;
 };
 export function PlayerNameWithRoleIcon({
   className,
   player,
+  children,
   ...textProps
 }: PlayerNameProps) {
   const { game } = useDefiniteGame();
   const role = game.playersToRoles[player];
   return (
     <Flex gap="1" className={className}>
+      {children}
       <RoleText role={role} {...textProps}>
         {player}
       </RoleText>
