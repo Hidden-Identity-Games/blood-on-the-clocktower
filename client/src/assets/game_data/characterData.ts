@@ -2138,7 +2138,7 @@ export const characters: CharacterDefinition[] = [
         "The Bureaucrat points to a player. Put the Bureaucrat's '3 votes' reminder by the chosen player's character token.",
       order: 1,
     },
-    imageSrc: "",
+    imageSrc: "bureaucrat.png",
   },
   {
     id: "thief",
@@ -2159,7 +2159,7 @@ export const characters: CharacterDefinition[] = [
         "The Thief points to a player. Put the Thief's 'Negative vote' reminder by the chosen player's character token.",
       order: 1,
     },
-    imageSrc: "",
+    imageSrc: "thief.png",
   },
   {
     id: "gunslinger",
@@ -2172,7 +2172,7 @@ export const characters: CharacterDefinition[] = [
       "Each day, after the 1st vote has been tallied, you may choose a player that voted: they die.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "gunslinger.png",
   },
   {
     id: "scapegoat",
@@ -2185,7 +2185,7 @@ export const characters: CharacterDefinition[] = [
       "If a player of your alignment is executed, you might be executed instead.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "scapegoat.png",
   },
   {
     id: "beggar",
@@ -2198,7 +2198,7 @@ export const characters: CharacterDefinition[] = [
       "You must use a vote token to vote. Dead players may choose to give you theirs. If so, you learn their alignment. You are sober & healthy.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "beggar.png",
   },
   {
     id: "apprentice",
@@ -2215,7 +2215,7 @@ export const characters: CharacterDefinition[] = [
       order: 1,
     },
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "apprentice.png",
   },
   {
     id: "matron",
@@ -2228,7 +2228,7 @@ export const characters: CharacterDefinition[] = [
       "Each day, you may choose up to 3 sets of 2 players to swap seats. Players may not leave their seats to talk in private.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "matron.png",
   },
   {
     id: "judge",
@@ -2241,7 +2241,7 @@ export const characters: CharacterDefinition[] = [
       "Once per game, if another player nominated, you may choose to force the current execution to pass or fail.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "judge.png",
   },
   {
     id: "bishop",
@@ -2254,7 +2254,7 @@ export const characters: CharacterDefinition[] = [
       "Only the Storyteller can nominate. At least 1 opposite player must be nominated each day.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "bishop.png",
   },
   {
     id: "voudon",
@@ -2267,7 +2267,7 @@ export const characters: CharacterDefinition[] = [
       "Only you and the dead can vote. They don't need a vote token to do so. A 50% majority is not required.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "voudon.png",
   },
   {
     id: "barista",
@@ -2288,7 +2288,7 @@ export const characters: CharacterDefinition[] = [
         "Choose a player, wake them and tell them which Barista power is affecting them. Treat them accordingly (sober/healthy/true info or activate their ability twice).",
       order: 1,
     },
-    imageSrc: "",
+    imageSrc: "barista.png",
   },
   {
     id: "harlot",
@@ -2305,7 +2305,7 @@ export const characters: CharacterDefinition[] = [
         "The Harlot points at any player. Then, put the Harlot to sleep. Wake the chosen player, show them the 'This character selected you' token, then the Harlot token. That player either nods their head yes or shakes their head no. If they nodded their head yes, wake the Harlot and show them the chosen player's character token. Then, you may decide that both players die.",
       order: 1,
     },
-    imageSrc: "",
+    imageSrc: "harlot.png",
   },
   {
     id: "butcher",
@@ -2317,7 +2317,7 @@ export const characters: CharacterDefinition[] = [
     ability: "Each day, after the 1st execution, you may nominate again.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "butcher.png",
   },
   {
     id: "bonecollector",
@@ -2334,7 +2334,7 @@ export const characters: CharacterDefinition[] = [
         "The Bone Collector either shakes their head no or points at any dead player. If they pointed at any dead player, put the Bone Collector's 'Has Ability' reminder by the chosen player's character token. (They may need to be woken tonight to use it.)",
       order: 1,
     },
-    imageSrc: "",
+    imageSrc: "bonecollector.png",
   },
   {
     id: "deviant",
@@ -2346,7 +2346,7 @@ export const characters: CharacterDefinition[] = [
     ability: "If you were funny today, you cannot die by exile.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "deviant.png",
   },
   {
     id: "gangster",
@@ -2359,7 +2359,7 @@ export const characters: CharacterDefinition[] = [
       "Once per day, you may choose to kill an alive neighbour, if your other alive neighbour agrees.",
     firstNight: null,
     otherNight: null,
-    imageSrc: "",
+    imageSrc: "gangster.png",
   },
 ];
 
