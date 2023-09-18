@@ -2,29 +2,38 @@ import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { ALIGNMENTS } from "../../../types/script";
 import { alignmentColorMap } from "../../../shared/CharacterTypes";
 import { Alignment } from "@hidden-identity/server";
+import { ReactNode } from "react";
 
 interface AlignmentSelectProps {
   currentAlignment: Alignment;
   onSelect: (nextrole: Alignment | null) => void;
+  children?: ReactNode;
 }
 
 export function AlignmentSelect({
   currentAlignment,
   onSelect,
+  children,
 }: AlignmentSelectProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button
-          variant="soft"
-          size="3"
-          className="capitalize"
-          color={alignmentColorMap[currentAlignment]}
-        >
-          <Flex className="w-full text-center" align="center" justify="center">
-            {currentAlignment}
-          </Flex>
-        </Button>
+        {children || (
+          <Button
+            variant="soft"
+            size="3"
+            className="capitalize"
+            color={alignmentColorMap[currentAlignment]}
+          >
+            <Flex
+              className="w-full text-center"
+              align="center"
+              justify="center"
+            >
+              {currentAlignment}
+            </Flex>
+          </Button>
+        )}
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
         <Dialog.Content>

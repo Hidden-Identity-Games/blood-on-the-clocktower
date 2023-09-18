@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { Role } from "@hidden-identity/server";
 import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
@@ -15,12 +15,14 @@ interface RoleSelectProps {
   traveler?: boolean;
   currentRole: Role;
   onSelect: (nextrole: Role | null) => void;
+  children?: ReactNode;
 }
 
 export function RoleSelect({
   currentRole,
   onSelect,
   traveler,
+  children,
 }: RoleSelectProps) {
   const { script, game } = useDefiniteGame();
   const roles = useMemo(() => {
@@ -36,19 +38,21 @@ export function RoleSelect({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button
-          variant="outline"
-          size="3"
-          className="w-full"
-          color={colorMap[getCharacter(currentRole).team]}
-        >
-          <CharacterName role={currentRole} size="3" />
-          {!!game.rolesToPlayers[currentRole]?.length && (
-            <span className="-ml-1 truncate capitalize">
-              - {game.rolesToPlayers[currentRole].join(",")}
-            </span>
-          )}
-        </Button>
+        {children || (
+          <Button
+            variant="outline"
+            size="3"
+            className="w-full"
+            color={colorMap[getCharacter(currentRole).team]}
+          >
+            <CharacterName role={currentRole} size="3" />
+            {!!game.rolesToPlayers[currentRole]?.length && (
+              <span className="-ml-1 truncate capitalize">
+                - {game.rolesToPlayers[currentRole].join(",")}
+              </span>
+            )}
+          </Button>
+        )}
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
         <Dialog.Content>

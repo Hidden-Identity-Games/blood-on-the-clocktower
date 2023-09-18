@@ -1,5 +1,12 @@
-import { Dialog, Flex, IconButton } from "@radix-ui/themes";
-import { GiRaiseZombie } from "react-icons/gi";
+import {
+  Button,
+  Dialog,
+  Flex,
+  IconButton,
+  Separator,
+  Text,
+} from "@radix-ui/themes";
+import { GiAngelOutfit, GiBullHorns, GiRaiseZombie } from "react-icons/gi";
 import {
   useAssignPlayerAlignment,
   useAssignRole,
@@ -16,7 +23,9 @@ import { PlayerList } from ".";
 import { AlignmentSelect, RoleSelect } from "./Selectors";
 import { UnifiedGame } from "@hidden-identity/server";
 import { v4 } from "uuid";
-import { PlayerStatusIcon } from "../NotesIcons";
+import { PlayerStatusIcon, PlayerStatusIcons } from "../NotesIcons";
+import { alignmentColorMap } from "../../shared/CharacterTypes";
+import { CharacterName } from "../../shared/RoleIcon";
 
 export function PlayerActions({ player }: { player: string }) {
   const { game } = useDefiniteGame();
@@ -33,6 +42,11 @@ export function PlayerActions({ player }: { player: string }) {
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
         <Flex direction="column" gap="2">
+          <Dialog.Title>
+            <RoleChangeMenuItem game={game} player={player} />
+          </Dialog.Title>
+          <Separator size="4" />
+
           <PlayerList.MenuItem
             id={`${player}-toggle-dead`}
             label={game.deadPlayers[player] ? "Revive" : "Kill"}
@@ -93,7 +107,6 @@ export function PlayerActions({ player }: { player: string }) {
               </Dialog.Close>
             </PlayerList.MenuItem>
           )}
-          <RoleChangeMenuItem game={game} player={player} />
           <AlignmentChangeMenuItem player={player} />
         </Flex>
       </Dialog.Content>
@@ -109,23 +122,52 @@ function RoleChangeMenuItem({
   player: string;
 }) {
   const [, , , setPlayerRole] = useAssignRole();
+  const getPlayerAlignment = useGetPlayerAlignment();
+  const alignment = getPlayerAlignment(player);
+  const role = game.playersToRoles[player];
 
   return (
     <RoleSelect
       traveler={game.travelers[player]}
-      currentRole={game.playersToRoles[player]}
+      currentRole={role}
       onSelect={(next) => next && setPlayerRole(player, next)}
-    />
+    >
+      <Button className="w-full flex-1 capitalize" variant="ghost" size="4">
+        <Text color={alignmentColorMap[alignment]} asChild>
+          <Flex className="w-full" direction="column" gap="2">
+            <Flex className="flex-1 px-1" align="center" justify="between">
+              <CharacterName role={role} />
+              <Flex gap="2">
+                <PlayerStatusIcons player={player} />
+              </Flex>
+            </Flex>
+            <Flex className="px-5">{player}</Flex>
+          </Flex>
+        </Text>
+      </Button>
+    </RoleSelect>
   );
 }
 function AlignmentChangeMenuItem({ player }: { player: string }) {
   const getPlayerAlignment = useGetPlayerAlignment();
   const [, , , setPlayerAlignment] = useAssignPlayerAlignment();
+  const alignment = getPlayerAlignment(player);
 
   return (
     <AlignmentSelect
-      currentAlignment={getPlayerAlignment(player)}
+      currentAlignment={alignment}
       onSelect={(next) => next && setPlayerAlignment(player, next)}
-    />
+    >
+      <PlayerList.MenuItem
+        id={`${player}-alignment-select`}
+        label="Change Alignment"
+      >
+        <Dialog.Trigger>
+          <IconButton color={alignmentColorMap[alignment]}>
+            {alignment === "Good" ? <GiAngelOutfit /> : <GiBullHorns />}
+          </IconButton>
+        </Dialog.Trigger>
+      </PlayerList.MenuItem>
+    </AlignmentSelect>
   );
 }
