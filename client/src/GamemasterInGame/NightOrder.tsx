@@ -3,6 +3,7 @@ import { IngamePlayerList, NightPlayerList } from "./PlayerList";
 import { Button, Flex } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { useSetGameStatus } from "../store/useStore";
+import { GameMasterActions } from "./GameMasterActions";
 
 export function NightOrder() {
   const { game } = useDefiniteGame();
@@ -39,7 +40,7 @@ export function NightOrder() {
           Day time
         </Button>
       )}
-      {nightTime && (
+      {nightTime ? (
         <Button
           onClick={() => {
             setGameStatus("Setup");
@@ -48,6 +49,8 @@ export function NightOrder() {
         >
           Back to first day
         </Button>
+      ) : (
+        <GameMasterActions selectedRoles={{}} />
       )}
     </Flex>
   );
