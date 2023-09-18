@@ -1,7 +1,8 @@
-import { getCharacter } from "../../assets/game_data/gameData";
+import { alignmentColorMap } from "../../shared/CharacterTypes";
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { RoleIcon, RoleName } from "../../shared/RoleIcon";
 import { useDefiniteGame } from "../../store/GameContext";
+import { useGetPlayerAlignment } from "../../store/useStore";
 
 interface PlayerRoleIconProps {
   children: React.ReactNode;
@@ -9,16 +10,41 @@ interface PlayerRoleIconProps {
 }
 export function PlayerRoleIcon({ children, player }: PlayerRoleIconProps) {
   const { game } = useDefiniteGame();
+  const getPlayerAlignment = useGetPlayerAlignment();
   const role = game.playersToRoles[player];
   return (
     <MeaningfulIcon
       className="aspect-square p-1 text-xl"
       size="1"
-      color={
-        ["Townsfolk", "Outsider"].includes(getCharacter(role).team)
-          ? "cyan"
-          : "crimson"
+      color={alignmentColorMap[getPlayerAlignment(player)]}
+      header={
+        <div className="flex items-center justify-center gap-1">
+          <RoleIcon role={role} />
+          {RoleName(role)}
+        </div>
       }
+      explanation={children}
+    >
+      <RoleIcon role={role} />
+    </MeaningfulIcon>
+  );
+}
+
+interface PlayerRoleIconProps {
+  children: React.ReactNode;
+  player: string;
+}
+export function ForPlayerPlayerRoleIcon({
+  children,
+  player,
+}: PlayerRoleIconProps) {
+  const { game } = useDefiniteGame();
+  const role = game.playersToRoles[player];
+  return (
+    <MeaningfulIcon
+      className="aspect-square p-1 text-xl"
+      size="1"
+      color="amber"
       header={
         <div className="flex items-center justify-center gap-1">
           <RoleIcon role={role} />

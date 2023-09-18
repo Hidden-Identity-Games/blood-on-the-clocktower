@@ -6,13 +6,15 @@ import fingerprintImage from "../assets/fingerprint.png";
 import { getCharacter } from "../assets/game_data/gameData";
 import { Role } from "@hidden-identity/server";
 import { useState } from "react";
-import { RoleText } from "../shared/RoleIcon";
+import { AlignmentText } from "../shared/RoleIcon";
+import { usePlayer } from "../store/secretKey";
 
 interface PlayerRoleProps {
   role: Role;
 }
 
 function PlayerRole({ role }: PlayerRoleProps) {
+  const [player] = usePlayer();
   const [isHolding, setIsHolding] = useState(false);
   return (
     <Flex
@@ -88,7 +90,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
                 event.stopPropagation();
               }}
             />
-            <RoleText role={role} />
+            <AlignmentText player={player!}>{role}</AlignmentText>
           </div>
         </div>
       </div>

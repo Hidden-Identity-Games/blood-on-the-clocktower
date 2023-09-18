@@ -9,6 +9,18 @@ type CharacterDefinition = Omit<Character, "id"> & {
 
 export const characters: CharacterDefinition[] = [
   {
+    id: "unassigned",
+    name: "Unassigned",
+    edition: "",
+    team: "Traveler",
+    reminders: [],
+    setup: true,
+    ability: "Please see the storyteller for a role!",
+    imageSrc: "",
+    firstNight: null,
+    otherNight: null,
+  },
+  {
     id: "artist",
     name: "Artist",
     edition: "snv",

@@ -1,6 +1,7 @@
 import React from "react";
 import { usePlayerNotes } from "../../store/useStore";
 import { Button, Dialog, Flex, TextArea } from "@radix-ui/themes";
+import { PlayerNameWithRoleIcon } from "../../shared/RoleIcon";
 
 interface PlayerNoteInputProps {
   player: string;
@@ -25,7 +26,9 @@ export function PlayerNoteInput({
         <Dialog.Title className="capitalize">
           <Flex justify="between">
             <label className="flex-1" htmlFor="note-input">
-              {player}: Notes
+              <PlayerNameWithRoleIcon player={player}>
+                Notes:
+              </PlayerNameWithRoleIcon>
             </label>
             <Button
               type="reset"
