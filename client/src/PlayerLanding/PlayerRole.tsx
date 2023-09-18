@@ -81,7 +81,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
           {/* Role icon */}
           <div data-card-side="back" className="h-full w-full text-center">
             <img
-              className="h-full w-full"
+              className="mt-6 h-full w-full"
               src={getCharacter(role).imageSrc}
               onContextMenu={(event) => {
                 event.preventDefault();
