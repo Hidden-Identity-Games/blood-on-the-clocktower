@@ -13,7 +13,6 @@ import { colorMap } from "../shared/CharacterTypes";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
 import { Role } from "@hidden-identity/server";
 import { getCharacter } from "../assets/game_data/gameData";
-import classNames from "classnames";
 
 interface StateContainer<T> {
   value: T;
@@ -107,12 +106,11 @@ export function CharacterSelectList({
             >
               {characterType}
             </Heading>
-            {characters.map((role, idx) => (
+            {characters.map((role) => (
               <Flex
                 gap="1"
                 align={"center"}
                 key={role}
-                className={classNames(idx % 2 === 0 && "bg-zinc-900")}
                 style={{ height: "2em" }}
                 asChild
               >

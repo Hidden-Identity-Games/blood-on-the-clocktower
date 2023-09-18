@@ -29,3 +29,31 @@ export function PlayerRoleIcon({ children, player }: PlayerRoleIconProps) {
     </MeaningfulIcon>
   );
 }
+
+interface PlayerRoleIconProps {
+  children: React.ReactNode;
+  player: string;
+}
+export function ForPlayerPlayerRoleIcon({
+  children,
+  player,
+}: PlayerRoleIconProps) {
+  const { game } = useDefiniteGame();
+  const role = game.playersToRoles[player];
+  return (
+    <MeaningfulIcon
+      className="aspect-square p-1 text-xl"
+      size="1"
+      color="amber"
+      header={
+        <div className="flex items-center justify-center gap-1">
+          <RoleIcon role={role} />
+          {RoleName(role)}
+        </div>
+      }
+      explanation={children}
+    >
+      <RoleIcon role={role} />
+    </MeaningfulIcon>
+  );
+}
