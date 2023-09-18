@@ -78,7 +78,7 @@ export function PregamePlayerList() {
                         disabled={kickPlayerLoading}
                       >
                         <GiBootKick />
-                      </IconButton>{" "}
+                      </IconButton>
                     </Dialog.Close>
                   </PlayerList.MenuItem>
                 </Flex>
