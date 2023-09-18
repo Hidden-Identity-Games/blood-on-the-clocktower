@@ -7,16 +7,25 @@ interface PlayerNoteInputProps {
   player: string;
   children: React.ReactNode;
   note?: string;
+  saveNote?: (newNote: string) => void;
+  hideRole?: boolean;
 }
 
 export function PlayerNoteInput({
   player,
   children,
   note = "",
+  saveNote,
+  hideRole = false,
 }: PlayerNoteInputProps) {
   const [, playerNotesLoading, , setPlayerNote] = usePlayerNotes();
   const [newNote, setNewNote] = React.useState(note);
   const inputRef = React.useRef<HTMLTextAreaElement | null>(null);
+  const setNote =
+    saveNote ??
+    ((n) => {
+      setPlayerNote(player, n);
+    });
 
   return (
     <Dialog.Root onOpenChange={() => setNewNote(note ? `${note}\n` : note)}>
@@ -26,9 +35,13 @@ export function PlayerNoteInput({
         <Dialog.Title className="capitalize">
           <Flex justify="between">
             <label className="flex-1" htmlFor="note-input">
-              <PlayerNameWithRoleIcon player={player}>
-                Notes:
-              </PlayerNameWithRoleIcon>
+              {hideRole ? (
+                `Notes: ${player}`
+              ) : (
+                <PlayerNameWithRoleIcon player={player}>
+                  Notes:
+                </PlayerNameWithRoleIcon>
+              )}
             </label>
             <Button
               type="reset"
@@ -46,7 +59,7 @@ export function PlayerNoteInput({
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              setPlayerNote(player, newNote);
+              setNote(newNote);
             }}
           >
             <TextArea

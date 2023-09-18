@@ -1,4 +1,4 @@
-import { Flex, Heading, Tabs, Text } from "@radix-ui/themes";
+import { Flex, Heading, IconButton, Tabs, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
@@ -9,8 +9,8 @@ import {
   BsFillMoonStarsFill,
   BsPeopleFill,
 } from "react-icons/bs";
-import { GiScrollQuill } from "react-icons/gi";
-import React, { useState } from "react";
+import { GiFeather, GiScrollQuill } from "react-icons/gi";
+import React, { HTMLAttributes, ReactNode, useState } from "react";
 import { getCharacter } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
@@ -21,6 +21,8 @@ import {
 } from "../shared/PlayerListFilters";
 import { CharacterName } from "../shared/RoleIcon";
 import { ForPlayerPlayerRoleIcon } from "../GamemasterInGame/PlayerListComponents/PlayerRole";
+import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
+import { useLocalStorage } from "../store/useLocalStorage";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -55,7 +57,7 @@ export function PlayerInGame() {
       onValueChange={setSelectedTab}
     >
       <Tabs.List>
-        <Tabs.Trigger className="min-w-[100px] flex-1" value="script">
+        <Tabs.Trigger className="flex-1" value="script">
           <Text className="mr-1" color="red" asChild>
             <GiScrollQuill />
           </Text>
@@ -168,45 +170,114 @@ export function PlayerInGame() {
             className="flex-1 overflow-y-auto"
           >
             {filteredPlayers.map((player) => (
-              <Flex
-                key={player}
-                gap="1"
-                // justify="between"
-                className={classNames(
-                  game.deadPlayers[player] && "line-through",
-                )}
-              >
-                <div className="w-5">
-                  {game.deadPlayers[player] ||
-                    (!game.deadVotes[player] && (
-                      <MeaningfulIcon
-                        size="1"
-                        color="violet"
-                        header="Player has a deadvote"
-                        explanation="Each player gets one vote after they die.  This player has used theirs."
+              <Flex direction="column" gap="1">
+                <Flex justify="between">
+                  <Flex
+                    key={player}
+                    gap="1"
+                    className={classNames(
+                      "flex-1",
+                      game.deadPlayers[player] && "line-through",
+                    )}
+                  >
+                    <div className="w-5">
+                      {game.deadPlayers[player] ||
+                        (!game.deadVotes[player] && (
+                          <MeaningfulIcon
+                            size="1"
+                            color="violet"
+                            header="Player has a deadvote"
+                            explanation="Each player gets one vote after they die.  This player has used theirs."
+                          >
+                            <LiaVoteYeaSolid className="h-2" />
+                          </MeaningfulIcon>
+                        ))}
+                    </div>
+                    <label className="flex-1" htmlFor={`${player}-note-input`}>
+                      <Text
+                        color={game.travelers[player] ? "amber" : undefined}
+                        as="div"
+                        className="capitalize"
                       >
-                        <LiaVoteYeaSolid className="h-2" />
-                      </MeaningfulIcon>
-                    ))}
-                </div>
-
-                <Text
-                  color={game.travelers[player] ? "amber" : undefined}
-                  as="div"
-                  className="flex-1 capitalize"
-                >
-                  {player}
-                </Text>
-                {game.travelers[player] && (
-                  <ForPlayerPlayerRoleIcon player={player}>
-                    {getCharacter(game.playersToRoles[player]).ability}
-                  </ForPlayerPlayerRoleIcon>
-                )}
+                        {player}
+                      </Text>
+                      {game.travelers[player] && (
+                        <ForPlayerPlayerRoleIcon player={player}>
+                          {getCharacter(game.playersToRoles[player]).ability}
+                        </ForPlayerPlayerRoleIcon>
+                      )}
+                    </label>
+                    <PlayerNoteInput player={player}>
+                      <IconButton
+                        id={`${player}-note-input`}
+                        variant="surface"
+                        size="1"
+                        radius="full"
+                      >
+                        <GiFeather />
+                      </IconButton>
+                    </PlayerNoteInput>
+                  </Flex>
+                </Flex>
+                <PlayerNotes className="mx-5" player={player} />
               </Flex>
             ))}
           </Flex>
         </Flex>
       </Tabs.Content>
     </Tabs.Root>
+  );
+}
+
+interface PlayerNoteInputProps {
+  player: string;
+  children: ReactNode;
+}
+
+function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
+  const { gameId } = useDefiniteGame();
+  const [notes, setNotes] = useLocalStorage(`notes-${gameId}-${player}`);
+
+  return (
+    <PlayerList.NoteInputModal
+      player={player}
+      note={notes ?? ""}
+      saveNote={setNotes}
+      hideRole
+    >
+      {children}
+    </PlayerList.NoteInputModal>
+  );
+}
+
+interface PlayerNotesProps extends HTMLAttributes<HTMLDivElement> {
+  player: string;
+}
+
+function PlayerNotes({ player, ...props }: PlayerNotesProps) {
+  const { gameId } = useDefiniteGame();
+  const [notes, setNotes] = useLocalStorage(`notes-${gameId}-${player}`);
+  if (!notes) return;
+
+  return (
+    <Text size="2" weight="light" asChild>
+      <Flex direction="column" gap="2" {...props}>
+        {notes && (
+          <PlayerList.NoteInputModal
+            player={player}
+            note={notes}
+            saveNote={setNotes}
+            hideRole
+          >
+            <button className="ml-1 flex-1 whitespace-pre-line text-left">
+              <Flex gap="2">
+                <GiFeather />
+                {notes}
+              </Flex>
+            </button>
+          </PlayerList.NoteInputModal>
+        )}
+      </Flex>
+    </Text>
   );
 }
