@@ -20,6 +20,7 @@ export function RoleIcon({ role, ...props }: RoleIconProps) {
         props.className,
       )}
       style={{
+        backgroundPosition: "center 3px",
         backgroundImage: `url(${
           getCharacter(role)?.imageSrc ?? DefaultRoleImageSrc
         })`,
