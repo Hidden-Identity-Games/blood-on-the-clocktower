@@ -1,9 +1,12 @@
 import { getCharacter } from "../assets/game_data/gameData";
 import DefaultRoleImageSrc from "../assets/default_role.svg";
-import { colorMap } from "./CharacterTypes";
+import { alignmentColorMap, colorMap } from "./CharacterTypes";
 import { Flex, Text } from "@radix-ui/themes";
 import { Role } from "@hidden-identity/server";
 import classNames from "classnames";
+import { useDefiniteGame } from "../store/GameContext";
+import { useGetPlayerAlignment } from "../store/useStore";
+import { ExtnesionProps, RadixTextProps } from "../types/radixTypes";
 
 export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
   role: Role;
@@ -28,15 +31,35 @@ export function RoleName(role: Role) {
   return getCharacter(role as Role)?.name ?? role;
 }
 
-export interface RoleTextProps {
-  role: Role;
-  children?: React.ReactNode;
-  className?: string;
-  size?: "1" | "2" | "3";
+export type AlignmentTextProps = RadixTextProps & {
+  player: string;
+  children: React.ReactNode;
+};
+export function AlignmentText({
+  player,
+  className,
+  children,
+  ...textProps
+}: AlignmentTextProps) {
+  const getPlayerAlignment = useGetPlayerAlignment();
+  return (
+    <Text
+      {...textProps}
+      color={alignmentColorMap[getPlayerAlignment(player)] ?? undefined}
+      className={classNames("capitalize", className)}
+    >
+      {children}
+    </Text>
+  );
 }
 
+export type RoleTextProps = {
+  role: Role;
+  children?: React.ReactNode;
+} & ExtnesionProps["Text"];
+
 export function RoleText({ role, children, className, size }: RoleTextProps) {
-  const charType = getCharacter(role)?.team;
+  const charType = getCharacter(role).team;
   return (
     <Text
       size={size}
@@ -64,16 +87,20 @@ export function CharacterName({ role, size, className }: CharacterNameProps) {
   );
 }
 
-export interface PlayerNameProps {
-  role: Role;
+export type PlayerNameProps = ExtnesionProps["Text"] & {
   player: string;
-  size?: "1" | "2" | "3";
   className?: string;
-}
-export function PlayerName({ role, size, className, player }: PlayerNameProps) {
+};
+export function PlayerNameWithRoleIcon({
+  className,
+  player,
+  ...textProps
+}: PlayerNameProps) {
+  const { game } = useDefiniteGame();
+  const role = game.playersToRoles[player];
   return (
     <Flex gap="1" className={className}>
-      <RoleText role={role} size={size}>
+      <RoleText role={role} {...textProps}>
         {player}
       </RoleText>
       <RoleIcon role={role} />

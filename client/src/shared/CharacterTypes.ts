@@ -1,5 +1,5 @@
 import { Alignment, CharacterType } from "@hidden-identity/server";
-import { RadixColor } from "../types/colors";
+import { RadixColor } from "../types/radixTypes";
 
 export const colorMap: Record<CharacterType, RadixColor> = {
   Townsfolk: "blue",

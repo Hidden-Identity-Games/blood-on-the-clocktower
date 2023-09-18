@@ -108,12 +108,10 @@ function RolechangeMenuItem({
   const [, , , setPlayerRole] = useAssignRole();
 
   return (
-    <PlayerList.MenuItem id={`${player}-toggle-dead`} label={""}>
-      <RoleSelect
-        traveler={game.travelers[player]}
-        currentRole={game.playersToRoles[player]}
-        onSelect={(next) => next && setPlayerRole(player, next)}
-      />
-    </PlayerList.MenuItem>
+    <RoleSelect
+      traveler={game.travelers[player]}
+      currentRole={game.playersToRoles[player]}
+      onSelect={(next) => next && setPlayerRole(player, next)}
+    />
   );
 }

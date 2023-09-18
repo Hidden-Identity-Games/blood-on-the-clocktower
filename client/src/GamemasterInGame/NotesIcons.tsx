@@ -8,16 +8,16 @@ import { useDefiniteGame } from "../store/GameContext";
 import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { PlayerStatus } from "@hidden-identity/server";
 import { useDeadVote, usePlayerStatuses } from "../store/useStore";
+import { ExtnesionProps } from "../types/radixTypes";
 
 function PlayerStatusIconList({
   playerStatuses,
-  size,
   player,
+  ...radixButtonProps
 }: {
   player: string;
   playerStatuses: PlayerStatus[];
-  size: "1" | "2" | "3";
-}) {
+} & Omit<ExtnesionProps["IconButton"], "color">) {
   const className = "h-2";
 
   const [, , , updatePlayerStatus] = usePlayerStatuses();
@@ -26,7 +26,7 @@ function PlayerStatusIconList({
     .sort((a, b) => (a.type > b.type ? -1 : 1))
     .map((status) => {
       const buttonProps = {
-        size,
+        ...radixButtonProps,
         radius: "full",
         variant: "soft",
         color: "violet",
@@ -59,8 +59,8 @@ function PlayerStatusIconList({
         case "custom":
           return (
             <MeaningfulStatusIcon
+              {...radixButtonProps}
               key={status.id}
-              size={size}
               color="violet"
               header={
                 <Flex gap="1">

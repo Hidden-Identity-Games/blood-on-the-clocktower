@@ -1,6 +1,6 @@
 import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { PlayerName } from "../../../shared/RoleIcon";
+import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useGetPlayerAlignment } from "../../../store/useStore";
 import { alignmentColorMap } from "../../../shared/CharacterTypes";
@@ -24,10 +24,7 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
           className="capitalize"
           color={alignmentColorMap[getAlignment(currentPlayer)]}
         >
-          <PlayerName
-            role={game.playersToRoles[currentPlayer]}
-            player={currentPlayer}
-          />
+          <PlayerNameWithRoleIcon player={currentPlayer} />
         </Button>
       </Dialog.Trigger>
       <Flex direction="column" gap="1" asChild>
@@ -53,10 +50,7 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
                   variant={player === currentPlayer ? "soft" : "outline"}
                   onClick={() => onSelect(player)}
                 >
-                  <PlayerName
-                    role={game.playersToRoles[player]}
-                    player={player}
-                  />
+                  <PlayerNameWithRoleIcon player={player} />
                 </Button>
               </Dialog.Close>
             ))}
