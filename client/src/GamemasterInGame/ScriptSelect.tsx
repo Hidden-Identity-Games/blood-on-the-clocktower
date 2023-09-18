@@ -31,7 +31,7 @@ function ScriptOption({
 }) {
   return (
     <button
-      className="aspect-square max-h-[25vh] rounded-[10%] border-2 border-red-800 bg-transparent p-3"
+      className="aspect-square max-h-[25vh] rounded-[10%] border-2 border-purple-800 bg-transparent p-3"
       onClick={onClick}
     >
       {children}

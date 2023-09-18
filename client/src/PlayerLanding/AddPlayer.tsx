@@ -46,6 +46,7 @@ function AddPlayer() {
       <Flex direction="column" gap="2" className="p-2">
         <label htmlFor="name-input">NAME:</label>
         <TextField.Input
+          autoFocus
           id="name-input"
           placeholder="Player name..."
           value={name}
