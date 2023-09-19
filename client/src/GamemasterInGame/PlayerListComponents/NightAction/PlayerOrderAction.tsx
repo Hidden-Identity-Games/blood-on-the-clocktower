@@ -3,12 +3,13 @@ import { DialogHeader } from "../../../shared/DialogHeader";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
 import { useGetPlayerAlignment } from "../../../store/useStore";
+import { alignmentColorMap } from "../../../shared/CharacterTypes";
 
 export function PlayerOrderAction({ player }: { player: string }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>ShowPlayersInOrder</Button>
+        <Button variant="surface">Player Order</Button>
       </Dialog.Trigger>
       <Dialog.Content>
         <DialogHeader>PlayerOrder</DialogHeader>
@@ -42,13 +43,15 @@ export function PlayerOrderActionList({ player }: { player: string }) {
   return (
     <Flex direction="column" gap="2">
       {playersInOrder.map((p) => (
-        <Button
-          mx={p === player ? "1" : "3"}
-          variant={p === player ? "solid" : "soft"}
-          color={getPlayerAlignment(p) === "Evil" ? "crimson" : "cyan"}
-        >
-          <PlayerNameWithRoleIcon player={p} />
-        </Button>
+        <Dialog.Close>
+          <Button
+            mx={p === player ? "1" : "4"}
+            variant={p === player ? "outline" : "soft"}
+            color={alignmentColorMap[getPlayerAlignment(p)]}
+          >
+            <PlayerNameWithRoleIcon player={p} />
+          </Button>
+        </Dialog.Close>
       ))}
     </Flex>
   );

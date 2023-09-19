@@ -34,7 +34,7 @@ export function PlayerNightReminder({ player }: { player: string }) {
         </Flex>
       </Text>
       {nightAbility ? (
-        <>
+        <Flex direction="column" gap="4">
           <Text as="div">{nightAbility.reminder}</Text>
           <PlayerOrderAction player={player} />
           <NightAction nightData={nightAbility} />
@@ -44,7 +44,7 @@ export function PlayerNightReminder({ player }: { player: string }) {
               player={player}
             />
           )}
-        </>
+        </Flex>
       ) : (
         <>
           <Heading>DOES NOT ACT TONIGHT</Heading>
