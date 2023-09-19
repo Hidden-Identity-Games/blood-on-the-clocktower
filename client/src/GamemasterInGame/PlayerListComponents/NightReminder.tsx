@@ -5,6 +5,7 @@ import { useDefiniteGame } from "../../store/GameContext";
 import { PlayerList } from ".";
 import { NightAction } from "./NightAction";
 import { PlayerStatusIcon } from "../NotesIcons";
+import { PlayerOrderAction } from "./NightAction/PlayerOrderAction";
 
 type AbilityKey = "firstNight" | "otherNight";
 
@@ -35,6 +36,7 @@ export function PlayerNightReminder({ player }: { player: string }) {
       {nightAbility ? (
         <>
           <Text as="div">{nightAbility.reminder}</Text>
+          <PlayerOrderAction player={player} />
           <NightAction nightData={nightAbility} />
           {nightAbility.playerMessage && (
             <PlayerList.PlayerMessage
