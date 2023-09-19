@@ -10,6 +10,8 @@ import { useDefiniteGame } from "../store/GameContext";
 import { useCreateGame, useDistributeRoles } from "../store/useStore";
 import { Role } from "@hidden-identity/server";
 import { DialogHeader } from "../shared/DialogHeader";
+import { ExportButton } from "./ExportButton";
+import { PlayerOrderAction } from "./PlayerListComponents/NightAction/PlayerOrderAction";
 
 interface GameMasterActionsProps {
   selectedRoles: Record<Role, boolean>;
@@ -31,7 +33,7 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
     availableRolesList.length === game.orderedPlayers.fullList.length;
 
   return (
-    <Flex gap="2" direction="row">
+    <Flex gap="2" direction="column">
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
           <DialogHeader>Error</DialogHeader>
@@ -42,18 +44,12 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
-      {game.gameStatus === "Setup" && (
-        <>
-          <StartFirstNightButton />
-        </>
-      )}
+      <PlayerOrderAction player={game.playerList[0]} />
+
       {game.gameStatus === "PlayersJoining" && (
         <Dialog.Root>
           <Dialog.Trigger>
-            <Button
-              color={gameStartable ? undefined : "gray"}
-              className="flex-1"
-            >
+            <Button color={gameStartable ? undefined : "gray"} className="">
               Start Game
             </Button>
           </Dialog.Trigger>
@@ -104,6 +100,12 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </Dialog.Content>
         </Dialog.Root>
       )}
+      {game.gameStatus === "Setup" && (
+        <>
+          <StartFirstNightButton />
+          <ExportButton />
+        </>
+      )}
 
       <NewGameButton />
     </Flex>
@@ -117,7 +119,7 @@ function NewGameButton() {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button className="flex-1">New game</Button>
+        <Button className="">New game</Button>
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
         <Flex direction="column" gap="2">
@@ -153,5 +155,5 @@ function NewGameButton() {
 }
 
 function StartFirstNightButton() {
-  return <Button className="flex-1">Start first night</Button>;
+  return <Button className="">Start first night</Button>;
 }

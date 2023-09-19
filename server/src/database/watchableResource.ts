@@ -20,6 +20,7 @@ export class WatchableResource<BaseResourceShape, ComputedValues> {
 
   update (_newValue: BaseResourceShape): void {
     this.setValue(_newValue)
+    console.log(JSON.stringify(_newValue))
     const callbacksToRemove: unknown[] = []
     this.callbacks.forEach((cb) => {
       try {

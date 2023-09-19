@@ -3,6 +3,13 @@ import { setScript } from './database/scriptDB.ts'
 import { type Script } from './types/Script.ts'
 import { type BaseUnifiedGame } from './types/UnifiedGame.ts'
 
+export function shuffleList<T> (list: readonly T[]): T[] {
+  return [...list]
+    .map((item) => [item, Math.random()] as const)
+    .sort(([, order1], [, order2]) => order1 - order2)
+    .map(([item]) => item)
+}
+
 export function setupTestGames (): void {
   const players = [
     'linh',
@@ -110,7 +117,7 @@ export function setupTestGames (): void {
   addTestGame('tg-f-night', ({
     gameStatus: 'Setup',
     gmSecretHash: 't',
-    playersToRoles: Object.fromEntries(players.map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
+    playersToRoles: Object.fromEntries(shuffleList(players).map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
     playerPlayerStatuses: {
@@ -124,6 +131,7 @@ export function setupTestGames (): void {
   }))
 
   const selectorsPlayers = players.slice(0, testSelectorsScript.length)
+
   addTestGame('tg-selectors', {
     gameStatus: 'Setup',
     gmSecretHash: 't',
