@@ -6,17 +6,15 @@ import { getCharacter } from "../assets/game_data/gameData";
 
 interface PlayerListSortProps<T extends string> {
   allSorts: Record<T, ((a: T, b: T) => number)[]>;
+  selectedSort?: T;
   setSelectedSort: (sort: T) => void;
 }
 
 export function PlayerListSort<T extends string>({
   allSorts,
+  selectedSort = Object.keys(allSorts)[0] as T,
   setSelectedSort,
 }: PlayerListSortProps<T>) {
-  const [currentSort, setCurrentSort] = React.useState<T>(
-    Object.keys(allSorts)[0] as T,
-  );
-
   const keyRing = React.useMemo(
     () =>
       Object.keys(allSorts).reduce(
@@ -32,51 +30,52 @@ export function PlayerListSort<T extends string>({
     <Button
       size="1"
       onClick={() => {
-        const nextSort = keyRing[currentSort] as T;
-        setCurrentSort(nextSort);
+        const nextSort = keyRing[selectedSort];
         setSelectedSort(nextSort);
       }}
       className="min-w-fit flex-1 capitalize"
     >
       <MdSort />
-      {currentSort}
+      {selectedSort}
     </Button>
   );
 }
 
-const sorts = ["none", "seat", "first night", "other night"] as const;
+const sorts = ["seat", "first night", "other night"] as const;
 export type PlayerSorts = (typeof sorts)[number];
 export function usePlayerSorts(playerList: string[]) {
   const { game } = useDefiniteGame();
-  const sorts = {
-    none: () => 0,
-    seat: (a: string, b: string) => {
-      const aPlr =
-        (!game.orderedPlayers.problems &&
-          game.orderedPlayers.fullList.indexOf(a)) ||
-        1000;
-      const bPlr =
-        (!game.orderedPlayers.problems &&
-          game.orderedPlayers.fullList.indexOf(b)) ||
-        1000;
+  const sorts = React.useMemo(
+    () => ({
+      seat: (a: string, b: string) => {
+        const aPlr =
+          (!game.orderedPlayers.problems &&
+            game.orderedPlayers.fullList.indexOf(a)) ||
+          1000;
+        const bPlr =
+          (!game.orderedPlayers.problems &&
+            game.orderedPlayers.fullList.indexOf(b)) ||
+          1000;
 
-      return aPlr - bPlr;
-    },
-    "first night": (a: string, b: string) => {
-      const aChar =
-        getCharacter(game.playersToRoles[a])?.firstNight?.order ?? 1000;
-      const bChar =
-        getCharacter(game.playersToRoles[b])?.firstNight?.order ?? 1000;
-      return aChar - bChar;
-    },
-    "other night": (a: string, b: string) => {
-      const aChar =
-        getCharacter(game.playersToRoles[a])?.otherNight?.order ?? 1000;
-      const bChar =
-        getCharacter(game.playersToRoles[b])?.otherNight?.order ?? 1000;
-      return aChar - bChar;
-    },
-  };
+        return aPlr - bPlr;
+      },
+      "first night": (a: string, b: string) => {
+        const aChar =
+          getCharacter(game.playersToRoles[a])?.firstNight?.order ?? 1000;
+        const bChar =
+          getCharacter(game.playersToRoles[b])?.firstNight?.order ?? 1000;
+        return aChar - bChar;
+      },
+      "other night": (a: string, b: string) => {
+        const aChar =
+          getCharacter(game.playersToRoles[a])?.otherNight?.order ?? 1000;
+        const bChar =
+          getCharacter(game.playersToRoles[b])?.otherNight?.order ?? 1000;
+        return aChar - bChar;
+      },
+    }),
+    [game.orderedPlayers, game.playersToRoles],
+  );
   const sorted = useSorts(playerList, sorts);
 
   return sorted;
