@@ -24,11 +24,11 @@ import { ForPlayerPlayerRoleIcon } from "../GamemasterInGame/PlayerListComponent
 import { useLocalStorage } from "../store/useLocalStorage";
 
 export function PlayerInGame() {
-  const { game, script } = useDefiniteGame();
+  const { gameId, game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
-  const [notes, setNotes] = useLocalStorage("notes");
+  const [notes, setNotes] = useLocalStorage(`notes-${gameId}`);
   const noteInputRef = useRef<HTMLTextAreaElement | null>(null);
   const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
