@@ -23,7 +23,6 @@ import {
   PlayerListFilters,
   usePlayerFilters,
 } from "../shared/PlayerListFilters";
-import { PlayerOrderAction } from "./PlayerListComponents/NightAction/PlayerOrderAction";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -148,7 +147,6 @@ export function NightPlayerList() {
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      <PlayerOrderAction player={game.playerList[0]} />
       {[...nightActions, ...leftoverPlayers].map((action) => (
         <React.Fragment key={action.name}>
           <Text size="4" asChild>
