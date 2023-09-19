@@ -5,7 +5,7 @@ import { useDefiniteGame } from "../store/GameContext";
 import { getCharacter } from "../assets/game_data/gameData";
 
 interface PlayerListSortProps<T extends string> {
-  allSorts: Record<T, ((a: T, b: T) => number)[]>;
+  allSorts: Record<T, unknown[]>;
   selectedSort?: T;
   setSelectedSort: (sort: T) => void;
 }

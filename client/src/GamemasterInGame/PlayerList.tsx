@@ -23,6 +23,11 @@ import {
   PlayerListFilters,
   usePlayerFilters,
 } from "../shared/PlayerListFilters";
+import {
+  PlayerListSort,
+  PlayerSorts,
+  usePlayerSorts,
+} from "../shared/PlayerListSort";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -111,9 +116,12 @@ const gameActionsByNight = {
 };
 export function NightPlayerList() {
   const { game } = useDefiniteGame();
+  const [selectedSort, setSelectedSort] = useState<PlayerSorts>("first night");
+  const allSorts = usePlayerSorts(game.playerList);
+  const sortedPlayers = allSorts[selectedSort];
   const nightKey = game.gameStatus === "Setup" ? "firstNight" : "otherNight";
   const nightActions = React.useMemo(() => {
-    const playerActions = game.playerList
+    const playerActions = sortedPlayers
       .map((player) => ({
         player,
         role: game.playersToRoles[player],
@@ -127,13 +135,13 @@ export function NightPlayerList() {
         order: character[nightKey]!.order,
       }));
     const gameActions = gameActionsByNight[nightKey];
-    return [...playerActions, ...gameActions].sort((a, b) => a.order - b.order);
-  }, [nightKey, game]);
-  const leftoverPlayers = game.playerList
+    return [...playerActions, ...gameActions];
+  }, [nightKey, sortedPlayers, game.playersToRoles]);
+
+  const leftoverPlayers = sortedPlayers
     .filter(
       (player) => !getCharacter(game.playersToRoles[player])[nightKey]?.order,
     )
-    .sort()
     .map((player) => ({
       type: "character",
       name: `${player}_undone`,
@@ -147,6 +155,11 @@ export function NightPlayerList() {
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
+      <PlayerListSort
+        allSorts={allSorts}
+        selectedSort={selectedSort}
+        setSelectedSort={setSelectedSort}
+      />
       {[...nightActions, ...leftoverPlayers].map((action) => (
         <React.Fragment key={action.name}>
           <Text size="4" asChild>
