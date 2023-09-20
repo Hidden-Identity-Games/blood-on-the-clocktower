@@ -4,7 +4,7 @@ import {
   useCharacterSelectState,
 } from "./CharacterSelectList";
 import { useDefiniteGame } from "../store/GameContext";
-import TeamDistributionBar from "./TeamDistributionBar";
+import { TeamDistributionBar } from "./TeamDistributionBar";
 import { Role } from "@hidden-identity/server";
 import { GameMasterActions } from "./GameMasterActions";
 import { BsPeopleFill } from "react-icons/bs";
