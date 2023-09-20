@@ -217,7 +217,13 @@ export function NightPlayerList() {
   );
 }
 
-export function IngamePlayerList() {
+interface IngamePlayerListProps {
+  hideGmNotes?: boolean;
+}
+
+export function IngamePlayerList({
+  hideGmNotes = false,
+}: IngamePlayerListProps) {
   const { game } = useDefiniteGame();
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const allFilters = usePlayerFilters(game.playerList);
@@ -250,7 +256,11 @@ export function IngamePlayerList() {
             </Flex>
           </Text>
 
-          <PlayerNotes className="px-[3em] py-1" player={player} />
+          <PlayerNotes
+            className="px-[3em] py-1"
+            player={player}
+            hideGmNotes={hideGmNotes}
+          />
         </Flex>
       ))}
     </Flex>
@@ -259,9 +269,14 @@ export function IngamePlayerList() {
 
 interface PlayerNotesProps extends HTMLAttributes<HTMLDivElement> {
   player: string;
+  hideGmNotes?: boolean;
 }
 
-function PlayerNotes({ player, ...props }: PlayerNotesProps) {
+function PlayerNotes({
+  player,
+  hideGmNotes = false,
+  ...props
+}: PlayerNotesProps) {
   const { game } = useDefiniteGame();
   const statuses = game.playerPlayerStatuses[player] ?? [];
   const notes = game.playerNotes[player] ?? "";
@@ -275,7 +290,7 @@ function PlayerNotes({ player, ...props }: PlayerNotesProps) {
             <PlayerStatusIcons player={player} />
           </Flex>
         )}
-        {notes && (
+        {notes && !hideGmNotes && (
           <PlayerList.NoteInputModal player={player} note={notes}>
             <button className="ml-1 flex-1 whitespace-pre-line text-left">
               <Flex gap="2">
