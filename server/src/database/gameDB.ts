@@ -70,6 +70,7 @@ function createGame (): BaseUnifiedGame {
     gameStatus: 'PlayersJoining',
     gmSecretHash: generate(3).join('-'),
     playersToRoles: {},
+    playerHasSeenRole: {},
     partialPlayerOrdering: {},
     deadPlayers: {},
     playerPlayerStatuses: {},
@@ -364,6 +365,19 @@ export function setAlignment (gameId: string, player: string, alignment: Alignme
     alignmentsOverrides: {
       ...gameInstance.alignmentsOverrides,
       [player]: alignment,
+    },
+  })
+}
+
+export function setPlayerRoleSeen (gameId: string, player: string): void {
+  const game = retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  game.update({
+    ...gameInstance,
+    playerHasSeenRole: {
+      ...gameInstance.playerHasSeenRole,
+      [player]: true,
     },
   })
 }

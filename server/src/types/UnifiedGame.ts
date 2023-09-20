@@ -21,6 +21,7 @@ export interface UnifiedGameComputed {
 
 export interface BaseUnifiedGame {
   playersToRoles: Record<string, Role>
+  playerHasSeenRole: Record<string, boolean>
   partialPlayerOrdering: Record<string, Neighbors | null>
   gmSecretHash: string
   gameStatus: GameStatus

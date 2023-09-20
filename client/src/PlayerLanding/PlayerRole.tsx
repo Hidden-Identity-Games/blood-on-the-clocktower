@@ -8,6 +8,7 @@ import { Role } from "@hidden-identity/server";
 import { useState } from "react";
 import { AlignmentText } from "../shared/RoleIcon";
 import { usePlayer } from "../store/secretKey";
+import { useSetPlayerRoleSeen as usePlayerRoleSeen } from "../store/useStore";
 
 interface PlayerRoleProps {
   role: Role;
@@ -16,6 +17,8 @@ interface PlayerRoleProps {
 function PlayerRole({ role }: PlayerRoleProps) {
   const [player] = usePlayer();
   const [isHolding, setIsHolding] = useState(false);
+  const [, , , setPlayerRoleSeen] = usePlayerRoleSeen();
+
   return (
     <Flex
       direction="column-reverse"
@@ -34,6 +37,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
         }}
         onMouseUp={() => {
           setIsHolding(false);
+          setPlayerRoleSeen(player!);
         }}
         onTouchStart={(e) => {
           setIsHolding(true);
@@ -42,6 +46,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
         }}
         onTouchEnd={() => {
           setIsHolding(false);
+          setPlayerRoleSeen(player!);
         }}
       >
         <img

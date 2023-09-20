@@ -336,4 +336,22 @@ export function useAssignRole() {
   });
 }
 
+export function useSetPlayerRoleSeen() {
+  const { gameId } = useGame();
+
+  return useAction(async (player: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    const response = await axios.post(apiUrl("/set_player_role_seen"), {
+      gameId,
+      player,
+    });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  });
+}
+
 export { useGame };

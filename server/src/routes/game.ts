@@ -15,6 +15,7 @@ import {
   updateStatus,
   assignPlayerToRole,
   setAlignment,
+  setPlayerRoleSeen,
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
 
@@ -127,9 +128,17 @@ export function useGame (app: Application): void {
     res.status(200)
     res.send({})
   })
+
   app.post('/set_alignment', (req, res) => {
     const { gameId, player, alignment } = req.body
     setAlignment(gameId, player, alignment)
+    res.status(200)
+    res.send({})
+  })
+
+  app.post('/set_player_role_seen', (req, res) => {
+    const { gameId, player } = req.body
+    setPlayerRoleSeen(gameId, player)
     res.status(200)
     res.send({})
   })
