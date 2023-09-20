@@ -86,7 +86,7 @@ export function PlayerInGame() {
             ).map(([team, count]) => (
               <Text
                 color={colorMap[team as CharacterType]}
-                className="min-w-[80px] flex-1 text-center"
+                className="min-w-[60px] flex-1 text-center"
               >
                 <Text
                   size="1"
