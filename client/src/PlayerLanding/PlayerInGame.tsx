@@ -50,6 +50,10 @@ export function PlayerInGame() {
       },
     ];
   }, [script]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { Traveler, ...distributionsByPlayerCount } = {
+    ...DistributionsByPlayerCount[game.playerList.length],
+  };
 
   return (
     <Tabs.Root
@@ -81,9 +85,7 @@ export function PlayerInGame() {
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
         <Flex className="m-2" direction="column" gap="3">
           <Flex wrap="wrap">
-            {Object.entries(
-              DistributionsByPlayerCount[game.playerList.length],
-            ).map(([team, count]) => (
+            {Object.entries(distributionsByPlayerCount).map(([team, count]) => (
               <Text
                 color={colorMap[team as CharacterType]}
                 className="min-w-[60px] flex-1 text-center"
@@ -99,7 +101,7 @@ export function PlayerInGame() {
                     fontSize: 16,
                   }}
                 >
-                  {team}
+                  {["Townsfolk"].includes(team) ? team : `${team}s`}
                 </Text>
                 {count}
               </Text>
