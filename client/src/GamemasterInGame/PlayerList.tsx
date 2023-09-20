@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
-import { useKickPlayer } from "../store/useStore";
+import { useKickPlayer, useVotesToExecuteCount } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
@@ -219,12 +219,14 @@ export function NightPlayerList() {
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
+  const votesToExecuteCount = useVotesToExecuteCount();
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
+      <Flex justify="center">Votes to Execute: {votesToExecuteCount}</Flex>
       <PlayerListFilters
         allFilters={allFilters}
         selectedFilter={selectedFilter}

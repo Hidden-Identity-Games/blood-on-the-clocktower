@@ -21,10 +21,12 @@ import {
 } from "../shared/PlayerListFilters";
 import { CharacterName } from "../shared/RoleIcon";
 import { ForPlayerPlayerRoleIcon } from "../GamemasterInGame/PlayerListComponents/PlayerRole";
+import { useVotesToExecuteCount } from "../store/useStore";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
+  const votesToExecuteCount = useVotesToExecuteCount();
   const [selectedTab, setSelectedTab] = React.useState("script");
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const allFilters = usePlayerFilters(game.playerList);
@@ -153,6 +155,10 @@ export function PlayerInGame() {
                   ? "Vote available"
                   : "Cannot vote"}
               </Text>
+            </Flex>
+
+            <Flex justify="center">
+              Votes to Execute: {votesToExecuteCount}
             </Flex>
 
             <PlayerListFilters

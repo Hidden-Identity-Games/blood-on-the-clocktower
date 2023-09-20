@@ -299,6 +299,7 @@ export function useGetPlayerAlignment() {
 
   return getAlignment;
 }
+
 export function useAssignPlayerAlignment() {
   const { gameId } = useGame();
 
@@ -317,6 +318,7 @@ export function useAssignPlayerAlignment() {
     }
   });
 }
+
 export function useAssignRole() {
   const { gameId } = useGame();
 
@@ -334,6 +336,16 @@ export function useAssignRole() {
       throw new Error(response.statusText);
     }
   });
+}
+
+export function useVotesToExecuteCount() {
+  const { game } = useDefiniteGame();
+
+  return Math.ceil(
+    (game.playerList.length -
+      Object.values(game.deadPlayers).filter(Boolean).length) /
+      2,
+  );
 }
 
 export { useGame };
