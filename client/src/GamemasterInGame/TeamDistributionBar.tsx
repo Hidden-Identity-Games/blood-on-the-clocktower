@@ -1,6 +1,5 @@
 import { Flex, Text } from "@radix-ui/themes";
 import { useGame } from "../store/GameContext";
-import "./TeamDistributionBar.css";
 import { colorMap } from "../shared/CharacterTypes";
 import { KnownCharacterType, Role } from "@hidden-identity/server";
 import {
@@ -33,7 +32,7 @@ function CharacterTypeSection({
   return (
     <Text
       color={colorMap[charType]}
-      className="character-type-container"
+      className="min-w-[60px] flex-1 text-center"
       onClick={() => {
         document.querySelector(`#${charType}`)?.scrollIntoView();
       }}
@@ -41,10 +40,8 @@ function CharacterTypeSection({
       <Text
         size="1"
         as="div"
+        className="text-clip whitespace-nowrap"
         style={{
-          textOverflow: "clip",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
           fontSize: 16,
         }}
       >

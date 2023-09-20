@@ -87,6 +87,9 @@ export function PlayerInGame() {
               <Text
                 color={colorMap[team as CharacterType]}
                 className="min-w-[60px] flex-1 text-center"
+                onClick={() => {
+                  document.querySelector(`#${team}`)?.scrollIntoView();
+                }}
               >
                 <Text
                   size="1"
@@ -109,6 +112,7 @@ export function PlayerInGame() {
               <React.Fragment key={team}>
                 <Flex justify="end">
                   <Heading
+                    id={team}
                     size="3"
                     align="right"
                     color={colorMap[team as CharacterType]}
