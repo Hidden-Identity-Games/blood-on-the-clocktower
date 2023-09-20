@@ -1,4 +1,4 @@
-import { Flex } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import "./PlayerRole.css";
 import tokenBack from "../assets/token_logo.png";
 import tokenBlank from "../assets/token_blank.png";
@@ -17,6 +17,7 @@ interface PlayerRoleProps {
 function PlayerRole({ role }: PlayerRoleProps) {
   const [player] = usePlayer();
   const [isHolding, setIsHolding] = useState(false);
+  const [hasSeenRole, setHasSeenRole] = useState(false);
   const [, , , setPlayerRoleSeen] = usePlayerRoleSeen();
 
   return (
@@ -26,39 +27,48 @@ function PlayerRole({ role }: PlayerRoleProps) {
       justify="between"
       className=" flex-1 bg-transparent"
     >
-      <button
-        data-flipper="true"
-        className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
-        onClick={() => {}}
-        onMouseDown={(e) => {
-          setIsHolding(true);
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        onMouseUp={() => {
-          setIsHolding(false);
-          setPlayerRoleSeen(player!);
-        }}
-        onTouchStart={(e) => {
-          setIsHolding(true);
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        onTouchEnd={() => {
-          setIsHolding(false);
-          setPlayerRoleSeen(player!);
-        }}
-      >
-        <img
-          className="h-[110px] w-[85px]"
-          onContextMenu={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
+      <Flex direction="column" justify="center">
+        <button
+          data-flipper="true"
+          className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
+          onMouseDown={(e) => {
+            setIsHolding(true);
+            setHasSeenRole(true);
+            e.stopPropagation();
+            e.preventDefault();
           }}
-          src={fingerprintImage}
-        />
-        <div className="select-none">Hold to reveal role</div>
-      </button>
+          onMouseUp={() => {
+            setIsHolding(false);
+          }}
+          onTouchStart={(e) => {
+            setIsHolding(true);
+            setHasSeenRole(true);
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+          onTouchEnd={() => {
+            setIsHolding(false);
+          }}
+        >
+          <img
+            className="h-[110px] w-[85px]"
+            onContextMenu={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
+            src={fingerprintImage}
+          />
+          <div className="select-none">Hold to reveal role</div>
+        </button>
+        <Button
+          className="mb-6"
+          disabled={!hasSeenRole}
+          onClick={() => setPlayerRoleSeen(player!)}
+        >
+          I Know My Role
+        </Button>
+      </Flex>
+
       <div
         className="perspective aspect-square h-1/2 p-4"
         data-flipped={isHolding ? "true" : "false"}
