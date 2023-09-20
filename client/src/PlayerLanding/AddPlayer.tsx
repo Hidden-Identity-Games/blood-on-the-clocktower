@@ -56,7 +56,7 @@ function AddPlayer() {
             id="name-input"
             placeholder="Player name..."
             value={name}
-            onChange={(event) => setName(event.currentTarget.value)}
+            onChange={(event) => setName(event.target.value)}
           />
         </form>
         <Dialog.Root
