@@ -1,11 +1,11 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { PlayerStatusType } from "@hidden-identity/server";
+import { PlayerStatus, PlayerStatusType } from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useMemo } from "react";
-import { usePlayerStatuses } from "../../../store/useStore";
 import { v4 } from "uuid";
 import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
 import { PlayerStatusIcon } from "../../NotesIcons";
+import { usePlayerStatuses } from "../../../store/actions/gmPlayerActions";
 
 export function PoisonActon() {
   return (
@@ -35,6 +35,7 @@ function PlayerActionSelect({ status }: PlayerActionSelect) {
     const playersWithStatus = playerList.filter((p) => playerHasStatus(p));
     const playersWithOutStatus = playerList.filter((p) => !playerHasStatus(p));
     return [...playersWithStatus, ...playersWithOutStatus];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -56,7 +57,10 @@ function PlayerActionSelect({ status }: PlayerActionSelect) {
             if (currentStatus) {
               setPlayerStatus(player, "remove", currentStatus);
             } else {
-              setPlayerStatus(player, "add", { ...status, id: v4() });
+              setPlayerStatus(player, "add", {
+                ...status,
+                id: v4(),
+              } as PlayerStatus);
             }
           }}
         >

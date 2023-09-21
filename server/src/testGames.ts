@@ -1,4 +1,4 @@
-import { UNASSIGNED, addGame } from './database/gameDB.ts'
+import { UNASSIGNED, addGame } from './database/gameDB/base.ts'
 import { setScript } from './database/scriptDB.ts'
 import { type Script } from './types/Script.ts'
 import { type BaseUnifiedGame } from './types/UnifiedGame.ts'

@@ -7,9 +7,10 @@ import { MeaningfulStatusIcon } from "../shared/MeaningfulIcon";
 import { useDefiniteGame } from "../store/GameContext";
 import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { PlayerStatus } from "@hidden-identity/server";
-import { useDeadVote, usePlayerStatuses } from "../store/useStore";
 import { ExtnesionProps } from "../types/radixTypes";
 import { IconBaseProps } from "react-icons";
+import { usePlayerStatuses } from "../store/actions/gmPlayerActions";
+import { useDeadVote } from "../store/actions/gmActions";
 
 const StatusIconMap: Record<
   PlayerStatus["type"],

@@ -9,7 +9,6 @@ import {
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "../assets/game_data/gameData";
-import { useKickPlayer } from "../store/useStore";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
@@ -23,6 +22,7 @@ import {
   PlayerListFilters,
   usePlayerFilters,
 } from "../shared/PlayerListFilters";
+import { useKickPlayer } from "../store/actions/playerActions";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();

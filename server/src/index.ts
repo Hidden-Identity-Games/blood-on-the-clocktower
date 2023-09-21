@@ -2,9 +2,29 @@ import expressWs from 'express-ws'
 import express, { type Response } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-// import bodyParser from 'body-parser'
 
 import { useRoutes } from './routes/index.ts'
+import { router } from './trpc.ts'
+import { createHTTPServer } from '@trpc/server/adapters/standalone'
+
+import { gameRoutes } from './routes/game.ts'
+import { scriptRoutes } from './routes/script.ts'
+
+const appRouter = router({
+  ...gameRoutes,
+  ...scriptRoutes,
+})
+
+const server = createHTTPServer({
+  router: appRouter,
+  onError: (error) => { console.log(error.error.message) },
+})
+
+server.listen(3001)
+
+// Export type router type signature,
+// NOT the router itself.
+export type AppRouter = typeof appRouter
 
 dotenv.config()
 

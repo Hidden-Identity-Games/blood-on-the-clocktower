@@ -1,14 +1,14 @@
 import {
   CharacterNightData,
   PlayerStatus,
-  PlayerStatusTypeMap,
+  PlayerStatusMap,
 } from "@hidden-identity/server";
 import { PoisonActon } from "./PoisonNightAction";
 
 type NightActionPossibility = PlayerStatus["type"];
 const NightActionComponents: {
   [K in NightActionPossibility]: React.ComponentType<{
-    status: PlayerStatusTypeMap[K];
+    status: PlayerStatusMap[K];
   }>;
 } = {
   poison: PoisonActon,
@@ -26,7 +26,7 @@ export function NightAction({ nightData }: NightActionProps) {
   const Component = NightActionComponents[
     nightData.status.type
   ] as React.ComponentType<{
-    status: PlayerStatusTypeMap[typeof nightData.status.type];
+    status: Omit<PlayerStatusMap[typeof nightData.status.type], "id">;
   }>;
 
   return <Component status={nightData.status} />;
