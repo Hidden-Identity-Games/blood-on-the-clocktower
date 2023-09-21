@@ -1,6 +1,6 @@
 import { type Application } from 'express-ws'
 import { parseMessage, createMessage } from '../messenger.ts'
-import { subscribeToGame } from '../database/gameDB.ts'
+import { subscribeToGame } from '../database/gameDB/base.ts'
 import { subscribeToScript } from '../database/scriptDB.ts'
 
 export function useSocket (app: Application): void {

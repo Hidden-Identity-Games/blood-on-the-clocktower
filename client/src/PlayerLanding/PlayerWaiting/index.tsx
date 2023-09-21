@@ -1,5 +1,4 @@
 import { Callout, Flex, IconButton, Text } from "@radix-ui/themes";
-import { useOrderPlayer } from "../../store/useStore";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useMe } from "../../store/secretKey";
 import { ImArrowLeft, ImArrowRight } from "react-icons/im";
@@ -10,6 +9,7 @@ import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { PlayerNameButton } from "../../shared/PlayerNameButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { BrokenOrderedPlayers } from "@hidden-identity/server";
+import { useOrderPlayer } from "../../store/actions/playerActions";
 
 export function PlayerWaiting() {
   const myName = useMe();

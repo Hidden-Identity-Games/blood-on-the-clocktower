@@ -2,8 +2,8 @@ import React from "react";
 import { IngamePlayerList, NightPlayerList } from "./PlayerList";
 import { Button, Flex } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
-import { useSetGameStatus } from "../store/useStore";
 import { GameMasterActions } from "./GameMasterActions";
+import { useSetGameStatus } from "../store/actions/gmActions";
 
 export function NightOrder() {
   const { game } = useDefiniteGame();

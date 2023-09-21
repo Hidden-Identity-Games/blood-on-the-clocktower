@@ -177,17 +177,16 @@ export function PlayerInGame() {
                 )}
               >
                 <div className="w-5">
-                  {game.deadPlayers[player] ||
-                    (!game.deadVotes[player] && (
-                      <MeaningfulIcon
-                        size="1"
-                        color="violet"
-                        header="Player has a deadvote"
-                        explanation="Each player gets one vote after they die.  This player has used theirs."
-                      >
-                        <LiaVoteYeaSolid className="h-2" />
-                      </MeaningfulIcon>
-                    ))}
+                  {(!game.deadPlayers[player] || !game.deadVotes[player]) && (
+                    <MeaningfulIcon
+                      size="1"
+                      color={game.deadPlayers[player] ? "violet" : "gray"}
+                      header="Player has a deadvote"
+                      explanation="Each player gets one vote after they die.  This player has not used theirs yet."
+                    >
+                      <LiaVoteYeaSolid className="h-2" />
+                    </MeaningfulIcon>
+                  )}
                 </div>
 
                 <Text

@@ -7,11 +7,12 @@ import {
   Text,
 } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
-import { useCreateGame, useDistributeRoles } from "../store/useStore";
 import { Role } from "@hidden-identity/server";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ExportButton } from "./ExportButton";
 import { PlayerOrderAction } from "./PlayerListComponents/NightAction/PlayerOrderAction";
+import { useDistributeRoles } from "../store/actions/gmActions";
+import { useCreateGame } from "../store/useStore";
 
 interface GameMasterActionsProps {
   selectedRoles: Record<Role, boolean>;
@@ -24,7 +25,7 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
 
   const availableRolesList = Object.keys(selectedRoles).filter(
     (key) => !!selectedRoles[key as Role],
-  );
+  ) as Role[];
 
   const problems =
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
