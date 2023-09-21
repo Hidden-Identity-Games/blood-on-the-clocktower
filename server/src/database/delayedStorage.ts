@@ -1,30 +1,21 @@
 export class DelayedStorage<T> {
   private dataStore: T | null
   private readonly getRemote: () => T | null
-  private readonly saveNow: () => void
-  private readonly saveLater: () => void
+  private readonly setRemote: (value: T) => void
+  private readonly timeout: number
   private timeoutId: NodeJS.Timeout | null
 
   constructor (
     getRemote: () => T | null,
-    saveRemote: (value: T) => void,
+    setRemote: (value: T) => void,
     timeout: number,
     initialValue?: T,
   ) {
     this.timeoutId = null
+    this.timeout = timeout
     this.getRemote = getRemote
-    this.saveNow = () => {
-      this.clearDelay()
-      const get = this.get()
-      if (get) {
-        saveRemote(get)
-      }
-    }
-    this.saveLater = () => {
-      if (!this.timeoutId) {
-        this.timeoutId = setTimeout(this.saveNow, timeout)
-      }
-    }
+    this.setRemote = setRemote
+
     if (initialValue) {
       this.dataStore = initialValue
       this.set(this.dataStore)
@@ -51,6 +42,19 @@ export class DelayedStorage<T> {
     }
 
     return this.dataStore ? { ...this.dataStore } : null
+  }
+
+  private saveNow (): void {
+    this.clearDelay()
+    if (this.dataStore) {
+      this.setRemote(this.dataStore)
+    }
+  }
+
+  private saveLater (): void {
+    if (!this.timeoutId) {
+      this.timeoutId = setTimeout(this.saveNow, this.timeout)
+    }
   }
 
   private clearDelay (): void {
