@@ -7,6 +7,7 @@ import {
   type ListBucketsCommandOutput,
   type ListObjectsV2CommandOutput,
   type GetObjectCommandOutput,
+  type PutObjectCommandOutput,
 } from '@aws-sdk/client-s3'
 
 const accountId = 'f3ce51ca8eb25deaf3375a5d74535a64'
@@ -45,7 +46,7 @@ export class RemoteStorage {
     )
   }
 
-  async putObject (bucket: string, key: string, object: unknown): Promise<GetObjectCommandOutput> {
+  async putObject (bucket: string, key: string, object: unknown): Promise<PutObjectCommandOutput> {
     return await this.remoteClient.send(
       new PutObjectCommand({ Bucket: bucket, Key: key, ContentType: 'application/json', Body: JSON.stringify(object) }),
     )
