@@ -31,16 +31,6 @@ dotenv.config()
 const rawApp = express()
 const app = expressWs(rawApp).app
 const port = process.env.PORT
-// app.use((req, response, next) => {
-//   try {
-//     console.log(`recieved ${JSON.stringify(req, null, 4)}`)
-//     next()
-//   } catch (e) {
-//     response.status(500)
-//     console.error(e)
-//     response.send('Unable to process request')
-//   }
-// })
 app.use(cors())
 
 app.use(express.json())
