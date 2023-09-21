@@ -17,7 +17,7 @@ export class RemoteStorage {
     this.storage = new S3Storage()
   }
 
-  async listBuckets (): Promise<string[]> {
+  async listDirectories (): Promise<string[]> {
     const response = await this.storage.listBuckets()
     if (response.$metadata.httpStatusCode === 200 && response.Buckets) {
       return response.Buckets.map(({ Name }) => Name as string)
@@ -26,8 +26,8 @@ export class RemoteStorage {
     throw new Error('Remote storage error on listBuckets')
   }
 
-  async listObjects (bucket: string): Promise<string[]> {
-    const response = await this.storage.listObjects(bucket)
+  async listFiles (directory: string): Promise<string[]> {
+    const response = await this.storage.listObjects(directory)
     if (response.$metadata.httpStatusCode === 200 && response.Contents) {
       return response.Contents.map(({ Key }) => Key as string)
     }
@@ -35,8 +35,8 @@ export class RemoteStorage {
     throw new Error('Remote storage error on listObjects')
   }
 
-  async getObject<T> (bucket: string, key: string): Promise<T> {
-    const response = await this.storage.getObject(bucket, key)
+  async getFile<T> (directory: string, file: string): Promise<T> {
+    const response = await this.storage.getObject(directory, file)
     if (response.$metadata.httpStatusCode === 200 && response.Body) {
       return response.Body as T
     }
@@ -44,8 +44,8 @@ export class RemoteStorage {
     throw new Error('Remote storage error on getObject')
   }
 
-  async putObject<T> (bucket: string, key: string, object: T): Promise<void> {
-    const response = await this.storage.putObject(bucket, key, object)
+  async putFile<T> (directory: string, file: string, object: T): Promise<void> {
+    const response = await this.storage.putObject(directory, file, object)
     if (response.$metadata.httpStatusCode !== 200) {
       throw new Error('Remote storage error on getObject')
     }
