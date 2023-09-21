@@ -19,12 +19,21 @@ export function useGame() {
   const game = useContext(UnifiedGameContext);
   return game;
 }
+
 export function useDefiniteGame(): NonNullableValues<GameContext> {
   const context = useContext(UnifiedGameContext);
-  if (!context.game || !context.script || !context.gameId) {
+  if (!context.game || !context.gameId) {
     throw new Error("Not in a game?");
   }
   return context as NonNullableValues<GameContext>;
+}
+
+export function useScript(): Script | null {
+  const context = useContext(UnifiedGameContext);
+  if (!context.game) {
+    throw new Error("Not in a game?");
+  }
+  return context.script;
 }
 
 export function useAction<Args extends Array<unknown>>(

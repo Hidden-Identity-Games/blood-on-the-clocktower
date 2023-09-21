@@ -1,5 +1,5 @@
 import { Flex, Heading, Tabs, Text } from "@radix-ui/themes";
-import { useDefiniteGame } from "../store/GameContext";
+import { useDefiniteGame, useScript } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
@@ -23,7 +23,8 @@ import { CharacterName } from "../shared/RoleIcon";
 import { ForPlayerPlayerRoleIcon } from "../GamemasterInGame/PlayerListComponents/PlayerRole";
 
 export function PlayerInGame() {
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const script = useScript();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");

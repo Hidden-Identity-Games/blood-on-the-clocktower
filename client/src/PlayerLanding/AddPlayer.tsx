@@ -8,11 +8,11 @@ import {
 } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useAddPlayer } from "../store/useStore";
-import { useGame } from "../store/GameContext";
+import { useDefiniteGame } from "../store/GameContext";
 import { usePlayer } from "../store/secretKey";
 
 function AddPlayer() {
-  const { game } = useGame();
+  const { game } = useDefiniteGame();
 
   const [name, setName] = React.useState("");
   const [_, setPlayer] = usePlayer();
@@ -20,7 +20,7 @@ function AddPlayer() {
   const [error, isLoading, , addPlayer] = useAddPlayer();
   const parsedName = name.trim().toLowerCase();
 
-  const taken = !!game?.playersToRoles[parsedName];
+  const taken = !!game.playersToRoles[parsedName];
 
   const handleSubmit = async () => {
     if (isLoading) {
