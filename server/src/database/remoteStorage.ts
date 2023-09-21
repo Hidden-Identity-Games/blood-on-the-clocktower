@@ -71,27 +71,31 @@ class S3Storage {
     })
   }
 
-  async listBuckets (): Promise<ListBucketsCommandOutput> {
-    return await this.remoteClient.send(
+  listBuckets = async (): Promise<ListBucketsCommandOutput> => {
+    const response = await this.remoteClient.send(
       new ListBucketsCommand(''),
     )
+    return response
   }
 
-  async listObjects (bucket: string): Promise<ListObjectsV2CommandOutput> {
-    return await this.remoteClient.send(
+  listObjects = async (bucket: string): Promise<ListObjectsV2CommandOutput> => {
+    const response = await this.remoteClient.send(
       new ListObjectsV2Command({ Bucket: bucket }),
     )
+    return response
   }
 
-  async getObject (bucket: string, key: string): Promise<GetObjectCommandOutput> {
-    return await this.remoteClient.send(
+  getObject = async (bucket: string, key: string): Promise<GetObjectCommandOutput> => {
+    const response = await this.remoteClient.send(
       new GetObjectCommand({ Bucket: bucket, Key: key }),
     )
+    return response
   }
 
-  async putObject<T> (bucket: string, key: string, object: T): Promise<PutObjectCommandOutput> {
-    return await this.remoteClient.send(
+  putObject = async (bucket: string, key: string, object: unknown): Promise<PutObjectCommandOutput> => {
+    const response = await this.remoteClient.send(
       new PutObjectCommand({ Bucket: bucket, Key: key, ContentType: 'application/json', Body: JSON.stringify(object) }),
     )
+    return response
   }
 }
