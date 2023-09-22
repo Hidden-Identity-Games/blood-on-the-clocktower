@@ -16,6 +16,8 @@ interface PlayerRoleProps {
 function PlayerRole({ role }: PlayerRoleProps) {
   const [player] = usePlayer();
   const [isHolding, setIsHolding] = useState(false);
+  const character = getCharacter(role);
+
   return (
     <Flex
       direction="column-reverse"
@@ -84,13 +86,13 @@ function PlayerRole({ role }: PlayerRoleProps) {
           <div data-card-side="back" className="h-full w-full text-center">
             <img
               className="mt-3 h-full w-full"
-              src={getCharacter(role).imageSrc}
+              src={character.imageSrc}
               onContextMenu={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
               }}
             />
-            <AlignmentText player={player!}>{role}</AlignmentText>
+            <AlignmentText player={player!}>{character.name}</AlignmentText>
           </div>
         </div>
       </div>
