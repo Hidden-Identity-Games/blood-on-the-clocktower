@@ -1,4 +1,5 @@
 import { type Script } from '../types/index.ts'
+import { RemoteStorage, StorageObject } from './remoteStorage.ts'
 import { WatchableResource } from './watchableResource.ts'
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ComputedScript {}
@@ -27,7 +28,9 @@ export function addScript (gameId: string): void {
   if (scriptExists(gameId)) {
     throw new Error(`Script for game ${gameId} already exists"`)
   }
-  scriptDB[gameId] = new WatchableResource([] as Script, {})
+
+  const storage = new StorageObject<Script>('script', gameId, new RemoteStorage())
+  scriptDB[gameId] = new WatchableResource([] as Script, {}, storage)
 }
 
 export function subscribeToScript (
