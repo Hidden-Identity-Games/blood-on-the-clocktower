@@ -10,14 +10,45 @@ import {
   type PutObjectCommandOutput,
 } from '@aws-sdk/client-s3'
 
-export class RemoteStorage {
+export interface IStorageObject<T> {
+  listDirectories: () => Promise<string[]>
+  listFiles: () => Promise<string[]>
+  getFile: () => Promise<T>
+  putFile: (object: T) => Promise<void>
+}
+
+export class StorageObject<T> implements IStorageObject<T> {
+  private readonly directory!: string
+  private readonly file!: string
+  private readonly storage!: IStorage
+
+  constructor (directory: string, file: string, storage: IStorage) {
+    this.directory = directory
+    this.file = file
+    this.storage = storage
+  }
+
+  listDirectories: () => Promise<string[]> = async () => await this.storage.listDirectories()
+  listFiles: () => Promise<string[]> = async () => await this.storage.listFiles(this.directory)
+  getFile: () => Promise<T> = async () => await this.storage.getFile(this.directory, this.file)
+  putFile: (object: T) => Promise<void> = async (object: T) => { await this.storage.putFile(this.directory, this.file, object) }
+}
+
+interface IStorage {
+  listDirectories: () => Promise<string[]>
+  listFiles: (directory: string) => Promise<string[]>
+  getFile: <T>(directory: string, file: string) => Promise<T>
+  putFile: <T>(directory: string, file: string, object: T) => Promise<void>
+}
+
+export class RemoteStorage implements IStorage {
   private readonly storage: S3Storage
 
   constructor () {
     this.storage = new S3Storage()
   }
 
-  async listDirectories (): Promise<string[]> {
+  listDirectories = async (): Promise<string[]> => {
     const response = await this.storage.listBuckets()
     if (response.$metadata.httpStatusCode === 200 && response.Buckets) {
       return response.Buckets.map(({ Name }) => Name as string)
@@ -26,7 +57,7 @@ export class RemoteStorage {
     throw new Error('Remote storage error on listBuckets')
   }
 
-  async listFiles (directory: string): Promise<string[]> {
+  listFiles = async (directory: string): Promise<string[]> => {
     const response = await this.storage.listObjects(directory)
     if (response.$metadata.httpStatusCode === 200 && response.Contents) {
       return response.Contents.map(({ Key }) => Key as string)
@@ -35,7 +66,7 @@ export class RemoteStorage {
     throw new Error('Remote storage error on listObjects')
   }
 
-  async getFile<T> (directory: string, file: string): Promise<T> {
+  getFile = async <T>(directory: string, file: string): Promise<T> => {
     const response = await this.storage.getObject(directory, file)
     if (response.$metadata.httpStatusCode === 200 && response.Body) {
       return response.Body as T
@@ -44,7 +75,7 @@ export class RemoteStorage {
     throw new Error('Remote storage error on getObject')
   }
 
-  async putFile<T> (directory: string, file: string, object: T): Promise<void> {
+  putFile = async <T>(directory: string, file: string, object: T): Promise<void> => {
     const response = await this.storage.putObject(directory, file, object)
     if (response.$metadata.httpStatusCode !== 200) {
       throw new Error('Remote storage error on getObject')

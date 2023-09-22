@@ -3,6 +3,7 @@ import { generate } from 'random-words'
 import { type Computer, WatchableResource } from './watchableResource.ts'
 import { removeKey } from '../utils/objectUtils.ts'
 import { addScript } from './scriptDB.ts'
+import { RemoteStorage, StorageObject } from './remoteStorage.ts'
 
 export const UNASSIGNED: Role = 'unassigned' as Role
 
@@ -42,13 +43,14 @@ function gameInProgress (game: UnifiedGame): boolean {
   return game.gameStatus === 'Started' || game.gameStatus === 'Setup'
 }
 
-export function addGame (gameId: string, game?: BaseUnifiedGame): boolean {
+export async function addGame (gameId: string, game?: BaseUnifiedGame): Promise<boolean> {
   console.log(`adding ${gameId}`)
   if (gameExists(gameId)) {
     throw new Error('Game already exists')
   }
 
-  gameDB[gameId] = new WatchableResource(game ?? createGame(), gameComputer)
+  const storage = new StorageObject<BaseUnifiedGame>('game', gameId, new RemoteStorage())
+  gameDB[gameId] = new WatchableResource(game ?? await storage.getFile() ?? createGame(), gameComputer, storage)
   addScript(gameId)
 
   return true
