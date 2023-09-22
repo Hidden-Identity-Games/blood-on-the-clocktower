@@ -2,6 +2,7 @@ import {
   Alignment,
   Character,
   CharacterType,
+  KnownCharacterType,
   Role,
   Script,
 } from "@hidden-identity/server";
@@ -18,12 +19,30 @@ const characters: Record<Role, Character> = Object.fromEntries(
     },
   ]),
 );
+
 export const defaultAlignments: Record<CharacterType, Alignment> = {
   Demon: "Evil",
   Minion: "Evil",
   Outsider: "Good",
   Townsfolk: "Good",
   Traveler: "Good",
+};
+
+export const DistributionsByPlayerCount: Record<
+  number,
+  Record<KnownCharacterType, number>
+> = {
+  5: { Townsfolk: 3, Outsider: 0, Minion: 1, Demon: 1, Traveler: 0 },
+  6: { Townsfolk: 3, Outsider: 1, Minion: 1, Demon: 1, Traveler: 0 },
+  7: { Townsfolk: 5, Outsider: 0, Minion: 1, Demon: 1, Traveler: 0 },
+  8: { Townsfolk: 5, Outsider: 1, Minion: 1, Demon: 1, Traveler: 0 },
+  9: { Townsfolk: 5, Outsider: 2, Minion: 1, Demon: 1, Traveler: 0 },
+  10: { Townsfolk: 7, Outsider: 0, Minion: 2, Demon: 1, Traveler: 0 },
+  11: { Townsfolk: 7, Outsider: 1, Minion: 2, Demon: 1, Traveler: 0 },
+  12: { Townsfolk: 7, Outsider: 2, Minion: 2, Demon: 1, Traveler: 0 },
+  13: { Townsfolk: 9, Outsider: 0, Minion: 3, Demon: 1, Traveler: 0 },
+  14: { Townsfolk: 9, Outsider: 1, Minion: 3, Demon: 1, Traveler: 0 },
+  15: { Townsfolk: 9, Outsider: 2, Minion: 3, Demon: 1, Traveler: 0 },
 };
 
 export function oppositeAlignment(alignment: Alignment): "Evil" | "Good" {

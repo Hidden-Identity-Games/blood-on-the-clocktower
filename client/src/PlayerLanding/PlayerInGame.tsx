@@ -1,4 +1,4 @@
-import { Flex, Heading, Tabs, Text } from "@radix-ui/themes";
+import { Flex, Heading, Separator, Tabs, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
@@ -11,7 +11,10 @@ import {
 } from "react-icons/bs";
 import { GiScrollQuill } from "react-icons/gi";
 import React, { useState } from "react";
-import { getCharacter } from "../assets/game_data/gameData";
+import {
+  getCharacter,
+  DistributionsByPlayerCount,
+} from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
 import {
@@ -47,6 +50,10 @@ export function PlayerInGame() {
       },
     ];
   }, [script]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { Traveler, ...distributionsByPlayerCount } = {
+    ...DistributionsByPlayerCount[game.playerList.length],
+  };
 
   return (
     <Tabs.Root
@@ -77,12 +84,37 @@ export function PlayerInGame() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
         <Flex className="m-2" direction="column" gap="3">
+          <Flex wrap="wrap">
+            {Object.entries(distributionsByPlayerCount).map(([team, count]) => (
+              <Text
+                color={colorMap[team as CharacterType]}
+                className="min-w-[60px] flex-1 text-center"
+                onClick={() => {
+                  document.querySelector(`#${team}`)?.scrollIntoView();
+                }}
+              >
+                <Text
+                  size="1"
+                  as="div"
+                  className="text-clip whitespace-nowrap"
+                  style={{
+                    fontSize: 16,
+                  }}
+                >
+                  {["Townsfolk"].includes(team) ? team : `${team}s`}
+                </Text>
+                {count}
+              </Text>
+            ))}
+          </Flex>
+          <Separator size="4" />
           {Object.entries(charactersByType)
             .filter(([_, characters]) => characters.length > 0)
             .map(([team, characters]) => (
               <React.Fragment key={team}>
                 <Flex justify="end">
                   <Heading
+                    id={team}
                     size="3"
                     align="right"
                     color={colorMap[team as CharacterType]}
