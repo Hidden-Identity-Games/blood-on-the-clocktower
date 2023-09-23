@@ -11,24 +11,22 @@ import {
   type S3ServiceException,
 } from '@aws-sdk/client-s3'
 
-export interface IStorageObject<T> {
-  getFile: () => Promise<T | null>
-  putFile: (object: T) => Promise<void>
+export interface IStoreFile<T> {
+  getFile: (fileName: string) => Promise<T | null>
+  putFile: (fileName: string, object: T) => Promise<void>
 }
 
-export class StorageObject<T> implements IStorageObject<T> {
+export class StoreFile<T> implements IStoreFile<T> {
   private readonly directory!: string
-  private readonly file!: string
   private readonly storage!: IStorage
 
-  constructor (directory: string, file: string, storage: IStorage) {
+  constructor (directory: string, storage: IStorage) {
     this.directory = directory
-    this.file = file
     this.storage = storage
   }
 
-  getFile: () => Promise<T | null> = async () => await this.storage.getFile(this.directory, this.file)
-  putFile: (object: T) => Promise<void> = async (object: T) => { await this.storage.putFile(this.directory, this.file, object) }
+  getFile: (fileName: string) => Promise<T | null> = async (fileName: string) => await this.storage.getFile(this.directory, fileName)
+  putFile: (fileName: string, object: T) => Promise<void> = async (fileName: string, object: T) => { await this.storage.putFile(this.directory, fileName, object) }
 }
 
 interface IStorage {
