@@ -30,7 +30,7 @@ export async function gameExists (gameId: string): Promise<boolean> {
   const gameFromStorage = await storage.getFile(gameId)
   if (gameFromStorage) {
     gameDB[gameId] = new WatchableResource(gameFromStorage, gameComputer)
-    gameDB[gameId].subscribe((value) => { void storage.putFile(gameId, value as BaseUnifiedGame) })
+    gameDB[gameId].subscribe((value) => { storage.putFile(gameId, value as BaseUnifiedGame).catch((e) => { console.error(e) }) })
     return true
   }
 
@@ -60,7 +60,7 @@ export async function addGame (gameId: string, game?: BaseUnifiedGame): Promise<
   }
 
   gameDB[gameId] = new WatchableResource(game ?? createGame(), gameComputer)
-  gameDB[gameId].subscribe((value) => { void storage.putFile(gameId, value as BaseUnifiedGame) })
+  gameDB[gameId].subscribe((value) => { storage.putFile(gameId, value as BaseUnifiedGame).catch((e) => { console.error(e) }) })
   await addScript(gameId)
 
   return true
