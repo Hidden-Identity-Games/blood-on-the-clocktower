@@ -7,6 +7,6 @@ export function useScript (app: Application): void {
     setScript(gameId, script).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to set script to ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 }

@@ -31,7 +31,7 @@ export async function useGame (app: Application): Promise<void> {
           ...oldGame.readOnce(),
           nextGameId: gameId,
         })
-      }, () => { throw new Error(`Failed to update client of old game '${gameId}' with new gameId`) })
+      }, (e) => { console.error(e) })
     }
     console.log(`creating new game ${gameId}`)
     addGame(gameId).then(async () => {
@@ -39,7 +39,7 @@ export async function useGame (app: Application): Promise<void> {
       console.log(`Game created ${gameId}`)
       console.log(`responding with: ${JSON.stringify(game)}`)
       res.send(game)
-    }, () => { throw new Error(`Failed to create new game ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.get('/game/:gameId', (_req, res) => {
@@ -49,7 +49,7 @@ export async function useGame (app: Application): Promise<void> {
         res.status(404)
       }
       res.send(game)
-    }, () => { throw new Error(`Failed to retrieve game ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/add_player', (req, res) => {
@@ -59,7 +59,7 @@ export async function useGame (app: Application): Promise<void> {
       res.send({
         player,
       })
-    }, () => { throw new Error(`Failed to add player ${player} to ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/kick_player', (req, res) => {
@@ -67,7 +67,7 @@ export async function useGame (app: Application): Promise<void> {
     kickPlayer(gameId, player).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to kick player ${player} from ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/order_player', (req, res) => {
@@ -75,7 +75,7 @@ export async function useGame (app: Application): Promise<void> {
     setPlayerOrder(gameId, player, rightNeighbor).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to add neighbor of ${player} to ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/assign_roles', (req, res) => {
@@ -83,7 +83,7 @@ export async function useGame (app: Application): Promise<void> {
     assignRoles(gameId, roles).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to assign roles to ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/decide_fate', (req, res) => {
@@ -91,7 +91,7 @@ export async function useGame (app: Application): Promise<void> {
     setPlayerFate(gameId, player, dead).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to decide fate of ${player} on ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/add_status_effect', (req, res) => {
@@ -99,7 +99,7 @@ export async function useGame (app: Application): Promise<void> {
     addPlayerStatus(gameId, player, playerStatus).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to add status to ${player} on ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/clear_status_effect', (req, res) => {
@@ -107,7 +107,7 @@ export async function useGame (app: Application): Promise<void> {
     clearPlayerStatus(gameId, player, playerStatusId).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to clear status ${playerStatusId} from ${player} on ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/set_player_note', (req, res) => {
@@ -115,7 +115,7 @@ export async function useGame (app: Application): Promise<void> {
     setPlayerNote(gameId, player, note).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to asign note to ${player} on ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/dead_vote', (req, res) => {
@@ -123,7 +123,7 @@ export async function useGame (app: Application): Promise<void> {
     toggleDeadvote(gameId, player, voteUsed).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to toggle dead vote of ${player} on ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/manual_status', (req, res) => {
@@ -131,7 +131,7 @@ export async function useGame (app: Application): Promise<void> {
     updateStatus(gameId, status).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to add manual status to ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 
   app.post('/assign_role', (req, res) => {
@@ -139,13 +139,13 @@ export async function useGame (app: Application): Promise<void> {
     assignPlayerToRole(gameId, player, role).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to assign role to ${player} on ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
   app.post('/set_alignment', (req, res) => {
     const { gameId, player, alignment } = req.body
     setAlignment(gameId, player, alignment).then(() => {
       res.status(200)
       res.send({})
-    }, () => { throw new Error(`Failed to set alignment of ${player} on ${gameId}`) })
+    }, (e) => { console.error(e) })
   })
 }
