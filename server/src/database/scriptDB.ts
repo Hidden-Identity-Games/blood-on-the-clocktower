@@ -43,6 +43,10 @@ export async function addScript (gameId: string): Promise<void> {
   scriptDB[gameId].subscribe((value) => { storage.putFile(gameId, value as Script).catch((e) => { console.error(e) }) })
 }
 
+export async function addTestScript (gameId: string): Promise<void> {
+  scriptDB[gameId] = new WatchableResource([] as Script, {})
+}
+
 export async function subscribeToScript (
   gameId: string,
   callback: (value: Script | null) => void,
