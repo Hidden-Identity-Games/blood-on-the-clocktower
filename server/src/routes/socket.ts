@@ -25,7 +25,7 @@ export function useSocket (app: Application): void {
                 nextObj: game,
               }),
             )
-          })
+          }).catch((e) => { console.error(e) })
           subscribeToScript(parsedMessage.gameId, (script) => {
             ws.send(
               createMessage({
@@ -35,7 +35,7 @@ export function useSocket (app: Application): void {
                 nextObj: script,
               }),
             )
-          })
+          }).catch((e) => { console.error(e) })
         }
       } catch (e) {
         console.error(e)
