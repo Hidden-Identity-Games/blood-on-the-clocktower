@@ -10,7 +10,7 @@ export function shuffleList<T> (list: readonly T[]): T[] {
     .map(([item]) => item)
 }
 
-export function setupTestGames (): void {
+export async function setupTestGames (): Promise<void> {
   const players = [
     'linh',
     'alex',
@@ -27,7 +27,7 @@ export function setupTestGames (): void {
     'nadir',
     'cameron',
   ]
-  addTestGame('test-game', {
+  await addTestGame('test-game', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
@@ -42,7 +42,7 @@ export function setupTestGames (): void {
     alignmentsOverrides: {},
   })
 
-  addTestGame('tg-wrong-way', {
+  await addTestGame('tg-wrong-way', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -67,7 +67,7 @@ export function setupTestGames (): void {
 
   })
 
-  addTestGame('tg-broken-link', {
+  await addTestGame('tg-broken-link', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -90,7 +90,7 @@ export function setupTestGames (): void {
 
   })
 
-  addTestGame('tg-excluded', {
+  await addTestGame('tg-excluded', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -114,7 +114,7 @@ export function setupTestGames (): void {
 
   })
 
-  addTestGame('tg-f-night', ({
+  await addTestGame('tg-f-night', ({
     gameStatus: 'Setup',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(shuffleList(players).map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
@@ -132,7 +132,7 @@ export function setupTestGames (): void {
 
   const selectorsPlayers = players.slice(0, testSelectorsScript.length)
 
-  addTestGame('tg-selectors', {
+  await addTestGame('tg-selectors', {
     gameStatus: 'Setup',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(selectorsPlayers.map((p, idx) => [p, testSelectorsScript[testSelectorsScript.length - idx - 1].id])),
@@ -185,8 +185,8 @@ const testSelectorsScript = [
   { id: 'noble' },
   { id: 'mezepheles' }] as Script
 
-function addTestGame (name: string, game: BaseUnifiedGame, script: Script = tbScript): void {
-  addGame(name, game)
+async function addTestGame (name: string, game: BaseUnifiedGame, script: Script = tbScript): Promise<void> {
+  await addGame(name, game)
   if (game.gameStatus !== 'PlayersJoining') {
     setScript(name, script)
   }

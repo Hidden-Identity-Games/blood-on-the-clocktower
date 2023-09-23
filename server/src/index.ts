@@ -60,7 +60,7 @@ app.use((req, res, next) => {
   }
 })
 
-useRoutes(app)
+await useRoutes(app)
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
