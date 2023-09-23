@@ -14,7 +14,7 @@ export async function scriptExists (gameId: string): Promise<boolean> {
   const scriptFromStorage = await storage.getFile(gameId)
   if (scriptFromStorage) {
     scriptDB[gameId] = new WatchableResource(scriptFromStorage, {})
-    scriptDB[gameId].subscribe((value) => { void storage.putFile(gameId, value as Script) })
+    scriptDB[gameId].subscribe((value) => { storage.putFile(gameId, value as Script).catch((e) => { console.error(e) }) })
     return true
   }
 
@@ -40,7 +40,7 @@ export async function addScript (gameId: string): Promise<void> {
   }
 
   scriptDB[gameId] = new WatchableResource([] as Script, {})
-  scriptDB[gameId].subscribe((value) => { void storage.putFile(gameId, value as Script) })
+  scriptDB[gameId].subscribe((value) => { storage.putFile(gameId, value as Script).catch((e) => { console.error(e) }) })
 }
 
 export async function subscribeToScript (
