@@ -18,8 +18,8 @@ import {
 } from '../database/gameDB.ts'
 import { setupTestGames } from '../testGames.ts'
 
-export function useGame (app: Application): void {
-  setupTestGames()
+export async function useGame (app: Application): Promise<void> {
+  await setupTestGames()
   app.post('/game', (req, res) => {
     const { hash: gameId, oldGameId } = req.body
 
@@ -33,11 +33,12 @@ export function useGame (app: Application): void {
       })
     }
     console.log(`creating new game ${gameId}`)
-    addGame(gameId)
-    const game = getGame(gameId)
-    console.log(`Game created ${gameId}`)
-    console.log(`responding with: ${JSON.stringify(game)}`)
-    res.send(game)
+    addGame(gameId).then(() => {
+      const game = getGame(gameId)
+      console.log(`Game created ${gameId}`)
+      console.log(`responding with: ${JSON.stringify(game)}`)
+      res.send(game)
+    }, () => { throw new Error('Failed to create new game.') })
   })
 
   app.get('/game/:gameId', (_req, res) => {

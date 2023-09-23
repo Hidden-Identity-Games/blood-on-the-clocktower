@@ -3,8 +3,8 @@ import { useSocket } from './socket.ts'
 import { useGame } from './game.ts'
 import { useScript } from './script.ts'
 
-export function useRoutes (app: Application): void {
+export async function useRoutes (app: Application): Promise<void> {
   useSocket(app)
-  useGame(app)
+  await useGame(app)
   useScript(app)
 }
