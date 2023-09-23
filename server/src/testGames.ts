@@ -188,6 +188,6 @@ const testSelectorsScript = [
 async function addTestGame (name: string, game: BaseUnifiedGame, script: Script = tbScript): Promise<void> {
   await addGame(name, game)
   if (game.gameStatus !== 'PlayersJoining') {
-    setScript(name, script)
+    await setScript(name, script)
   }
 }

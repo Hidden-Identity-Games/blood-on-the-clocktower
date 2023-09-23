@@ -1,5 +1,3 @@
-import { type IStorageObject } from './remoteStorage.ts'
-
 type Callback<ResourceShape> = (value: ResourceShape | null) => void
 export type Computer<ResourceShape, ComputedValues> = { [K in keyof ComputedValues]: (resource: ResourceShape) => ComputedValues[K] }
 
@@ -7,12 +5,10 @@ export class WatchableResource<BaseResourceShape, ComputedValues> {
   private value!: BaseResourceShape & ComputedValues
   private callbacks: Array<Callback<BaseResourceShape & ComputedValues>> = []
   private readonly computer: Computer<BaseResourceShape, ComputedValues>
-  private readonly storage: IStorageObject<BaseResourceShape> | null
 
-  constructor (resource: BaseResourceShape, computer: Computer<BaseResourceShape, ComputedValues>, storage?: IStorageObject<BaseResourceShape>) {
+  constructor (resource: BaseResourceShape, computer: Computer<BaseResourceShape, ComputedValues>) {
     this.computer = computer
     this.setValue(resource)
-    this.storage = storage ?? null
   }
 
   private setValue (nextValue: BaseResourceShape): void {
@@ -21,8 +17,6 @@ export class WatchableResource<BaseResourceShape, ComputedValues> {
       [computeKey]: this.computer[computeKey as keyof ComputedValues](nextValue),
     // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
     }), nextValue as BaseResourceShape & ComputedValues)
-
-    if (this.storage) void this.storage.putFile(this.value)
   }
 
   update (_newValue: BaseResourceShape): void {
