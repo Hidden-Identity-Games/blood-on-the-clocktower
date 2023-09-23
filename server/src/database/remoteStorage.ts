@@ -8,11 +8,10 @@ import {
   type ListObjectsV2CommandOutput,
   type GetObjectCommandOutput,
   type PutObjectCommandOutput,
+  type S3ServiceException,
 } from '@aws-sdk/client-s3'
 
 export interface IStorageObject<T> {
-  listDirectories: () => Promise<string[]>
-  listFiles: () => Promise<string[]>
   getFile: () => Promise<T | null>
   putFile: (object: T) => Promise<void>
 }
@@ -28,8 +27,6 @@ export class StorageObject<T> implements IStorageObject<T> {
     this.storage = storage
   }
 
-  listDirectories: () => Promise<string[]> = async () => await this.storage.listDirectories()
-  listFiles: () => Promise<string[]> = async () => await this.storage.listFiles(this.directory)
   getFile: () => Promise<T | null> = async () => await this.storage.getFile(this.directory, this.file)
   putFile: (object: T) => Promise<void> = async (object: T) => { await this.storage.putFile(this.directory, this.file, object) }
 }
@@ -67,9 +64,15 @@ export class RemoteStorage implements IStorage {
   }
 
   getFile = async <T>(directory: string, file: string): Promise<T | null> => {
-    const response = await this.storage.getObject(directory, file)
-    if (response.$metadata.httpStatusCode === 200 && response.Body) {
-      return response.Body as T
+    try {
+      const response = await this.storage.getObject(directory, file)
+      if (response.$metadata.httpStatusCode === 200 && response.Body) {
+        return JSON.parse(await response.Body.transformToString()) as T
+      }
+    } catch (e) {
+      const err = e as S3ServiceException
+      if (err.name === 'NoSuchKey') return null
+      throw e
     }
 
     return null
