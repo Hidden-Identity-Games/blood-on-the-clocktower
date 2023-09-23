@@ -11,12 +11,7 @@ import {
   type S3ServiceException,
 } from '@aws-sdk/client-s3'
 
-export interface IStoreFile<T> {
-  getFile: (fileName: string) => Promise<T | null>
-  putFile: (fileName: string, object: T) => Promise<void>
-}
-
-export class StoreFile<T> implements IStoreFile<T> {
+export class StoreFile<T> {
   private readonly directory!: string
   private readonly storage!: IStorage
 
