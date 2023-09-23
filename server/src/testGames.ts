@@ -1,4 +1,4 @@
-import { UNASSIGNED, addGame } from './database/gameDB/base.ts'
+import { UNASSIGNED, addTestGame } from './database/gameDB/base.ts'
 import { setScript } from './database/scriptDB.ts'
 import { type Script } from './types/Script.ts'
 import { type BaseUnifiedGame } from './types/UnifiedGame.ts'
@@ -27,7 +27,7 @@ export async function setupTestGames (): Promise<void> {
     'nadir',
     'cameron',
   ]
-  await addTestGame('test-game', {
+  await addGame('test-game', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
@@ -42,7 +42,7 @@ export async function setupTestGames (): Promise<void> {
     alignmentsOverrides: {},
   })
 
-  await addTestGame('tg-wrong-way', {
+  await addGame('tg-wrong-way', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -67,7 +67,7 @@ export async function setupTestGames (): Promise<void> {
 
   })
 
-  await addTestGame('tg-broken-link', {
+  await addGame('tg-broken-link', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -90,7 +90,7 @@ export async function setupTestGames (): Promise<void> {
 
   })
 
-  await addTestGame('tg-excluded', {
+  await addGame('tg-excluded', {
     gameStatus: 'PlayersJoining',
     gmSecretHash: 't',
     playersToRoles: {
@@ -114,7 +114,7 @@ export async function setupTestGames (): Promise<void> {
 
   })
 
-  await addTestGame('tg-f-night', ({
+  await addGame('tg-f-night', ({
     gameStatus: 'Setup',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(shuffleList(players).map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
@@ -132,7 +132,7 @@ export async function setupTestGames (): Promise<void> {
 
   const selectorsPlayers = players.slice(0, testSelectorsScript.length)
 
-  await addTestGame('tg-selectors', {
+  await addGame('tg-selectors', {
     gameStatus: 'Setup',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(selectorsPlayers.map((p, idx) => [p, testSelectorsScript[testSelectorsScript.length - idx - 1].id])),
@@ -185,8 +185,8 @@ const testSelectorsScript = [
   { id: 'noble' },
   { id: 'mezepheles' }] as Script
 
-async function addTestGame (name: string, game: BaseUnifiedGame, script: Script = tbScript): Promise<void> {
-  await addGame(name, game)
+async function addGame (name: string, game: BaseUnifiedGame, script: Script = tbScript): Promise<void> {
+  await addTestGame(name, game)
   if (game.gameStatus !== 'PlayersJoining') {
     await setScript(name, script)
   }
