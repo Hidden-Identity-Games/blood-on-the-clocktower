@@ -10,6 +10,9 @@ import {
   type PutObjectCommandOutput,
   type S3ServiceException,
 } from '@aws-sdk/client-s3'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export class StoreFile<T> {
   private readonly directory!: string
@@ -39,21 +42,29 @@ export class RemoteStorage implements IStorage {
   }
 
   listDirectories = async (): Promise<string[]> => {
-    const response = await this.storage.listBuckets()
-    if (response.$metadata.httpStatusCode === 200 && response.Buckets) {
-      return response.Buckets.map(({ Name }) => Name as string)
+    try {
+      const response = await this.storage.listBuckets()
+      if (response.$metadata.httpStatusCode === 200 && response.Buckets) {
+        return response.Buckets.map(({ Name }) => Name as string)
+      }
+    } catch (e) {
+      console.error(e)
     }
 
-    throw new Error('Remote storage error on listBuckets')
+    return []
   }
 
   listFiles = async (directory: string): Promise<string[]> => {
-    const response = await this.storage.listObjects(directory)
-    if (response.$metadata.httpStatusCode === 200 && response.Contents) {
-      return response.Contents.map(({ Key }) => Key as string)
+    try {
+      const response = await this.storage.listObjects(directory)
+      if (response.$metadata.httpStatusCode === 200 && response.Contents) {
+        return response.Contents.map(({ Key }) => Key as string)
+      }
+    } catch (e) {
+      console.error(e)
     }
 
-    throw new Error('Remote storage error on listObjects')
+    return []
   }
 
   getFile = async <T>(directory: string, file: string): Promise<T | null> => {
@@ -64,25 +75,27 @@ export class RemoteStorage implements IStorage {
       }
     } catch (e) {
       const err = e as S3ServiceException
-      if (err.name === 'NoSuchKey') return null
-      throw e
+      if (err.name !== 'NoSuchKey') console.error(e)
     }
 
     return null
   }
 
   putFile = async <T>(directory: string, file: string, object: T): Promise<void> => {
-    const response = await this.storage.putObject(directory, file, object)
-    if (response.$metadata.httpStatusCode !== 200) {
-      throw new Error('Remote storage error on getObject')
+    try {
+      const response = await this.storage.putObject(directory, file, object)
+      if (response.$metadata.httpStatusCode !== 200) {
+        console.error('Failed to save file to R2')
+      }
+    } catch (e) {
+      console.error(e)
     }
   }
 }
 
-// TODO: deploy keys
-const accountId = ''
-const accessKeyId = ''
-const secretAccessKey = ''
+const accountId = process.env.R2_account_id ?? ''
+const accessKeyId = process.env.R2_access_key_id ?? ''
+const secretAccessKey = process.env.R2_secret_access_key ?? ''
 
 class S3Storage {
   private readonly remoteClient: S3Client
