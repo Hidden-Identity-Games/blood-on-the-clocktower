@@ -1,40 +1,57 @@
 import { type Script } from '../types/index.ts'
+import { RemoteStorage, StoreFile } from './remoteStorage.ts'
 import { WatchableResource } from './watchableResource.ts'
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ComputedScript {}
 
 type WatchableScript = WatchableResource<Script, ComputedScript>
 const scriptDB: Record<string, WatchableScript> = {}
+const storage = new StoreFile<Script>('script', new RemoteStorage())
 
-export function scriptExists (gameId: string): boolean {
-  return !!scriptDB[gameId]
+export async function scriptExists (gameId: string): Promise<boolean> {
+  if (scriptDB[gameId]) return true
+
+  const scriptFromStorage = await storage.getFile(gameId)
+  if (scriptFromStorage) {
+    scriptDB[gameId] = new WatchableResource(scriptFromStorage, {})
+    scriptDB[gameId].subscribe((value) => { storage.putFile(gameId, value as Script).catch((e) => { console.error(e) }) })
+    return true
+  }
+
+  return false
 }
 
-export function retrievescript (gameId: string): WatchableScript {
-  if (!scriptExists(gameId)) {
+export async function retrievescript (gameId: string): Promise<WatchableScript> {
+  if (!(await scriptExists(gameId))) {
     throw new Error(`${JSON.stringify(gameId)} not found`)
   }
 
   return scriptDB[gameId]
 }
 
-export function setScript (gameId: string, newScript: Script): void {
-  const script = retrievescript(gameId)
+export async function setScript (gameId: string, newScript: Script): Promise<void> {
+  const script = await retrievescript(gameId)
   script.update(newScript)
 }
 
-export function addScript (gameId: string): void {
-  if (scriptExists(gameId)) {
+export async function addScript (gameId: string): Promise<void> {
+  if (await scriptExists(gameId)) {
     throw new Error(`Script for game ${gameId} already exists"`)
   }
+
+  scriptDB[gameId] = new WatchableResource([] as Script, {})
+  scriptDB[gameId].subscribe((value) => { storage.putFile(gameId, value as Script).catch((e) => { console.error(e) }) })
+}
+
+export async function addTestScript (gameId: string): Promise<void> {
   scriptDB[gameId] = new WatchableResource([] as Script, {})
 }
 
-export function subscribeToScript (
+export async function subscribeToScript (
   gameId: string,
   callback: (value: Script | null) => void,
-): () => void {
-  if (!scriptExists(gameId)) {
+): Promise<() => void> {
+  if (!(await scriptExists(gameId))) {
     throw new Error(`${gameId} not found`)
   }
 

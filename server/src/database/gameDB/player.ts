@@ -3,12 +3,12 @@ import { type PlayerStatus } from '../../types/UnifiedGame.ts'
 import { removeKey } from '../../utils/objectUtils.ts'
 import { UNASSIGNED, gameInProgress, retrieveGame } from './base.ts'
 
-export function addPlayer (
+export async function addPlayer (
   gameId: string,
   player: string,
   traveler?: boolean,
-): void {
-  const game = retrieveGame(gameId)
+): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
   const gameStarted = gameInProgress(gameInstance)
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -47,8 +47,8 @@ export function addPlayer (
   })
 }
 
-export function kickPlayer (gameId: string, player: string): void {
-  const game = retrieveGame(gameId)
+export async function kickPlayer (gameId: string, player: string): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   // player doesn't exist
@@ -65,23 +65,23 @@ export function kickPlayer (gameId: string, player: string): void {
   })
 }
 
-export function setPlayerFate (
+export async function setPlayerFate (
   gameId: string,
   player: string,
   dead: boolean,
-): void {
-  const game = retrieveGame(gameId)
+): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({ ...gameInstance, deadPlayers: { ...gameInstance.deadPlayers, [player]: dead } })
 }
 
-export function setPlayerOrder (
+export async function setPlayerOrder (
   gameId: string,
   player: string,
   rightNeighbor: string | null,
-): void {
-  const game = retrieveGame(gameId)
+): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
   const gameStarted = gameInProgress(gameInstance)
 
@@ -110,8 +110,8 @@ export function setPlayerOrder (
   }
 }
 
-export function addPlayerStatus (gameId: string, player: string, playerStatus: PlayerStatus): void {
-  const game = retrieveGame(gameId)
+export async function addPlayerStatus (gameId: string, player: string, playerStatus: PlayerStatus): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({
@@ -123,8 +123,8 @@ export function addPlayerStatus (gameId: string, player: string, playerStatus: P
   })
 }
 
-export function clearPlayerStatus (gameId: string, player: string, playerStatusId: string): void {
-  const game = retrieveGame(gameId)
+export async function clearPlayerStatus (gameId: string, player: string, playerStatusId: string): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({
@@ -138,8 +138,8 @@ export function clearPlayerStatus (gameId: string, player: string, playerStatusI
   })
 }
 
-export function setPlayerNote (gameId: string, player: string, note: string): void {
-  const game = retrieveGame(gameId)
+export async function setPlayerNote (gameId: string, player: string, note: string): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({
@@ -151,8 +151,8 @@ export function setPlayerNote (gameId: string, player: string, note: string): vo
   })
 }
 
-export function toggleDeadvote (gameId: string, player: string, voteUsed: boolean): void {
-  const game = retrieveGame(gameId)
+export async function toggleDeadvote (gameId: string, player: string, voteUsed: boolean): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({
@@ -164,8 +164,8 @@ export function toggleDeadvote (gameId: string, player: string, voteUsed: boolea
   })
 }
 
-export function setAlignment (gameId: string, player: string, alignment: Alignment): void {
-  const game = retrieveGame(gameId)
+export async function setAlignment (gameId: string, player: string, alignment: Alignment): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
   game.update({
@@ -177,11 +177,11 @@ export function setAlignment (gameId: string, player: string, alignment: Alignme
   })
 }
 
-export function assignRoles (
+export async function assignRoles (
   gameId: string,
   roles: Role[],
-): void {
-  const game = retrieveGame(gameId)
+): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
   const playerIdList = gameInstance.playerList
   if (playerIdList.length !== roles.length) {

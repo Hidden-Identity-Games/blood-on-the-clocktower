@@ -26,14 +26,14 @@ import { alignmentShape } from '../types/Role.ts'
 import { poisonStatusShape, drunkStatusShape, customStatusShape, gameStatusShape } from '../types/UnifiedGame.ts'
 import { gameIdShape, playerAndGameIdShape, roleShape } from './baseApiShapes.ts'
 
-setupTestGames()
+await setupTestGames()
 
 export const gameRoutes = {
   getGame: publicProcedure
     .input(gameIdShape)
     .query(async ({ input: { gameId } }) => {
       // Retrieve users from a datasource, this is an imaginary database
-      const game = getGame(gameId)
+      const game = await getGame(gameId)
 
       return game
     }),
@@ -46,30 +46,30 @@ export const gameRoutes = {
         })),
     )
     .mutation(async ({ input: { gameId, oldGameId } }) => {
-      addGame(gameId)
+      await addGame(gameId)
       if (oldGameId) {
         console.log(`recieved old gameID: ${oldGameId}, updating old game`)
 
-        const oldGame = retrieveGame(oldGameId)
+        const oldGame = await retrieveGame(oldGameId)
         oldGame.update({
           ...oldGame.readOnce(),
           nextGameId: gameId,
         })
       }
 
-      return getGame(gameId)
+      return await getGame(gameId)
     },
     ),
   addPlayer: playerProcedure
     .input(playerAndGameIdShape)
-    .mutation(({ input: { gameId, player } }) => {
-      addPlayer(gameId, player)
+    .mutation(async ({ input: { gameId, player } }) => {
+      await addPlayer(gameId, player)
       return player
     }),
   kickPlayer: gmProcedure
     .input(playerAndGameIdShape)
-    .mutation(({ input: { gameId, player } }) => {
-      kickPlayer(gameId, player)
+    .mutation(async ({ input: { gameId, player } }) => {
+      await kickPlayer(gameId, player)
       return null
     }),
   setPlayerOrder: playerProcedure
@@ -78,8 +78,8 @@ export const gameRoutes = {
         playerAndGameIdShape,
         z.object({ rightNeighbor: z.string().nullable() }),
       ),
-    ).mutation(({ input: { gameId, player, rightNeighbor } }) => {
-      setPlayerOrder(gameId, player, rightNeighbor)
+    ).mutation(async ({ input: { gameId, player, rightNeighbor } }) => {
+      await setPlayerOrder(gameId, player, rightNeighbor)
       return null
     }),
   assignRoles: gmProcedure
@@ -89,8 +89,8 @@ export const gameRoutes = {
         z.object({ roles: z.array(roleShape) }),
       ),
     )
-    .mutation(({ input: { gameId, roles } }) => {
-      assignRoles(gameId, roles)
+    .mutation(async ({ input: { gameId, roles } }) => {
+      await assignRoles(gameId, roles)
     }),
   decideFate: gmProcedure
     .input(
@@ -99,8 +99,8 @@ export const gameRoutes = {
         z.object({ dead: z.boolean() }),
       ),
     )
-    .mutation(({ input: { gameId, player, dead } }) => {
-      setPlayerFate(gameId, player, dead)
+    .mutation(async ({ input: { gameId, player, dead } }) => {
+      await setPlayerFate(gameId, player, dead)
     }),
   addPlayerStatus: gmProcedure
     .input(
@@ -112,8 +112,8 @@ export const gameRoutes = {
         }),
       ),
     )
-    .mutation(({ input: { gameId, player, playerStatus } }) => {
-      addPlayerStatus(gameId, player, playerStatus)
+    .mutation(async ({ input: { gameId, player, playerStatus } }) => {
+      await addPlayerStatus(gameId, player, playerStatus)
     }),
   clearPlayerStatus: gmProcedure
     .input(
@@ -124,8 +124,8 @@ export const gameRoutes = {
         }),
       ),
     )
-    .mutation(({ input: { gameId, player, playerStatusId } }) => {
-      clearPlayerStatus(gameId, player, playerStatusId)
+    .mutation(async ({ input: { gameId, player, playerStatusId } }) => {
+      await clearPlayerStatus(gameId, player, playerStatusId)
     }),
   setPlayerNote: gmProcedure
     .input(
@@ -136,8 +136,8 @@ export const gameRoutes = {
         }),
       ),
     )
-    .mutation(({ input: { gameId, player, note } }) => {
-      setPlayerNote(gameId, player, note)
+    .mutation(async ({ input: { gameId, player, note } }) => {
+      await setPlayerNote(gameId, player, note)
     }),
   setDeadVote: gmProcedure
     .input(
@@ -145,8 +145,8 @@ export const gameRoutes = {
         playerAndGameIdShape,
         z.object({ voteUsed: z.boolean() }),
       ),
-    ).mutation(({ input: { gameId, player, voteUsed } }) => {
-      toggleDeadvote(gameId, player, voteUsed)
+    ).mutation(async ({ input: { gameId, player, voteUsed } }) => {
+      await toggleDeadvote(gameId, player, voteUsed)
     }),
   setGameStatus: gmProcedure
     .input(
@@ -154,8 +154,8 @@ export const gameRoutes = {
         gameIdShape,
         z.object({ status: gameStatusShape }),
       ),
-    ).mutation(({ input: { gameId, status } }) => {
-      updateStatus(gameId, status)
+    ).mutation(async ({ input: { gameId, status } }) => {
+      await updateStatus(gameId, status)
     }),
   assignRole: gmProcedure
     .input(
@@ -163,8 +163,8 @@ export const gameRoutes = {
         playerAndGameIdShape,
         z.object({ role: roleShape }),
       ),
-    ).mutation(({ input: { gameId, player, role } }) => {
-      assignPlayerToRole(gameId, player, role)
+    ).mutation(async ({ input: { gameId, player, role } }) => {
+      await assignPlayerToRole(gameId, player, role)
     }),
   setAlignment: gmProcedure
     .input(
@@ -172,7 +172,7 @@ export const gameRoutes = {
         playerAndGameIdShape,
         z.object({ alignment: alignmentShape }),
       ),
-    ).mutation(({ input: { gameId, player, alignment } }) => {
-      setAlignment(gameId, player, alignment)
+    ).mutation(async ({ input: { gameId, player, alignment } }) => {
+      await setAlignment(gameId, player, alignment)
     }),
 }

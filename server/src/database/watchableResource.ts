@@ -5,6 +5,7 @@ export class WatchableResource<BaseResourceShape, ComputedValues> {
   private value!: BaseResourceShape & ComputedValues
   private callbacks: Array<Callback<BaseResourceShape & ComputedValues>> = []
   private readonly computer: Computer<BaseResourceShape, ComputedValues>
+
   constructor (resource: BaseResourceShape, computer: Computer<BaseResourceShape, ComputedValues>) {
     this.computer = computer
     this.setValue(resource)

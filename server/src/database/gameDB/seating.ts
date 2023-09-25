@@ -65,8 +65,8 @@ export function getOrderedPlayers (
     }, {}),
   }
 }
-export function assignPlayerToRole (gameId: string, player: string, role: Role): void {
-  const game = retrieveGame(gameId)
+export async function assignPlayerToRole (gameId: string, player: string, role: Role): Promise<void> {
+  const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
   game.update({
     ...gameInstance,

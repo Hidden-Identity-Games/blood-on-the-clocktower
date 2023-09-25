@@ -12,6 +12,6 @@ export const scriptRoutes = {
       ))
     .mutation(async ({ input: { gameId, script } }) => {
       // Retrieve users from a datasource, this is an imaginary database
-      setScript(gameId, script)
+      await setScript(gameId, script)
     }),
 }
