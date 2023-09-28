@@ -8,6 +8,7 @@ import { usePlayer } from "../store/secretKey";
 import { useDefiniteGame } from "../store/GameContext";
 import { useAssignRole } from "../store/actions/gmPlayerActions";
 import { useTakeRole } from "../store/actions/playerActions";
+import classNames from "classnames";
 
 export function PlayerRole() {
   const { game } = useDefiniteGame();
@@ -27,7 +28,10 @@ export function PlayerRole() {
               setRole(player!, role as Role);
             }}
           >
-            <img src={tokenBlank} />
+            <img
+              className={classNames(taken && "opacity-50")}
+              src={tokenBlank}
+            />
           </button>
         ))}
       </Grid>

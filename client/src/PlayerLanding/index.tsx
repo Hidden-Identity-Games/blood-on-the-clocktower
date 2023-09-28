@@ -57,7 +57,7 @@ function PlayerLanding() {
     );
   }
 
-  if (!role || role === "unassigned") {
+  if (Object.keys(game.roleBag).length === 0) {
     return (
       <>
         <PlayerWaiting />
