@@ -1,6 +1,4 @@
-import { type Role } from '../../types/Role.ts'
 import { type BaseUnifiedGame, type BrokenOrderedPlayers, type Problem, type WellOrderedPlayers, type UnifiedGame } from '../../types/UnifiedGame.ts'
-import { retrieveGame } from './base.ts'
 
 function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
   const allPlayers = Object.keys(players)
@@ -64,15 +62,4 @@ export function getOrderedPlayers (
       }
     }, {}),
   }
-}
-export async function assignPlayerToRole (gameId: string, player: string, role: Role): Promise<void> {
-  const game = await retrieveGame(gameId)
-  const gameInstance = game.readOnce()
-  game.update({
-    ...gameInstance,
-    playersToRoles: {
-      ...gameInstance.playersToRoles,
-      [player]: role,
-    },
-  })
 }

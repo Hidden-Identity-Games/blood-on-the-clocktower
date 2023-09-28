@@ -2,11 +2,9 @@ import {
   addGame,
   getGame,
   retrieveGame,
+  setRoleTaken,
   updateStatus,
 } from '../database/gameDB/base.ts'
-import {
-  assignPlayerToRole,
-} from '../database/gameDB/seating.ts'
 import {
   addPlayerStatus,
   addPlayer,
@@ -18,6 +16,7 @@ import {
   setPlayerOrder,
   toggleDeadvote,
   setAlignment,
+  assignPlayerToRole,
 } from '../database/gameDB/player.ts'
 import { setupTestGames } from '../testGames.ts'
 import { gmProcedure, playerProcedure, publicProcedure } from '../trpc.ts'
@@ -174,5 +173,14 @@ export const gameRoutes = {
       ),
     ).mutation(async ({ input: { gameId, player, alignment } }) => {
       await setAlignment(gameId, player, alignment)
+    }),
+  takeRole: playerProcedure
+    .input(
+      z.intersection(
+        gameIdShape,
+        z.object({ role: roleShape }),
+      ),
+    ).mutation(async ({ input: { gameId, role } }) => {
+      await setRoleTaken(gameId, role)
     }),
 }

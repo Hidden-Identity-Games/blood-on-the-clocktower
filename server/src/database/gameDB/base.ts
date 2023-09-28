@@ -94,6 +94,7 @@ function createGame (): BaseUnifiedGame {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
+    roleBag: {},
   }
 }
 
@@ -115,5 +116,15 @@ export async function updateStatus (gameId: string, status: GameStatus): Promise
   game.update({
     ...gameInstance,
     gameStatus: status,
+  })
+}
+
+export async function setRoleTaken (gameId: string, role: Role): Promise<void> {
+  const game = await retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  game.update({
+    ...gameInstance,
+    roleBag: { ...gameInstance.roleBag, [role]: true },
   })
 }

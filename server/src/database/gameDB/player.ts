@@ -177,6 +177,18 @@ export async function setAlignment (gameId: string, player: string, alignment: A
   })
 }
 
+export async function assignPlayerToRole (gameId: string, player: string, role: Role): Promise<void> {
+  const game = await retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+  game.update({
+    ...gameInstance,
+    playersToRoles: {
+      ...gameInstance.playersToRoles,
+      [player]: role,
+    },
+  })
+}
+
 export async function assignRoles (
   gameId: string,
   roles: Role[],
@@ -192,14 +204,14 @@ export async function assignRoles (
     ...gameInstance,
     gameStatus: 'Setup',
 
-    playersToRoles: roles
+    roleBag: roles
       .map((item) => ({ item, random: Math.random() }))
       .sort((a, b) => a.random - b.random)
       .map((element) => element.item)
-      .reduce<Record<string, Role>>(
-      (acc, item, idx) => ({
+      .reduce<Record<Role, boolean>>(
+      (acc, item) => ({
         ...acc,
-        [playerIdList[idx]]: item,
+        [item]: false,
       }),
       {},
     ),

@@ -1,5 +1,5 @@
 import AddPlayer from "./AddPlayer";
-import PlayerRole from "./PlayerRole";
+import { PlayerRole } from "./PlayerRole";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
 import { usePlayer } from "../store/secretKey";
@@ -66,7 +66,7 @@ function PlayerLanding() {
   }
 
   if (game.gameStatus === "Setup") {
-    return <PlayerRole role={role} />;
+    return <PlayerRole />;
   }
 
   return <PlayerInGame />;

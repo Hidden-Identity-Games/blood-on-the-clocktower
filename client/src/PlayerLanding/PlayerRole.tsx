@@ -1,101 +1,39 @@
-import { Flex } from "@radix-ui/themes";
-import "./PlayerRole.css";
-import tokenBack from "../assets/token_logo.png";
+import { Grid } from "@radix-ui/themes";
+// import tokenBack from "../assets/token_logo.png";
 import tokenBlank from "../assets/token_blank.png";
-import fingerprintImage from "../assets/fingerprint.png";
 import { getCharacter } from "../assets/game_data/gameData";
 import { Role } from "@hidden-identity/server";
-import { useState } from "react";
-import { AlignmentText } from "../shared/RoleIcon";
+// import { AlignmentText } from "../shared/RoleIcon";
 import { usePlayer } from "../store/secretKey";
+import { useDefiniteGame } from "../store/GameContext";
+import { useAssignRole } from "../store/actions/gmPlayerActions";
+import { useTakeRole } from "../store/actions/playerActions";
 
-interface PlayerRoleProps {
-  role: Role;
-}
-
-function PlayerRole({ role }: PlayerRoleProps) {
+export function PlayerRole() {
+  const { game } = useDefiniteGame();
   const [player] = usePlayer();
-  const [isHolding, setIsHolding] = useState(false);
+  const [, isSetRoleLoading, , setRole] = useAssignRole();
+  const [, , , takeRole] = useTakeRole();
+
   return (
-    <Flex
-      direction="column-reverse"
-      align="center"
-      justify="between"
-      className=" flex-1 bg-transparent"
-    >
-      <button
-        data-flipper="true"
-        className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
-        onClick={() => {}}
-        onMouseDown={(e) => {
-          setIsHolding(true);
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        onMouseUp={() => {
-          setIsHolding(false);
-        }}
-        onTouchStart={(e) => {
-          setIsHolding(true);
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        onTouchEnd={() => {
-          setIsHolding(false);
-        }}
-      >
-        <img
-          className="h-[110px] w-[85px]"
-          onContextMenu={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-          src={fingerprintImage}
-        />
-        <div className="select-none">Hold to reveal role</div>
-      </button>
-      <div
-        className="perspective aspect-square h-1/2 p-4"
-        data-flipped={isHolding ? "true" : "false"}
-      >
-        <div className="relative h-full w-full" data-card="true">
-          <div data-card-side="front" className="h-full w-full">
-            <img
-              className="h-full w-full"
-              src={tokenBack}
-              onContextMenu={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-            />
-          </div>
-          {/* token background */}
-          <div data-card-side="back" className="h-full w-full">
-            <img
-              className="h-full w-full"
-              src={tokenBlank}
-              onContextMenu={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-            />
-          </div>
-          {/* Role icon */}
-          <div data-card-side="back" className="h-full w-full text-center">
-            <img
-              className="mt-3 h-full w-full"
-              src={getCharacter(role).imageSrc}
-              onContextMenu={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-            />
-            <AlignmentText player={player!}>{role}</AlignmentText>
-          </div>
-        </div>
-      </div>
-    </Flex>
+    <>
+      <Grid columns="3" gap="3" width="auto">
+        {Object.entries(game.roleBag).map(([role, taken]) => (
+          <button
+            key={role}
+            disabled={taken || isSetRoleLoading}
+            onClick={() => {
+              takeRole(role as Role);
+              setRole(player!, role as Role);
+            }}
+          >
+            <img src={tokenBlank} />
+          </button>
+        ))}
+      </Grid>
+      {game.playersToRoles[player!] && (
+        <img src={getCharacter(game.playersToRoles[player!]).imageSrc} />
+      )}
+    </>
   );
 }
-
-export default PlayerRole;
