@@ -2,19 +2,25 @@ import { Flex, Grid, Heading } from "@radix-ui/themes";
 import tokenBack from "../assets/token_logo.png";
 import { Role } from "@hidden-identity/server";
 import { usePlayer } from "../store/secretKey";
-import { useRoleSelect } from "../store/GameContext";
 import { useAssignRole } from "../store/actions/gmPlayerActions";
 import { useTakeRole } from "../store/actions/playerActions";
 import classNames from "classnames";
+import { useDefiniteGame } from "../store/GameContext";
 
 export function PlayerRoleSelect() {
-  const { roleSelect } = useRoleSelect();
+  const { roleSelect } = useDefiniteGame();
   const [player] = usePlayer();
   const [, isSetRoleLoading, , setRole] = useAssignRole();
   const [, , , takeRole] = useTakeRole();
 
   return (
-    <Flex className="h-full w-full" direction="column" justify="center">
+    <Flex
+      className="h-screen w-screen"
+      direction="column"
+      align="center"
+      justify="center"
+      gap="5"
+    >
       <Heading>Select a Role</Heading>
       <Grid columns="3" gap="3" width="auto">
         {Object.entries(roleSelect?.roleBag ?? {}).map(([role, taken]) => (

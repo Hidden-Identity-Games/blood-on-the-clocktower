@@ -7,11 +7,13 @@ export interface GameContext {
   gameId: string | null;
   game: UnifiedGame | null;
   script: Script | null;
+  roleSelect: RoleSelection | null;
 }
 
 export const UnifiedGameContext = createContext<GameContext>({
   game: null,
   script: null,
+  roleSelect: null,
   gameId: null,
 });
 
@@ -26,21 +28,6 @@ export function useDefiniteGame(): NonNullableValues<GameContext> {
     throw new Error("Not in a game?");
   }
   return context as NonNullableValues<GameContext>;
-}
-
-export interface RoleSelectContext {
-  gameId: string | null;
-  roleSelect: RoleSelection | null;
-}
-
-export const RoleSelectContext = createContext<RoleSelectContext>({
-  gameId: null,
-  roleSelect: null,
-});
-
-export function useRoleSelect() {
-  const roleSelect = useContext(RoleSelectContext);
-  return roleSelect;
 }
 
 export function useAction<Args extends Array<unknown>, T>(

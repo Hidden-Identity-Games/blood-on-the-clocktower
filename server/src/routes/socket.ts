@@ -37,13 +37,13 @@ export function useSocket (app: Application): void {
               }),
             )
           }).catch((e) => { console.error(e) })
-          subscribeToRoleSelect(parsedMessage.gameId, (roleSelection) => {
+          subscribeToRoleSelect(parsedMessage.gameId, (roleSelect) => {
             ws.send(
               createMessage({
                 type: 'ObjectUpdated',
                 objectType: 'roleSelect',
                 updatedId: parsedMessage.gameId,
-                nextObj: roleSelection,
+                nextObj: roleSelect,
               }),
             )
           }).catch((e) => { console.error(e) })

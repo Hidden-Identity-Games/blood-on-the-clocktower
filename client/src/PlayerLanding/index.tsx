@@ -6,11 +6,12 @@ import { usePlayer } from "../store/secretKey";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { PlayerWaiting } from "./PlayerWaiting";
-import { useGame, useRoleSelect } from "../store/GameContext";
+import { useGame } from "../store/GameContext";
 import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
 import { PlayerInGame } from "./PlayerInGame";
 import PlayerRole from "./PlayerRole";
+import { AnimatePresence, motion } from "framer-motion";
 
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -25,8 +26,7 @@ export function PlayerRoot() {
 function PlayerLanding() {
   const [player, setPlayer] = usePlayer();
   const [kicked, setKicked] = useState(false);
-  const { game } = useGame();
-  const { roleSelect } = useRoleSelect();
+  const { game, roleSelect } = useGame();
   const role = (player && game?.playersToRoles[player]) ?? null;
 
   useEffect(() => {
@@ -64,7 +64,23 @@ function PlayerLanding() {
   }
 
   if (game.gameStatus === "Setup") {
-    return role ? <PlayerRole role={role} /> : <PlayerRoleSelect />;
+    return (
+      <AnimatePresence>
+        {role && role !== "unassigned" ? (
+          <motion.div
+            key="PlayerRole"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <PlayerRole role={role} />
+          </motion.div>
+        ) : (
+          <motion.div key="PlayerRoleSelect" exit={{ opacity: 0 }}>
+            <PlayerRoleSelect />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
   }
 
   return <PlayerInGame />;

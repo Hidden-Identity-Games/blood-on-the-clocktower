@@ -1,5 +1,5 @@
 import { type RoleSelection } from '../types/index.ts'
-import { type WatchableResource } from './watchableResource.ts'
+import { WatchableResource } from './watchableResource.ts'
 import { type Role } from '../types/Role.ts'
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ComputedRoleSelection {}
@@ -9,7 +9,7 @@ const roleSelectDB: Record<string, WatchableRoleSelect> = {}
 
 export function retrieveRoleSelect (gameId: string): WatchableRoleSelect {
   if (!roleSelectExists(gameId)) {
-    throw new Error(`${JSON.stringify(gameId)} not found`)
+    roleSelectDB[gameId] = new WatchableResource({ roleBag: {} }, {})
   }
 
   return roleSelectDB[gameId]
@@ -33,11 +33,8 @@ export async function subscribeToRoleSelect (
   gameId: string,
   callback: (value: RoleSelection | null) => void,
 ): Promise<() => void> {
-  if (!roleSelectExists(gameId)) {
-    throw new Error(`${gameId} not found`)
-  }
-
-  return roleSelectDB[gameId].subscribe(callback)
+  const roleSelect = retrieveRoleSelect(gameId)
+  return roleSelect.subscribe(callback)
 }
 
 function roleSelectExists (gameId: string): boolean {
