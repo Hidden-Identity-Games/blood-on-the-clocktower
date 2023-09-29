@@ -53,6 +53,6 @@ export function useTakeRole() {
       throw new Error("GameId not ready");
     }
 
-    await trpc.takeRole.mutate({ role, gameId });
+    return await trpc.takeRole.mutate({ role, gameId });
   });
 }

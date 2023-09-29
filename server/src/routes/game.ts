@@ -181,6 +181,6 @@ export const gameRoutes = {
         z.object({ role: roleShape }),
       ),
     ).mutation(async ({ input: { gameId, role } }) => {
-      await setRoleTaken(gameId, role)
+      return await setRoleTaken(gameId, role)
     }),
 }
