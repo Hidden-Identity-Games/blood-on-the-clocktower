@@ -1,4 +1,4 @@
-import { type Script, type UnifiedGame } from './types.ts'
+import { type RoleSelection, type Script, type UnifiedGame } from './types.ts'
 
 export interface ListenToGameMessage {
   type: 'ListenToGame'
@@ -10,6 +10,7 @@ export type ObjectType = keyof ObjectShapeMap
 export interface ObjectShapeMap {
   game: UnifiedGame
   script: Script
+  roleSelect: RoleSelection
 }
 
 export interface ObjectUpdatedMessageGeneric<ObjectType extends keyof ObjectShapeMap> {

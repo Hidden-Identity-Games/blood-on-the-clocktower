@@ -6,7 +6,7 @@ import { usePlayer } from "../store/secretKey";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { PlayerWaiting } from "./PlayerWaiting";
-import { useGame } from "../store/GameContext";
+import { useGame, useRoleSelect } from "../store/GameContext";
 import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
 import { PlayerInGame } from "./PlayerInGame";
@@ -26,6 +26,7 @@ function PlayerLanding() {
   const [player, setPlayer] = usePlayer();
   const [kicked, setKicked] = useState(false);
   const { game } = useGame();
+  const { roleSelect } = useRoleSelect();
   const role = (player && game?.playersToRoles[player]) ?? null;
 
   useEffect(() => {
@@ -58,7 +59,7 @@ function PlayerLanding() {
     );
   }
 
-  if (Object.keys(game.roleBag).length === 0) {
+  if (Object.keys(roleSelect?.roleBag ?? {}).length === 0) {
     return <PlayerWaiting />;
   }
 

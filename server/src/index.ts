@@ -9,10 +9,12 @@ import { createHTTPServer } from '@trpc/server/adapters/standalone'
 
 import { gameRoutes } from './routes/game.ts'
 import { scriptRoutes } from './routes/script.ts'
+import { roleSelectRoutes } from './routes/roleSelect.ts'
 
 const appRouter = router({
   ...gameRoutes,
   ...scriptRoutes,
+  ...roleSelectRoutes,
 })
 
 const server = createHTTPServer({

@@ -5,7 +5,7 @@ import { createMessage, parseMessage } from "./messenger";
 import { Callout } from "@radix-ui/themes";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { LoadingExperience } from "../shared/LoadingExperience";
-import { Script } from "@hidden-identity/server";
+import { RoleSelection, Script } from "@hidden-identity/server";
 import { exhaustiveCheck } from "../utils/exhaustiveCheck";
 
 export function GameProvider({
@@ -17,6 +17,7 @@ export function GameProvider({
 }) {
   const [game, setGame] = useState<UnifiedGame | null>(null);
   const [script, setScript] = useState<Script | null>(null);
+  const [roleSelect, setRoleSelect] = useState<RoleSelection | null>(null);
   const unmounted = useRef(false);
 
   const contextValue = useMemo(
@@ -24,8 +25,9 @@ export function GameProvider({
       gameId,
       game: game,
       script: script,
+      roleSelect: roleSelect,
     }),
-    [gameId, game, script],
+    [gameId, game, script, roleSelect],
   );
 
   const { lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(
@@ -72,6 +74,12 @@ export function GameProvider({
       case "script": {
         if (parsedMessage.updatedId === gameId) {
           setScript(parsedMessage.nextObj);
+        }
+        return;
+      }
+      case "roleSelect": {
+        if (parsedMessage.updatedId === gameId) {
+          setRoleSelect(parsedMessage.nextObj);
         }
         return;
       }

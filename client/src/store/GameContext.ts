@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { UnifiedGame } from "./Game";
-import { Script } from "@hidden-identity/server";
+import { RoleSelection, Script } from "@hidden-identity/server";
 
 type NonNullableValues<T> = { [K in keyof T]: NonNullable<T[K]> };
 export interface GameContext {
@@ -19,12 +19,28 @@ export function useGame() {
   const game = useContext(UnifiedGameContext);
   return game;
 }
+
 export function useDefiniteGame(): NonNullableValues<GameContext> {
   const context = useContext(UnifiedGameContext);
   if (!context.game || !context.script || !context.gameId) {
     throw new Error("Not in a game?");
   }
   return context as NonNullableValues<GameContext>;
+}
+
+export interface RoleSelectContext {
+  gameId: string | null;
+  roleSelect: RoleSelection | null;
+}
+
+export const RoleSelectContext = createContext<RoleSelectContext>({
+  gameId: null,
+  roleSelect: null,
+});
+
+export function useRoleSelect() {
+  const roleSelect = useContext(RoleSelectContext);
+  return roleSelect;
 }
 
 export function useAction<Args extends Array<unknown>, T>(

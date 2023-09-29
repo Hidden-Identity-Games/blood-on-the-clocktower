@@ -2,7 +2,6 @@ import {
   addGame,
   getGame,
   retrieveGame,
-  setRoleTaken,
   updateStatus,
 } from '../database/gameDB/base.ts'
 import {
@@ -173,14 +172,5 @@ export const gameRoutes = {
       ),
     ).mutation(async ({ input: { gameId, player, alignment } }) => {
       await setAlignment(gameId, player, alignment)
-    }),
-  takeRole: playerProcedure
-    .input(
-      z.intersection(
-        gameIdShape,
-        z.object({ role: roleShape }),
-      ),
-    ).mutation(async ({ input: { gameId, role } }) => {
-      return await setRoleTaken(gameId, role)
     }),
 }

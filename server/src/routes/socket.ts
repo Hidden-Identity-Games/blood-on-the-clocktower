@@ -2,6 +2,7 @@ import { type Application } from 'express-ws'
 import { parseMessage, createMessage } from '../messenger.ts'
 import { subscribeToGame } from '../database/gameDB/base.ts'
 import { subscribeToScript } from '../database/scriptDB.ts'
+import { subscribeToRoleSelect } from '../database/roleSelectDB.ts'
 
 export function useSocket (app: Application): void {
   app.ws('/socket', (ws, req) => {
@@ -33,6 +34,16 @@ export function useSocket (app: Application): void {
                 objectType: 'script',
                 updatedId: parsedMessage.gameId,
                 nextObj: script,
+              }),
+            )
+          }).catch((e) => { console.error(e) })
+          subscribeToRoleSelect(parsedMessage.gameId, (roleSelection) => {
+            ws.send(
+              createMessage({
+                type: 'ObjectUpdated',
+                objectType: 'roleSelect',
+                updatedId: parsedMessage.gameId,
+                nextObj: roleSelection,
               }),
             )
           }).catch((e) => { console.error(e) })

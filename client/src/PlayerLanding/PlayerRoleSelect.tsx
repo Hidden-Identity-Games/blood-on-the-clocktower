@@ -2,13 +2,13 @@ import { Flex, Grid, Heading } from "@radix-ui/themes";
 import tokenBack from "../assets/token_logo.png";
 import { Role } from "@hidden-identity/server";
 import { usePlayer } from "../store/secretKey";
-import { useDefiniteGame } from "../store/GameContext";
+import { useRoleSelect } from "../store/GameContext";
 import { useAssignRole } from "../store/actions/gmPlayerActions";
 import { useTakeRole } from "../store/actions/playerActions";
 import classNames from "classnames";
 
 export function PlayerRoleSelect() {
-  const { game } = useDefiniteGame();
+  const { roleSelect } = useRoleSelect();
   const [player] = usePlayer();
   const [, isSetRoleLoading, , setRole] = useAssignRole();
   const [, , , takeRole] = useTakeRole();
@@ -17,7 +17,7 @@ export function PlayerRoleSelect() {
     <Flex className="h-full w-full" direction="column" justify="center">
       <Heading>Select a Role</Heading>
       <Grid columns="3" gap="3" width="auto">
-        {Object.entries(game.roleBag).map(([role, taken]) => (
+        {Object.entries(roleSelect?.roleBag ?? {}).map(([role, taken]) => (
           <button
             className={classNames(taken && "opacity-40")}
             disabled={taken || isSetRoleLoading}

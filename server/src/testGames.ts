@@ -40,7 +40,6 @@ export async function setupTestGames (): Promise<void> {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
-    roleBag: {},
   })
 
   await addGame('tg-wrong-way', {
@@ -65,7 +64,6 @@ export async function setupTestGames (): Promise<void> {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
-    roleBag: {},
   })
 
   await addGame('tg-broken-link', {
@@ -88,7 +86,6 @@ export async function setupTestGames (): Promise<void> {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
-    roleBag: {},
   })
 
   await addGame('tg-excluded', {
@@ -112,7 +109,6 @@ export async function setupTestGames (): Promise<void> {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
-    roleBag: {},
   })
 
   await addGame('tg-f-night', ({
@@ -128,7 +124,6 @@ export async function setupTestGames (): Promise<void> {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
-    roleBag: {},
   }))
 
   const selectorsPlayers = players.slice(0, testSelectorsScript.length)
@@ -146,7 +141,6 @@ export async function setupTestGames (): Promise<void> {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
-    roleBag: {},
   }, [...testSelectorsScript, { id: 'ravenkeeper' },
     { id: 'washerwoman' },
     { id: 'butler' }] as Script)

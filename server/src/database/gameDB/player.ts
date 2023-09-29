@@ -1,6 +1,7 @@
 import { type Role, type Alignment } from '../../types/Role.ts'
 import { type PlayerStatus } from '../../types/UnifiedGame.ts'
 import { removeKey } from '../../utils/objectUtils.ts'
+import { retrieveRoleSelect } from '../roleSelectDB.ts'
 import { UNASSIGNED, gameInProgress, retrieveGame } from './base.ts'
 
 export async function addPlayer (
@@ -203,6 +204,13 @@ export async function assignRoles (
   game.update({
     ...gameInstance,
     gameStatus: 'Setup',
+  })
+
+  const roleSelect = retrieveRoleSelect(gameId)
+  const roleSelectInstance = roleSelect.readOnce()
+
+  roleSelect.update({
+    ...roleSelectInstance,
 
     roleBag: roles
       .map((item) => ({ item, random: Math.random() }))
