@@ -1,5 +1,5 @@
 import AddPlayer from "./AddPlayer";
-import { PlayerRole } from "./PlayerRole";
+import { PlayerRoleSelect } from "./PlayerRoleSelect";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
 import { usePlayer } from "../store/secretKey";
@@ -10,6 +10,7 @@ import { useGame } from "../store/GameContext";
 import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
 import { PlayerInGame } from "./PlayerInGame";
+import PlayerRole from "./PlayerRole";
 
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -58,15 +59,11 @@ function PlayerLanding() {
   }
 
   if (Object.keys(game.roleBag).length === 0) {
-    return (
-      <>
-        <PlayerWaiting />
-      </>
-    );
+    return <PlayerWaiting />;
   }
 
   if (game.gameStatus === "Setup") {
-    return <PlayerRole />;
+    return role ? <PlayerRole role={role} /> : <PlayerRoleSelect />;
   }
 
   return <PlayerInGame />;

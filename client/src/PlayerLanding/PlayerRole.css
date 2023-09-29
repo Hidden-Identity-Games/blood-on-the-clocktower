@@ -1,0 +1,28 @@
+[data-card="true"] {
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+[data-flipped="true"] [data-card="true"] {
+  transform: rotateY(180deg);
+}
+
+[data-card-side="front"],
+[data-card-side="back"] {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+[data-card-side="back"] {
+  transform: rotateY(180deg);
+}
+
+img {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.perspective {
+  perspective: 1000px;
+}

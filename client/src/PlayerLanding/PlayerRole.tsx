@@ -1,51 +1,101 @@
-import { Flex, Grid } from "@radix-ui/themes";
-// import tokenBack from "../assets/token_logo.png";
+import { Flex } from "@radix-ui/themes";
+import "./PlayerRole.css";
+import tokenBack from "../assets/token_logo.png";
 import tokenBlank from "../assets/token_blank.png";
-// import { getCharacter } from "../assets/game_data/gameData";
+import fingerprintImage from "../assets/fingerprint.png";
+import { getCharacter } from "../assets/game_data/gameData";
 import { Role } from "@hidden-identity/server";
-// import { AlignmentText } from "../shared/RoleIcon";
+import { useState } from "react";
+import { AlignmentText } from "../shared/RoleIcon";
 import { usePlayer } from "../store/secretKey";
-import { useDefiniteGame } from "../store/GameContext";
-import { useAssignRole } from "../store/actions/gmPlayerActions";
-import { useTakeRole } from "../store/actions/playerActions";
-import classNames from "classnames";
-import { motion } from "framer-motion";
 
-export function PlayerRole() {
-  const { game } = useDefiniteGame();
+interface PlayerRoleProps {
+  role: Role;
+}
+
+function PlayerRole({ role }: PlayerRoleProps) {
   const [player] = usePlayer();
-  const [, isSetRoleLoading, , setRole] = useAssignRole();
-  const [, , , takeRole] = useTakeRole();
-
+  const [isHolding, setIsHolding] = useState(false);
   return (
-    <Flex className="h-full w-full" justify="center">
-      <Grid columns="3" gap="3" width="auto">
-        {Object.entries(game.roleBag).map(([role, taken]) => (
-          <motion.div key={role}>
-            <button
-              className={classNames(
-                taken &&
-                  game.playersToRoles[player!] === "unassigned" &&
-                  "opacity-40",
-                ![role, "unassigned"].includes(game.playersToRoles[player!]) &&
-                  "opacity-0",
-              )}
-              disabled={
-                taken ||
-                isSetRoleLoading ||
-                game.playersToRoles[player!] !== "unassigned"
-              }
-              onClick={async () => {
-                if (await takeRole(role as Role)) {
-                  setRole(player!, role as Role);
-                }
+    <Flex
+      direction="column-reverse"
+      align="center"
+      justify="between"
+      className=" flex-1 bg-transparent"
+    >
+      <button
+        data-flipper="true"
+        className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
+        onClick={() => {}}
+        onMouseDown={(e) => {
+          setIsHolding(true);
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onMouseUp={() => {
+          setIsHolding(false);
+        }}
+        onTouchStart={(e) => {
+          setIsHolding(true);
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onTouchEnd={() => {
+          setIsHolding(false);
+        }}
+      >
+        <img
+          className="h-[110px] w-[85px]"
+          onContextMenu={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+          src={fingerprintImage}
+        />
+        <div className="select-none">Hold to reveal role</div>
+      </button>
+      <div
+        className="perspective aspect-square h-1/2 p-4"
+        data-flipped={isHolding ? "true" : "false"}
+      >
+        <div className="relative h-full w-full" data-card="true">
+          <div data-card-side="front" className="h-full w-full">
+            <img
+              className="h-full w-full"
+              src={tokenBack}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
               }}
-            >
-              <img src={tokenBlank} />
-            </button>
-          </motion.div>
-        ))}
-      </Grid>
+            />
+          </div>
+          {/* token background */}
+          <div data-card-side="back" className="h-full w-full">
+            <img
+              className="h-full w-full"
+              src={tokenBlank}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+              }}
+            />
+          </div>
+          {/* Role icon */}
+          <div data-card-side="back" className="h-full w-full text-center">
+            <img
+              className="mt-3 h-full w-full"
+              src={getCharacter(role).imageSrc}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+              }}
+            />
+            <AlignmentText player={player!}>{role}</AlignmentText>
+          </div>
+        </div>
+      </div>
     </Flex>
   );
 }
+
+export default PlayerRole;
