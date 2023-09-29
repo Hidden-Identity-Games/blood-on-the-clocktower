@@ -67,15 +67,9 @@ function PlayerLanding() {
     return (
       <AnimatePresence>
         {role && role !== "unassigned" ? (
-          <motion.div
-            key="PlayerRole"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <PlayerRole role={role} />
-          </motion.div>
+          <PlayerRole role={role} />
         ) : (
-          <motion.div key="PlayerRoleSelect" exit={{ opacity: 0 }}>
+          <motion.div key="PlayerRoleSelect" exit={{ opacity: 0 }} layout>
             <PlayerRoleSelect />
           </motion.div>
         )}
