@@ -1,6 +1,6 @@
 import { applyWSSHandler } from '@trpc/server/adapters/ws'
 import { WebSocketServer } from 'ws'
-import { appRouter } from './appRouter.ts'
+import { appRouter } from '../appRouter.ts'
 import { createHTTPServer } from '@trpc/server/adapters/standalone'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -26,6 +26,7 @@ export function createServer () {
     handler.broadcastReconnectNotification()
     wss.close()
   })
+
   // @ts-expect-error Need to update TS
   server.listen(process.env.SERVER_PORT)
   const addressBase = server.server.address()

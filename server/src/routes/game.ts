@@ -20,7 +20,7 @@ import {
   setAlignment,
 } from '../database/gameDB/player.ts'
 import { setupTestGames } from '../testGames.ts'
-import { gmProcedure, playerProcedure, publicProcedure } from '../trpc.ts'
+import { gmProcedure, playerProcedure, publicProcedure } from '../trpcServerInternals/trpc.ts'
 import { z } from 'zod'
 import { alignmentShape } from '../types/Role.ts'
 import { poisonStatusShape, drunkStatusShape, customStatusShape, gameStatusShape } from '../types/UnifiedGame.ts'

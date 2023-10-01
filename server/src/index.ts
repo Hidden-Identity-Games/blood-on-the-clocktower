@@ -1,5 +1,5 @@
 import { type appRouter } from './appRouter.ts'
-import { createServer } from './createServer.ts'
+import { createServer } from './trpcServerInternals/createServer.ts'
 
 createServer()
 

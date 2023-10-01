@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+    "@typescript-eslint/explicit-function-return-type": "off"
 
   },
 };

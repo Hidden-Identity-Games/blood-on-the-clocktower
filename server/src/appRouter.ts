@@ -1,6 +1,6 @@
 import { observable } from '@trpc/server/observable'
 
-import { router, t } from './trpc.ts'
+import { router, t } from './trpcServerInternals/trpc.ts'
 
 import { gameRoutes } from './routes/game.ts'
 import { scriptRoutes } from './routes/script.ts'
@@ -13,6 +13,9 @@ type Post = MessageFromServer
 export const appRouter = router({
   ...gameRoutes,
   ...scriptRoutes,
+  healthcheck: t.procedure.query(() => {
+    return 'Ok!'
+  }),
   subscribeToGame: t.procedure.input(z.object({ gameId: z.string() })).subscription((resolver) => {
     const { gameId } = resolver.input
     return observable<Post>((emit) => {

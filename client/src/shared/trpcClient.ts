@@ -9,7 +9,7 @@ import {
 
 const wsClient = createWSClient({
   retryDelayMs: (attemptCount) => attemptCount * attemptCount * 10,
-  url: `ws://${WS_URL}`,
+  url: `wss://${WS_URL}`,
 });
 
 // Pass AppRouter as generic here. 👇 This lets the `trpc` object know

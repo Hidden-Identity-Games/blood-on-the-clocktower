@@ -1,5 +1,5 @@
 import { setScript } from '../database/scriptDB.ts'
-import { gmProcedure } from '../trpc.ts'
+import { gmProcedure } from '../trpcServerInternals/trpc.ts'
 import { gameIdShape, roleShape } from './baseApiShapes.ts'
 import { z } from 'zod'
 

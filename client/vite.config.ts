@@ -16,12 +16,20 @@ export default defineConfig((env) => ({
   },
   server: {
     port: CLIENT_PORT,
+    proxy: {
+      "/api": {
+        target: "http://localhost:6001",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+        ws: true,
+      },
+    },
   },
   define: {
     WS_URL:
       env.command === "build"
         ? process.env.SERVER_URL ??
-          '"ws://blood-on-the-clocktower.onrender.com/trpc"'
-        : `\`\${window.location.hostname}:${SERVER_PORT}\``,
+          '"wss://blood-on-the-clocktower.onrender.com/trpc"'
+        : `\`\${window.location.hostname}:${CLIENT_PORT}/api\``,
   },
 }));
