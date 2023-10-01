@@ -32,8 +32,7 @@ export function gameInProgress (game: UnifiedGame): boolean {
 export async function gameExists (gameId: string): Promise<boolean> {
   if (gameDB[gameId]) return true
 
-  // const gameFromStorage = await storage.getFile(gameId)
-  const gameFromStorage = null
+  const gameFromStorage = await storage.getFile(gameId)
   if (gameFromStorage) {
     gameDB[gameId] = new WatchableResource(gameFromStorage, gameComputer)
     gameDB[gameId].subscribe((value) => {
