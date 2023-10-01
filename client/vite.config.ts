@@ -18,7 +18,7 @@ export default defineConfig((env) => ({
     port: CLIENT_PORT,
     proxy: {
       "/api": {
-        target: "http://localhost:6001",
+        target: `http://localhost:${SERVER_PORT}`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
         ws: true,
@@ -28,8 +28,7 @@ export default defineConfig((env) => ({
   define: {
     WS_URL:
       env.command === "build"
-        ? process.env.SERVER_URL ??
-          '"wss://blood-on-the-clocktower.onrender.com/trpc"'
+        ? process.env.SERVER_URL ?? '"blood-on-the-clocktower.onrender.com"'
         : `\`\${window.location.hostname}:${CLIENT_PORT}/api\``,
   },
 }));
