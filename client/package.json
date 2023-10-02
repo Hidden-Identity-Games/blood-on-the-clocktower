@@ -12,7 +12,7 @@
     "build": "tsc && vite build",
     "build-client": "tsc && vite build",
     "build-server": "",
-    "dev": "vite --host",
+    "dev": "SERVER_PORT=6001 vite --host",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
     "preview": "vite preview",
     "start-prod": "",

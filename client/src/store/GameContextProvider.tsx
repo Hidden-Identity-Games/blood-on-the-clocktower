@@ -1,12 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { UnifiedGame } from "./Game";
 import { UnifiedGameContext } from "./GameContext";
-import { createMessage, parseMessage } from "./messenger";
 import { Callout } from "@radix-ui/themes";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import { ReadyState } from "react-use-websocket";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { Script } from "@hidden-identity/server";
-import { exhaustiveCheck } from "../utils/exhaustiveCheck";
+import { trpc } from "../shared/trpcClient";
 
 export function GameProvider({
   gameId,
@@ -16,8 +15,32 @@ export function GameProvider({
   children: React.ReactNode;
 }) {
   const [game, setGame] = useState<UnifiedGame | null>(null);
-  const [script, setScript] = useState<Script | null>(null);
-  const unmounted = useRef(false);
+  const [script, setScript] = useState<Script | null>([
+    { id: "baron" },
+    { id: "chef" },
+    { id: "empath" },
+    { id: "fortune_teller" },
+    { id: "monk" },
+    { id: "virgin" },
+    { id: "slayer" },
+    { id: "soldier" },
+    { id: "mayor" },
+    { id: "librarian" },
+    { id: "investigator" },
+    { id: "undertaker" },
+    { id: "ravenkeeper" },
+    { id: "washerwoman" },
+    { id: "butler" },
+    { id: "recluse" },
+    { id: "saint" },
+    { id: "poisoner" },
+    { id: "spy" },
+    { id: "scarlet_woman" },
+    { id: "imp" },
+  ] as Script);
+  const [readyState, setReady] = useState<ReadyState>(
+    ReadyState.UNINSTANTIATED,
+  );
 
   const contextValue = useMemo(
     () => ({
@@ -28,57 +51,31 @@ export function GameProvider({
     [gameId, game, script],
   );
 
-  const { lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(
-    WS_URL,
-    {
-      retryOnError: true,
-      shouldReconnect: (_closeEvent) => {
-        return !unmounted.current;
+  useEffect(() => {
+    const unsub = trpc.subscribeToGame.subscribe(
+      { gameId },
+      {
+        onData: (data) => {
+          if (data.objectType === "game") {
+            setGame(data.nextObj);
+          }
+          if (data.objectType === "script") {
+            setScript(data.nextObj);
+          }
+        },
+        onError: () => {},
+        onStarted: () => {
+          setReady(ReadyState.OPEN);
+        },
+        onStopped: () => {
+          setReady(ReadyState.CLOSED);
+        },
       },
-      reconnectAttempts: 10000,
-      reconnectInterval: 1000,
-    },
-  );
-
-  useEffect(() => {
+    );
     return () => {
-      unmounted.current = true;
+      unsub.unsubscribe();
     };
-  }, []);
-
-  useEffect(() => {
-    if (readyState === ReadyState.OPEN) {
-      sendJsonMessage(
-        createMessage({
-          gameId,
-          type: "ListenToGame",
-        }),
-      );
-    }
-  }, [readyState, gameId, sendJsonMessage]);
-
-  useEffect(() => {
-    if (!lastJsonMessage) {
-      return;
-    }
-    const parsedMessage = parseMessage(lastJsonMessage);
-    switch (parsedMessage.objectType) {
-      case "game": {
-        if (parsedMessage.updatedId === gameId) {
-          setGame(parsedMessage.nextObj);
-        }
-        return;
-      }
-      case "script": {
-        if (parsedMessage.updatedId === gameId) {
-          setScript(parsedMessage.nextObj);
-        }
-        return;
-      }
-      default:
-        exhaustiveCheck(parsedMessage);
-    }
-  }, [gameId, lastJsonMessage]);
+  }, [gameId]);
 
   return (
     <UnifiedGameContext.Provider value={contextValue}>
