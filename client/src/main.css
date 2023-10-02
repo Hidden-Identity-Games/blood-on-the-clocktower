@@ -7,6 +7,10 @@ body {
   -webkit-touch-callout: none !important;
 }
 
+* {
+  overscroll-behavior: contain;
+}
+
 html {
   height: -webkit-fill-available;
 }
