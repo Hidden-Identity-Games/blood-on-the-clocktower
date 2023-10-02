@@ -2,6 +2,10 @@
   transition: transform 0.5s;
   transform-style: preserve-3d;
 }
+[data-card] * {
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
 
 [data-flipped="true"] [data-card="true"] {
   transform: rotateY(180deg);
@@ -21,6 +25,8 @@
 img {
   -webkit-user-select: none;
   user-select: none;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
 }
 
 .perspective {

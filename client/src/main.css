@@ -6,10 +6,7 @@ body {
   max-height: -webkit-fill-available;
   -webkit-touch-callout: none !important;
 }
-* {
-  -webkit-user-select: none !important;
-  -webkit-touch-callout: none !important;
-}
+
 html {
   height: -webkit-fill-available;
 }
