@@ -105,7 +105,9 @@ function PlayerRole({ role }: PlayerRoleProps) {
                 event.stopPropagation();
               }}
             />
-            <AlignmentText player={player!}>{role}</AlignmentText>
+            <AlignmentText player={player!}>
+              {getCharacter(role).name}
+            </AlignmentText>
           </div>
         </div>
       </div>
