@@ -19,6 +19,7 @@ import {
   toggleDeadvote,
   setAlignment,
   setRoleTaken,
+  setPlayerHasSeenRole,
 } from '../database/gameDB/player.ts'
 import { setupTestGames } from '../testGames.ts'
 import { gmProcedure, playerProcedure, publicProcedure } from '../trpcServerInternals/trpc.ts'
@@ -184,5 +185,11 @@ export const gameRoutes = {
       ),
     ).mutation(async ({ input: { gameId, player, role } }) => {
       return await setRoleTaken(gameId, player, role)
+    }),
+  setPlayerSeenRole: playerProcedure
+    .input(
+      playerAndGameIdShape,
+    ).mutation(async ({ input: { gameId, player } }) => {
+      await setPlayerHasSeenRole(gameId, player)
     }),
 }

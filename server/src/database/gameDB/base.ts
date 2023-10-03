@@ -95,6 +95,7 @@ function createGame (): BaseUnifiedGame {
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
+    playersSeenRoles: [],
   }
 }
 

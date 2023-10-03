@@ -41,6 +41,7 @@ export interface BaseUnifiedGame {
   travelers: Record<string, boolean>
   alignmentsOverrides: Record<string, Alignment>
   roleBag: Record<Role, boolean>
+  playersSeenRoles: string[]
 }
 
 export interface WellOrderedPlayers {

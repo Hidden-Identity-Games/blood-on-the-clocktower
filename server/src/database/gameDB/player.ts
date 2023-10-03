@@ -220,3 +220,15 @@ export async function setRoleTaken (gameId: string, player: string, role: Role):
 
   return true
 }
+
+export async function setPlayerHasSeenRole (gameId: string, player: string): Promise<void> {
+  const game = await retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  if (!gameInstance.playersSeenRoles.includes(player)) {
+    game.update({
+      ...gameInstance,
+      playersSeenRoles: [...gameInstance.playersSeenRoles, player],
+    })
+  }
+}
