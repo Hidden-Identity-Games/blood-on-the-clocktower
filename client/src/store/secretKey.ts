@@ -1,9 +1,17 @@
+import { useMemo } from "react";
 import { useGame } from "./GameContext";
 import { useLocalStorage } from "./useLocalStorage";
 
 export function usePlayer(): [string | null, (key: string | null) => void] {
   const { gameId } = useGame();
-  const [value, setValue] = useLocalStorage(gameId ? `${gameId}_player` : null);
+  const localhostKeyFromUrl = useMemo(
+    () => new URLSearchParams(window.location.search).get("testPlayerKey"),
+    [gameId],
+  );
+  const localhostKey = gameId
+    ? `${gameId}${String(localhostKeyFromUrl)}_player`
+    : null;
+  const [value, setValue] = useLocalStorage(localhostKey);
 
   return [value, setValue];
 }
