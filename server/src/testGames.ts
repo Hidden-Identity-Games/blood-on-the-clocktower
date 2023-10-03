@@ -1,5 +1,6 @@
 import { UNASSIGNED, addTestGame } from './database/gameDB/base.ts'
 import { setScript } from './database/scriptDB.ts'
+import { type Role } from './types/Role.ts'
 import { type Script } from './types/Script.ts'
 import { type BaseUnifiedGame } from './types/UnifiedGame.ts'
 
@@ -118,6 +119,25 @@ export async function setupTestGames (): Promise<void> {
     gameStatus: 'Setup',
     gmSecretHash: 't',
     playersToRoles: Object.fromEntries(shuffleList(players).map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
+    deadPlayers: {},
+    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
+    playerPlayerStatuses: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+    },
+    playerNotes: {},
+    deadVotes: {},
+    travelers: {},
+    alignmentsOverrides: {},
+  }))
+
+  await addGame('tg-travelers', ({
+    gameStatus: 'Setup',
+    gmSecretHash: 't',
+    playersToRoles: {
+      ...Object.fromEntries(shuffleList(players)
+        .map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
+      'travelling billy': 'gunslinger' as Role,
+    },
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
     playerPlayerStatuses: {

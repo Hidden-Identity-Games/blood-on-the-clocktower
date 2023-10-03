@@ -13,7 +13,7 @@ import { GiScrollQuill } from "react-icons/gi";
 import React, { useState } from "react";
 import { getCharacter } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
-import { CharacterType } from "../types/script";
+import { Character, CharacterType } from "../types/script";
 import {
   PlayerFilter,
   PlayerListFilters,
@@ -31,7 +31,13 @@ export function PlayerInGame() {
   const filteredPlayers = allFilters[selectedFilter];
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
-    const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
+    const charactersFromScript =
+      script?.map(({ id }) => getCharacter(id)) ?? [];
+    const travelerCharacters = Object.values(game.playersToRoles)
+      .map((role) => getCharacter(role))
+      .filter((character) => character.team === "Traveler");
+
+    const allCharacters = [...charactersFromScript, ...travelerCharacters];
 
     const nightOrder = allCharacters
       .filter((character) => character.otherNight?.order ?? 0 > 0)
@@ -44,9 +50,10 @@ export function PlayerInGame() {
         Outsider: allCharacters.filter(({ team }) => team === "Outsider"),
         Minion: allCharacters.filter(({ team }) => team === "Minion"),
         Demon: allCharacters.filter(({ team }) => team === "Demon"),
-      },
+        Traveler: allCharacters.filter(({ team }) => team === "Traveler"),
+      } satisfies Record<CharacterType, Character[]>,
     ];
-  }, [script]);
+  }, [script, game]);
 
   return (
     <Tabs.Root
