@@ -47,7 +47,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
             }}
             src={fingerprintImage}
           />
-          <div className="select-none">Reveal Role</div>
+          <div className="select-none">Tap to reveal role</div>
         </button>
         <Button
           className="mb-6"
