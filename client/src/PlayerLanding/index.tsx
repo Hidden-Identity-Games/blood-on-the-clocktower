@@ -62,7 +62,7 @@ function PlayerLanding() {
     return <PlayerWaiting />;
   }
 
-  if (game.gameStatus === "Setup") {
+  if (!game.playersSeenRoles.includes(player)) {
     if (!role || role === "unassigned") {
       return <PlayerRoleSelect />;
     }

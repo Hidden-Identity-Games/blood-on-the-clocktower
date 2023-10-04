@@ -1,4 +1,4 @@
-import { Flex } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import "./PlayerRole.css";
 import tokenBack from "../assets/token_logo.png";
 import tokenBlank from "../assets/token_blank.png";
@@ -8,6 +8,8 @@ import { Role } from "@hidden-identity/server";
 import { useState } from "react";
 import { AlignmentText } from "../shared/RoleIcon";
 import { usePlayer } from "../store/secretKey";
+import { useSetPlayerSeenRole } from "../store/actions/playerActions";
+import classNames from "classnames";
 
 interface PlayerRoleProps {
   role: Role;
@@ -15,7 +17,9 @@ interface PlayerRoleProps {
 
 function PlayerRole({ role }: PlayerRoleProps) {
   const [player] = usePlayer();
-  const [isHolding, setIsHolding] = useState(false);
+  const [hasSeenRole, setHasSeenRole] = useState(false);
+  const [, , , setPlayerRoleSeen] = useSetPlayerSeenRole();
+
   return (
     <Flex
       direction="column-reverse"
@@ -23,40 +27,40 @@ function PlayerRole({ role }: PlayerRoleProps) {
       justify="between"
       className=" flex-1 bg-transparent"
     >
-      <button
-        data-flipper="true"
-        className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
-        onClick={() => {}}
-        onMouseDown={(e) => {
-          setIsHolding(true);
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        onMouseUp={() => {
-          setIsHolding(false);
-        }}
-        onTouchStart={(e) => {
-          setIsHolding(true);
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        onTouchEnd={() => {
-          setIsHolding(false);
-        }}
-      >
-        <img
-          className="h-[110px] w-[85px]"
-          onContextMenu={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
+      <Flex direction="column" justify="center">
+        <button
+          data-flipper="true"
+          className={classNames(
+            "mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700",
+            hasSeenRole && "opacity-0",
+          )}
+          disabled={hasSeenRole}
+          onClick={() => {
+            setHasSeenRole(true);
           }}
-          src={fingerprintImage}
-        />
-        <div className="select-none">Hold to reveal role</div>
-      </button>
+        >
+          <img
+            className="h-[110px] w-[85px]"
+            onContextMenu={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
+            src={fingerprintImage}
+          />
+          <div className="select-none">Tap to reveal role</div>
+        </button>
+        <Button
+          className="mb-6"
+          disabled={!hasSeenRole}
+          onClick={() => setPlayerRoleSeen(player!)}
+        >
+          I Know My Role
+        </Button>
+      </Flex>
+
       <div
         className="perspective aspect-square h-1/2 p-4"
-        data-flipped={isHolding ? "true" : "false"}
+        data-flipped={hasSeenRole ? "true" : "false"}
       >
         <div className="relative h-full w-full" data-card="true">
           <div data-card-side="front" className="h-full w-full">
@@ -90,7 +94,9 @@ function PlayerRole({ role }: PlayerRoleProps) {
                 event.stopPropagation();
               }}
             />
-            <AlignmentText player={player!}>{role}</AlignmentText>
+            <AlignmentText player={player!}>
+              {getCharacter(role).name}
+            </AlignmentText>
           </div>
         </div>
       </div>

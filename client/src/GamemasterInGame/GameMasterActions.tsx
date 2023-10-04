@@ -26,6 +26,8 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
   const availableRolesList = Object.keys(selectedRoles).filter(
     (key) => !!selectedRoles[key as Role],
   ) as Role[];
+  const allPlayersSeenRoles =
+    game.playersSeenRoles.length === game.playerList.length;
 
   const problems =
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
@@ -103,7 +105,7 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
       )}
       {game.gameStatus === "Setup" && (
         <>
-          <StartFirstNightButton />
+          <StartFirstNightButton disabled={!allPlayersSeenRoles} />
           <ExportButton />
         </>
       )}
@@ -155,6 +157,12 @@ function NewGameButton() {
   );
 }
 
-function StartFirstNightButton() {
-  return <Button className="">Start first night</Button>;
+interface StartFirstNightButtonProps {
+  disabled?: boolean;
+}
+
+function StartFirstNightButton({
+  disabled = false,
+}: StartFirstNightButtonProps) {
+  return <Button disabled={disabled}>Start first night</Button>;
 }
