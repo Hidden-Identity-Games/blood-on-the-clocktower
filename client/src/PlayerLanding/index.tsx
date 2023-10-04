@@ -63,8 +63,10 @@ function PlayerLanding() {
   }
 
   if (game.gameStatus === "Setup") {
-    if (role && role !== "unassigned") return <PlayerRole role={role} />;
-    return <PlayerRoleSelect />;
+    if (!role || role === "unassigned") {
+      return <PlayerRoleSelect />;
+    }
+    return <PlayerRole role={role} />;
   }
 
   return <PlayerInGame />;
