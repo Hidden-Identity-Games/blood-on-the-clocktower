@@ -25,7 +25,7 @@ export function PlayerRoleSelect() {
           <button
             className={classNames(taken && "opacity-40")}
             disabled={taken}
-            onClick={async () => {
+            onClick={() => {
               takeRole(player!, role as Role);
             }}
           >
