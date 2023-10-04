@@ -92,15 +92,12 @@ export function PlayerInGame() {
         </Tabs.Trigger>
       </Tabs.List>
 
-      {selectedTab === "night-order" && (
-        <Button
-          className="sticky mx-2 my-1"
-          size="1"
-          variant={isFirstNightSort ? "solid" : "outline"}
-          onClick={() => setIsFirstNightSort((prev) => !prev)}
-        >
-          {isFirstNightSort ? "First Night" : "Other Night"}
-        </Button>
+      {selectedTab === "night-order" && isFirstNightSort && (
+        <NightOrderSortButton
+          className="mx-2 my-1"
+          isFirstNightSort={isFirstNightSort}
+          setIsFirstNightSort={setIsFirstNightSort}
+        />
       )}
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
@@ -147,6 +144,13 @@ export function PlayerInGame() {
       </Tabs.Content>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="night-order">
+        {!isFirstNightSort && (
+          <NightOrderSortButton
+            className="mx-2 my-1 w-11/12"
+            isFirstNightSort={isFirstNightSort}
+            setIsFirstNightSort={setIsFirstNightSort}
+          />
+        )}
         <Flex className="m-2" direction="column" gap="3">
           {nightOrder[isFirstNightSort ? "firstNight" : "otherNight"].map(
             (character) => (
@@ -236,5 +240,27 @@ export function PlayerInGame() {
         </Flex>
       </Tabs.Content>
     </Tabs.Root>
+  );
+}
+
+interface NightOrderSortButtonProps {
+  isFirstNightSort: boolean;
+  setIsFirstNightSort: React.Dispatch<React.SetStateAction<boolean>>;
+  className: string;
+}
+function NightOrderSortButton({
+  isFirstNightSort,
+  setIsFirstNightSort,
+  className,
+}: NightOrderSortButtonProps) {
+  return (
+    <Button
+      className={className}
+      size="1"
+      variant={isFirstNightSort ? "solid" : "outline"}
+      onClick={() => setIsFirstNightSort((prev) => !prev)}
+    >
+      {isFirstNightSort ? "First Night" : "Other Night"}
+    </Button>
   );
 }
