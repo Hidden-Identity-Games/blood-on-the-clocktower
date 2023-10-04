@@ -8,7 +8,8 @@ import { Role } from "@hidden-identity/server";
 import { useState } from "react";
 import { AlignmentText } from "../shared/RoleIcon";
 import { usePlayer } from "../store/secretKey";
-import { useSetPlayerRoleSeen } from "../store/actions/playerActions";
+import { useSetPlayerSeenRole } from "../store/actions/playerActions";
+import classNames from "classnames";
 
 interface PlayerRoleProps {
   role: Role;
@@ -17,7 +18,7 @@ interface PlayerRoleProps {
 function PlayerRole({ role }: PlayerRoleProps) {
   const [player] = usePlayer();
   const [hasSeenRole, setHasSeenRole] = useState(false);
-  const [, , , setPlayerRoleSeen] = useSetPlayerRoleSeen();
+  const [, , , setPlayerRoleSeen] = useSetPlayerSeenRole();
 
   return (
     <Flex
@@ -29,7 +30,10 @@ function PlayerRole({ role }: PlayerRoleProps) {
       <Flex direction="column" justify="center">
         <button
           data-flipper="true"
-          className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
+          className={classNames(
+            "mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700",
+            hasSeenRole && "opacity-0",
+          )}
           disabled={hasSeenRole}
           onClick={() => {
             setHasSeenRole(true);
@@ -43,7 +47,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
             }}
             src={fingerprintImage}
           />
-          <div className="select-none">Hold to reveal role</div>
+          <div className="select-none">Reveal Role</div>
         </button>
         <Button
           className="mb-6"

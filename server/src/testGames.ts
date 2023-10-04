@@ -133,8 +133,8 @@ export async function setupTestGames (): Promise<void> {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
-    playersSeenRoles: [],
     roleBag: {},
+    playersSeenRoles: [],
   }))
 
   await addGame('tg-travelers', ({
@@ -155,6 +155,7 @@ export async function setupTestGames (): Promise<void> {
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
+    playersSeenRoles: [],
   }))
 
   const selectorsPlayers = players.slice(0, testSelectorsScript.length)

@@ -54,10 +54,10 @@ export function useTakeRole() {
     }
 
     return await trpc.takeRole.mutate({ gameId, player, role });
-  }
+  });
 }
 
-export function useSetPlayerRoleSeen() {
+export function useSetPlayerSeenRole() {
   const { gameId } = useGame();
 
   return useAction(async (player: string) => {
