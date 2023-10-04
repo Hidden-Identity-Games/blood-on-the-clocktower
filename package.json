@@ -9,6 +9,7 @@
     "node": ">=16.0.0 <17.0.0"
   },
   "scripts": {
+    "e2e-test": "pnpm run -r e2e-test",
     "updateJson": "node ./client/src/assets/game_data/modifyJson.cjs",
     "dev": "pnpm run -r --parallel dev",
     "build-client": "pnpm run -r build-client",
