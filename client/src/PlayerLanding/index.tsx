@@ -10,6 +10,7 @@ import { useGame } from "../store/GameContext";
 import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
 import { PlayerInGame } from "./PlayerInGame";
+import { PlayerRoleSelect } from "./PlayerRoleSelect";
 
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -57,16 +58,13 @@ function PlayerLanding() {
     );
   }
 
-  if (!role || role === "unassigned") {
-    return (
-      <>
-        <PlayerWaiting />
-      </>
-    );
+  if (Object.keys(game.roleBag ?? {}).length === 0) {
+    return <PlayerWaiting />;
   }
 
   if (game.gameStatus === "Setup") {
-    return <PlayerRole role={role} />;
+    if (role && role !== "unassigned") return <PlayerRole role={role} />;
+    return <PlayerRoleSelect />;
   }
 
   return <PlayerInGame />;

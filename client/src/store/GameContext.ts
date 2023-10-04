@@ -27,13 +27,13 @@ export function useDefiniteGame(): NonNullableValues<GameContext> {
   return context as NonNullableValues<GameContext>;
 }
 
-export function useAction<Args extends Array<unknown>>(
-  action: (...args: Args) => Promise<void>,
+export function useAction<Args extends Array<unknown>, T>(
+  action: (...args: Args) => Promise<T | undefined>,
 ): [
   error: string | null,
   isLoading: boolean,
   succeeded: boolean,
-  action: (...args: Args) => void,
+  action: (...args: Args) => Promise<T | undefined>,
   clear: () => void,
 ] {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,8 +50,9 @@ export function useAction<Args extends Array<unknown>>(
       setSucceeded(false);
       try {
         if (args !== null) {
-          await action(...args);
+          const res = await action(...args);
           setSucceeded(true);
+          return res;
         }
       } catch (e) {
         setError((e as Error).message);
