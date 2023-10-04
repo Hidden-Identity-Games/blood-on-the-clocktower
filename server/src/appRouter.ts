@@ -19,6 +19,7 @@ export const appRouter = router({
   subscribeToGame: t.procedure.input(z.object({ gameId: z.string() })).subscription((resolver) => {
     const { gameId } = resolver.input
     return observable<Post>((emit) => {
+      // This is all so wonky. We need to make sure to await our promises, otherwise errors will crash the server.
       // TODO: Fix this, async setup isn't supported.
       const gameUnsubPromise = subscribeToGame(gameId, (game) => {
         emit.next(
@@ -29,21 +30,31 @@ export const appRouter = router({
             nextObj: game,
           },
         )
-        const scriptUnsubPromise = subscribeToScript(gameId, (script) => {
-          emit.next(
-            {
-              type: 'ObjectUpdated',
-              objectType: 'script',
-              updatedId: gameId,
-              nextObj: script,
-            },
-          )
-        })
-        return async () => {
-          (await gameUnsubPromise)();
-          (await scriptUnsubPromise)()
-        }
+      }).catch(e => {
+        emit.error(e)
+        console.error(e)
+        return () => {}
       })
+      const scriptUnsubPromise = subscribeToScript(gameId, (script) => {
+        emit.next(
+          {
+            type: 'ObjectUpdated',
+            objectType: 'script',
+            updatedId: gameId,
+            nextObj: script,
+          },
+        )
+      }).catch(e => {
+        emit.error(e)
+        console.error(e)
+        return () => {}
+      })
+
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      return async () => {
+        (await gameUnsubPromise)();
+        (await scriptUnsubPromise)()
+      }
     })
   }),
 })
