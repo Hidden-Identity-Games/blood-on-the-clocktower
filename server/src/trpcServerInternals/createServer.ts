@@ -1,39 +1,56 @@
 import { applyWSSHandler } from '@trpc/server/adapters/ws'
 import { WebSocketServer } from 'ws'
 import { appRouter } from '../appRouter.ts'
-import { createHTTPServer } from '@trpc/server/adapters/standalone'
+import { createHTTPHandler } from '@trpc/server/adapters/standalone'
 import cors from 'cors'
+import http from 'http'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createServer () {
-  const server = createHTTPServer({
+  const handler = createHTTPHandler({
     middleware: cors(),
     router: appRouter,
     onError: (error) => { console.log(error.error.message) },
   })
 
-  const wss = new WebSocketServer({
-    server: server.server,
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const server = http.createServer(async (req, res) => {
+    try {
+      await handler(req, res)
+    } catch (e) {
+      console.error(e)
+    }
   })
 
-  const handler = applyWSSHandler({ wss, router: appRouter })
+  const wss = new WebSocketServer({
+    server,
+  })
+
+  const wssHandler = applyWSSHandler({ wss, router: appRouter })
   wss.on('connection', (ws) => {
     console.log(`➕➕ Connection (${wss.clients.size})`)
     ws.once('close', () => {
       console.log(`➖➖ Connection (${wss.clients.size})`)
     })
   })
+
+  wss.on('error', (e) => {
+    console.error(e)
+  })
+
+  server.on('error', (e) => {
+    console.error(e)
+  })
+
   process.on('SIGTERM', () => {
     console.log('SIGTERM')
-    handler.broadcastReconnectNotification()
+    wssHandler.broadcastReconnectNotification()
     wss.close()
   })
 
-  // @ts-expect-error Need to update TS
   server.listen(process.env.SERVER_PORT)
-  const addressBase = server.server.address()
-  const port = typeof addressBase === 'string' ? '???' : addressBase?.port
-  console.log(`✅ WebSocket Server listening on https://localhost:${port}`)
+
+  console.log(`✅ WebSocket Server listening on https://localhost:${process.env.SERVER_PORT}`)
 
   return server
 }
