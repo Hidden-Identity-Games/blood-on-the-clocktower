@@ -71,7 +71,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   // webServer: {
-  //   command: "pnpm run dev",
+  //   command: "cd ../ && pnpm run dev",
   //   url: "https://localhost:3000",
   //   reuseExistingServer: true,
   //   ignoreHTTPSErrors: true,

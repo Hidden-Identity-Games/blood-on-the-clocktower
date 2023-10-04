@@ -1,0 +1,26 @@
+{
+  "name": "e2es",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "e2e-test": "playwright test",
+    "dev": "",
+    "build-client": "",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.38.1",
+    "@types/uuid": "^9.0.2",
+    "uuid": "^9.0.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "eslint-plugin-tailwindcss": "^3.13.0",
+    "prettier": "^3.0.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
