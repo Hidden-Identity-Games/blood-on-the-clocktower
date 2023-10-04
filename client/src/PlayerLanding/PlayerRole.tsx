@@ -28,14 +28,19 @@ export function PlayerRole({ role }: PlayerRoleProps) {
     >
       <Flex direction="column" justify="center">
         {hasSeenRole ? (
-          <Text className="m-6">
-            <i>{getCharacter(role).ability}</i>
-          </Text>
+          <>
+            <Text className="m-5 text-center">
+              <i>{getCharacter(role).ability}</i>
+            </Text>
+            <Text className="mb-4 text-center" size="1" weight="light">
+              You don't need to memorize this ability
+            </Text>
+          </>
         ) : (
           <RevealRoleButton setHasSeenRole={setHasSeenRole} />
         )}
         <Button
-          className="mx-3 mb-6"
+          className="mx-3 mb-[65px]"
           disabled={!hasSeenRole}
           onClick={() => setPlayerRoleSeen(player!)}
         >
