@@ -48,11 +48,11 @@ export function useKickPlayer() {
 export function useTakeRole() {
   const { gameId } = useGame();
 
-  return useAction(async (role: Role) => {
+  return useAction(async (player: string, role: Role) => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
 
-    return await trpc.takeRole.mutate({ role, gameId });
+    return await trpc.takeRole.mutate({ gameId, player, role });
   });
 }

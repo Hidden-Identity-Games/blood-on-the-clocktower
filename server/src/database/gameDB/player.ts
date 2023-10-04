@@ -206,7 +206,7 @@ export async function assignRoles (
   })
 }
 
-export async function setRoleTaken (gameId: string, role: Role): Promise<boolean> {
+export async function setRoleTaken (gameId: string, player: string, role: Role): Promise<boolean> {
   const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
@@ -215,6 +215,7 @@ export async function setRoleTaken (gameId: string, role: Role): Promise<boolean
   game.update({
     ...gameInstance,
     roleBag: { ...gameInstance.roleBag, [role]: true },
+    playersToRoles: { ...gameInstance.playersToRoles, [player]: role },
   })
 
   return true

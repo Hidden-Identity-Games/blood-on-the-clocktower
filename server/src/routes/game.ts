@@ -179,10 +179,10 @@ export const gameRoutes = {
   takeRole: playerProcedure
     .input(
       z.intersection(
-        gameIdShape,
+        playerAndGameIdShape,
         z.object({ role: roleShape }),
       ),
-    ).mutation(async ({ input: { gameId, role } }) => {
-      return await setRoleTaken(gameId, role)
+    ).mutation(async ({ input: { gameId, player, role } }) => {
+      return await setRoleTaken(gameId, player, role)
     }),
 }
