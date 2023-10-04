@@ -16,7 +16,6 @@ interface PlayerRoleProps {
 
 function PlayerRole({ role }: PlayerRoleProps) {
   const [player] = usePlayer();
-  const [isHolding, setIsHolding] = useState(false);
   const [hasSeenRole, setHasSeenRole] = useState(false);
   const [, , , setPlayerRoleSeen] = useSetPlayerRoleSeen();
 
@@ -31,23 +30,9 @@ function PlayerRole({ role }: PlayerRoleProps) {
         <button
           data-flipper="true"
           className="mb-2 flex w-full flex-col items-center justify-center py-6 text-red-700"
-          onMouseDown={(e) => {
-            setIsHolding(true);
+          disabled={hasSeenRole}
+          onClick={() => {
             setHasSeenRole(true);
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-          onMouseUp={() => {
-            setIsHolding(false);
-          }}
-          onTouchStart={(e) => {
-            setIsHolding(true);
-            setHasSeenRole(true);
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-          onTouchEnd={() => {
-            setIsHolding(false);
           }}
         >
           <img
@@ -71,7 +56,7 @@ function PlayerRole({ role }: PlayerRoleProps) {
 
       <div
         className="perspective aspect-square h-1/2 p-4"
-        data-flipped={isHolding ? "true" : "false"}
+        data-flipped={hasSeenRole ? "true" : "false"}
       >
         <div className="relative h-full w-full" data-card="true">
           <div data-card-side="front" className="h-full w-full">
