@@ -13,6 +13,12 @@ dist-ssr
 *.local
 server/declarations
 
+
+/e2es/test-results/
+/e2es/playwright-report/
+/e2es/playwright/.cache/
+
+
 # Editor directories and files
 !.vscode/extensions.json
 .idea
