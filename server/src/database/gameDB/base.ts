@@ -94,6 +94,7 @@ function createGame (): BaseUnifiedGame {
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
+    roleBag: {},
   }
 }
 

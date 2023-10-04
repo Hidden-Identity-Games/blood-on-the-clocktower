@@ -18,6 +18,7 @@ import {
   setPlayerOrder,
   toggleDeadvote,
   setAlignment,
+  setRoleTaken,
 } from '../database/gameDB/player.ts'
 import { setupTestGames } from '../testGames.ts'
 import { gmProcedure, playerProcedure, publicProcedure } from '../trpcServerInternals/trpc.ts'
@@ -174,5 +175,14 @@ export const gameRoutes = {
       ),
     ).mutation(async ({ input: { gameId, player, alignment } }) => {
       await setAlignment(gameId, player, alignment)
+    }),
+  takeRole: playerProcedure
+    .input(
+      z.intersection(
+        playerAndGameIdShape,
+        z.object({ role: roleShape }),
+      ),
+    ).mutation(async ({ input: { gameId, player, role } }) => {
+      return await setRoleTaken(gameId, player, role)
     }),
 }

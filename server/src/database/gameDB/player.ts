@@ -192,16 +192,31 @@ export async function assignRoles (
     ...gameInstance,
     gameStatus: 'Setup',
 
-    playersToRoles: roles
+    roleBag: roles
       .map((item) => ({ item, random: Math.random() }))
       .sort((a, b) => a.random - b.random)
       .map((element) => element.item)
-      .reduce<Record<string, Role>>(
-      (acc, item, idx) => ({
+      .reduce<Record<Role, boolean>>(
+      (acc, item) => ({
         ...acc,
-        [playerIdList[idx]]: item,
+        [item]: false,
       }),
       {},
     ),
   })
+}
+
+export async function setRoleTaken (gameId: string, player: string, role: Role): Promise<boolean> {
+  const game = await retrieveGame(gameId)
+  const gameInstance = game.readOnce()
+
+  if (gameInstance.roleBag[role]) return false
+
+  game.update({
+    ...gameInstance,
+    roleBag: { ...gameInstance.roleBag, [role]: true },
+    playersToRoles: { ...gameInstance.playersToRoles, [player]: role },
+  })
+
+  return true
 }
