@@ -1,4 +1,4 @@
-import { Flex, Heading, Tabs, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Tabs, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
@@ -26,6 +26,7 @@ export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
+  const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
@@ -39,9 +40,18 @@ export function PlayerInGame() {
 
     const allCharacters = [...charactersFromScript, ...travelerCharacters];
 
-    const nightOrder = allCharacters
-      .filter((character) => character.otherNight?.order ?? 0 > 0)
-      .sort((a, b) => (a.otherNight?.order ?? 0) - (b.otherNight?.order ?? 0));
+    const nightOrder = {
+      otherNight: allCharacters
+        .filter((character) => character.otherNight?.order ?? 0 > 0)
+        .sort(
+          (a, b) => (a.otherNight?.order ?? 0) - (b.otherNight?.order ?? 0),
+        ),
+      firstNight: allCharacters
+        .filter((character) => character.firstNight?.order ?? 0 > 0)
+        .sort(
+          (a, b) => (a.firstNight?.order ?? 0) - (b.firstNight?.order ?? 0),
+        ),
+    };
 
     return [
       nightOrder,
@@ -81,6 +91,17 @@ export function PlayerInGame() {
           {selectedTab === "players" && "Players"}
         </Tabs.Trigger>
       </Tabs.List>
+
+      {selectedTab === "night-order" && (
+        <Button
+          className="sticky mx-2 my-1"
+          size="1"
+          variant={isFirstNightSort ? "solid" : "outline"}
+          onClick={() => setIsFirstNightSort((prev) => !prev)}
+        >
+          {isFirstNightSort ? "First Night" : "Other Night"}
+        </Button>
+      )}
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
         <Flex className="m-2" direction="column" gap="3">
@@ -127,19 +148,20 @@ export function PlayerInGame() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="night-order">
         <Flex className="m-2" direction="column" gap="3">
-          {nightOrder.map((character) => (
-            <Flex key={character.id} gap="2">
-              <Flex direction="column">
-                {/* <img src={char.imageSrc} className="h-5 w-5" /> */}
-                <Heading size="2" className="flex-1">
-                  <CharacterName role={character.id} />
-                </Heading>
-                <Text size="1" weight="light" className="pl-5">
-                  {character.ability}
-                </Text>
+          {nightOrder[isFirstNightSort ? "firstNight" : "otherNight"].map(
+            (character) => (
+              <Flex key={character.id} gap="2">
+                <Flex direction="column">
+                  <Heading size="2" className="flex-1">
+                    <CharacterName role={character.id} />
+                  </Heading>
+                  <Text size="1" weight="light" className="pl-5">
+                    {character.ability}
+                  </Text>
+                </Flex>
               </Flex>
-            </Flex>
-          ))}
+            ),
+          )}
         </Flex>
       </Tabs.Content>
 
