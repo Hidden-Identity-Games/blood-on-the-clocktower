@@ -148,5 +148,6 @@ function ValidateCustomScript(script: string): Script {
       )} is invalid.  Should match { 'id': '<role_name>' }"`,
     );
   }
-  return parsed;
+  const parsedWithoutMeta = parsed.filter((char) => char.id[0] !== "_");
+  return parsedWithoutMeta;
 }
