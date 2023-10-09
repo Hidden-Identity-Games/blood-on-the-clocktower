@@ -1306,7 +1306,7 @@ export const characters: CharacterDefinition[] = [
     remindersGlobal: ["Is the Alchemist"],
     setup: false,
     ability: "You have a not-in-play Minion ability.",
-    imageSrc: "",
+    imageSrc: "alchemist.png",
     firstNight: {
       reminder: "Show the Alchemist a not-in-play Minion token",
       order: 3,
@@ -1329,7 +1329,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You do not know what your ability is. Each day, privately guess what it is: you learn how accurate you are.",
-    imageSrc: "",
+    imageSrc: "amnesiac.png",
     firstNight: {
       reminder:
         "Decide the Amnesiac's entire ability. If the Amnesiac's ability causes them to wake tonight: Wake the Amnesiac and run their ability.",
@@ -1350,7 +1350,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "The Storyteller can break the game rules & if executed, good wins, even if you are dead. [No evil characters]",
-    imageSrc: "",
+    imageSrc: "atheist.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1369,7 +1369,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "Each night, you learn 1 player of each character type, until there are no more types to learn. [+1 Outsider]",
-    imageSrc: "",
+    imageSrc: "balloonist.png",
     firstNight: {
       reminder:
         "Choose a character type. Point to a player whose character is of that type. Place the Balloonist's Seen reminder next to that character.",
@@ -1398,7 +1398,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "You start knowing 1 evil player. If the player you know dies, you learn another evil player tonight. [1 Townsfolk is evil]",
-    imageSrc: "",
+    imageSrc: "bountyhunter.png",
     firstNight: {
       reminder:
         "Point to 1 evil player. Wake the townsfolk who is evil and show them the 'You are' card and the thumbs down evil sign.",
@@ -1425,7 +1425,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You have the ability of the recently killed executee. If they are evil, you are poisoned until a good player dies by execution.",
-    imageSrc: "",
+    imageSrc: "cannibal.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1438,7 +1438,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "If the Demon kills the King, you learn which player is the Demon. [+ the King]",
-    imageSrc: "",
+    imageSrc: "choirboy.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1462,7 +1462,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, you become the alignment of an alive neighbour. If all good players choose to join your cult, your team wins.",
-    imageSrc: "",
+    imageSrc: "cultleader.png",
     firstNight: {
       reminder:
         "If the cult leader changed alignment, show them the thumbs up good signal of the thumbs down evil signal accordingly.",
@@ -1489,7 +1489,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, at night, choose which Minions or which Demon is in play.",
-    imageSrc: "",
+    imageSrc: "engineer.png",
     firstNight: {
       reminder:
         "The Engineer shows a 'no' head signal, or points to a Demon or points to the relevant number of Minions. If the Engineer chose characters, replace the Demon or Minions with the choices, then wake the relevant players and show them the You are card and the relevant character tokens.",
@@ -1517,7 +1517,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "If you die at night, an alive good player becomes a Farmer.",
-    imageSrc: "",
+    imageSrc: "farmer.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1538,7 +1538,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, during the day, visit the Storyteller for some advice to help you win.",
-    imageSrc: "",
+    imageSrc: "fisherman.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1551,7 +1551,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, you learn which alignment the Storyteller believes is winning: good, evil, or neither.",
-    imageSrc: "",
+    imageSrc: "general.png",
     firstNight: {
       reminder:
         "Show the General thumbs up for good winning, thumbs down for evil winning or thumb to the side for neither.",
@@ -1572,7 +1572,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "Once per game, at night, choose a living player: the Damsel, if chosen, becomes a not-in-play Townsfolk. [+the Damsel]",
-    imageSrc: "",
+    imageSrc: "huntsman.png",
     firstNight: {
       reminder:
         "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
@@ -1609,7 +1609,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, if the dead outnumber the living, you learn 1 alive character. The Demon knows who you are.",
-    imageSrc: "",
+    imageSrc: "king.png",
     firstNight: {
       reminder:
         "Wake the Demon, show them the 'This character selected you' card, show the King token and point to the King player.",
@@ -1640,7 +1640,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a living player: if good, they die, but they are the only player that can die tonight.",
-    imageSrc: "",
+    imageSrc: "lycanthrope.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1657,7 +1657,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "The Demon thinks you are a Minion. Minions think you are a Demon.",
-    imageSrc: "",
+    imageSrc: "magician.png",
     firstNight: {
       reminder:
         "When you wake the minions, show them both the magician and the demon.  When you wake the Demon, show them all minions and the magician",
@@ -1674,7 +1674,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Once per game, at night, choose a player: they learn who you are.",
-    imageSrc: "",
+    imageSrc: "nightwatchman.png",
     firstNight: {
       reminder:
         "The Nightwatchman may point to a player. Wake that player, show the 'This character selected you' card and the Nightwatchman token, then point to the Nightwatchman player.",
@@ -1701,7 +1701,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Seen"],
     setup: false,
     ability: "You start knowing 3 players, 1 and only 1 of which is evil.",
-    imageSrc: "",
+    imageSrc: "noble.png",
     firstNight: {
       reminder:
         "Point to 3 players including one evil player, in no particular order.",
@@ -1726,7 +1726,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You start knowing 1 in-play Townsfolk. If you were mad that you were this character, you gain their ability when they die.",
-    imageSrc: "",
+    imageSrc: "pixie.png",
     firstNight: {
       reminder: "Show the Pixie 1 in-play Townsfolk character token.",
       order: 29,
@@ -1749,7 +1749,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Minions & Demons do not know each other. If you die, they learn who each other are that night.",
-    imageSrc: "",
+    imageSrc: "poppygrower.png",
     firstNight: {
       reminder: "Do not inform the Demon/Minions who each other are",
       order: 4,
@@ -1772,7 +1772,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player: a Minion, if chosen, learns this. All chosen Minions have no ability.",
-    imageSrc: "",
+    imageSrc: "preacher.png",
     firstNight: {
       reminder:
         "The Preacher chooses a player. If a Minion is chosen, wake the Minion and show the 'This character selected you' card and then the Preacher token.",
@@ -1799,7 +1799,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, if either good living neighbour is drunk or poisoned, you die.",
-    imageSrc: "",
+    imageSrc: "acrobat.png",
     firstNight: null,
     otherNight: {
       reminder:
@@ -1816,7 +1816,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "All Minions know you are in play. If a Minion publicly guesses you (once), your team loses.",
-    imageSrc: "",
+    imageSrc: "damsel.png",
     firstNight: {
       reminder:
         "Wake all the Minions, show them the 'This character selected you' card and the Damsel token.",
@@ -1848,7 +1848,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You may only nominate once per game. When you do, if the nominee is not the Demon, they die.",
-    imageSrc: "",
+    imageSrc: "golem.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1860,7 +1860,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "Whoever wins, loses & whoever loses, wins, even if you are dead.",
-    imageSrc: "",
+    imageSrc: "heretic.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1873,7 +1873,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If you were the player most responsible for your team losing, you change alignment & win, even if dead.",
-    imageSrc: "",
+    imageSrc: "politician.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1886,7 +1886,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "1 player is drunk, even if you die. If you guess (once) who it is, learn the Demon player, but guess wrong & get false info.",
-    imageSrc: "",
+    imageSrc: "puzzlemaster.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1898,7 +1898,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     ability: "Minions start knowing 3 not-in-play characters.",
-    imageSrc: "",
+    imageSrc: "snitch.png",
     firstNight: {
       reminder:
         "After Minion info wake each Minion and show them three not-in-play character tokens. These may be the same or different to each other and the ones shown to the Demon.",
@@ -1918,7 +1918,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If you are executed, all but 3 players die. 1 minute later, the player with the most players pointing at them dies.",
-    imageSrc: "",
+    imageSrc: "boomdandy.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1931,7 +1931,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night, choose a player. If you nominate & execute them, their team loses. All players know if you choose a new player.",
-    imageSrc: "",
+    imageSrc: "fearmonger.png",
     firstNight: {
       reminder:
         "The Fearmonger points to a player. Place the Fear token next to that player and announce that a new player has been selected with the Fearmonger ability.",
@@ -1952,7 +1952,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If you publicly claim to be the Goblin when nominated & are executed that day, your team wins.",
-    imageSrc: "",
+    imageSrc: "goblin.png",
     firstNight: null,
     otherNight: null,
   },
@@ -1965,7 +1965,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "Each night*, a player might die. Executions fail if only evil voted. You register as a Minion too. [Most players are Legion]",
-    imageSrc: "",
+    imageSrc: "legion.png",
     firstNight: null,
     otherNight: {
       reminder: "Choose a player, that player dies.",
@@ -1988,7 +1988,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "If more than 1 good player is executed, you win. All players know you are in play. After day 5, evil wins.",
-    imageSrc: "",
+    imageSrc: "leviathan.png",
     firstNight: {
       reminder:
         "Place the Leviathan 'Day 1' marker. Announce 'The Leviathan is in play; this is Day 1.'",
@@ -2009,7 +2009,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "You think you are a good character but you are not. The Demon knows who you are. [You neighbour the Demon]",
-    imageSrc: "",
+    imageSrc: "marionette.png",
     firstNight: {
       reminder:
         "Select one of the good players next to the Demon and place the Is the Marionette reminder token. Wake the Demon and show them the Marionette.",
@@ -2033,7 +2033,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "You start knowing a secret word. The 1st good player to say this word becomes evil that night.",
-    imageSrc: "",
+    imageSrc: "mezepheles.png",
     firstNight: {
       reminder: "Show the Mezepheles their secret word.",
       order: 27,
@@ -2059,7 +2059,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each day, before nominations, you may publicly choose a player: they die. If executed, you only die if you lose roshambo.",
-    imageSrc: "",
+    imageSrc: "psychopath.png",
     firstNight: null,
     otherNight: null,
   },
@@ -2072,7 +2072,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "Each night*, choose a player: they die. You start by choosing an alive player: they are poisoned - you die if & only if they die.",
-    imageSrc: "",
+    imageSrc: "lleech.png",
     firstNight: {
       reminder:
         "The Lleech points to a player. Place the Poisoned reminder token.",
@@ -2092,7 +2092,7 @@ export const characters: CharacterDefinition[] = [
     setup: true,
     ability:
       "Nominees die, but may nominate again immediately (on day 3, they must). After day 3, evil wins. [All Minions are Riot]",
-    imageSrc: "",
+    imageSrc: "riot.png",
     firstNight: null,
     otherNight: null,
   },
@@ -2106,7 +2106,7 @@ export const characters: CharacterDefinition[] = [
     setup: false,
     ability:
       "On your 1st night, look at the Grimoire and choose a player: they are poisoned. 1 good player knows a Widow is in play.",
-    imageSrc: "",
+    imageSrc: "widow.png",
     firstNight: {
       reminder:
         "Show the Grimoire to the Widow for as long as they need. The Widow points to a player. That player is poisoned. Wake a good player. Show the 'These characters are in play' card, then the Widow character token.",
