@@ -79,16 +79,17 @@ export function CharacterSelectList({
     ];
     return {
       Townsfolk: allCharacters.filter(
-        (c) => getCharacter(c).team === "Townsfolk",
+        (c) => getCharacter(c)?.team === "Townsfolk",
       ),
       Outsider: allCharacters.filter(
-        (c) => getCharacter(c).team === "Outsider",
+        (c) => getCharacter(c)?.team === "Outsider",
       ),
-      Minion: allCharacters.filter((c) => getCharacter(c).team === "Minion"),
-      Demon: allCharacters.filter((c) => getCharacter(c).team === "Demon"),
+      Minion: allCharacters.filter((c) => getCharacter(c)?.team === "Minion"),
+      Demon: allCharacters.filter((c) => getCharacter(c)?.team === "Demon"),
       Traveler: allCharacters.filter(
-        (c) => getCharacter(c).team === "Traveler",
+        (c) => getCharacter(c)?.team === "Traveler",
       ),
+      Unknown: allCharacters.filter((c) => !getCharacter(c)),
     };
   }, [state.characters, state.additionalCharacters.value]);
 
