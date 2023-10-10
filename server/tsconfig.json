@@ -1,7 +1,4 @@
-
-
 {
-
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -31,9 +28,12 @@
     "declarationDir": "declarations",
     "declaration": true,
 
-
     /* build */
     "outDir": "./dist"
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "src/trpcServerInternals/createServer.ts",
+    "src/trpcServerInternals/trpc.ts"
+  ]
 }

@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import basicSsl from "@vitejs/plugin-basic-ssl";
-const PORT = 3000;
-// https://vitejs.dev/config/
+const SERVER_PORT: number = Number(process.env.SERVER_PORT);
+const CLIENT_PORT: number = Number(process.env.CLIENT_PORT ?? 3000);
+console.log(`SERVER ON: ${SERVER_PORT}`);
+console.log(`CLIENT ON: ${CLIENT_PORT}`);
 
 const HTTPS = true;
 export default defineConfig((env) => ({
@@ -13,10 +15,10 @@ export default defineConfig((env) => ({
     rollupOptions: {},
   },
   server: {
-    port: 3000,
+    port: CLIENT_PORT,
     proxy: {
       "/api": {
-        target: "http://localhost:6001",
+        target: `http://localhost:${SERVER_PORT}`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
         ws: true,
@@ -26,10 +28,7 @@ export default defineConfig((env) => ({
   define: {
     WS_URL:
       env.command === "build"
-        ? process.env.WS_URL ??
-          '"wss://blood-on-the-clocktower.onrender.com/socket"'
-        : `\`ws${
-            HTTPS ? "s" : ""
-          }://\${window.location.hostname}:${PORT}/api/socket\``,
+        ? process.env.SERVER_URL ?? '"blood-on-the-clocktower.onrender.com"'
+        : `\`\${window.location.hostname}:${CLIENT_PORT}/api\``,
   },
 }));

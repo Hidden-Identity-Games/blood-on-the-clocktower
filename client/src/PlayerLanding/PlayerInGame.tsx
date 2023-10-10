@@ -1,4 +1,4 @@
-import { Flex, Heading, Separator, Tabs, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Separator, Tabs, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
@@ -16,7 +16,7 @@ import {
   DistributionsByPlayerCount,
 } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
-import { CharacterType } from "../types/script";
+import { Character, CharacterType } from "../types/script";
 import {
   PlayerFilter,
   PlayerListFilters,
@@ -29,16 +29,32 @@ export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
+  const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
 
   const [nightOrder, charactersByType] = React.useMemo(() => {
-    const allCharacters = script?.map(({ id }) => getCharacter(id)) ?? [];
+    const charactersFromScript =
+      script?.map(({ id }) => getCharacter(id)) ?? [];
+    const travelerCharacters = Object.values(game.playersToRoles)
+      .map((role) => getCharacter(role))
+      .filter((character) => character.team === "Traveler");
 
-    const nightOrder = allCharacters
-      .filter((character) => character.otherNight?.order ?? 0 > 0)
-      .sort((a, b) => (a.otherNight?.order ?? 0) - (b.otherNight?.order ?? 0));
+    const allCharacters = [...charactersFromScript, ...travelerCharacters];
+
+    const nightOrder = {
+      otherNight: allCharacters
+        .filter((character) => character.otherNight?.order ?? 0 > 0)
+        .sort(
+          (a, b) => (a.otherNight?.order ?? 0) - (b.otherNight?.order ?? 0),
+        ),
+      firstNight: allCharacters
+        .filter((character) => character.firstNight?.order ?? 0 > 0)
+        .sort(
+          (a, b) => (a.firstNight?.order ?? 0) - (b.firstNight?.order ?? 0),
+        ),
+    };
 
     return [
       nightOrder,
@@ -47,9 +63,10 @@ export function PlayerInGame() {
         Outsider: allCharacters.filter(({ team }) => team === "Outsider"),
         Minion: allCharacters.filter(({ team }) => team === "Minion"),
         Demon: allCharacters.filter(({ team }) => team === "Demon"),
-      },
+        Traveler: allCharacters.filter(({ team }) => team === "Traveler"),
+      } satisfies Record<CharacterType, Character[]>,
     ];
-  }, [script]);
+  }, [script, game]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { Traveler, ...distributionsByPlayerCount } = {
     ...DistributionsByPlayerCount[game.playerList.length],
@@ -81,6 +98,17 @@ export function PlayerInGame() {
           {selectedTab === "players" && "Players"}
         </Tabs.Trigger>
       </Tabs.List>
+
+      {selectedTab === "night-order" && (
+        <Button
+          className="sticky mx-2 my-1"
+          size="1"
+          variant={isFirstNightSort ? "solid" : "outline"}
+          onClick={() => setIsFirstNightSort((prev) => !prev)}
+        >
+          {isFirstNightSort ? "First Night" : "Other Night"}
+        </Button>
+      )}
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
         <Flex className="m-2" direction="column" gap="3">
@@ -152,19 +180,20 @@ export function PlayerInGame() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="night-order">
         <Flex className="m-2" direction="column" gap="3">
-          {nightOrder.map((character) => (
-            <Flex key={character.id} gap="2">
-              <Flex direction="column">
-                {/* <img src={char.imageSrc} className="h-5 w-5" /> */}
-                <Heading size="2" className="flex-1">
-                  <CharacterName role={character.id} />
-                </Heading>
-                <Text size="1" weight="light" className="pl-5">
-                  {character.ability}
-                </Text>
+          {nightOrder[isFirstNightSort ? "firstNight" : "otherNight"].map(
+            (character) => (
+              <Flex key={character.id} gap="2">
+                <Flex direction="column">
+                  <Heading size="2" className="flex-1">
+                    <CharacterName role={character.id} />
+                  </Heading>
+                  <Text size="1" weight="light" className="pl-5">
+                    {character.ability}
+                  </Text>
+                </Flex>
               </Flex>
-            </Flex>
-          ))}
+            ),
+          )}
         </Flex>
       </Tabs.Content>
 
@@ -209,17 +238,16 @@ export function PlayerInGame() {
                 )}
               >
                 <div className="w-5">
-                  {game.deadPlayers[player] ||
-                    (!game.deadVotes[player] && (
-                      <MeaningfulIcon
-                        size="1"
-                        color="violet"
-                        header="Player has a deadvote"
-                        explanation="Each player gets one vote after they die.  This player has used theirs."
-                      >
-                        <LiaVoteYeaSolid className="h-2" />
-                      </MeaningfulIcon>
-                    ))}
+                  {(!game.deadPlayers[player] || !game.deadVotes[player]) && (
+                    <MeaningfulIcon
+                      size="1"
+                      color={game.deadPlayers[player] ? "violet" : "gray"}
+                      header="Player has a deadvote"
+                      explanation="Each player gets one vote after they die.  This player has not used theirs yet."
+                    >
+                      <LiaVoteYeaSolid className="h-2" />
+                    </MeaningfulIcon>
+                  )}
                 </div>
 
                 <Text

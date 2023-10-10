@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import { type PlayerStatusType } from './UnifiedGame.ts'
 
 export const CharacterTypes = [
@@ -8,8 +9,8 @@ export const CharacterTypes = [
   'Traveler',
 ] as const
 
-const alignments = ['Good', 'Evil'] as const
-export type Alignment = (typeof alignments)[number]
+export const alignmentShape = z.enum(['Good', 'Evil'])
+export type Alignment = z.TypeOf<typeof alignmentShape>
 
 // TODO: Rename TEAM
 export type CharacterType = (typeof CharacterTypes)[number]

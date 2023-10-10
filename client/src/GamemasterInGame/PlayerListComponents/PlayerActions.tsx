@@ -1,13 +1,5 @@
 import { Dialog, Flex, IconButton } from "@radix-ui/themes";
 import { GiRaiseZombie } from "react-icons/gi";
-import {
-  useAssignPlayerAlignment,
-  useAssignRole,
-  useDeadVote,
-  useDecideFate,
-  useGetPlayerAlignment,
-  usePlayerStatuses,
-} from "../../store/useStore";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useDefiniteGame } from "../../store/GameContext";
 import { PiKnifeBold } from "react-icons/pi";
@@ -17,6 +9,14 @@ import { AlignmentSelect, RoleSelect } from "./Selectors";
 import { UnifiedGame } from "@hidden-identity/server";
 import { v4 } from "uuid";
 import { PlayerStatusIcon } from "../NotesIcons";
+import {
+  useAssignPlayerAlignment,
+  useAssignRole,
+  useDecideFate,
+  usePlayerStatuses,
+} from "../../store/actions/gmPlayerActions";
+import { useDeadVote } from "../../store/actions/gmActions";
+import { useGetPlayerAlignment } from "../../store/useStore";
 
 export function PlayerActions({ player }: { player: string }) {
   const { game } = useDefiniteGame();

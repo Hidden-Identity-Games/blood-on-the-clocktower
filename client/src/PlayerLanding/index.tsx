@@ -1,5 +1,5 @@
 import AddPlayer from "./AddPlayer";
-import PlayerRole from "./PlayerRole";
+import { PlayerRole } from "./PlayerRole";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
 import { usePlayer } from "../store/secretKey";
@@ -10,6 +10,7 @@ import { useGame } from "../store/GameContext";
 import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
 import { PlayerInGame } from "./PlayerInGame";
+import { PlayerRoleSelect } from "./PlayerRoleSelect";
 
 export function PlayerRoot() {
   const { gameId } = useParams();
@@ -57,15 +58,14 @@ function PlayerLanding() {
     );
   }
 
-  if (!role || role === "unassigned") {
-    return (
-      <>
-        <PlayerWaiting />
-      </>
-    );
+  if (Object.keys(game.roleBag ?? {}).length === 0) {
+    return <PlayerWaiting />;
   }
 
-  if (game.gameStatus === "Setup") {
+  if (!game.playersSeenRoles.includes(player)) {
+    if (!role || role === "unassigned") {
+      return <PlayerRoleSelect />;
+    }
     return <PlayerRole role={role} />;
   }
 

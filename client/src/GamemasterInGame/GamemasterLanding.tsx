@@ -6,8 +6,9 @@ import { ScriptSelect } from "./ScriptSelect";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { NightOrder } from "./NightOrder";
-import { Theme } from "@radix-ui/themes";
+import { Callout, Theme } from "@radix-ui/themes";
 import { CSSProperties } from "react";
+import { BsFillInfoCircleFill } from "react-icons/bs";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
@@ -36,6 +37,10 @@ export function GameMasterRoot() {
 function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
   const { game, script } = useGame();
   const [, loadingSetScript, , setScript] = useSetScript();
+  const playersNotSeenRole =
+    game?.playerList.filter(
+      (player) => !game?.playersSeenRoles.includes(player),
+    ) ?? [];
 
   if (!game || loadingSetScript) {
     return <LoadingExperience>Loading...</LoadingExperience>;
@@ -53,6 +58,17 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
         ) : (
           <ScriptSelect handleSubmit={setScript} />
         ))}
+      {game.gameStatus === "Setup" && playersNotSeenRole.length > 0 && (
+        <Callout.Root>
+          <Callout.Icon>
+            <BsFillInfoCircleFill />
+          </Callout.Icon>
+          <Callout.Text>
+            Some players have not yet acknowledged their role:{" "}
+            {playersNotSeenRole.join(", ")}
+          </Callout.Text>
+        </Callout.Root>
+      )}
       {(game.gameStatus === "Setup" ||
         game.gameStatus === "Started" ||
         game.gameStatus === "Finished") && <NightOrder />}

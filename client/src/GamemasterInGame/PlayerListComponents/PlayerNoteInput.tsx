@@ -1,7 +1,7 @@
 import React from "react";
-import { usePlayerNotes } from "../../store/useStore";
 import { Button, Dialog, Flex, TextArea } from "@radix-ui/themes";
 import { PlayerNameWithRoleIcon } from "../../shared/RoleIcon";
+import { usePlayerNotes } from "../../store/actions/gmPlayerActions";
 
 interface PlayerNoteInputProps {
   player: string;

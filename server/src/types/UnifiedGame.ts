@@ -1,14 +1,23 @@
+import { z } from 'zod'
 import { type Alignment, type Role } from './Role.ts'
 
-export type GameStatus = 'PlayersJoining' | 'Setup' | 'Started' | 'Finished'
+export const gameStatusShape = z.enum(['PlayersJoining', 'Setup', 'Started', 'Finished'])
+export type GameStatus = z.TypeOf<typeof gameStatusShape>
 
-export interface PlayerStatusTypeMap {
-  'poison': { type: 'poison' }
-  'drunk': { type: 'drunk' }
-  'custom': { type: 'custom', desc: string }
+export type PlayerStatusType = PlayerStatus extends any ? Omit<PlayerStatus, 'id'> : never
+export type PlayerStatus = PlayerStatusMap[keyof PlayerStatusMap]
+
+export const poisonStatusShape = z.object({ type: z.enum(['poison']), id: z.string() })
+export const drunkStatusShape = z.object({ type: z.enum(['drunk']), id: z.string() })
+export const customStatusShape = z.object({ type: z.enum(['custom']), desc: z.string(), id: z.string() })
+const allStatusShapes =
+{
+  poison: poisonStatusShape,
+  drunk: drunkStatusShape,
+  custom: customStatusShape,
 }
-export type PlayerStatusType = PlayerStatusTypeMap[keyof PlayerStatusTypeMap]
-export type PlayerStatus = PlayerStatusType & { id: string }
+
+export type PlayerStatusMap = { [K in keyof typeof allStatusShapes]: z.TypeOf<typeof allStatusShapes[K]> }
 
 export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {
 }
@@ -31,6 +40,8 @@ export interface BaseUnifiedGame {
   deadVotes: Record<string, boolean>
   travelers: Record<string, boolean>
   alignmentsOverrides: Record<string, Alignment>
+  roleBag: Record<Role, boolean>
+  playersSeenRoles: string[]
 }
 
 export interface WellOrderedPlayers {
