@@ -210,7 +210,7 @@ export async function setRoleTaken (gameId: string, player: string, role: Role):
   const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
 
-  if (gameInstance.roleBag[role]) return false
+  if (gameInstance.roleBag[role] || gameInstance.playersToRoles[player] !== UNASSIGNED) return false
 
   game.update({
     ...gameInstance,
