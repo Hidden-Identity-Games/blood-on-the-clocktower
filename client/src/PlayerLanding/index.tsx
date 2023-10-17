@@ -48,12 +48,25 @@ function PlayerLanding() {
         {kicked && (
           <Callout.Root>
             <Callout.Text>
-              It looks like you were kicked from the game, consult the gm before
-              rejoining.
+              It looks like you were kicked from the game, consult the
+              Storyteller before rejoining.
             </Callout.Text>
           </Callout.Root>
         )}
         <AddPlayer />
+      </>
+    );
+  }
+
+  if (game.gameStatus === "Started" && role === "unassigned") {
+    return (
+      <>
+        <Callout.Root>
+          <Callout.Text>
+            It looks like you're joining as a Traveller. Please see the
+            Storyteller for a role.
+          </Callout.Text>
+        </Callout.Root>
       </>
     );
   }
