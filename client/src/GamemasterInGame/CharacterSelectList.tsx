@@ -165,7 +165,7 @@ function AddRole({ characterSelectState }: AddRoleProps) {
       <Dialog.Content className="mx-3">
         <Dialog.Title>Role Search:</Dialog.Title>
 
-        <Flex direction="column" gap="2">
+        <Flex direction="column" gap="3">
           <TextField.Input
             placeholder="Find a role..."
             value={searchTerm}
@@ -190,13 +190,9 @@ function AddRole({ characterSelectState }: AddRoleProps) {
                   ])
                 }
               >
-                <Flex
-                  justify="between"
-                  align="center"
-                  style={{ height: "3em" }}
-                >
+                <Flex justify="between" align="center">
                   <Flex gap="2" align="center">
-                    <RoleIcon role={role.id} className="h-6" />
+                    <RoleIcon role={role.id} className="h-[60px]" />
                     <Text size="5" autoCapitalize="true">
                       {RoleName(role.id)}
                     </Text>
