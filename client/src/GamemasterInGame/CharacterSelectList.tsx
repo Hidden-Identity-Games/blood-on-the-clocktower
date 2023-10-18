@@ -16,6 +16,10 @@ import { RoleIcon, RoleName } from "../shared/RoleIcon";
 import { Character, Role } from "@hidden-identity/server";
 import { getCharacter } from "../assets/game_data/gameData";
 import { characters } from "../assets/game_data/characterData";
+import { useSetScript } from "../store/useStore";
+import { useDefiniteGame } from "../store/GameContext";
+import { DestructiveButton } from "./DestructiveButton";
+import { AiOutlineClose } from "react-icons/ai";
 import Fuse from "fuse.js";
 
 interface StateContainer<T> {
@@ -25,7 +29,6 @@ interface StateContainer<T> {
 
 export interface CharacterSelectState {
   selectedRoles: StateContainer<Record<Role, boolean>>;
-  additionalCharacters: StateContainer<Role[]>;
   characters: Role[];
 }
 
@@ -37,16 +40,11 @@ export function useCharacterSelectState(
 ): CharacterSelectState {
   const characters: Role[] = availableCharacters ?? [];
   const [selectedRoles, setSelectedRoles] = useState<Record<Role, boolean>>({});
-  const [additionalCharacters, setAdditionalCharacters] = useState<Role[]>([]);
 
   return {
     selectedRoles: {
       set: setSelectedRoles,
       value: selectedRoles,
-    },
-    additionalCharacters: {
-      set: setAdditionalCharacters,
-      value: additionalCharacters,
     },
     characters,
   };
@@ -54,29 +52,13 @@ export function useCharacterSelectState(
 
 export function CharacterSelectList({
   state,
-  readOnly,
 }: {
   state: CharacterSelectState;
-  readOnly: boolean;
 }) {
-  // function addNewCharacter() {
-  //   if (!newCharacterName) {
-  //     return;
-  //   }
-  //   // Switch to a GUID
-  //   const newId = newCharacterName;
-  //   state.additionalCharacters.set((curr) => [...curr, newId as Role]);
-  //   state.selectedRoles.set((selectedroles) => ({
-  //     ...selectedroles,
-  //     [newId]: true,
-  //   }));
-  //   setNewCharacterName("");
-  // }
+  const { script } = useDefiniteGame();
+  const [, , , setScript] = useSetScript();
   const charactersByType: Record<CharacterType, Role[]> = useMemo(() => {
-    const allCharacters = [
-      ...state.characters,
-      ...state.additionalCharacters.value,
-    ];
+    const allCharacters = state.characters;
     return {
       Townsfolk: allCharacters.filter(
         (c) => getCharacter(c)?.team === "Townsfolk",
@@ -91,7 +73,7 @@ export function CharacterSelectList({
       ),
       Unknown: allCharacters.filter((c) => !getCharacter(c)),
     };
-  }, [state.characters, state.additionalCharacters.value]);
+  }, [state.characters]);
 
   return (
     <Flex gap="1" direction="column" px="3">
@@ -108,28 +90,42 @@ export function CharacterSelectList({
               {characterType}
             </Heading>
             {characters.map((role) => (
-              <Flex
-                gap="1"
-                align="center"
-                key={role}
-                style={{ height: "2em" }}
-                asChild
-              >
-                <label>
-                  <Checkbox
-                    id={role}
-                    disabled={readOnly}
-                    checked={state.selectedRoles.value[role]}
-                    onClick={() => {
-                      state.selectedRoles.set((selectedroles) => ({
-                        ...selectedroles,
-                        [role]: !selectedroles[role],
-                      }));
-                    }}
-                  />
-                  <RoleIcon role={role} className="h-4" />
-                  <span className="capitalize">{RoleName(role)}</span>
-                </label>
+              <Flex key={role} align="center" justify="between">
+                <Flex
+                  gap="1"
+                  align="center"
+                  key={role}
+                  style={{ height: "2em" }}
+                  asChild
+                >
+                  <label>
+                    <Checkbox
+                      id={role}
+                      checked={state.selectedRoles.value[role]}
+                      onClick={() => {
+                        state.selectedRoles.set((selectedroles) => ({
+                          ...selectedroles,
+                          [role]: !selectedroles[role],
+                        }));
+                      }}
+                    />
+                    <RoleIcon role={role} className="h-4" />
+                    <span className="capitalize">{RoleName(role)}</span>
+                  </label>
+                </Flex>
+                <DestructiveButton
+                  variant="ghost"
+                  onClick={async () => {
+                    await setScript(script.filter((char) => char.id !== role));
+                    state.selectedRoles.set((selectedRoles) => ({
+                      ...selectedRoles,
+                      [role]: false,
+                    }));
+                  }}
+                  confirmationText={`Remove ${RoleName(role)} from script?`}
+                >
+                  <AiOutlineClose />
+                </DestructiveButton>
               </Flex>
             ))}
           </React.Fragment>
@@ -144,6 +140,8 @@ interface AddRoleProps {
   characterSelectState: CharacterSelectState;
 }
 function AddRole({ characterSelectState }: AddRoleProps) {
+  const { script } = useDefiniteGame();
+  const [, , , setScript] = useSetScript();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [results, setResults] = React.useState<Character[]>([]);
   const fuse = React.useMemo(
@@ -152,7 +150,12 @@ function AddRole({ characterSelectState }: AddRoleProps) {
   );
 
   return (
-    <Dialog.Root>
+    <Dialog.Root
+      onOpenChange={() => {
+        setSearchTerm("");
+        setResults([]);
+      }}
+    >
       <Dialog.Trigger>
         <Flex gap="5" align="center" style={{ height: "2em" }}>
           <IconButton variant="soft" size="1">
@@ -183,12 +186,13 @@ function AddRole({ characterSelectState }: AddRoleProps) {
           {results.map((role) => (
             <Dialog.Close key={role.id}>
               <button
-                onClick={() =>
-                  characterSelectState.additionalCharacters.set((curr) => [
-                    ...curr,
-                    role.id,
-                  ])
-                }
+                onClick={async () => {
+                  await setScript([...script, { id: role.id as Role }]);
+                  characterSelectState.selectedRoles.set((selectedRoles) => ({
+                    ...selectedRoles,
+                    [role.id]: true,
+                  }));
+                }}
               >
                 <Flex justify="between" align="center">
                   <Flex gap="2" align="center">

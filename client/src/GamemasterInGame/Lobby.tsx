@@ -60,7 +60,7 @@ export function Lobby() {
               Roles(
               {
                 Object.values(characterSelectState.selectedRoles.value).filter(
-                  (selected) => selected,
+                  Boolean,
                 ).length
               }
               )
@@ -111,10 +111,7 @@ export function Lobby() {
                   className="h-full overflow-y-auto"
                   value="roles"
                 >
-                  <CharacterSelectList
-                    state={characterSelectState}
-                    readOnly={false}
-                  />
+                  <CharacterSelectList state={characterSelectState} />
                 </Tabs.Content>
               </motion.div>
             )}
