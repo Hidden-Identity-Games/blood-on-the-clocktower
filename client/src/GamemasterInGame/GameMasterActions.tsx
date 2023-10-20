@@ -15,7 +15,7 @@ import { useDistributeRoles } from "../store/actions/gmActions";
 import { useCreateGame } from "../store/useStore";
 
 interface GameMasterActionsProps {
-  selectedRoles: Record<Role, boolean>;
+  selectedRoles: Record<Role, number>;
 }
 
 export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
@@ -23,8 +23,8 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
 
-  const availableRolesList = Object.keys(selectedRoles).filter(
-    (key) => !!selectedRoles[key as Role],
+  const availableRolesList = Object.entries(selectedRoles).flatMap(
+    ([role, qty]) => Array.from({ length: qty }).map(() => role),
   ) as Role[];
 
   const problems =

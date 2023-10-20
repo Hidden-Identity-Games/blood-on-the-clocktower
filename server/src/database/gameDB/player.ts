@@ -196,25 +196,26 @@ export async function assignRoles (
       .map((item) => ({ item, random: Math.random() }))
       .sort((a, b) => a.random - b.random)
       .map((element) => element.item)
-      .reduce<Record<Role, boolean>>(
-      (acc, item) => ({
+      .reduce<Record<number, Role | null>>(
+      (acc, item, idx) => ({
         ...acc,
-        [item]: false,
+        [idx + 1]: item,
       }),
       {},
     ),
   })
 }
 
-export async function setRoleTaken (gameId: string, player: string, role: Role): Promise<boolean> {
+export async function setDrawRole (gameId: string, player: string, numberDrawn: number): Promise<boolean> {
   const game = await retrieveGame(gameId)
   const gameInstance = game.readOnce()
+  const role = gameInstance.roleBag[numberDrawn]
 
-  if (gameInstance.roleBag[role] || gameInstance.playersToRoles[player] !== UNASSIGNED) return false
+  if (!role || gameInstance.playersToRoles[player] !== UNASSIGNED) return false
 
   game.update({
     ...gameInstance,
-    roleBag: { ...gameInstance.roleBag, [role]: true },
+    roleBag: { ...gameInstance.roleBag, [numberDrawn]: null },
     playersToRoles: { ...gameInstance.playersToRoles, [player]: role },
   })
 

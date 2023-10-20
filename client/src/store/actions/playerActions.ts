@@ -1,4 +1,3 @@
-import { Role } from "@hidden-identity/server";
 import { trpc } from "../../shared/trpcClient";
 import { useAction, useGame } from "../GameContext";
 import { usePlayer } from "../secretKey";
@@ -48,12 +47,12 @@ export function useKickPlayer() {
 export function useTakeRole() {
   const { gameId } = useGame();
 
-  return useAction(async (player: string, role: Role) => {
+  return useAction(async (player: string, numberDrawn: number) => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
 
-    return await trpc.takeRole.mutate({ gameId, player, role });
+    return await trpc.takeRole.mutate({ gameId, player, numberDrawn });
   });
 }
 
