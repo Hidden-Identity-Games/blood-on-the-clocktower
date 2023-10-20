@@ -11,6 +11,8 @@ export function PlayerRoleSelect() {
   const { game } = useDefiniteGame();
   const [player] = usePlayer();
   const [, , , takeRole] = useTakeRole();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const roleBagOnMount = React.useMemo(() => game.roleBag, []);
   const rotations = React.useMemo(() => {
     return Array.from({ length: 15 }).map(() => Math.floor(Math.random() * 11));
   }, []);
@@ -38,18 +40,27 @@ export function PlayerRoleSelect() {
     >
       <Heading>Select a Role</Heading>
       <Grid columns="3" gap="3" width="auto" align="center" justify="center">
-        {Object.entries(game.roleBag ?? {}).map(([role, taken], idx) => (
-          <button
-            className={classNames(taken && "opacity-40")}
-            disabled={taken}
-            onClick={() => {
-              takeRole(player!, role as Role);
-            }}
-          >
-            <Heading className="absolute z-10">{idx + 1}</Heading>
-            <img className={rotationMap[rotations[idx]]} src={tokenBack} />
-          </button>
-        ))}
+        {Object.entries(game.roleBag).flatMap(([role, qtyLeft], roleIdx) =>
+          Array.from({ length: roleBagOnMount[role as Role] }).map(
+            (_, qtyIdx) => (
+              <button
+                className={classNames(qtyLeft <= qtyIdx && "opacity-40")}
+                disabled={qtyLeft <= qtyIdx}
+                onClick={() => {
+                  takeRole(player!, role as Role);
+                }}
+              >
+                <Heading className="absolute z-10">
+                  {roleIdx + qtyIdx + 1}
+                </Heading>
+                <img
+                  className={rotationMap[rotations[roleIdx + qtyIdx]]}
+                  src={tokenBack}
+                />
+              </button>
+            ),
+          ),
+        )}
       </Grid>
     </Flex>
   );

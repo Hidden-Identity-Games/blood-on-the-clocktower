@@ -12,12 +12,16 @@ export function DestructiveButton({
       <Dialog.Content className="m-2">
         <Dialog.Title>Are you sure?</Dialog.Title>
         {confirmationText}
-        <Flex gap="3" mt="4" justify="end">
+        <Flex mt="5" justify="between">
           <DialogClose>
-            <Button>Cancel</Button>
+            <Button variant="surface" size="3">
+              Cancel
+            </Button>
           </DialogClose>
           <DialogClose>
-            <Button onClick={onClick}>Confirm</Button>
+            <Button size="3" onClick={onClick}>
+              Confirm
+            </Button>
           </DialogClose>
         </Flex>
       </Dialog.Content>

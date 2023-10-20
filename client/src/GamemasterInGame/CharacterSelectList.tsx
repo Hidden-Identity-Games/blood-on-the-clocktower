@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import { CharacterType } from "../types/script";
 import {
   Checkbox,
@@ -9,6 +8,7 @@ import {
   Heading,
   Dialog,
   Separator,
+  Button,
 } from "@radix-ui/themes";
 import React from "react";
 import { colorMap } from "../shared/CharacterTypes";
@@ -19,7 +19,7 @@ import { characters } from "../assets/game_data/characterData";
 import { useSetScript } from "../store/useStore";
 import { useDefiniteGame } from "../store/GameContext";
 import { DestructiveButton } from "./DestructiveButton";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Fuse from "fuse.js";
 
 interface StateContainer<T> {
@@ -28,25 +28,27 @@ interface StateContainer<T> {
 }
 
 export interface CharacterSelectState {
-  selectedRoles: StateContainer<Record<Role, boolean>>;
-  characters: Role[];
+  selectedRoles: StateContainer<Record<Role, number>>;
+  availableRoles: Role[];
 }
 
 // doing some wonky shit because we cannot elave the tab mounted when we switch.
 // so if we don't hoist state we lose data when switching tabs.
 // eslint-disable-next-line react-refresh/only-export-components
 export function useCharacterSelectState(
-  availableCharacters?: Role[],
+  availableRoles?: Role[],
 ): CharacterSelectState {
-  const characters: Role[] = availableCharacters ?? [];
-  const [selectedRoles, setSelectedRoles] = useState<Record<Role, boolean>>({});
+  const characters: Role[] = availableRoles ?? [];
+  const [selectedRoles, setSelectedRoles] = React.useState<
+    Record<Role, number>
+  >({});
 
   return {
     selectedRoles: {
       set: setSelectedRoles,
       value: selectedRoles,
     },
-    characters,
+    availableRoles: characters,
   };
 }
 
@@ -57,75 +59,78 @@ export function CharacterSelectList({
 }) {
   const { script } = useDefiniteGame();
   const [, , , setScript] = useSetScript();
-  const charactersByType: Record<CharacterType, Role[]> = useMemo(() => {
-    const allCharacters = state.characters;
+  const rolesByType: Record<CharacterType, Role[]> = React.useMemo(() => {
     return {
-      Townsfolk: allCharacters.filter(
+      Townsfolk: state.availableRoles.filter(
         (c) => getCharacter(c)?.team === "Townsfolk",
       ),
-      Outsider: allCharacters.filter(
+      Outsider: state.availableRoles.filter(
         (c) => getCharacter(c)?.team === "Outsider",
       ),
-      Minion: allCharacters.filter((c) => getCharacter(c)?.team === "Minion"),
-      Demon: allCharacters.filter((c) => getCharacter(c)?.team === "Demon"),
-      Traveler: allCharacters.filter(
+      Minion: state.availableRoles.filter(
+        (c) => getCharacter(c)?.team === "Minion",
+      ),
+      Demon: state.availableRoles.filter(
+        (c) => getCharacter(c)?.team === "Demon",
+      ),
+      Traveler: state.availableRoles.filter(
         (c) => getCharacter(c)?.team === "Traveler",
       ),
-      Unknown: allCharacters.filter((c) => !getCharacter(c)),
+      Unknown: state.availableRoles.filter((c) => !getCharacter(c)),
     };
-  }, [state.characters]);
+  }, [state.availableRoles]);
 
   return (
     <Flex gap="1" direction="column" px="3">
-      {Object.entries(charactersByType)
-        .filter(([_, characters]) => characters.length > 0)
-        .map(([characterType, characters]) => (
-          <React.Fragment key={characterType}>
+      {Object.entries(rolesByType)
+        .filter(([_, roles]) => roles.length > 0)
+        .map(([roleType, roles]) => (
+          <React.Fragment key={roleType}>
             <Heading
               size="4"
-              id={characterType}
+              id={roleType}
               align="right"
-              color={colorMap[characterType as CharacterType]}
+              color={colorMap[roleType as CharacterType]}
             >
-              {characterType}
+              {roleType}
             </Heading>
-            {characters.map((role) => (
+            {roles.map((role) => (
               <Flex key={role} align="center" justify="between">
-                <Flex
-                  gap="1"
-                  align="center"
-                  key={role}
-                  style={{ height: "2em" }}
-                  asChild
-                >
-                  <label>
+                <label className="flex-1">
+                  <Flex gap="1" align="center" style={{ height: "2em" }}>
                     <Checkbox
                       id={role}
-                      checked={state.selectedRoles.value[role]}
+                      className="mr-1"
+                      checked={state.selectedRoles.value[role] > 0}
                       onClick={() => {
                         state.selectedRoles.set((selectedroles) => ({
                           ...selectedroles,
-                          [role]: !selectedroles[role],
+                          [role]: selectedroles[role] ? 0 : 1,
                         }));
                       }}
                     />
                     <RoleIcon role={role} className="h-4" />
                     <span className="capitalize">{RoleName(role)}</span>
-                  </label>
+                  </Flex>
+                </label>
+                <Flex align="center" gap="3">
+                  <RoleCount role={role} characterSelectState={state} />
+                  <DestructiveButton
+                    variant="ghost"
+                    onClick={async () => {
+                      await setScript(
+                        script.filter((char) => char.id !== role),
+                      );
+                      state.selectedRoles.set((selectedRoles) => ({
+                        ...selectedRoles,
+                        [role]: 0,
+                      }));
+                    }}
+                    confirmationText={`Remove ${RoleName(role)} from script?`}
+                  >
+                    <AiOutlineClose />
+                  </DestructiveButton>
                 </Flex>
-                <DestructiveButton
-                  variant="ghost"
-                  onClick={async () => {
-                    await setScript(script.filter((char) => char.id !== role));
-                    state.selectedRoles.set((selectedRoles) => ({
-                      ...selectedRoles,
-                      [role]: false,
-                    }));
-                  }}
-                  confirmationText={`Remove ${RoleName(role)} from script?`}
-                >
-                  <AiOutlineClose />
-                </DestructiveButton>
               </Flex>
             ))}
           </React.Fragment>
@@ -159,7 +164,7 @@ function AddRole({ characterSelectState }: AddRoleProps) {
       <Dialog.Trigger>
         <Flex gap="5" align="center" style={{ height: "2em" }}>
           <IconButton variant="soft" size="1">
-            +
+            <AiOutlinePlus />
           </IconButton>
           <label>Add a Role</label>
         </Flex>
@@ -190,7 +195,7 @@ function AddRole({ characterSelectState }: AddRoleProps) {
                   await setScript([...script, { id: role.id as Role }]);
                   characterSelectState.selectedRoles.set((selectedRoles) => ({
                     ...selectedRoles,
-                    [role.id]: true,
+                    [role.id]: 1,
                   }));
                 }}
               >
@@ -208,6 +213,86 @@ function AddRole({ characterSelectState }: AddRoleProps) {
               </button>
             </Dialog.Close>
           ))}
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+}
+
+interface RoleCountProps {
+  role: Role;
+  characterSelectState: CharacterSelectState;
+}
+function RoleCount({ role, characterSelectState }: RoleCountProps) {
+  const [roleCount, setRoleCount] = React.useState(
+    characterSelectState.selectedRoles.value[role],
+  );
+  return (
+    <Dialog.Root
+      onOpenChange={() =>
+        setRoleCount(characterSelectState.selectedRoles.value[role])
+      }
+    >
+      <Dialog.Trigger
+        disabled={!characterSelectState.selectedRoles.value[role]}
+      >
+        <IconButton
+          variant="surface"
+          radius="large"
+          className={
+            characterSelectState.selectedRoles.value[role]
+              ? "opacity-100"
+              : "opacity-0"
+          }
+        >
+          {characterSelectState.selectedRoles.value[role]}
+        </IconButton>
+      </Dialog.Trigger>
+
+      <Dialog.Content className="mx-3">
+        <Flex direction="column" gap="9">
+          <Dialog.Title>Number of players to get this Role:</Dialog.Title>
+          <Text size="8">
+            <Flex justify="center" align="center" gap="7">
+              <IconButton
+                variant="soft"
+                radius="full"
+                size="3"
+                onClick={() => setRoleCount((curr) => Math.max(curr - 1, 0))}
+              >
+                <AiOutlineMinus />
+              </IconButton>
+              <span>{roleCount}</span>
+              <IconButton
+                variant="soft"
+                radius="full"
+                size="3"
+                onClick={() => setRoleCount((curr) => curr + 1)}
+              >
+                <AiOutlinePlus />
+              </IconButton>
+            </Flex>
+          </Text>
+          <Flex justify="between">
+            <Dialog.Close>
+              <Button variant="surface" size="3">
+                Cancel
+              </Button>
+            </Dialog.Close>
+            <Dialog.Close>
+              <Button
+                size="3"
+                onClick={() =>
+                  characterSelectState.selectedRoles.set((selected) => ({
+                    ...selected,
+                    [role]: roleCount,
+                  }))
+                }
+              >
+                Confirm
+              </Button>
+            </Dialog.Close>
+          </Flex>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

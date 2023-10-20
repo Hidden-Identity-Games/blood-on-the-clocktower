@@ -40,7 +40,7 @@ export interface BaseUnifiedGame {
   deadVotes: Record<string, boolean>
   travelers: Record<string, boolean>
   alignmentsOverrides: Record<string, Alignment>
-  roleBag: Record<Role, boolean>
+  roleBag: Record<Role, number>
   playersSeenRoles: string[]
 }
 
