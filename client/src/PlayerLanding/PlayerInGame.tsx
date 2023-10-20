@@ -99,6 +99,17 @@ export function PlayerInGame() {
         </Tabs.Trigger>
       </Tabs.List>
 
+      {selectedTab === "night-order" && (
+        <Button
+          className="mx-2 my-1"
+          size="1"
+          variant={isFirstNightSort ? "solid" : "outline"}
+          onClick={() => setIsFirstNightSort((prev) => !prev)}
+        >
+          {isFirstNightSort ? "Viewing First Night" : "Viewing Other Night"}
+        </Button>
+      )}
+
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
         <Flex className="m-2" direction="column" gap="3">
           <Flex wrap="wrap">
@@ -169,14 +180,6 @@ export function PlayerInGame() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="night-order">
         <Flex className="m-2" direction="column" gap="3">
-          <Button
-            className={classNames(isFirstNightSort && "sticky top-0")}
-            size="1"
-            variant={isFirstNightSort ? "solid" : "outline"}
-            onClick={() => setIsFirstNightSort((prev) => !prev)}
-          >
-            {isFirstNightSort ? "Viewing: First Night" : "Viewing: Other Night"}
-          </Button>
           {nightOrder[isFirstNightSort ? "firstNight" : "otherNight"].map(
             (character) => (
               <Flex key={character.id} gap="2">
