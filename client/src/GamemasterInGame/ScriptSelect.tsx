@@ -99,36 +99,51 @@ function CustomScriptInputDialog({
         </ScriptOption>
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
-        <DialogHeader>Custom Script Input</DialogHeader>
+        <Flex direction="column" gap="3">
+          <DialogHeader>Custom Script Input</DialogHeader>
+          <Dialog.Description>
+            <a
+              href="https://bloodontheclocktower.com/custom-scripts"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sky-500 underline"
+            >
+              Find custom scripts on the official Blood on the Clocktower
+              website
+            </a>
+          </Dialog.Description>
 
-        <TextArea
-          id="custom-input"
-          className=" h-[50vh] rounded-l"
-          placeholder="[ { 'id': 'Washerwoman' }, ... ]"
-          value={customScript}
-          onChange={(event) => {
-            setCustomScript(event.currentTarget.value);
-          }}
-          onPaste={(event) => {
-            setCustomScript(
-              JSON.stringify(JSON.parse(event.currentTarget.value), null, 2),
-            );
-          }}
-        />
-        {errorMsg && (
-          <div className="relative h-0 w-full">
-            <Callout.Root className="absolute bottom-0">
-              <Callout.Text>{errorMsg}</Callout.Text>
-            </Callout.Root>
-          </div>
-        )}
-        <Flex justify="between" mt="1">
-          <DialogClose>
-            <Button>Cancel</Button>
-          </DialogClose>
-          <DialogClose>
-            <Button onClick={handleCustomScriptImport}>Use this script</Button>
-          </DialogClose>
+          <TextArea
+            id="custom-input"
+            className="h-[30vh] rounded-l"
+            placeholder="[ { 'id': 'Washerwoman' }, ... ]"
+            value={customScript}
+            onChange={(event) => {
+              setCustomScript(event.currentTarget.value);
+            }}
+            onPaste={(event) => {
+              setCustomScript(
+                JSON.stringify(JSON.parse(event.currentTarget.value), null, 2),
+              );
+            }}
+          />
+          {errorMsg && (
+            <div className="relative h-0 w-full">
+              <Callout.Root className="absolute bottom-0">
+                <Callout.Text>{errorMsg}</Callout.Text>
+              </Callout.Root>
+            </div>
+          )}
+          <Flex justify="between" mt="1">
+            <DialogClose>
+              <Button>Cancel</Button>
+            </DialogClose>
+            <DialogClose>
+              <Button onClick={handleCustomScriptImport}>
+                Use this script
+              </Button>
+            </DialogClose>
+          </Flex>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
