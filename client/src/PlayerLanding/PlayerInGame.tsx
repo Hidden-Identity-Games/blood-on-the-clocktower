@@ -101,12 +101,12 @@ export function PlayerInGame() {
 
       {selectedTab === "night-order" && (
         <Button
-          className="sticky mx-2 my-1"
+          className="mx-2 my-1"
           size="1"
           variant={isFirstNightSort ? "solid" : "outline"}
           onClick={() => setIsFirstNightSort((prev) => !prev)}
         >
-          {isFirstNightSort ? "First Night" : "Other Night"}
+          {isFirstNightSort ? "Viewing First Night" : "Viewing Other Night"}
         </Button>
       )}
 
