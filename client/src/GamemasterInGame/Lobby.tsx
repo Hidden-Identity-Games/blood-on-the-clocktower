@@ -36,9 +36,11 @@ export function Lobby() {
         selectedRoles={characterSelectState.selectedRoles.value}
       />
       <TeamDistributionBar
-        charsSelected={Object.entries(characterSelectState.selectedRoles.value)
-          .filter(([_, value]) => !!value)
-          .map(([key]) => key as Role)}
+        charsSelected={
+          Object.entries(characterSelectState.selectedRoles.value).flatMap(
+            ([role, qty]) => Array.from({ length: qty }).map(() => role),
+          ) as Role[]
+        }
       />
       <Tabs.Root
         className="flex flex-1 flex-col"
@@ -58,11 +60,10 @@ export function Lobby() {
           <Tabs.Trigger className="max-w-[200px] flex-1" value="roles">
             <Text className="mr-1">
               Roles(
-              {
-                Object.values(characterSelectState.selectedRoles.value).filter(
-                  (selected) => selected,
-                ).length
-              }
+              {Object.values(characterSelectState.selectedRoles.value).reduce(
+                (sum, qty) => sum + qty,
+                0,
+              )}
               )
             </Text>
             <Text color="red" asChild>
@@ -111,10 +112,7 @@ export function Lobby() {
                   className="h-full overflow-y-auto"
                   value="roles"
                 >
-                  <CharacterSelectList
-                    state={characterSelectState}
-                    readOnly={false}
-                  />
+                  <CharacterSelectList state={characterSelectState} />
                 </Tabs.Content>
               </motion.div>
             )}

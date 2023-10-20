@@ -70,7 +70,7 @@ export function NewGameLanding() {
 
             <Flex justify="between" mt="3">
               <DialogClose>
-                <Button>Cancel</Button>
+                <Button variant="soft">Cancel</Button>
               </DialogClose>
               <DialogClose>
                 <Button

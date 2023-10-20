@@ -1,6 +1,5 @@
 import { Flex, Grid, Heading } from "@radix-ui/themes";
 import tokenBack from "../assets/token_logo.png";
-import { Role } from "@hidden-identity/server";
 import { usePlayer } from "../store/secretKey";
 import { useTakeRole } from "../store/actions/playerActions";
 import classNames from "classnames";
@@ -38,12 +37,12 @@ export function PlayerRoleSelect() {
     >
       <Heading>Select a Role</Heading>
       <Grid columns="3" gap="3" width="auto" align="center" justify="center">
-        {Object.entries(game.roleBag ?? {}).map(([role, taken], idx) => (
+        {Object.entries(game.roleBag ?? {}).map(([roleNum, role], idx) => (
           <button
-            className={classNames(taken && "opacity-40")}
-            disabled={taken}
+            className={classNames(!role && "opacity-40")}
+            disabled={!role}
             onClick={() => {
-              takeRole(player!, role as Role);
+              takeRole(player!, parseInt(roleNum));
             }}
           >
             <Heading className="absolute z-10">{idx + 1}</Heading>
