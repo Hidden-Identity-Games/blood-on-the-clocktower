@@ -18,7 +18,7 @@ import {
   setPlayerOrder,
   toggleDeadvote,
   setAlignment,
-  setRoleTaken,
+  setDrawRole,
   setPlayerHasSeenRole,
 } from '../database/gameDB/player.ts'
 import { setupTestGames } from '../testGames.ts'
@@ -181,10 +181,10 @@ export const gameRoutes = {
     .input(
       z.intersection(
         playerAndGameIdShape,
-        z.object({ role: roleShape }),
+        z.object({ numberDrawn: z.number() }),
       ),
-    ).mutation(async ({ input: { gameId, player, role } }) => {
-      return await setRoleTaken(gameId, player, role)
+    ).mutation(async ({ input: { gameId, player, numberDrawn } }) => {
+      return await setDrawRole(gameId, player, numberDrawn)
     }),
   setPlayerSeenRole: playerProcedure
     .input(

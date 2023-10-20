@@ -1,6 +1,5 @@
 import { Flex, Grid, Heading } from "@radix-ui/themes";
 import tokenBack from "../assets/token_logo.png";
-import { Role } from "@hidden-identity/server";
 import { usePlayer } from "../store/secretKey";
 import { useTakeRole } from "../store/actions/playerActions";
 import classNames from "classnames";
@@ -11,8 +10,6 @@ export function PlayerRoleSelect() {
   const { game } = useDefiniteGame();
   const [player] = usePlayer();
   const [, , , takeRole] = useTakeRole();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const roleBagOnMount = React.useMemo(() => game.roleBag, []);
   const rotations = React.useMemo(() => {
     return Array.from({ length: 15 }).map(() => Math.floor(Math.random() * 11));
   }, []);
@@ -40,27 +37,18 @@ export function PlayerRoleSelect() {
     >
       <Heading>Select a Role</Heading>
       <Grid columns="3" gap="3" width="auto" align="center" justify="center">
-        {Object.entries(game.roleBag).flatMap(([role, qtyLeft], roleIdx) =>
-          Array.from({ length: roleBagOnMount[role as Role] }).map(
-            (_, qtyIdx) => (
-              <button
-                className={classNames(qtyLeft <= qtyIdx && "opacity-40")}
-                disabled={qtyLeft <= qtyIdx}
-                onClick={() => {
-                  takeRole(player!, role as Role);
-                }}
-              >
-                <Heading className="absolute z-10">
-                  {roleIdx + qtyIdx + 1}
-                </Heading>
-                <img
-                  className={rotationMap[rotations[roleIdx + qtyIdx]]}
-                  src={tokenBack}
-                />
-              </button>
-            ),
-          ),
-        )}
+        {Object.entries(game.roleBag ?? {}).map(([roleNum, role], idx) => (
+          <button
+            className={classNames(!role && "opacity-40")}
+            disabled={!role}
+            onClick={() => {
+              takeRole(player!, parseInt(roleNum));
+            }}
+          >
+            <Heading className="absolute z-10">{idx + 1}</Heading>
+            <img className={rotationMap[rotations[idx]]} src={tokenBack} />
+          </button>
+        ))}
       </Grid>
     </Flex>
   );

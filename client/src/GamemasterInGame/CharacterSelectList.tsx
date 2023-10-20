@@ -126,7 +126,9 @@ export function CharacterSelectList({
                         [role]: 0,
                       }));
                     }}
-                    confirmationText={`Remove ${RoleName(role)} from script?`}
+                    confirmationText={`This will ENTIRELY remove the ${RoleName(
+                      role,
+                    )} from the script. If you're instead trying to deselect or change the quantity of the role, don't do it here.`}
                   >
                     <AiOutlineClose />
                   </DestructiveButton>
@@ -192,11 +194,15 @@ function AddRole({ characterSelectState }: AddRoleProps) {
             <Dialog.Close key={role.id}>
               <button
                 onClick={async () => {
-                  await setScript([...script, { id: role.id as Role }]);
-                  characterSelectState.selectedRoles.set((selectedRoles) => ({
-                    ...selectedRoles,
-                    [role.id]: 1,
-                  }));
+                  if (!script.find((r) => r.id === role.id)) {
+                    await setScript([...script, { id: role.id as Role }]);
+                  }
+                  if (!characterSelectState.selectedRoles.value[role.id]) {
+                    characterSelectState.selectedRoles.set((selectedRoles) => ({
+                      ...selectedRoles,
+                      [role.id]: 1,
+                    }));
+                  }
                 }}
               >
                 <Flex justify="between" align="center">
