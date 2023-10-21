@@ -79,7 +79,7 @@ export function PlayerInGame() {
       onValueChange={setSelectedTab}
     >
       <Tabs.List>
-        <Tabs.Trigger className="min-w-[100px] flex-1" value="script">
+        <Tabs.Trigger className="flex-1" value="script">
           <Text className="mr-1" color="red" asChild>
             <GiScrollQuill />
           </Text>

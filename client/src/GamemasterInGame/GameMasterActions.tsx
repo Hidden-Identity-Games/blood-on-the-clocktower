@@ -45,7 +45,9 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
-      <PlayerOrderAction player={game.playerList[0]} />
+      {game.gameStatus !== "PlayersJoining" && (
+        <PlayerOrderAction player={game.playerList[0]} />
+      )}
 
       {game.gameStatus === "PlayersJoining" && (
         <Dialog.Root>
