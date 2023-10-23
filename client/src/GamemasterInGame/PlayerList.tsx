@@ -23,6 +23,7 @@ import {
   usePlayerFilters,
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
+import { PlayerMessageProps } from "../PlayerMessagePage";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -109,10 +110,25 @@ const gameActionsByNight = {
   ] as Action[],
   otherNight: [] as Action[],
 };
-export function NightPlayerList() {
+
+interface NightPlayerListProps {
+  firstNight: boolean;
+  checkedActions: Record<string, boolean>;
+  setCheckedActions: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+  openPlayerMessage?: (messageProps: PlayerMessageProps) => void;
+}
+export function NightPlayerList({
+  firstNight,
+  checkedActions,
+  setCheckedActions,
+  openPlayerMessage,
+}: NightPlayerListProps) {
+  console.log(checkedActions);
   const { game } = useDefiniteGame();
-  const nightKey = game.gameStatus === "Setup" ? "firstNight" : "otherNight";
-  const nightActions = React.useMemo(() => {
+  const nightKey = firstNight ? "firstNight" : "otherNight";
+  const [nightActions, _leftoverPlayers] = React.useMemo(() => {
     const playerActions = game.playerList
       .map((player) => ({
         player,
@@ -127,38 +143,39 @@ export function NightPlayerList() {
         order: character[nightKey]!.order,
       }));
     const gameActions = gameActionsByNight[nightKey];
-    return [...playerActions, ...gameActions].sort((a, b) => a.order - b.order);
-  }, [nightKey, game]);
-  const leftoverPlayers = game.playerList
-    .filter(
-      (player) => !getCharacter(game.playersToRoles[player])[nightKey]?.order,
-    )
-    .sort()
-    .map((player) => ({
-      type: "character",
-      name: `${player}_undone`,
-      player,
-      order: 1000,
-    }));
 
-  const [checkedActions, setCheckedActions] = useState<Record<string, boolean>>(
-    Object.fromEntries(nightActions.map((action) => [action.name, true])),
-  );
+    const leftoverPlayers = game.playerList
+      .filter(
+        (player) => !getCharacter(game.playersToRoles[player])[nightKey]?.order,
+      )
+      .sort()
+      .map((player) => ({
+        type: "character",
+        name: `${player}_undone`,
+        player,
+        order: 1000,
+      }));
+
+    return [
+      [...playerActions, ...gameActions].sort((a, b) => a.order - b.order),
+      leftoverPlayers,
+    ];
+  }, [nightKey, game.playersToRoles, game.playerList]);
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {[...nightActions, ...leftoverPlayers].map((action) => (
+      {nightActions.map((action) => (
         <React.Fragment key={action.name}>
           <Text size="4" asChild>
             <Flex justify="between" align="center" px="3" gap="3">
               <Checkbox
                 id={`${action.name}-done`}
-                checked={checkedActions[action.name]}
+                checked={!!checkedActions[action.name]}
                 onClick={() =>
-                  setCheckedActions({
-                    ...checkedActions,
-                    [action.name]: !checkedActions[action.name],
-                  })
+                  setCheckedActions((prev) => ({
+                    ...prev,
+                    [action.name]: !prev[action.name],
+                  }))
                 }
               />
               {action.type === "character" && (

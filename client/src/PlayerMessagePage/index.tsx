@@ -1,7 +1,7 @@
 import { Flex, Heading, Text, TextArea } from "@radix-ui/themes";
 import { useSearchParams } from "react-router-dom";
 import { CharacterName } from "../shared/RoleIcon";
-import { PlayerMessageScreenMessage } from "@hidden-identity/server";
+import { PlayerMessageScreenMessage, Reveal } from "@hidden-identity/server";
 import { alignmentColorMap, colorMap } from "../shared/CharacterTypes";
 
 export function PlayerMessagePage() {
@@ -11,9 +11,17 @@ export function PlayerMessagePage() {
   const parsedMessage = JSON.parse(unparsed) as PlayerMessageScreenMessage;
   const { message, reveal } = parsedMessage;
 
+  return <PlayerMessage message={message} reveal={reveal} />;
+}
+
+export interface PlayerMessageProps {
+  message: string;
+  reveal?: Record<string, Reveal[]>;
+}
+export function PlayerMessage({ reveal = {}, message }: PlayerMessageProps) {
   return (
     <Flex direction="column" gap="2" className="h-full" p="2">
-      {Object.keys(reveal ?? {}).map((section) => (
+      {Object.keys(reveal).map((section) => (
         <Flex direction="column" gap="1" key={section}>
           <Heading className="uppercase">{section}</Heading>
           {reveal![section].map((revealItem) => (
