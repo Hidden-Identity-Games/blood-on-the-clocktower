@@ -7,14 +7,13 @@ import { alignmentColorMap, colorMap } from "../shared/CharacterTypes";
 export function PlayerMessagePage() {
   const [queryParams] = useSearchParams();
   const unparsed = queryParams.get("playerMessage") ?? "";
-  console.log(unparsed);
   const parsedMessage = JSON.parse(unparsed) as PlayerMessageScreenMessage;
   const { message, reveal } = parsedMessage;
 
   return <PlayerMessage message={message} reveal={reveal} />;
 }
 
-export interface PlayerMessageProps {
+interface PlayerMessageProps {
   message: string;
   reveal?: Record<string, Reveal[]>;
 }

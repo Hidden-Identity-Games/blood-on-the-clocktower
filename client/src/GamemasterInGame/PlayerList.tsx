@@ -23,7 +23,6 @@ import {
   usePlayerFilters,
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
-import { PlayerMessageProps } from "../PlayerMessagePage";
 import { DestructiveButton } from "./DestructiveButton";
 
 export function PregamePlayerList() {
@@ -115,12 +114,10 @@ const gameActionsByNight = {
 interface NightPlayerListProps {
   firstNight: boolean;
   endNightCallback?: () => void;
-  playerMessageCallback?: (messageProps: PlayerMessageProps) => void;
 }
 export function NightPlayerList({
   firstNight,
   endNightCallback,
-  playerMessageCallback,
 }: NightPlayerListProps) {
   const { game } = useDefiniteGame();
   const nightKey = firstNight ? "firstNight" : "otherNight";
