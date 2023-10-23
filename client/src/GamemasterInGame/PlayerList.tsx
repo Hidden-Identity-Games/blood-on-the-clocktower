@@ -24,6 +24,7 @@ import {
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
 import { PlayerMessageProps } from "../PlayerMessagePage";
+import { DestructiveButton } from "./DestructiveButton";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -113,19 +114,14 @@ const gameActionsByNight = {
 
 interface NightPlayerListProps {
   firstNight: boolean;
-  checkedActions: Record<string, boolean>;
-  setCheckedActions: React.Dispatch<
-    React.SetStateAction<Record<string, boolean>>
-  >;
-  openPlayerMessage?: (messageProps: PlayerMessageProps) => void;
+  endNightCallback?: () => void;
+  playerMessageCallback?: (messageProps: PlayerMessageProps) => void;
 }
 export function NightPlayerList({
   firstNight,
-  checkedActions,
-  setCheckedActions,
-  openPlayerMessage,
+  endNightCallback,
+  playerMessageCallback,
 }: NightPlayerListProps) {
-  console.log(checkedActions);
   const { game } = useDefiniteGame();
   const nightKey = firstNight ? "firstNight" : "otherNight";
   const [nightActions, _leftoverPlayers] = React.useMemo(() => {
@@ -161,6 +157,15 @@ export function NightPlayerList({
       leftoverPlayers,
     ];
   }, [nightKey, game.playersToRoles, game.playerList]);
+
+  const [checkedActions, setCheckedActions] = React.useState<
+    Record<string, boolean>
+  >({});
+
+  const endNight = () => {
+    endNightCallback && endNightCallback();
+    setCheckedActions({});
+  };
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
@@ -230,6 +235,20 @@ export function NightPlayerList({
           )}
         </React.Fragment>
       ))}
+      {Object.values(checkedActions).filter(Boolean).length ===
+      nightActions.length ? (
+        <Button m="3" onClick={endNight}>
+          End Night
+        </Button>
+      ) : (
+        <DestructiveButton
+          m="3"
+          confirmationText="There are night actions not yet marked completed."
+          onClick={endNight}
+        >
+          End Night
+        </DestructiveButton>
+      )}
     </Flex>
   );
 }

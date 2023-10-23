@@ -1,11 +1,11 @@
 import React from "react";
 import { IngamePlayerList, NightPlayerList } from "./PlayerList";
-import { Button, Flex, Separator, Switch, Tabs } from "@radix-ui/themes";
+import { Flex, Switch, Tabs } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { GameMasterActions } from "./GameMasterActions";
 import { useSetGameStatus } from "../store/actions/gmActions";
-import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
-import { GiNotebook } from "react-icons/gi";
+import { BsFillMoonStarsFill } from "react-icons/bs";
+import { GiNotebook, GiOpenBook } from "react-icons/gi";
 import { AiOutlineMenu } from "react-icons/ai";
 import { PlayerMessage, PlayerMessageProps } from "../PlayerMessagePage";
 import classNames from "classnames";
@@ -17,23 +17,19 @@ export function NightOrder() {
   const [, , , setGameStatus] = useSetGameStatus();
   const [selectedTab, setSelectedTab] = React.useState("grimoir");
   const [lockTabs, setLockTabs] = React.useState(false);
-  const [night, setNight] = React.useState(1);
 
   const [playerMessage, setPlayerMessage] = React.useState("");
   const [playerReveal, setPlayerReveal] = React.useState<
     Record<string, Reveal[]>
   >({});
 
-  const [checkedActions, setCheckedActions] = React.useState<
-    Record<string, boolean>
-  >({});
+  const firstNight = game.gameStatus === "Setup";
 
-  const nextNight = () => {
+  const startDay = () => {
     if (game.gameStatus === "Setup") {
       setGameStatus("Started");
     }
-    setCheckedActions({});
-    setNight((prev) => prev + 1);
+    setSelectedTab("grimoir");
   };
 
   const openPlayerMessage = ({ message, reveal }: PlayerMessageProps) => {
@@ -52,14 +48,14 @@ export function NightOrder() {
       <Tabs.List>
         <Tabs.Trigger className="flex-1" disabled={lockTabs} value="grimoir">
           <Flex align="center" gap="1">
-            <BsSunFill />
+            <GiOpenBook />
             {selectedTab === "grimoir" && "Grimoir"}
           </Flex>
         </Tabs.Trigger>
         <Tabs.Trigger className="flex-1" disabled={lockTabs} value="night">
           <Flex align="center" gap="1">
             <BsFillMoonStarsFill />
-            {selectedTab === "night" && "Night"}
+            {selectedTab === "night" && (firstNight ? "First Night" : "Night")}
           </Flex>
         </Tabs.Trigger>
         <Tabs.Trigger className="flex-1" disabled={lockTabs} value="message">
@@ -89,31 +85,23 @@ export function NightOrder() {
         value="night"
       >
         <Flex direction="column" mt="2">
-          <Flex justify="between" align="center" mx="3">
-            <Flex gap="3">
-              <span>Night</span>
-              <span>{night}</span>
-            </Flex>
-            <Button onClick={nextNight}>Next Night</Button>
-          </Flex>
-          <Separator size="4" mt="2" />
           <NightPlayerList
-            firstNight={night === 1}
-            checkedActions={checkedActions}
-            setCheckedActions={setCheckedActions}
-            openPlayerMessage={openPlayerMessage}
+            firstNight={firstNight}
+            endNightCallback={startDay}
+            playerMessageCallback={openPlayerMessage}
           />
         </Flex>
       </Tabs.Content>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="message">
-        <Flex direction="column">
+        <Flex direction="column" my="2">
           <label>
-            <Flex justify="between">
+            <Flex justify="end" align="center" gap="3" mx="3">
               Lock Interface
               <Switch
                 checked={lockTabs}
-                onChange={() => setLockTabs((prev) => !prev)}
+                onClick={() => setLockTabs((prev) => !prev)}
+                radius="full"
               />
             </Flex>
           </label>
