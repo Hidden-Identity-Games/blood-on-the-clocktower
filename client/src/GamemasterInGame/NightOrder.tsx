@@ -56,7 +56,7 @@ export function NightOrder() {
           value="grimoir"
         >
           <Flex align="center" gap="1">
-            <GiOpenBook />
+            {interfaceLocked ? <BiSolidLock /> : <GiOpenBook />}
             {selectedTab === "grimoir" && "Grimoir"}
           </Flex>
         </Tabs.Trigger>
@@ -66,7 +66,7 @@ export function NightOrder() {
           value="night"
         >
           <Flex align="center" gap="1">
-            <BsFillMoonStarsFill />
+            {interfaceLocked ? <BiSolidLock /> : <BsFillMoonStarsFill />}
             {selectedTab === "night" && (firstNight ? "First Night" : "Night")}
           </Flex>
         </Tabs.Trigger>
@@ -86,7 +86,7 @@ export function NightOrder() {
           value="menu"
         >
           <Flex align="center" gap="1">
-            <AiOutlineMenu />
+            {interfaceLocked ? <BiSolidLock /> : <AiOutlineMenu />}
             {selectedTab === "menu" && "Menu"}
           </Flex>
         </Tabs.Trigger>
