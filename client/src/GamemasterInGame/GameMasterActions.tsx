@@ -108,16 +108,17 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </Dialog.Content>
         </Dialog.Root>
       )}
-      {game.gameStatus === "Setup" ? (
-        <ExportButton />
-      ) : (
-        <DestructiveButton
-          onClick={() => setGameStatus("Setup")}
-          confirmationText="All notes and statuses will be kept."
-        >
-          Back to First Day
-        </DestructiveButton>
-      )}
+      {game.gameStatus !== "PlayersJoining" &&
+        (game.gameStatus === "Setup" ? (
+          <ExportButton />
+        ) : (
+          <DestructiveButton
+            onClick={() => setGameStatus("Setup")}
+            confirmationText="All notes and statuses will be kept."
+          >
+            Back to First Day
+          </DestructiveButton>
+        ))}
       <NewGameButton />
     </Flex>
   );
