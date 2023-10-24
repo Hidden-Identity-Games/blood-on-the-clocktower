@@ -11,12 +11,14 @@ import { PlayerMessage } from "../PlayerMessagePage";
 import classNames from "classnames";
 import { Reveal } from "@hidden-identity/server";
 import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
+import { ScriptList } from "../shared/ScriptList";
 
+type Tabs = "grimoir" | "night" | "message" | "menu";
 export function NightOrder() {
   const { game } = useDefiniteGame();
 
   const [, , , setGameStatus] = useSetGameStatus();
-  const [selectedTab, setSelectedTab] = React.useState("grimoir");
+  const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoir");
   const [interfaceLocked, setInterfaceLocked] = React.useState(false);
 
   const [playerMessage, setPlayerMessage] = React.useState("");
@@ -47,49 +49,41 @@ export function NightOrder() {
     <Tabs.Root
       className="flex flex-1 flex-col overflow-hidden"
       value={selectedTab}
-      onValueChange={setSelectedTab}
+      onValueChange={(tab) => setSelectedTab(tab as Tabs)}
     >
       <Tabs.List>
-        <Tabs.Trigger
-          className="flex-1"
-          disabled={interfaceLocked}
+        <LockableTabTrigger
           value="grimoir"
+          heading="Grimoir"
+          selectedTab={selectedTab}
+          isLocked={interfaceLocked}
         >
-          <Flex align="center" gap="1">
-            {interfaceLocked ? <BiSolidLock /> : <GiOpenBook />}
-            {selectedTab === "grimoir" && "Grimoir"}
-          </Flex>
-        </Tabs.Trigger>
-        <Tabs.Trigger
-          className="flex-1"
-          disabled={interfaceLocked}
+          <GiOpenBook />
+        </LockableTabTrigger>
+        <LockableTabTrigger
           value="night"
+          heading={firstNight ? "First Night" : "Night"}
+          selectedTab={selectedTab}
+          isLocked={interfaceLocked}
         >
-          <Flex align="center" gap="1">
-            {interfaceLocked ? <BiSolidLock /> : <BsFillMoonStarsFill />}
-            {selectedTab === "night" && (firstNight ? "First Night" : "Night")}
-          </Flex>
-        </Tabs.Trigger>
-        <Tabs.Trigger
-          className="flex-1"
-          disabled={interfaceLocked}
+          <BsFillMoonStarsFill />
+        </LockableTabTrigger>
+        <LockableTabTrigger
           value="message"
+          heading="Message"
+          selectedTab={selectedTab}
+          isLocked={interfaceLocked}
         >
-          <Flex align="center" gap="1">
-            <GiNotebook />
-            {selectedTab === "message" && "Message"}
-          </Flex>
-        </Tabs.Trigger>
-        <Tabs.Trigger
-          className="flex-1"
-          disabled={interfaceLocked}
+          <GiNotebook />
+        </LockableTabTrigger>
+        <LockableTabTrigger
           value="menu"
+          heading="Menu & Script"
+          selectedTab={selectedTab}
+          isLocked={interfaceLocked}
         >
-          <Flex align="center" gap="1">
-            {interfaceLocked ? <BiSolidLock /> : <AiOutlineMenu />}
-            {selectedTab === "menu" && "Menu"}
-          </Flex>
-        </Tabs.Trigger>
+          <AiOutlineMenu />
+        </LockableTabTrigger>
       </Tabs.List>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="grimoir">
@@ -115,7 +109,17 @@ export function NightOrder() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="message">
         <Flex className="h-5/6" direction="column" gap="1" my="3">
-          <Flex justify="end" align="center" mx="3">
+          <Flex justify="between" align="center" mx="2">
+            <Button
+              variant="soft"
+              disabled={interfaceLocked}
+              onClick={() => {
+                openPlayerMessage("", {});
+                setInterfaceLocked(false);
+              }}
+            >
+              Clear
+            </Button>
             <label>
               <Flex align="center" gap="3">
                 <Flex align="center" gap="2">
@@ -135,26 +139,39 @@ export function NightOrder() {
             reveal={playerReveal ?? {}}
             onMessageChange={openPlayerMessage}
           />
-          <Flex justify="end" mx="3">
-            <Button
-              variant="soft"
-              disabled={interfaceLocked}
-              onClick={() => {
-                openPlayerMessage("", {});
-                setInterfaceLocked(false);
-              }}
-            >
-              Clear Note
-            </Button>
-          </Flex>
         </Flex>
       </Tabs.Content>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="menu">
-        <Flex className="h-full w-full" direction="column" justify="center">
+        <Flex className="h-full" direction="column" gap="2" m="3">
           <GameMasterActions selectedRoles={{}} />
+          <ScriptList className="my-5" />
         </Flex>
       </Tabs.Content>
     </Tabs.Root>
+  );
+}
+
+interface LockableTabTriggerProps {
+  value: string;
+  heading: string;
+  selectedTab: Tabs;
+  isLocked: boolean;
+  children: React.ReactNode;
+}
+function LockableTabTrigger({
+  value,
+  heading,
+  selectedTab,
+  isLocked,
+  children,
+}: LockableTabTriggerProps) {
+  return (
+    <Tabs.Trigger className="flex-1" disabled={isLocked} value={value}>
+      <Flex align="center" gap="1">
+        {isLocked && selectedTab !== value ? <BiSolidLock /> : children}
+        {selectedTab === value && heading}
+      </Flex>
+    </Tabs.Trigger>
   );
 }

@@ -216,7 +216,9 @@ export function NightPlayerList({
                     {action.name === "demon" && (
                       <>
                         <DialogHeader>Demon</DialogHeader>
-                        <DemonMessage />
+                        <DemonMessage
+                          openMessageCallback={playerMessageCallback}
+                        />
                       </>
                     )}
                     {action.name === "minions" && (
