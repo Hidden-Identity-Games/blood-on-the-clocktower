@@ -121,11 +121,9 @@ export function NightOrder() {
               Clear
             </Button>
             <label>
-              <Flex align="center" gap="3">
-                <Flex align="center" gap="2">
-                  {interfaceLocked ? <BiSolidLock /> : <BiSolidLockOpen />}
-                  Lock Interface
-                </Flex>
+              <Flex align="center" gap="2">
+                {interfaceLocked ? <BiSolidLock /> : <BiSolidLockOpen />}
+                Lock Interface
                 <Switch
                   checked={interfaceLocked}
                   onClick={() => setInterfaceLocked((prev) => !prev)}

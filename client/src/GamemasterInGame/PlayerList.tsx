@@ -278,7 +278,7 @@ export function IngamePlayerList() {
   const filteredPlayers = allFilters[selectedFilter];
 
   return (
-    <Flex className="h-full overflow-y-auto" direction="column" m="3" gap="2">
+    <Flex className="h-full overflow-y-auto" direction="column" p="2" gap="2">
       <PlayerListFilters
         allFilters={allFilters}
         selectedFilter={selectedFilter}
