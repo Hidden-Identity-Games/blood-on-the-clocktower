@@ -9,6 +9,7 @@ import {
 import { useCreateGame } from "../store/useStore";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import title from "../assets/title_banner.png";
 import backgroundImg from "../assets/hidden_identity_cover.png";
 
 export function NewGameLanding() {
@@ -26,6 +27,9 @@ export function NewGameLanding() {
           boxShadow: "0 0 40px 40px var(--color-page-background) inset",
         }}
       >
+        <Flex className="mx-2 my-[60px]" justify="center">
+          <img src={title} />
+        </Flex>
         {error && (
           <div className="relative h-0 w-full">
             <Callout.Root className="absolute bottom-0">
