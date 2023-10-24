@@ -1,25 +1,27 @@
 import React from "react";
 import { IngamePlayerList, NightPlayerList } from "./PlayerList";
-import { Flex, Tabs } from "@radix-ui/themes";
+import { Flex, Switch, Tabs } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { GameMasterActions } from "./GameMasterActions";
 import { useSetGameStatus } from "../store/actions/gmActions";
 import { BsFillMoonStarsFill } from "react-icons/bs";
-import { GiOpenBook } from "react-icons/gi";
+import { GiNotebook, GiOpenBook } from "react-icons/gi";
 import { AiOutlineMenu } from "react-icons/ai";
+import { PlayerMessage } from "../PlayerMessagePage";
 import classNames from "classnames";
+import { Reveal } from "@hidden-identity/server";
 
 export function NightOrder() {
   const { game } = useDefiniteGame();
 
   const [, , , setGameStatus] = useSetGameStatus();
   const [selectedTab, setSelectedTab] = React.useState("grimoir");
-  const [lockTabs, _setLockTabs] = React.useState(false);
+  const [lockTabs, setLockTabs] = React.useState(false);
 
-  // const [playerMessage, setPlayerMessage] = React.useState("");
-  // const [playerReveal, setPlayerReveal] = React.useState<
-  //   Record<string, Reveal[]>
-  // >({});
+  const [playerMessage, setPlayerMessage] = React.useState("");
+  const [playerReveal, setPlayerReveal] = React.useState<
+    Record<string, Reveal[]>
+  >({});
 
   const firstNight = game.gameStatus === "Setup";
 
@@ -30,15 +32,15 @@ export function NightOrder() {
     setSelectedTab("grimoir");
   };
 
-  // const openPlayerMessage = (
-  //   message: string,
-  //   reveal: Record<string, Reveal[]>,
-  // ) => {
-  //   setPlayerMessage(message);
-  //   setPlayerReveal(reveal ?? {});
-  //   setSelectedTab("message");
-  //   setLockTabs(true);
-  // };
+  const openPlayerMessage = (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => {
+    setPlayerMessage(message);
+    setPlayerReveal(reveal ?? {});
+    setSelectedTab("message");
+    setLockTabs(true);
+  };
 
   return (
     <Tabs.Root
@@ -59,12 +61,12 @@ export function NightOrder() {
             {selectedTab === "night" && (firstNight ? "First Night" : "Night")}
           </Flex>
         </Tabs.Trigger>
-        {/* <Tabs.Trigger className="flex-1" disabled={lockTabs} value="message">
+        <Tabs.Trigger className="flex-1" disabled={lockTabs} value="message">
           <Flex align="center" gap="1">
             <GiNotebook />
             {selectedTab === "message" && "Message"}
           </Flex>
-        </Tabs.Trigger> */}
+        </Tabs.Trigger>
         <Tabs.Trigger className="flex-1" disabled={lockTabs} value="menu">
           <Flex align="center" gap="1">
             <AiOutlineMenu />
@@ -93,7 +95,7 @@ export function NightOrder() {
         </Flex>
       </Tabs.Content>
 
-      {/* <Tabs.Content className="flex-1 overflow-y-auto" value="message">
+      <Tabs.Content className="flex-1 overflow-y-auto" value="message">
         <Flex direction="column" my="2">
           <Flex justify="end">
             <label>
@@ -107,12 +109,20 @@ export function NightOrder() {
               </Flex>
             </label>
           </Flex>
-          <PlayerMessage message={playerMessage} reveal={playerReveal} />
+          <PlayerMessage
+            message={playerMessage}
+            reveal={playerReveal}
+            onMessageChange={(newMessage: string) =>
+              openPlayerMessage(newMessage, playerReveal)
+            }
+          />
         </Flex>
-      </Tabs.Content> */}
+      </Tabs.Content>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="menu">
-        <GameMasterActions selectedRoles={{}} />
+        <Flex className="h-full w-full" direction="column" justify="center">
+          <GameMasterActions selectedRoles={{}} />
+        </Flex>
       </Tabs.Content>
     </Tabs.Root>
   );

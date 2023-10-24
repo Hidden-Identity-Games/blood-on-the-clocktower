@@ -16,8 +16,13 @@ export function PlayerMessagePage() {
 interface PlayerMessageProps {
   message: string;
   reveal?: Record<string, Reveal[]>;
+  onMessageChange?: (newMessage: string) => void;
 }
-export function PlayerMessage({ reveal = {}, message }: PlayerMessageProps) {
+export function PlayerMessage({
+  reveal = {},
+  message,
+  onMessageChange = () => {},
+}: PlayerMessageProps) {
   return (
     <Flex direction="column" gap="2" className="h-full" p="2">
       {Object.keys(reveal).map((section) => (
@@ -55,9 +60,10 @@ export function PlayerMessage({ reveal = {}, message }: PlayerMessageProps) {
         </Flex>
       ))}
       <TextArea
-        defaultValue={message}
+        value={message}
         className="flex-1 text-6xl"
         style={{ fontSize: "3rem", lineHeight: 1 }}
+        onChange={(e) => onMessageChange(e.currentTarget.value)}
       ></TextArea>
     </Flex>
   );
