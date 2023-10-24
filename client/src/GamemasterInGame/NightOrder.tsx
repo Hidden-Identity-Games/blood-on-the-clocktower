@@ -10,13 +10,14 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { PlayerMessage } from "../PlayerMessagePage";
 import classNames from "classnames";
 import { Reveal } from "@hidden-identity/server";
+import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 
 export function NightOrder() {
   const { game } = useDefiniteGame();
 
   const [, , , setGameStatus] = useSetGameStatus();
   const [selectedTab, setSelectedTab] = React.useState("grimoir");
-  const [lockInterface, setLockInterface] = React.useState(false);
+  const [interfaceLocked, setInterfaceLocked] = React.useState(false);
 
   const [playerMessage, setPlayerMessage] = React.useState("");
   const [playerReveal, setPlayerReveal] = React.useState<
@@ -39,7 +40,7 @@ export function NightOrder() {
     setPlayerMessage(message);
     setPlayerReveal(reveal ?? null);
     setSelectedTab("message");
-    setLockInterface(true);
+    setInterfaceLocked(true);
   };
 
   return (
@@ -51,7 +52,7 @@ export function NightOrder() {
       <Tabs.List>
         <Tabs.Trigger
           className="flex-1"
-          disabled={lockInterface}
+          disabled={interfaceLocked}
           value="grimoir"
         >
           <Flex align="center" gap="1">
@@ -59,7 +60,11 @@ export function NightOrder() {
             {selectedTab === "grimoir" && "Grimoir"}
           </Flex>
         </Tabs.Trigger>
-        <Tabs.Trigger className="flex-1" disabled={lockInterface} value="night">
+        <Tabs.Trigger
+          className="flex-1"
+          disabled={interfaceLocked}
+          value="night"
+        >
           <Flex align="center" gap="1">
             <BsFillMoonStarsFill />
             {selectedTab === "night" && (firstNight ? "First Night" : "Night")}
@@ -67,7 +72,7 @@ export function NightOrder() {
         </Tabs.Trigger>
         <Tabs.Trigger
           className="flex-1"
-          disabled={lockInterface}
+          disabled={interfaceLocked}
           value="message"
         >
           <Flex align="center" gap="1">
@@ -75,7 +80,11 @@ export function NightOrder() {
             {selectedTab === "message" && "Message"}
           </Flex>
         </Tabs.Trigger>
-        <Tabs.Trigger className="flex-1" disabled={lockInterface} value="menu">
+        <Tabs.Trigger
+          className="flex-1"
+          disabled={interfaceLocked}
+          value="menu"
+        >
           <Flex align="center" gap="1">
             <AiOutlineMenu />
             {selectedTab === "menu" && "Menu"}
@@ -105,14 +114,17 @@ export function NightOrder() {
       </Tabs.Content>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="message">
-        <Flex className="h-5/6" direction="column" gap="2" my="3">
+        <Flex className="h-5/6" direction="column" gap="1" my="3">
           <Flex justify="end" align="center" mx="3">
             <label>
               <Flex align="center" gap="3">
-                Lock Interface
+                <Flex align="center" gap="2">
+                  {interfaceLocked ? <BiSolidLock /> : <BiSolidLockOpen />}
+                  Lock Interface
+                </Flex>
                 <Switch
-                  checked={lockInterface}
-                  onClick={() => setLockInterface((prev) => !prev)}
+                  checked={interfaceLocked}
+                  onClick={() => setInterfaceLocked((prev) => !prev)}
                   radius="full"
                 />
               </Flex>
@@ -126,10 +138,10 @@ export function NightOrder() {
           <Flex justify="end" mx="3">
             <Button
               variant="soft"
-              disabled={lockInterface}
+              disabled={interfaceLocked}
               onClick={() => {
                 openPlayerMessage("", {});
-                setLockInterface(false);
+                setInterfaceLocked(false);
               }}
             >
               Clear Note
