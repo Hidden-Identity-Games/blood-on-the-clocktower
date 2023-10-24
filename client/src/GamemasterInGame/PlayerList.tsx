@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Separator,
   Text,
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
@@ -25,6 +26,11 @@ import {
 import { useKickPlayer } from "../store/actions/playerActions";
 import { DestructiveButton } from "./DestructiveButton";
 import { Reveal } from "@hidden-identity/server";
+import {
+  PlayerListOrder,
+  PlayerOrder,
+  usePlayerOrder,
+} from "../shared/PlayerListOrder";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -263,21 +269,31 @@ export function NightPlayerList({
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
+  const [selectedOrder, setSelectedOrder] =
+    useState<PlayerOrder>("alphabetical");
+  const [firstSeat, setFirstSeat] = useState("");
+  const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
+  const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
-  const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
 
   return (
-    <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
+    <Flex className="h-full overflow-y-auto" direction="column" m="3" gap="2">
       <PlayerListFilters
         allFilters={allFilters}
         selectedFilter={selectedFilter}
         setSelectedFilter={setSelectedFilter}
       />
+      <PlayerListOrder
+        selectedOrder={selectedOrder}
+        setSelectedOrder={setSelectedOrder}
+        setFirstSeat={setFirstSeat}
+      />
+      <Separator size="4" />
       {filteredPlayers.map((player) => (
         <Flex direction="column" key={player}>
           <Text size="4" asChild>
-            <Flex justify="between" align="center" px="3" gap="3">
+            <Flex justify="between" align="center" gap="3">
               <PlayerList.RoleIcon player={player}>
                 {getCharacter(game.playersToRoles[player]).ability}
               </PlayerList.RoleIcon>

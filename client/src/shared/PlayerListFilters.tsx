@@ -25,7 +25,7 @@ export function PlayerListFilters<T extends string>({
           className="min-w-fit flex-1 capitalize"
           variant={filter === selectedFilter ? "solid" : "surface"}
         >
-          {filter}({players.length})
+          {filter} ({players.length})
         </Button>
       ))}
     </Flex>

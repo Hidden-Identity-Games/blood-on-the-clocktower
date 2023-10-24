@@ -21,15 +21,24 @@ import {
 import { CharacterName } from "../shared/RoleIcon";
 import { ForPlayerPlayerRoleIcon } from "../GamemasterInGame/PlayerListComponents/PlayerRole";
 import { ScriptList } from "../shared/ScriptList";
+import {
+  PlayerListOrder,
+  PlayerOrder,
+  usePlayerOrder,
+} from "../shared/PlayerListOrder";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
-  const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
+  const [selectedOrder, setSelectedOrder] =
+    useState<PlayerOrder>("alphabetical");
+  const [firstSeat, setFirstSeat] = useState(me);
+  const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
+  const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
-  const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
+  const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
 
   const nightOrder = React.useMemo(() => {
     const charactersFromScript =
@@ -172,6 +181,13 @@ export function PlayerInGame() {
               selectedFilter={selectedFilter}
               setSelectedFilter={setSelectedFilter}
             />
+            <PlayerListOrder
+              selectedOrder={selectedOrder}
+              setSelectedOrder={setSelectedOrder}
+              setFirstSeat={setFirstSeat}
+              player={me}
+            />
+            <Separator size="4" />
           </Flex>
           <Flex
             direction="column"
@@ -183,7 +199,6 @@ export function PlayerInGame() {
               <Flex
                 key={player}
                 gap="1"
-                // justify="between"
                 className={classNames(
                   game.deadPlayers[player] && "line-through",
                 )}
