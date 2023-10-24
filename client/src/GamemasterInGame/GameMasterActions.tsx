@@ -10,7 +10,6 @@ import { useDefiniteGame } from "../store/GameContext";
 import { Role } from "@hidden-identity/server";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ExportButton } from "./ExportButton";
-import { PlayerOrderAction } from "./PlayerListComponents/NightAction/PlayerOrderAction";
 import {
   useDistributeRoles,
   useSetGameStatus,
@@ -50,9 +49,6 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
-      {game.gameStatus !== "PlayersJoining" && (
-        <PlayerOrderAction player={game.playerList[0]} />
-      )}
 
       {game.gameStatus === "PlayersJoining" && (
         <Dialog.Root>
