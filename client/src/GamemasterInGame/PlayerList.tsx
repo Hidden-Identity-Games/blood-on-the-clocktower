@@ -24,6 +24,7 @@ import {
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
 import { DestructiveButton } from "./DestructiveButton";
+import { Reveal } from "@hidden-identity/server";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -114,10 +115,15 @@ const gameActionsByNight = {
 interface NightPlayerListProps {
   firstNight: boolean;
   endNightCallback?: () => void;
+  playerMessageCallback?: (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => void;
 }
 export function NightPlayerList({
   firstNight,
-  endNightCallback,
+  endNightCallback = () => {},
+  playerMessageCallback,
 }: NightPlayerListProps) {
   const { game } = useDefiniteGame();
   const nightKey = firstNight ? "firstNight" : "otherNight";
@@ -160,7 +166,7 @@ export function NightPlayerList({
   >({});
 
   const endNight = () => {
-    endNightCallback && endNightCallback();
+    endNightCallback();
     setCheckedActions({});
   };
 
@@ -183,7 +189,10 @@ export function NightPlayerList({
               {action.type === "character" && (
                 <>
                   <PlayerList.RoleIcon player={action.player}>
-                    <PlayerList.NightReminder player={action.player} />
+                    <PlayerList.NightReminder
+                      player={action.player}
+                      playerMessageCallback={playerMessageCallback}
+                    />
                   </PlayerList.RoleIcon>
                   <PlayerList.NoteInputModal
                     player={action.player}

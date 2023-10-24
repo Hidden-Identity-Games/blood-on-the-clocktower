@@ -1,6 +1,6 @@
 import React from "react";
 import { IngamePlayerList, NightPlayerList } from "./PlayerList";
-import { Flex, Switch, Tabs } from "@radix-ui/themes";
+import { Button, Flex, Switch, Tabs } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { GameMasterActions } from "./GameMasterActions";
 import { useSetGameStatus } from "../store/actions/gmActions";
@@ -16,7 +16,7 @@ export function NightOrder() {
 
   const [, , , setGameStatus] = useSetGameStatus();
   const [selectedTab, setSelectedTab] = React.useState("grimoir");
-  const [lockTabs, setLockTabs] = React.useState(false);
+  const [lockInterface, setLockInterface] = React.useState(false);
 
   const [playerMessage, setPlayerMessage] = React.useState("");
   const [playerReveal, setPlayerReveal] = React.useState<
@@ -37,9 +37,9 @@ export function NightOrder() {
     reveal: Record<string, Reveal[]>,
   ) => {
     setPlayerMessage(message);
-    setPlayerReveal(reveal ?? {});
+    setPlayerReveal(reveal ?? null);
     setSelectedTab("message");
-    setLockTabs(true);
+    setLockInterface(true);
   };
 
   return (
@@ -49,25 +49,33 @@ export function NightOrder() {
       onValueChange={setSelectedTab}
     >
       <Tabs.List>
-        <Tabs.Trigger className="flex-1" disabled={lockTabs} value="grimoir">
+        <Tabs.Trigger
+          className="flex-1"
+          disabled={lockInterface}
+          value="grimoir"
+        >
           <Flex align="center" gap="1">
             <GiOpenBook />
             {selectedTab === "grimoir" && "Grimoir"}
           </Flex>
         </Tabs.Trigger>
-        <Tabs.Trigger className="flex-1" disabled={lockTabs} value="night">
+        <Tabs.Trigger className="flex-1" disabled={lockInterface} value="night">
           <Flex align="center" gap="1">
             <BsFillMoonStarsFill />
             {selectedTab === "night" && (firstNight ? "First Night" : "Night")}
           </Flex>
         </Tabs.Trigger>
-        <Tabs.Trigger className="flex-1" disabled={lockTabs} value="message">
+        <Tabs.Trigger
+          className="flex-1"
+          disabled={lockInterface}
+          value="message"
+        >
           <Flex align="center" gap="1">
             <GiNotebook />
             {selectedTab === "message" && "Message"}
           </Flex>
         </Tabs.Trigger>
-        <Tabs.Trigger className="flex-1" disabled={lockTabs} value="menu">
+        <Tabs.Trigger className="flex-1" disabled={lockInterface} value="menu">
           <Flex align="center" gap="1">
             <AiOutlineMenu />
             {selectedTab === "menu" && "Menu"}
@@ -91,19 +99,20 @@ export function NightOrder() {
           <NightPlayerList
             firstNight={firstNight}
             endNightCallback={startDay}
+            playerMessageCallback={openPlayerMessage}
           />
         </Flex>
       </Tabs.Content>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="message">
-        <Flex direction="column" my="2">
-          <Flex justify="end">
+        <Flex className="h-5/6" direction="column" gap="2" my="3">
+          <Flex justify="end" align="center" mx="3">
             <label>
-              <Flex align="center" gap="3" mx="3">
+              <Flex align="center" gap="3">
                 Lock Interface
                 <Switch
-                  checked={lockTabs}
-                  onClick={() => setLockTabs((prev) => !prev)}
+                  checked={lockInterface}
+                  onClick={() => setLockInterface((prev) => !prev)}
                   radius="full"
                 />
               </Flex>
@@ -111,11 +120,21 @@ export function NightOrder() {
           </Flex>
           <PlayerMessage
             message={playerMessage}
-            reveal={playerReveal}
-            onMessageChange={(newMessage: string) =>
-              openPlayerMessage(newMessage, playerReveal)
-            }
+            reveal={playerReveal ?? {}}
+            onMessageChange={openPlayerMessage}
           />
+          <Flex justify="end" mx="3">
+            <Button
+              variant="soft"
+              disabled={lockInterface}
+              onClick={() => {
+                openPlayerMessage("", {});
+                setLockInterface(false);
+              }}
+            >
+              Clear Note
+            </Button>
+          </Flex>
         </Flex>
       </Tabs.Content>
 
