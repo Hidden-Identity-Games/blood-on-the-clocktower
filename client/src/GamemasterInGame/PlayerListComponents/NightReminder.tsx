@@ -1,4 +1,4 @@
-import { UnifiedGame } from "@hidden-identity/server";
+import { Reveal, UnifiedGame } from "@hidden-identity/server";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { getCharacter } from "../../assets/game_data/gameData";
 import { useDefiniteGame } from "../../store/GameContext";
@@ -13,7 +13,17 @@ function getAbilityKey(game: UnifiedGame): AbilityKey {
   return game.gameStatus === "Setup" ? "firstNight" : "otherNight";
 }
 
-export function PlayerNightReminder({ player }: { player: string }) {
+interface PlayerNightReminderProps {
+  player: string;
+  playerMessageCallback?: (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => void;
+}
+export function PlayerNightReminder({
+  player,
+  playerMessageCallback,
+}: PlayerNightReminderProps) {
   const { game } = useDefiniteGame();
   const character = getCharacter(game.playersToRoles[player]);
   const abilityKey = getAbilityKey(game);
@@ -42,6 +52,7 @@ export function PlayerNightReminder({ player }: { player: string }) {
             <PlayerList.PlayerMessage
               message={nightAbility.playerMessage}
               player={player}
+              openMessageCallback={playerMessageCallback}
             />
           )}
         </Flex>

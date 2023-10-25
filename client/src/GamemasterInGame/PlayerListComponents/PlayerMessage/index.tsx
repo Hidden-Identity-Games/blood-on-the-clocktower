@@ -1,4 +1,8 @@
-import { PlayerMessage, PlayerMessageMap } from "@hidden-identity/server";
+import {
+  PlayerMessage,
+  PlayerMessageMap,
+  Reveal,
+} from "@hidden-identity/server";
 // import { exhaustiveCheck } from "../../../utils/exhaustiveCheck";
 import { RevealRoleMessage } from "./RevealRoleMessage";
 import { DemonMessage } from "./DemonMessage";
@@ -14,11 +18,19 @@ import { ComponentType } from "react";
 interface PlayerMessageFlowProps {
   message: PlayerMessage;
   player: string;
+  openMessageCallback?: (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => void;
 }
 const ComponentMap: {
   [K in PlayerMessage["type"]]: ComponentType<{
     player: string;
     message: PlayerMessageMap[K];
+    openMessageCallback?: (
+      message: string,
+      reveal: Record<string, Reveal[]>,
+    ) => void;
   }>;
 } = {
   "demon-first-night": DemonMessage,
@@ -32,10 +44,24 @@ const ComponentMap: {
   "alignment-change": AlignmentChangeMessage,
 };
 
-export function PlayerMessageFlow({ message, player }: PlayerMessageFlowProps) {
+export function PlayerMessageFlow({
+  message,
+  player,
+  openMessageCallback,
+}: PlayerMessageFlowProps) {
   const Component = ComponentMap[message.type] as React.ComponentType<{
     player: string;
     message: PlayerMessageMap[typeof message.type];
+    openMessageCallback?: (
+      message: string,
+      reveal: Record<string, Reveal[]>,
+    ) => void;
   }>;
-  return <Component player={player} message={message} />;
+  return (
+    <Component
+      player={player}
+      message={message}
+      openMessageCallback={openMessageCallback}
+    />
+  );
 }

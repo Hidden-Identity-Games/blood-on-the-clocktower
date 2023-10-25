@@ -1,4 +1,8 @@
-import { CharacterType, PlayerMessageMap } from "@hidden-identity/server";
+import {
+  CharacterType,
+  PlayerMessageMap,
+  Reveal,
+} from "@hidden-identity/server";
 import { useDynamicList } from "../Selectors/useDynamicList";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useState } from "react";
@@ -12,8 +16,15 @@ import { getCharacter } from "../../../assets/game_data/gameData";
 export interface RevealTeamMessageProps {
   message: PlayerMessageMap["reveal-team"];
   player: string;
+  openMessageCallback?: (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => void;
 }
-export function RevealTeamMessage({ message }: RevealTeamMessageProps) {
+export function RevealTeamMessage({
+  message,
+  openMessageCallback,
+}: RevealTeamMessageProps) {
   const { game } = useDefiniteGame();
   const [team, setTeam] = useState<CharacterType>("Demon");
   const playersState = useDynamicList<string>(game.playerList, {
@@ -23,19 +34,27 @@ export function RevealTeamMessage({ message }: RevealTeamMessageProps) {
     defaultCount: message.count,
   });
 
+  const text = "";
+  const reveal = {
+    Reveal: playersState.value.map((p) => ({
+      team,
+      player: p,
+    })),
+  };
+
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
         note={{
-          reveal: {
-            Reveal: playersState.value.map((p) => ({
-              team,
-              player: p,
-            })),
-          },
-          message: "",
+          reveal: reveal,
+          message: text,
         }}
+        callback={
+          openMessageCallback
+            ? () => openMessageCallback(text, reveal)
+            : undefined
+        }
       />
       <Heading>Team</Heading>
       <Restrictions restrictions={message.restriction} />

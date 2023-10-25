@@ -10,9 +10,12 @@ import { useDefiniteGame } from "../store/GameContext";
 import { Role } from "@hidden-identity/server";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ExportButton } from "./ExportButton";
-import { PlayerOrderAction } from "./PlayerListComponents/NightAction/PlayerOrderAction";
-import { useDistributeRoles } from "../store/actions/gmActions";
+import {
+  useDistributeRoles,
+  useSetGameStatus,
+} from "../store/actions/gmActions";
 import { useCreateGame } from "../store/useStore";
+import { DestructiveButton } from "./DestructiveButton";
 
 interface GameMasterActionsProps {
   selectedRoles: Record<Role, number>;
@@ -20,6 +23,7 @@ interface GameMasterActionsProps {
 
 export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
   const { game } = useDefiniteGame();
+  const [, , , setGameStatus] = useSetGameStatus();
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
 
@@ -45,7 +49,6 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
-      <PlayerOrderAction player={game.playerList[0]} />
 
       {game.gameStatus === "PlayersJoining" && (
         <Dialog.Root>
@@ -101,7 +104,17 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </Dialog.Content>
         </Dialog.Root>
       )}
-      {game.gameStatus === "Setup" && <ExportButton />}
+      {game.gameStatus !== "PlayersJoining" &&
+        (game.gameStatus === "Setup" ? (
+          <ExportButton />
+        ) : (
+          <DestructiveButton
+            onClick={() => setGameStatus("Setup")}
+            confirmationText="All notes and statuses will be kept."
+          >
+            Back to First Day
+          </DestructiveButton>
+        ))}
       <NewGameButton />
     </Flex>
   );

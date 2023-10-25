@@ -4,11 +4,7 @@ import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
 import { useMe } from "../store/secretKey";
-import {
-  BsFillMoonFill,
-  BsFillMoonStarsFill,
-  BsPeopleFill,
-} from "react-icons/bs";
+import { BsFillMoonStarsFill, BsPeopleFill } from "react-icons/bs";
 import { GiScrollQuill } from "react-icons/gi";
 import React, { useState } from "react";
 import {
@@ -16,7 +12,7 @@ import {
   DistributionsByPlayerCount,
 } from "../assets/game_data/gameData";
 import { colorMap } from "../shared/CharacterTypes";
-import { Character, CharacterType } from "../types/script";
+import { CharacterType } from "../types/script";
 import {
   PlayerFilter,
   PlayerListFilters,
@@ -24,17 +20,27 @@ import {
 } from "../shared/PlayerListFilters";
 import { CharacterName } from "../shared/RoleIcon";
 import { ForPlayerPlayerRoleIcon } from "../GamemasterInGame/PlayerListComponents/PlayerRole";
+import { ScriptList } from "../shared/ScriptList";
+import {
+  PlayerListOrder,
+  PlayerOrder,
+  usePlayerOrder,
+} from "../shared/PlayerListOrder";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
-  const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
+  const [selectedOrder, setSelectedOrder] =
+    useState<PlayerOrder>("alphabetical");
+  const [firstSeat, setFirstSeat] = useState(me);
+  const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
+  const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
-  const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
+  const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
 
-  const [nightOrder, charactersByType] = React.useMemo(() => {
+  const nightOrder = React.useMemo(() => {
     const charactersFromScript =
       script?.map(({ id }) => getCharacter(id)) ?? [];
     const travelerCharacters = Object.values(game.playersToRoles)
@@ -56,17 +62,9 @@ export function PlayerInGame() {
         ),
     };
 
-    return [
-      nightOrder,
-      {
-        Townsfolk: allCharacters.filter(({ team }) => team === "Townsfolk"),
-        Outsider: allCharacters.filter(({ team }) => team === "Outsider"),
-        Minion: allCharacters.filter(({ team }) => team === "Minion"),
-        Demon: allCharacters.filter(({ team }) => team === "Demon"),
-        Traveler: allCharacters.filter(({ team }) => team === "Traveler"),
-      } satisfies Record<CharacterType, Character[]>,
-    ];
-  }, [script, game]);
+    return nightOrder;
+  }, [script, game.playersToRoles]);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { Traveler, ...distributionsByPlayerCount } = {
     ...DistributionsByPlayerCount[game.playerList.length],
@@ -79,7 +77,7 @@ export function PlayerInGame() {
       onValueChange={setSelectedTab}
     >
       <Tabs.List>
-        <Tabs.Trigger className="min-w-[100px] flex-1" value="script">
+        <Tabs.Trigger className="flex-1" value="script">
           <Text className="mr-1" color="red" asChild>
             <GiScrollQuill />
           </Text>
@@ -136,45 +134,7 @@ export function PlayerInGame() {
             ))}
           </Flex>
           <Separator size="4" />
-          {Object.entries(charactersByType)
-            .filter(([_, characters]) => characters.length > 0)
-            .map(([team, characters]) => (
-              <React.Fragment key={team}>
-                <Flex justify="end">
-                  <Heading
-                    id={team}
-                    size="3"
-                    align="right"
-                    color={colorMap[team as CharacterType]}
-                    asChild
-                  >
-                    <Flex gap="2">
-                      <span className="scale-x-[-1]">
-                        <BsFillMoonFill />
-                      </span>
-                      {team === "Townsfolk" ? `${team}` : `${team}s`}
-                    </Flex>
-                  </Heading>
-                </Flex>
-                {characters.map((char) => (
-                  <Flex key={char.id} gap="2">
-                    <Flex direction="column">
-                      {/* <img src={char.imageSrc} className="h-5 w-5" /> */}
-                      <Heading
-                        size="2"
-                        className="flex-1"
-                        color={colorMap[team as CharacterType]}
-                      >
-                        <CharacterName role={char.id} />
-                      </Heading>
-                      <Text size="1" weight="light" className="pl-5">
-                        {char.ability}
-                      </Text>
-                    </Flex>
-                  </Flex>
-                ))}
-              </React.Fragment>
-            ))}
+          <ScriptList />
         </Flex>
       </Tabs.Content>
 
@@ -221,6 +181,13 @@ export function PlayerInGame() {
               selectedFilter={selectedFilter}
               setSelectedFilter={setSelectedFilter}
             />
+            <PlayerListOrder
+              selectedOrder={selectedOrder}
+              setSelectedOrder={setSelectedOrder}
+              setFirstSeat={setFirstSeat}
+              player={me}
+            />
+            <Separator size="4" />
           </Flex>
           <Flex
             direction="column"
@@ -232,7 +199,6 @@ export function PlayerInGame() {
               <Flex
                 key={player}
                 gap="1"
-                // justify="between"
                 className={classNames(
                   game.deadPlayers[player] && "line-through",
                 )}

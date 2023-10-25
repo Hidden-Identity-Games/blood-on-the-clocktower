@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Separator,
   Text,
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
@@ -23,6 +24,13 @@ import {
   usePlayerFilters,
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
+import { DestructiveButton } from "./DestructiveButton";
+import { Reveal } from "@hidden-identity/server";
+import {
+  PlayerListOrder,
+  PlayerOrder,
+  usePlayerOrder,
+} from "../shared/PlayerListOrder";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -109,10 +117,23 @@ const gameActionsByNight = {
   ] as Action[],
   otherNight: [] as Action[],
 };
-export function NightPlayerList() {
+
+interface NightPlayerListProps {
+  firstNight: boolean;
+  endNightCallback?: () => void;
+  playerMessageCallback?: (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => void;
+}
+export function NightPlayerList({
+  firstNight,
+  endNightCallback = () => {},
+  playerMessageCallback,
+}: NightPlayerListProps) {
   const { game } = useDefiniteGame();
-  const nightKey = game.gameStatus === "Setup" ? "firstNight" : "otherNight";
-  const nightActions = React.useMemo(() => {
+  const nightKey = firstNight ? "firstNight" : "otherNight";
+  const [nightActions, _leftoverPlayers] = React.useMemo(() => {
     const playerActions = game.playerList
       .map((player) => ({
         player,
@@ -127,44 +148,57 @@ export function NightPlayerList() {
         order: character[nightKey]!.order,
       }));
     const gameActions = gameActionsByNight[nightKey];
-    return [...playerActions, ...gameActions].sort((a, b) => a.order - b.order);
-  }, [nightKey, game]);
-  const leftoverPlayers = game.playerList
-    .filter(
-      (player) => !getCharacter(game.playersToRoles[player])[nightKey]?.order,
-    )
-    .sort()
-    .map((player) => ({
-      type: "character",
-      name: `${player}_undone`,
-      player,
-      order: 1000,
-    }));
 
-  const [checkedActions, setCheckedActions] = useState<Record<string, boolean>>(
-    Object.fromEntries(nightActions.map((action) => [action.name, true])),
-  );
+    const leftoverPlayers = game.playerList
+      .filter(
+        (player) => !getCharacter(game.playersToRoles[player])[nightKey]?.order,
+      )
+      .sort()
+      .map((player) => ({
+        type: "character",
+        name: `${player}_undone`,
+        player,
+        order: 1000,
+      }));
+
+    return [
+      [...playerActions, ...gameActions].sort((a, b) => a.order - b.order),
+      leftoverPlayers,
+    ];
+  }, [nightKey, game.playersToRoles, game.playerList]);
+
+  const [checkedActions, setCheckedActions] = React.useState<
+    Record<string, boolean>
+  >({});
+
+  const endNight = () => {
+    endNightCallback();
+    setCheckedActions({});
+  };
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {[...nightActions, ...leftoverPlayers].map((action) => (
+      {nightActions.map((action) => (
         <React.Fragment key={action.name}>
           <Text size="4" asChild>
             <Flex justify="between" align="center" px="3" gap="3">
               <Checkbox
                 id={`${action.name}-done`}
-                checked={checkedActions[action.name]}
+                checked={!!checkedActions[action.name]}
                 onClick={() =>
-                  setCheckedActions({
-                    ...checkedActions,
-                    [action.name]: !checkedActions[action.name],
-                  })
+                  setCheckedActions((prev) => ({
+                    ...prev,
+                    [action.name]: !prev[action.name],
+                  }))
                 }
               />
               {action.type === "character" && (
                 <>
                   <PlayerList.RoleIcon player={action.player}>
-                    <PlayerList.NightReminder player={action.player} />
+                    <PlayerList.NightReminder
+                      player={action.player}
+                      playerMessageCallback={playerMessageCallback}
+                    />
                   </PlayerList.RoleIcon>
                   <PlayerList.NoteInputModal
                     player={action.player}
@@ -188,7 +222,9 @@ export function NightPlayerList() {
                     {action.name === "demon" && (
                       <>
                         <DialogHeader>Demon</DialogHeader>
-                        <DemonMessage />
+                        <DemonMessage
+                          openMessageCallback={playerMessageCallback}
+                        />
                       </>
                     )}
                     {action.name === "minions" && (
@@ -213,27 +249,51 @@ export function NightPlayerList() {
           )}
         </React.Fragment>
       ))}
+      {Object.values(checkedActions).filter(Boolean).length ===
+      nightActions.length ? (
+        <Button m="3" onClick={endNight}>
+          End Night
+        </Button>
+      ) : (
+        <DestructiveButton
+          m="3"
+          confirmationText="There are night actions not yet marked completed."
+          onClick={endNight}
+        >
+          End Night
+        </DestructiveButton>
+      )}
     </Flex>
   );
 }
 
 export function IngamePlayerList() {
   const { game } = useDefiniteGame();
+  const [selectedOrder, setSelectedOrder] =
+    useState<PlayerOrder>("alphabetical");
+  const [firstSeat, setFirstSeat] = useState("");
+  const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
+  const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
-  const allFilters = usePlayerFilters(game.playerList);
   const filteredPlayers = allFilters[selectedFilter];
 
   return (
-    <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
+    <Flex className="h-full overflow-y-auto" direction="column" p="2" gap="2">
       <PlayerListFilters
         allFilters={allFilters}
         selectedFilter={selectedFilter}
         setSelectedFilter={setSelectedFilter}
       />
+      <PlayerListOrder
+        selectedOrder={selectedOrder}
+        setSelectedOrder={setSelectedOrder}
+        setFirstSeat={setFirstSeat}
+      />
+      <Separator size="4" />
       {filteredPlayers.map((player) => (
         <Flex direction="column" key={player}>
           <Text size="4" asChild>
-            <Flex justify="between" align="center" px="3" gap="3">
+            <Flex justify="between" align="center" gap="3">
               <PlayerList.RoleIcon player={player}>
                 {getCharacter(game.playersToRoles[player]).ability}
               </PlayerList.RoleIcon>

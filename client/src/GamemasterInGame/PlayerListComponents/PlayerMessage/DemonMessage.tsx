@@ -1,4 +1,4 @@
-import { Role } from "@hidden-identity/server";
+import { Reveal, Role } from "@hidden-identity/server";
 import { Flex, Heading } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
@@ -7,8 +7,13 @@ import { useState } from "react";
 import { pick } from "../../../utils/shuffleList";
 import { PlayerSelect, RoleSelect } from "../Selectors";
 
-export interface DemonMessageProps {}
-export function DemonMessage(_props: DemonMessageProps) {
+export interface DemonMessageProps {
+  openMessageCallback?: (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => void;
+}
+export function DemonMessage({ openMessageCallback }: DemonMessageProps) {
   const { game, script } = useDefiniteGame();
   const [minions, setMinions] = useState(() =>
     game.playerList.filter(
@@ -31,20 +36,27 @@ export function DemonMessage(_props: DemonMessageProps) {
         ),
     ),
   );
+  const text = "";
+  const reveal = {
+    minions: minions.map((minion) => ({ player: minion })),
+    bluffs: bluffs.map((bluff) => ({
+      character: bluff,
+    })),
+  };
 
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
         note={{
-          reveal: {
-            minions: minions.map((minion) => ({ player: minion })),
-            bluffs: bluffs.map((bluff) => ({
-              character: bluff,
-            })),
-          },
-          message: "",
+          reveal: reveal,
+          message: text,
         }}
+        callback={
+          openMessageCallback
+            ? () => openMessageCallback(text, reveal)
+            : undefined
+        }
       />
       <Heading>Minions:</Heading>
       {minions.map((name, index) => (

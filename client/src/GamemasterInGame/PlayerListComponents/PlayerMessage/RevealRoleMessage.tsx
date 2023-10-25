@@ -1,4 +1,4 @@
-import { PlayerMessageMap, Role } from "@hidden-identity/server";
+import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex, Heading } from "@radix-ui/themes";
@@ -11,8 +11,16 @@ import { useDynamicList } from "../Selectors/useDynamicList";
 export interface RevealRoleMessageProps {
   message: PlayerMessageMap["reveal-role"];
   player: string;
+  openMessageCallback?: (
+    message: string,
+    reveal: Record<string, Reveal[]>,
+  ) => void;
 }
-export function RevealRoleMessage({ message, player }: RevealRoleMessageProps) {
+export function RevealRoleMessage({
+  message,
+  player,
+  openMessageCallback,
+}: RevealRoleMessageProps) {
   const { game, script } = useDefiniteGame();
   const [role, setRole] = useState<Role>(() =>
     pluck(
@@ -26,20 +34,27 @@ export function RevealRoleMessage({ message, player }: RevealRoleMessageProps) {
     mustInclude: game.playerList.filter((p) => game.playersToRoles[p] === role),
     defaultCount: message.count,
   });
+  const text = "";
+  const reveal = {
+    Reveal: playersState.value.map((p) => ({
+      character: role ?? undefined,
+      player: p,
+    })),
+  };
 
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
         note={{
-          reveal: {
-            Reveal: playersState.value.map((p) => ({
-              character: role ?? undefined,
-              player: p,
-            })),
-          },
-          message: "",
+          reveal: reveal,
+          message: text,
         }}
+        callback={
+          openMessageCallback
+            ? () => openMessageCallback(text, reveal)
+            : undefined
+        }
       />
       <Heading>Role</Heading>
       <Restrictions restrictions={message.restriction} />
