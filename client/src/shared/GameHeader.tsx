@@ -59,7 +59,7 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ url, title: url, text: url });
+        await navigator.share({ url, title: "Join Game", text: url });
       } catch (error) {
         console.error("Failed to share.");
       }
@@ -71,12 +71,12 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <button>
-          <Flex align="center" gap="1">
+        <Flex align="center" gap="1" asChild>
+          <button>
             <Text color="amber">Game:</Text> {gameId}
             <BsShare className="text-sm" />
-          </Flex>
-        </button>
+          </button>
+        </Flex>
       </Dialog.Trigger>
 
       <Dialog.Content className="m-6">
