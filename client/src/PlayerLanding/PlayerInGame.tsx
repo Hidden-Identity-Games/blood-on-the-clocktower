@@ -40,7 +40,7 @@ export function PlayerInGame() {
   const filteredPlayers = allFilters[selectedFilter];
   const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
 
-  const [nightOrder, distributionsByPlayerCount] = React.useMemo(() => {
+  const nightOrder = React.useMemo(() => {
     const charactersFromScript =
       script?.map(({ id }) => getCharacter(id)) ?? [];
     const travelerCharacters = Object.values(game.playersToRoles)
@@ -62,15 +62,18 @@ export function PlayerInGame() {
         ),
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { Traveler, ...distributionsByPlayerCount } = {
-      ...DistributionsByPlayerCount[
-        game.playerList.length - travelerCharacters.length
-      ],
-    };
+    return nightOrder;
+  }, [script, game.playersToRoles]);
 
-    return [nightOrder, distributionsByPlayerCount];
-  }, [script, game.playersToRoles, game.playerList.length]);
+  const travelerCharacters = Object.values(game.playersToRoles)
+    .map((role) => getCharacter(role))
+    .filter((character) => character.team === "Traveler");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { Traveler, ...distributionsByPlayerCount } = {
+    ...DistributionsByPlayerCount[
+      game.playerList.length - travelerCharacters.length
+    ],
+  };
 
   return (
     <Tabs.Root

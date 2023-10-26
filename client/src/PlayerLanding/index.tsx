@@ -7,7 +7,6 @@ import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { PlayerWaiting } from "./PlayerWaiting";
 import { useGame } from "../store/GameContext";
-import { useEffect, useState } from "react";
 import { Callout } from "@radix-ui/themes";
 import { PlayerInGame } from "./PlayerInGame";
 import { PlayerRoleSelect } from "./PlayerRoleSelect";
@@ -25,27 +24,15 @@ export function PlayerRoot() {
 function PlayerLanding() {
   const [player] = usePlayer();
   const [hasJoined] = useHasJoinedGame();
-  const [kicked, setKicked] = useState(false);
   const { game } = useGame();
   const role = (player && game?.playersToRoles[player]) ?? null;
-
-  useEffect(() => {
-    if (!player || !game) {
-      // Hasn't joined yet
-      return;
-    }
-    // They have joined, but have been removed from the server
-    if (hasJoined && !role) {
-      setKicked(true);
-    }
-  }, [role, player, game, hasJoined]);
 
   if (!game) return <LoadingExperience>Loading...</LoadingExperience>;
 
   if (!player || !game.playerList.includes(player)) {
     return (
       <>
-        {kicked && (
+        {hasJoined && !role && (
           <Callout.Root>
             <Callout.Text>
               It looks like you were kicked from the game, consult the
