@@ -54,7 +54,7 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
       {game.gameStatus === "PlayersJoining" && (
         <Dialog.Root>
           <Dialog.Trigger>
-            <Button color={gameStartable ? undefined : "gray"} className="">
+            <Button disabled={!gameStartable} className="">
               Start Game
             </Button>
           </Dialog.Trigger>

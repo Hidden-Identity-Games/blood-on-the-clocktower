@@ -20,6 +20,46 @@ test("re-join game", async ({ page }) => {
 test.only("can 15 players join", async ({ context, page }) => {
   const gameId = await createNewGame(page);
   const size = 15;
+  await page
+    .getByRole("button", {
+      name: "Trouble Brewing",
+    })
+    .click();
+  await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
+  const roleIds = [
+    "Washerwoman",
+    "Librarian",
+    "Investigator",
+    "Chef",
+    "Empath",
+    "Fortune Teller",
+    "Undertaker",
+    "Monk",
+    "Ravenkeeper",
+    "Virgin",
+    "Slayer",
+    "Soldier",
+    "Mayor",
+    "Butler",
+    "Recluse",
+    "Saint",
+    "Poisoner",
+    "Spy",
+    "Scarlet Woman",
+    "Baron",
+    "Imp",
+  ];
+
+  for await (const role of roleIds.slice(0, size)) {
+    await page.getByRole("checkbox", { name: role }).click();
+  }
+
+  const startGameButton1 = await page.getByRole("button", {
+    name: "Start Game",
+  });
+  // Don't actually do this, it makes bad tests, but I want this here to trust this test more for now.
+  // Always assert LAST
+  expect(startGameButton1).toBeDisabled();
 
   await Promise.all(
     Array.from({ length: size }).map(async (_, i) => {
@@ -40,11 +80,16 @@ test.only("can 15 players join", async ({ context, page }) => {
           exact: true,
         })
         .click();
-
       await myPage.getByText(`Hello ${name}`).waitFor({ timeout: 4000 });
       await myPage.waitForTimeout(1000);
-
       await expect(myPage.url()).toContain(gameId);
     }),
   );
+
+  // Proper way to expect somehting to be enabled
+  await page
+    .getByRole("button", {
+      name: "Start Game",
+    })
+    .click({ trial: true, timeout: 1000 });
 });

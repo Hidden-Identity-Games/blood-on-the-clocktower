@@ -25,14 +25,17 @@ interface ScriptSelectProps {
 function ScriptOption({
   children,
   onClick,
+  name,
 }: {
   children: ReactNode;
   onClick?: React.MouseEventHandler;
+  name: string;
 }) {
   return (
     <button
       className="aspect-square max-h-[25vh] rounded-[10%] border-2 border-purple-800 bg-transparent p-3"
       onClick={onClick}
+      aria-label={name}
     >
       {children}
     </button>
@@ -54,6 +57,7 @@ export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
             onClick={() => {
               handleSubmit(getScript(name)!);
             }}
+            name={name}
           >
             <img className="h-full w-full" src={getScriptImg(name)} />
           </ScriptOption>
@@ -89,7 +93,7 @@ function CustomScriptInputDialog({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <ScriptOption>
+        <ScriptOption name="custom">
           <div className="relative flex h-full w-full items-center justify-center">
             <img className="absolute left-0 top-0" src={scriptIcon} />
             <Heading mb="1" color="ruby" className="relative z-10">
