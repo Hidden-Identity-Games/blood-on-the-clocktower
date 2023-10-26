@@ -9,15 +9,12 @@ import { useGetPlayerAlignment } from "../../../store/useStore";
 export interface AlignmentChangeMessageProps {
   message: PlayerMessageMap["alignment-change"];
   player: string;
-  openMessageCallback?: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 
 export function AlignmentChangeMessage({
   player,
-  openMessageCallback,
+  onOpenNote,
 }: AlignmentChangeMessageProps) {
   const getPlayerAlignment = useGetPlayerAlignment();
   const [alignment, setAlignment] = useState<Alignment>(
@@ -41,11 +38,7 @@ export function AlignmentChangeMessage({
           reveal: reveal,
           message: text,
         }}
-        callback={
-          openMessageCallback
-            ? () => openMessageCallback(text, reveal)
-            : undefined
-        }
+        onOpenNote={onOpenNote}
       />
       <Heading>Alignment</Heading>
       <AlignmentSelect

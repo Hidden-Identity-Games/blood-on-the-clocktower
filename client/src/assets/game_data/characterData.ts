@@ -68,7 +68,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "character-selected-you",
         restriction: {
-          role: "barber",
+          role: ["barber"],
         },
       },
     },
@@ -309,7 +309,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-role",
         count: 1,
         restriction: {
-          role: "exorcist",
+          role: ["exorcist"],
         },
       },
     },
@@ -522,7 +522,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-role",
         count: 2,
         restriction: {
-          team: "Minion",
+          team: ["Minion"],
         },
       },
     },
@@ -576,7 +576,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-role",
         count: 2,
         restriction: {
-          team: "Outsider",
+          team: ["Outsider"],
         },
       },
     },
@@ -928,7 +928,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-team",
         count: 2,
         restriction: {
-          team: "Demon",
+          team: ["Demon"],
         },
       },
     },
@@ -1254,7 +1254,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "reveal-role",
         count: 2,
-        restriction: { team: "Townsfolk" },
+        restriction: { team: ["Townsfolk"] },
       },
     },
     otherNight: null,
@@ -1448,7 +1448,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-team",
         count: 1,
         restriction: {
-          team: "Demon",
+          team: ["Demon"],
         },
       },
     },
@@ -1582,7 +1582,7 @@ export const characters: CharacterDefinition[] = [
         alignmentChange: false,
         restriction: {
           inPlay: false,
-          team: "Townsfolk",
+          team: ["Townsfolk"],
         },
       },
     },
@@ -1595,7 +1595,7 @@ export const characters: CharacterDefinition[] = [
         type: "role-change",
         restriction: {
           inPlay: false,
-          team: "Townsfolk",
+          team: ["Townsfolk"],
         },
       },
     },
@@ -1617,7 +1617,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "character-selected-you",
         restriction: {
-          role: "king",
+          role: ["king"],
         },
       },
     },
@@ -1688,7 +1688,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-role",
         count: 1,
         restriction: {
-          role: "nightwatchman",
+          role: ["nightwatchman"],
         },
       },
     },
@@ -1734,7 +1734,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-role",
         count: 1,
         restriction: {
-          team: "Townsfolk",
+          team: ["Townsfolk"],
         },
       },
     },
@@ -1834,7 +1834,7 @@ export const characters: CharacterDefinition[] = [
         alignmentChange: false,
         restriction: {
           inPlay: false,
-          team: "Townsfolk",
+          team: ["Townsfolk"],
         },
       },
     },
@@ -2018,7 +2018,7 @@ export const characters: CharacterDefinition[] = [
         type: "reveal-role",
         count: 1,
         restriction: {
-          role: "marionette",
+          role: ["marionette"],
         },
       },
     },
@@ -2114,7 +2114,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "character-selected-you",
         restriction: {
-          role: "witch",
+          role: ["witch"],
         },
       },
     },

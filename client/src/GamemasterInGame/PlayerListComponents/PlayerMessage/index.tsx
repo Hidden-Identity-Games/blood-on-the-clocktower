@@ -18,7 +18,7 @@ import { ComponentType } from "react";
 interface PlayerMessageFlowProps {
   message: PlayerMessage;
   player: string;
-  openMessageCallback?: (
+  onOpenNote: (
     message: string,
     reveal: Record<string, Reveal[]>,
   ) => void;
@@ -27,7 +27,7 @@ const ComponentMap: {
   [K in PlayerMessage["type"]]: ComponentType<{
     player: string;
     message: PlayerMessageMap[K];
-    openMessageCallback?: (
+    onOpenNote: (
       message: string,
       reveal: Record<string, Reveal[]>,
     ) => void;
@@ -47,12 +47,12 @@ const ComponentMap: {
 export function PlayerMessageFlow({
   message,
   player,
-  openMessageCallback,
+  onOpenNote,
 }: PlayerMessageFlowProps) {
   const Component = ComponentMap[message.type] as React.ComponentType<{
     player: string;
     message: PlayerMessageMap[typeof message.type];
-    openMessageCallback?: (
+    onOpenNote: (
       message: string,
       reveal: Record<string, Reveal[]>,
     ) => void;
@@ -61,7 +61,7 @@ export function PlayerMessageFlow({
     <Component
       player={player}
       message={message}
-      openMessageCallback={openMessageCallback}
+      onOpenNote={onOpenNote}
     />
   );
 }

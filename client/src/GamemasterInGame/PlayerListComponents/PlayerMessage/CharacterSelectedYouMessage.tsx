@@ -1,57 +1,48 @@
 import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
-import { pluck } from "../../../utils/shuffleList";
-import { RoleSelect } from "../Selectors";
+import { RoleSelectList } from "../Selectors";
 import { Restrictions } from "./Restrictions";
 import { Flex, Heading } from "@radix-ui/themes";
-import { useState } from "react";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { useDefiniteGame } from "../../../store/GameContext";
+import { useCharacterRestriction } from "../Selectors/Restrictions";
+import { useDynamicList } from "../Selectors/useDynamicList";
 
 interface CharacterSelectedYouMessageProps {
   message: PlayerMessageMap["character-selected-you"];
-  openMessageCallback?: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 
 export function CharacterSelectedYouMessage({
   message,
-  openMessageCallback,
+  onOpenNote,
 }: CharacterSelectedYouMessageProps) {
   const { script } = useDefiniteGame();
-  const [role, setRole] = useState<Role>(() =>
-    pluck(script.map(({ id }) => id)),
-  );
+  const rolesList = script.map(({ id }) => id);
 
-  const text = "";
-  const reveal = {
-    "In play": [
-      {
-        character: role,
-      },
-    ],
-  };
+  const filter = useCharacterRestriction(message.restriction);
+  const rolesState = useDynamicList<Role>(rolesList, {
+    recommended: rolesList.filter(filter),
+    defaultCount: 1,
+  });
 
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
         note={{
-          reveal: reveal,
-          message: text,
+          reveal: {
+            "In play": rolesState.value.map((k) => ({ character: k })),
+          },
+          message: "",
         }}
-        callback={
-          openMessageCallback
-            ? () => openMessageCallback(text, reveal)
-            : undefined
-        }
+        onOpenNote={onOpenNote}
       />
       <Heading>Role</Heading>
       <Restrictions restrictions={message.restriction} />
-      <RoleSelect
-        currentRole={role}
-        onSelect={(next) => next && setRole(next)}
+      <RoleSelectList
+        roles={rolesState.value}
+        addRole={rolesState.add}
+        replaceRole={rolesState.replace}
       />
     </Flex>
   );

@@ -59,7 +59,7 @@ export function RoleSelect({
               variant={currentRole === null ? "soft" : "outline"}
               onClick={() => onSelect(null)}
             >
-              Clear
+              Remove
             </Button>
           </Dialog.Close>
           {roles.map((role) => (
@@ -89,33 +89,37 @@ interface RoleSelectListProps {
   addRole: () => void;
   replaceRole: (replaceValue: Role | null, index: number) => void;
   roles: Role[];
+  fixedSize?: boolean;
 }
 
 export function RoleSelectList({
   roles,
   addRole,
   replaceRole,
+  fixedSize,
 }: RoleSelectListProps) {
   return (
     <>
       <Heading className="flex items-center gap-1">
         Role{" "}
-        <IconButton
-          variant="ghost"
-          radius="full"
-          className="pt-1"
-          onClick={() => {
-            addRole();
-          }}
-        >
-          <PlusIcon />
-        </IconButton>
+        {!fixedSize && (
+          <IconButton
+            variant="ghost"
+            radius="full"
+            className="pt-1"
+            onClick={() => {
+              addRole();
+            }}
+          >
+            <PlusIcon />
+          </IconButton>
+        )}
       </Heading>
       {[...roles].map((current, index) => (
         <RoleSelect
           key={current}
           currentRole={current}
-          onSelect={(newItem) => replaceRole(newItem, index)}
+          onSelect={(newItem) => newItem && replaceRole(newItem, index)}
         />
       ))}
     </>

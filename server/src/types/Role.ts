@@ -39,8 +39,8 @@ export interface Character {
 }
 
 export interface Restriction {
-  role?: string
-  team?: CharacterType
+  role?: string[]
+  team?: CharacterType[]
   alive?: boolean
   inPlay?: boolean
   guess?: boolean
