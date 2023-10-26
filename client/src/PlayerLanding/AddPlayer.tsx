@@ -14,7 +14,7 @@ import { useAddPlayer } from "../store/actions/playerActions";
 function AddPlayer() {
   const { game } = useDefiniteGame();
 
-  const [me, setPlayer] = usePlayer();
+  const [me, setMe] = usePlayer();
   const [name, setName] = React.useState(me ?? "");
   const [rejoinOpen, setRejoinOpen] = useState(false);
   const [error, isLoading, , addPlayer] = useAddPlayer();
@@ -78,7 +78,7 @@ function AddPlayer() {
               </Dialog.Close>
               <Button
                 onClick={() => {
-                  setPlayer(parsedName);
+                  setMe(parsedName);
                 }}
               >
                 Yes, that's me!
