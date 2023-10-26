@@ -25,12 +25,13 @@ import {
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
 import { DestructiveButton } from "./DestructiveButton";
-import { Reveal } from "@hidden-identity/server";
+import { Reveal, Role } from "@hidden-identity/server";
 import {
   PlayerListOrder,
   PlayerOrder,
   usePlayerOrder,
 } from "../shared/PlayerListOrder";
+import { usePlayerNotes } from "../store/actions/gmPlayerActions";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -129,6 +130,8 @@ export function NightPlayerList({
   onOpenNote,
 }: NightPlayerListProps) {
   const { game } = useDefiniteGame();
+  const [, , , setPlayerNote] = usePlayerNotes();
+
   const nightKey = firstNight ? "firstNight" : "otherNight";
   const [nightActions, _leftoverPlayers] = React.useMemo(() => {
     const playerActions = game.playerList
@@ -219,7 +222,29 @@ export function NightPlayerList({
                     {action.name === "demon" && (
                       <>
                         <DialogHeader>Demon</DialogHeader>
-                        <DemonMessage onOpenNote={onOpenNote} />
+                        <DemonMessage
+                          onOpenNote={(
+                            message: string,
+                            reveal: Record<string, Reveal[]>,
+                          ) => {
+                            const player = Object.entries(
+                              game.playersToRoles,
+                            ).find(
+                              ([, role]) => getCharacter(role).team === "Demon",
+                            ) ?? [""];
+                            const bluffs = `Bluffs:\n${reveal["bluffs"]
+                              .map(
+                                ({ character }) =>
+                                  getCharacter(
+                                    character ?? ("unassigned" as Role),
+                                  ).name,
+                              )
+                              .join("\n")}`;
+
+                            onOpenNote(message, reveal);
+                            setPlayerNote(player[0], bluffs);
+                          }}
+                        />
                       </>
                     )}
                     {action.name === "minions" && (

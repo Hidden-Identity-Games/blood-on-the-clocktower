@@ -18,19 +18,13 @@ import { ComponentType } from "react";
 interface PlayerMessageFlowProps {
   message: PlayerMessage;
   player: string;
-  onOpenNote: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 const ComponentMap: {
   [K in PlayerMessage["type"]]: ComponentType<{
     player: string;
     message: PlayerMessageMap[K];
-    onOpenNote: (
-      message: string,
-      reveal: Record<string, Reveal[]>,
-    ) => void;
+    onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
   }>;
 } = {
   "demon-first-night": DemonMessage,
@@ -52,16 +46,9 @@ export function PlayerMessageFlow({
   const Component = ComponentMap[message.type] as React.ComponentType<{
     player: string;
     message: PlayerMessageMap[typeof message.type];
-    onOpenNote: (
-      message: string,
-      reveal: Record<string, Reveal[]>,
-    ) => void;
+    onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
   }>;
   return (
-    <Component
-      player={player}
-      message={message}
-      onOpenNote={onOpenNote}
-    />
+    <Component player={player} message={message} onOpenNote={onOpenNote} />
   );
 }
