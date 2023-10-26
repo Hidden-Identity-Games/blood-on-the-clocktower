@@ -2,7 +2,7 @@ import AddPlayer from "./AddPlayer";
 import { PlayerRole } from "./PlayerRole";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
-import { useHasJoinedGame, usePlayer } from "../store/usePlayer";
+import { usePlayer } from "../store/usePlayer";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { PlayerWaiting } from "./PlayerWaiting";
@@ -23,7 +23,6 @@ export function PlayerRoot() {
 
 function PlayerLanding() {
   const [player] = usePlayer();
-  const [hasJoined] = useHasJoinedGame();
   const { game } = useGame();
   const role = (player && game?.playersToRoles[player]) ?? null;
 
@@ -32,7 +31,7 @@ function PlayerLanding() {
   if (!player || !game.playerList.includes(player)) {
     return (
       <>
-        {hasJoined && !role && (
+        {!role && (
           <Callout.Root>
             <Callout.Text>
               It looks like you were kicked from the game, consult the

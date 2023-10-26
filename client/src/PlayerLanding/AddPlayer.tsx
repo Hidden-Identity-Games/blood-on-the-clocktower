@@ -8,17 +8,17 @@ import {
 } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
-import { useHasJoinedGame, usePlayer } from "../store/usePlayer";
+import { useCommonName, usePlayer } from "../store/usePlayer";
 import { useAddPlayer } from "../store/actions/playerActions";
 
 function AddPlayer() {
   const { game } = useDefiniteGame();
 
-  const [me, setMe] = usePlayer();
-  const [name, setName] = React.useState(me ?? "");
+  const [_, setPlayer] = usePlayer();
+  const [lastUsedName, setLastUsedName] = useCommonName();
+  const [name, setName] = React.useState(lastUsedName ?? "");
   const [rejoinOpen, setRejoinOpen] = useState(false);
   const [error, isLoading, , addPlayer] = useAddPlayer();
-  const [_, setHasJoinedGame] = useHasJoinedGame();
   const parsedName = name.trim().toLowerCase();
 
   const taken = !!game.playersToRoles[parsedName];
@@ -32,7 +32,7 @@ function AddPlayer() {
       setRejoinOpen(true);
     } else {
       await addPlayer(parsedName);
-      setHasJoinedGame(true);
+      setLastUsedName(parsedName);
     }
   };
 
@@ -78,7 +78,7 @@ function AddPlayer() {
               </Dialog.Close>
               <Button
                 onClick={() => {
-                  setMe(parsedName);
+                  setPlayer(parsedName);
                 }}
               >
                 Yes, that's me!

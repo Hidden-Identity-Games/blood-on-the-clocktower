@@ -8,9 +8,9 @@ export function usePlayer(): [string | null, (key: string | null) => void] {
     () => new URLSearchParams(window.location.search).get("testPlayerKey"),
     [gameId],
   );
-  const localhostKey = localhostKeyFromUrl
-    ? `hidden-identity_${String(localhostKeyFromUrl)}_player}`
-    : "hidden-identity_player";
+  const localhostKey = gameId
+    ? `${gameId}${String(localhostKeyFromUrl ?? "")}_player`
+    : null;
   const [value, setValue] = useLocalStorage(localhostKey);
 
   return [value, setValue];
@@ -24,11 +24,8 @@ export function useMe(): string {
   return myName;
 }
 
-export function useHasJoinedGame(): [boolean, (key: boolean) => void] {
-  const { gameId } = useGame();
-  const [value, setValue] = useLocalStorage(`hasJoined_${gameId}`);
+export function useCommonName(): [string | null, (key: string | null) => void] {
+  const [value, setValue] = useLocalStorage("player_last_used_name");
 
-  return gameId
-    ? [value === "true", (hasJoined: boolean) => setValue(String(hasJoined))]
-    : [false, () => {}];
+  return [value, setValue];
 }
