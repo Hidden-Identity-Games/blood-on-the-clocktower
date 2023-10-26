@@ -8,14 +8,14 @@ import {
 } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
-import { useCommonName, usePlayer } from "../store/usePlayer";
+import { useLastUsedName, usePlayer } from "../store/usePlayer";
 import { useAddPlayer } from "../store/actions/playerActions";
 
 function AddPlayer() {
   const { game } = useDefiniteGame();
 
   const [_, setPlayer] = usePlayer();
-  const [lastUsedName, setLastUsedName] = useCommonName();
+  const [lastUsedName, setLastUsedName] = useLastUsedName();
   const [name, setName] = React.useState(lastUsedName ?? "");
   const [rejoinOpen, setRejoinOpen] = useState(false);
   const [error, isLoading, , addPlayer] = useAddPlayer();
@@ -31,8 +31,8 @@ function AddPlayer() {
     if (taken) {
       setRejoinOpen(true);
     } else {
-      await addPlayer(parsedName);
       setLastUsedName(parsedName);
+      await addPlayer(parsedName);
     }
   };
 

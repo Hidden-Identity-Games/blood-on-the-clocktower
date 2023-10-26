@@ -24,7 +24,10 @@ export function useMe(): string {
   return myName;
 }
 
-export function useCommonName(): [string | null, (key: string | null) => void] {
+export function useLastUsedName(): [
+  string | null,
+  (key: string | null) => void,
+] {
   const [value, setValue] = useLocalStorage("player_last_used_name");
 
   return [value, setValue];
