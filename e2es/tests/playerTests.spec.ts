@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 import { createNewGame } from "./utils";
 import { v4 } from "uuid";
 
@@ -61,30 +61,43 @@ test.only("can 15 players join", async ({ context, page }) => {
   // Always assert LAST
   expect(startGameButton1).toBeDisabled();
 
-  await Promise.all(
-    Array.from({ length: size }).map(async (_, i) => {
-      const name = `player${i}`;
-      const myPage = await context.newPage();
-      await myPage.goto(`/${gameId}?testPlayerKey=${i}`);
-      await myPage.getByRole("textbox", { name: "NAME:" }).fill(name);
-      await myPage.getByRole("button", { name: "Join" }).click();
-      await myPage
-        .getByRole("button", {
-          name: `player${(i + 1) % size}`,
-          exact: true,
-        })
-        .waitFor({ timeout: 4000 }); // This will require other pages to complete so we should wait longer.
-      await myPage
-        .getByRole("button", {
-          name: `player${(i + 1) % size}`,
-          exact: true,
-        })
-        .click();
-      await myPage.getByText(`Hello ${name}`).waitFor({ timeout: 4000 });
-      await myPage.waitForTimeout(1000);
-      await expect(myPage.url()).toContain(gameId);
-    }),
-  );
+  const players = Array.from({ length: size }, (_, i) => i);
+  const pages: Page[] = [];
+
+  // We do these all sequentially because they bug out if you go too fast in CI.
+  for await (const playerNumber of players) {
+    const name = `player${playerNumber}`;
+    const myPage = await context.newPage();
+    await myPage.goto(`/${gameId}?testPlayerKey=${playerNumber}`);
+    await myPage.getByRole("textbox", { name: "NAME:" }).fill(name);
+    await myPage.getByRole("button", { name: "Join" }).click();
+    pages.push(myPage);
+  }
+
+  for await (const playerNumber of players) {
+    const myPage = pages[playerNumber];
+    const nextPlayerNumber = (playerNumber + 1) % size;
+    await myPage
+      .getByRole("button", {
+        name: `player${nextPlayerNumber}`,
+        exact: true,
+      })
+      .waitFor();
+    await myPage
+      .getByRole("button", {
+        name: `player${nextPlayerNumber}`,
+        exact: true,
+      })
+      .click();
+  }
+
+  for await (const playerNumber of players) {
+    const myPage = pages[playerNumber];
+    const name = `player${playerNumber}`;
+    await myPage.getByText(`Hello ${name}`).waitFor({ timeout: 4000 });
+    await myPage.waitForTimeout(1000);
+    await expect(myPage.url()).toContain(gameId);
+  }
 
   // Proper way to expect somehting to be enabled
   await page
