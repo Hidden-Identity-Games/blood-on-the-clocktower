@@ -4,7 +4,7 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: mcr.microsoft.com/playwright:v1.39.0-jammy
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Install Node.js
@@ -34,7 +34,8 @@ jobs:
     - name: Install dependencies
       run: pnpm install
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: pnpm exec playwright install --with-deps
+      working-directory: e2es/ 
     - name: Run server
       run: pnpm dev & sleep 5
     - name: Run Playwright tests

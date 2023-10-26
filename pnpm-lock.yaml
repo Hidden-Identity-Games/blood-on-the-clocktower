@@ -184,6 +184,9 @@ importers:
       eslint-plugin-tailwindcss:
         specifier: ^3.13.0
         version: 3.13.0(tailwindcss@3.3.3)
+      playwright:
+        specifier: ^1.39.0
+        version: 1.39.0
       prettier:
         specifier: ^3.0.2
         version: 3.0.3
@@ -5945,12 +5948,28 @@ packages:
     hasBin: true
     dev: false
 
+  /playwright-core@1.39.0:
+    resolution: {integrity: sha512-+k4pdZgs1qiM+OUkSjx96YiKsXsmb59evFoqv8SKO067qBA+Z2s/dCzJij/ZhdQcs2zlTAgRKfeiiLm8PQ2qvw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: false
+
   /playwright@1.38.1:
     resolution: {integrity: sha512-oRMSJmZrOu1FP5iu3UrCx8JEFRIMxLDM0c/3o4bpzU5Tz97BypefWf7TuTNPWeCe279TPal5RtPPZ+9lW/Qkow==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
       playwright-core: 1.38.1
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
+
+  /playwright@1.39.0:
+    resolution: {integrity: sha512-naE5QT11uC/Oiq0BwZ50gDmy8c8WLPRTEWuSSFVG2egBka/1qMoSqYQcROMT9zLwJ86oPofcTH2jBY/5wWOgIw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.39.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: false
