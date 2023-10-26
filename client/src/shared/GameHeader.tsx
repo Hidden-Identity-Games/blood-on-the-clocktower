@@ -1,4 +1,5 @@
 import {
+  Button,
   Callout,
   Dialog,
   Flex,
@@ -58,7 +59,7 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ url, title: url, text: url });
+        await navigator.share({ url, title: "Join Game", text: url });
       } catch (error) {
         console.error("Failed to share.");
       }
@@ -70,10 +71,12 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Link onClick={handleShare} size="2" className="whitespace-nowrap">
-          <Text color="amber">Game:</Text> {gameId}
-          <BsShare className="ml-.5 inline text-xs" />
-        </Link>
+        <Flex align="center" gap="1" asChild>
+          <button>
+            <Text color="amber">Game:</Text> {gameId}
+            <BsShare className="text-sm" />
+          </button>
+        </Flex>
       </Dialog.Trigger>
 
       <Dialog.Content className="m-6">
@@ -81,15 +84,19 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
           <Flex align="center" justify="between">
             Scan to Join
             <Dialog.Close>
-              <IconButton variant="surface">
+              <IconButton variant="ghost" radius="full">
                 <AiOutlineClose />
               </IconButton>
             </Dialog.Close>
           </Flex>
         </Dialog.Title>
 
-        <Flex mt="4" justify="center">
+        <Flex mt="4" direction="column" justify="center" align="center" gap="5">
           <QRCode value={url} size={256} fgColor="darkred" />
+          <Button className="w-full" onClick={handleShare} size="4">
+            <BsShare className="inline" />
+            Or share the link!
+          </Button>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
