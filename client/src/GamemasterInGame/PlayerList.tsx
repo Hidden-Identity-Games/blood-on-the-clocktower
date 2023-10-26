@@ -121,15 +121,12 @@ const gameActionsByNight = {
 interface NightPlayerListProps {
   firstNight: boolean;
   endNightCallback?: () => void;
-  playerMessageCallback?: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 export function NightPlayerList({
   firstNight,
   endNightCallback = () => {},
-  playerMessageCallback,
+  onOpenNote,
 }: NightPlayerListProps) {
   const { game } = useDefiniteGame();
   const nightKey = firstNight ? "firstNight" : "otherNight";
@@ -197,7 +194,7 @@ export function NightPlayerList({
                   <PlayerList.RoleIcon player={action.player}>
                     <PlayerList.NightReminder
                       player={action.player}
-                      playerMessageCallback={playerMessageCallback}
+                      onOpenNote={onOpenNote}
                     />
                   </PlayerList.RoleIcon>
                   <PlayerList.NoteInputModal
@@ -222,9 +219,7 @@ export function NightPlayerList({
                     {action.name === "demon" && (
                       <>
                         <DialogHeader>Demon</DialogHeader>
-                        <DemonMessage
-                          openMessageCallback={playerMessageCallback}
-                        />
+                        <DemonMessage onOpenNote={onOpenNote} />
                       </>
                     )}
                     {action.name === "minions" && (

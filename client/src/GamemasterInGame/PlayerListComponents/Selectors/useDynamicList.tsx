@@ -40,17 +40,14 @@ export function useDynamicList<T>(
     replace: (replaceValue, index) => {
       const nextValue = [...value];
       nextValue[index] = replaceValue!;
-      setValue(
-        nextValue
-          .filter(Boolean)
-          .filter((k, idx) => !nextValue.slice(idx + 1).includes(k)),
-      );
+      setValue(nextValue.filter(Boolean));
     },
     add: () =>
       setValue((last) => {
         return [
           ...last,
           pluck(recommended.filter((k) => !value.includes(k))) ??
+            all.find((k) => !value.includes(k)) ??
             recommended[0],
         ];
       }),

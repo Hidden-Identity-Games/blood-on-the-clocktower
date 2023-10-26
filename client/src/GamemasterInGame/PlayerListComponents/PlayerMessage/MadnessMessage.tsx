@@ -1,47 +1,44 @@
-import { Reveal, Role } from "@hidden-identity/server";
-import { useState } from "react";
-import { pluck } from "../../../utils/shuffleList";
+import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex } from "@radix-ui/themes";
-import { RoleSelect } from "../Selectors";
+import { RoleSelectList } from "../Selectors";
+import { useDynamicList } from "../Selectors/useDynamicList";
 
 export interface MadnessMessageProps {
-  openMessageCallback?: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
+  message: PlayerMessageMap["madness"];
 }
 
-export function MadnessMessage({ openMessageCallback }: MadnessMessageProps) {
+export function MadnessMessage({ onOpenNote }: MadnessMessageProps) {
   const { script } = useDefiniteGame();
-  const [role, setRole] = useState<Role>(() =>
-    pluck(script.map(({ id }) => id)),
-  );
 
-  const text =
-    "You must make an effort to convince people you are this role or risk execution.";
-  const reveal = {
-    "You are mad as:": [{ character: role }],
-  };
+  const rolesList = script.map(({ id }) => id);
+
+  const rolesState = useDynamicList<Role>(rolesList, {
+    recommended: rolesList,
+    defaultCount: 1,
+  });
 
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
         note={{
-          reveal: reveal,
-          message: text,
+          reveal: {
+            "You are mad as:": rolesState.value.map((character) => ({
+              character,
+            })),
+          },
+          message:
+            "You must make an effort to convince people you are this role or risk execution.",
         }}
-        callback={
-          openMessageCallback
-            ? () => openMessageCallback(text, reveal)
-            : undefined
-        }
+        onOpenNote={onOpenNote}
       />
-      <RoleSelect
-        currentRole={role}
-        onSelect={(next) => next && setRole(next)}
+      <RoleSelectList
+        roles={rolesState.value}
+        addRole={rolesState.add}
+        replaceRole={rolesState.replace}
       />
     </Flex>
   );

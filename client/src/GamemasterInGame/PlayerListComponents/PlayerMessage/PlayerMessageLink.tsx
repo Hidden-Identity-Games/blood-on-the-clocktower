@@ -1,31 +1,20 @@
-import { PlayerMessageScreenMessage } from "@hidden-identity/server";
+import { PlayerMessageScreenMessage, Reveal } from "@hidden-identity/server";
 import { Button, Dialog } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../../store/GameContext";
 
 export interface PlayerMessageLinkProps
   extends React.HTMLAttributes<HTMLAnchorElement> {
   note: PlayerMessageScreenMessage;
-  callback?: () => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 export function PlayerMessageLink({
   note,
-  callback,
-  ...linkProps
+  onOpenNote,
 }: PlayerMessageLinkProps) {
-  const { gameId } = useDefiniteGame();
-  return callback ? (
+  return (
     <Dialog.Close>
-      <Button onClick={callback}>Go to note</Button>
-    </Dialog.Close>
-  ) : (
-    <Button asChild>
-      <a
-        {...linkProps}
-        href={`/${gameId}/note?playerMessage=${JSON.stringify(note)}`}
-        target="_blank"
-      >
+      <Button onClick={() => onOpenNote(note.message, note.reveal)}>
         Go to note
-      </a>
-    </Button>
+      </Button>
+    </Dialog.Close>
   );
 }

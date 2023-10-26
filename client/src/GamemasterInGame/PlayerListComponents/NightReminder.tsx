@@ -15,14 +15,11 @@ function getAbilityKey(game: UnifiedGame): AbilityKey {
 
 interface PlayerNightReminderProps {
   player: string;
-  playerMessageCallback?: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 export function PlayerNightReminder({
   player,
-  playerMessageCallback,
+  onOpenNote,
 }: PlayerNightReminderProps) {
   const { game } = useDefiniteGame();
   const character = getCharacter(game.playersToRoles[player]);
@@ -52,7 +49,7 @@ export function PlayerNightReminder({
             <PlayerList.PlayerMessage
               message={nightAbility.playerMessage}
               player={player}
-              openMessageCallback={playerMessageCallback}
+              onOpenNote={onOpenNote}
             />
           )}
         </Flex>

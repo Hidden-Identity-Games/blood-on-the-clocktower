@@ -1,61 +1,74 @@
-import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
+import {
+  Alignment,
+  PlayerMessageMap,
+  Reveal,
+  Role,
+} from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useState } from "react";
-import { pluck } from "../../../utils/shuffleList";
 import { Flex, Heading } from "@radix-ui/themes";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Restrictions } from "./Restrictions";
-import { RoleSelect } from "../Selectors";
+import { AlignmentSelect, RoleSelectList } from "../Selectors";
 import { getDefaultAlignment } from "../../../assets/game_data/gameData";
+import { useCharacterRestriction } from "../Selectors/Restrictions";
+import { useDynamicList } from "../Selectors/useDynamicList";
 
 export interface RoleChangeMessageProps {
   message: PlayerMessageMap["role-change"];
-  openMessageCallback?: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 
 export function RoleChangeMessage({
   message,
-  openMessageCallback,
+  onOpenNote,
 }: RoleChangeMessageProps) {
   const { script } = useDefiniteGame();
-  const [role, setRole] = useState<Role>(() =>
-    pluck(script.map(({ id }) => id)),
+  const [alignmentOverride, setAlignmentOverride] = useState<Alignment | null>(
+    null,
   );
+  const rolesList = script.map(({ id }) => id);
 
-  const text = "";
-  const reveal = {
-    "You are now": [
-      {
-        character: role,
-        ...(message.alignmentChange && {
-          alignment: getDefaultAlignment(role),
-        }),
-      },
-    ],
-  };
+  const roleRilter = useCharacterRestriction(message.restriction);
+  const rolesState = useDynamicList<Role>(rolesList, {
+    recommended: rolesList.filter(roleRilter),
+    defaultCount: 1,
+  });
 
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
         note={{
-          reveal: reveal,
-          message: text,
+          reveal: {
+            "You are now": [
+              {
+                character: rolesState.value[0],
+                ...(message.alignmentChange && {
+                  alignment:
+                    alignmentOverride ||
+                    getDefaultAlignment(rolesState.value[0]),
+                }),
+              },
+            ],
+          },
+          message: "",
         }}
-        callback={
-          openMessageCallback
-            ? () => openMessageCallback(text, reveal)
-            : undefined
-        }
+        onOpenNote={onOpenNote}
       />
       <Heading>Role</Heading>
       <Restrictions restrictions={message.restriction} />
-      <RoleSelect
-        currentRole={role}
-        onSelect={(next) => next && setRole(next)}
+      <RoleSelectList
+        fixedSize
+        roles={rolesState.value}
+        addRole={rolesState.add}
+        replaceRole={rolesState.replace}
+      />
+      <AlignmentSelect
+        currentAlignment={
+          alignmentOverride || getDefaultAlignment(rolesState.value[0])
+        }
+        onSelect={(alignment) => setAlignmentOverride(alignment)}
       />
     </Flex>
   );

@@ -35,7 +35,7 @@ export function NightOrder() {
     setSelectedTab("grimoire");
   };
 
-  const openPlayerMessage = (
+  const handleOpenPlayerMessage = (
     message: string,
     reveal: Record<string, Reveal[]>,
   ) => {
@@ -102,7 +102,7 @@ export function NightOrder() {
           <NightPlayerList
             firstNight={firstNight}
             endNightCallback={startDay}
-            playerMessageCallback={openPlayerMessage}
+            onOpenNote={handleOpenPlayerMessage}
           />
         </Flex>
       </Tabs.Content>
@@ -114,7 +114,7 @@ export function NightOrder() {
               variant="soft"
               disabled={interfaceLocked}
               onClick={() => {
-                openPlayerMessage("", {});
+                handleOpenPlayerMessage("", {});
                 setInterfaceLocked(false);
               }}
             >
@@ -135,7 +135,7 @@ export function NightOrder() {
           <PlayerMessage
             message={playerMessage}
             reveal={playerReveal ?? {}}
-            onMessageChange={openPlayerMessage}
+            onMessageChange={handleOpenPlayerMessage}
           />
         </Flex>
       </Tabs.Content>

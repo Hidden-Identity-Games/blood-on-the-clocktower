@@ -9,5 +9,5 @@ export interface Reveal {
 
 export interface PlayerMessageScreenMessage {
   message: string
-  reveal?: Record<string, Reveal[]>
+  reveal: Record<string, Reveal[]>
 }

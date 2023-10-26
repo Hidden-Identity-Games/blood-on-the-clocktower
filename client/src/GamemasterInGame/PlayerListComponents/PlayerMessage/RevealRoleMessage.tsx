@@ -2,65 +2,71 @@ import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex, Heading } from "@radix-ui/themes";
-import { useState } from "react";
-import { pluck } from "../../../utils/shuffleList";
+
 import { Restrictions } from "./Restrictions";
-import { PlayerSelectList, RoleSelect } from "../Selectors";
+import { PlayerSelectList, RoleSelectList } from "../Selectors";
 import { useDynamicList } from "../Selectors/useDynamicList";
+import {
+  useCharacterRestriction,
+  usePlayerRestrictions,
+} from "../Selectors/Restrictions";
 
 export interface RevealRoleMessageProps {
   message: PlayerMessageMap["reveal-role"];
   player: string;
-  openMessageCallback?: (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => void;
+  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 export function RevealRoleMessage({
   message,
   player,
-  openMessageCallback,
+  onOpenNote,
 }: RevealRoleMessageProps) {
+  const playerfilter = usePlayerRestrictions({
+    ...message.restriction,
+    inPlay: true,
+  });
   const { game, script } = useDefiniteGame();
-  const [role, setRole] = useState<Role>(() =>
-    pluck(
-      script
-        .map(({ id }) => id)
-        .filter((role) => role !== game.playersToRoles[player]),
-    ),
-  );
+
+  const rolesList = script.map(({ id }) => id);
+
+  const roleFilter = useCharacterRestriction(message.restriction);
+  const rolesState = useDynamicList<Role>(rolesList, {
+    recommended: rolesList.filter(roleFilter),
+    defaultCount: 1,
+  });
+
   const playersState = useDynamicList<string>(game.playerList, {
-    recommended: game.playerList.filter((p) => player !== p),
-    mustInclude: game.playerList.filter((p) => game.playersToRoles[p] === role),
+    recommended: game.playerList
+      .filter((p) => player !== p)
+      .filter(playerfilter),
+    mustInclude: game.playerList.filter(
+      (p) => game.playersToRoles[p] === rolesState.value[0],
+    ),
     defaultCount: message.count,
   });
-  const text = "";
-  const reveal = {
-    Reveal: playersState.value.map((p) => ({
-      character: role ?? undefined,
-      player: p,
-    })),
-  };
 
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
         className="mb-2"
         note={{
-          reveal: reveal,
-          message: text,
+          reveal: {
+            Reveal: playersState.value.map((p) => ({
+              character: rolesState.value[0] ?? undefined,
+              player: p,
+            })),
+          },
+          message: "",
         }}
-        callback={
-          openMessageCallback
-            ? () => openMessageCallback(text, reveal)
-            : undefined
-        }
+        onOpenNote={onOpenNote}
       />
       <Heading>Role</Heading>
       <Restrictions restrictions={message.restriction} />
-      <RoleSelect
-        currentRole={role}
-        onSelect={(nextRole) => nextRole && setRole(nextRole)}
+      <RoleSelectList
+        fixedSize
+        roles={rolesState.value}
+        addRole={rolesState.add}
+        replaceRole={rolesState.replace}
       />
 
       <PlayerSelectList
