@@ -1,19 +1,19 @@
-import {
-  CharacterNightData,
-  PlayerStatus,
-  PlayerStatusMap,
-} from "@hidden-identity/server";
+import { CharacterNightData, PlayerStatusMap } from "@hidden-identity/server";
 import { PoisonActon } from "./PoisonNightAction";
 
-type NightActionPossibility = PlayerStatus["type"];
+type PlayeractionMap = PlayerStatusMap & {
+  dead: { type: "dead" };
+};
+type NightActionPossibility = PlayeractionMap[keyof PlayeractionMap]["type"];
 const NightActionComponents: {
   [K in NightActionPossibility]: React.ComponentType<{
-    status: PlayerStatusMap[K];
+    status: PlayeractionMap[K];
   }>;
 } = {
   poison: PoisonActon,
   custom: () => null,
   drunk: () => null,
+  dead: () => null,
 };
 
 interface NightActionProps {
