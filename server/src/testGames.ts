@@ -42,7 +42,7 @@ export async function setupTestGames (): Promise<void> {
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
-    playersSeenRoles: [],
+    playersSeenRoles: players,
   })
 
   await addGame('tg-wrong-way', {
@@ -134,7 +134,7 @@ export async function setupTestGames (): Promise<void> {
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
-    playersSeenRoles: [],
+    playersSeenRoles: players,
   }))
 
   await addGame('tg-travelers', ({
@@ -155,7 +155,7 @@ export async function setupTestGames (): Promise<void> {
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
-    playersSeenRoles: [],
+    playersSeenRoles: [...players, 'travelling billy'],
   }))
 
   const selectorsPlayers = players.slice(0, testSelectorsScript.length)
@@ -174,7 +174,7 @@ export async function setupTestGames (): Promise<void> {
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
-    playersSeenRoles: [],
+    playersSeenRoles: players,
   }, [...testSelectorsScript, { id: 'ravenkeeper' },
     { id: 'washerwoman' },
     { id: 'butler' }] as Script)

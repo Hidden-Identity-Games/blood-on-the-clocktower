@@ -86,7 +86,7 @@ export function NightOrder() {
         </LockableTabTrigger>
       </Tabs.List>
 
-      <Tabs.Content className="flex-1 overflow-y-auto" value="grimoir">
+      <Tabs.Content className="flex-1 overflow-y-auto" value="grimoire">
         <IngamePlayerList />
       </Tabs.Content>
 
