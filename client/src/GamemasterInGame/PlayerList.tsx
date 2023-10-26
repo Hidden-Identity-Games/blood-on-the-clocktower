@@ -227,11 +227,11 @@ export function NightPlayerList({
                             message: string,
                             reveal: Record<string, Reveal[]>,
                           ) => {
-                            const player =
-                              Object.entries(game.playersToRoles).find(
-                                ([, role]) =>
-                                  getCharacter(role).team === "Demon",
-                              ) ?? [];
+                            const player = Object.entries(
+                              game.playersToRoles,
+                            ).find(
+                              ([, role]) => getCharacter(role).team === "Demon",
+                            ) ?? [""];
                             const bluffs = `Bluffs:\n${reveal["bluffs"]
                               .map(
                                 ({ character }) =>
@@ -242,7 +242,7 @@ export function NightPlayerList({
                               .join("\n")}`;
 
                             onOpenNote(message, reveal);
-                            setPlayerNote(player[0] ?? "", bluffs);
+                            setPlayerNote(player[0], bluffs);
                           }}
                         />
                       </>
