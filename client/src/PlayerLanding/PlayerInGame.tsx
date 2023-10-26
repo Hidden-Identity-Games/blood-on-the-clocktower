@@ -3,7 +3,7 @@ import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
-import { useMe } from "../store/secretKey";
+import { useMe } from "../store/usePlayer";
 import { BsFillMoonStarsFill, BsPeopleFill } from "react-icons/bs";
 import { GiScrollQuill } from "react-icons/gi";
 import React, { useState } from "react";
@@ -65,9 +65,14 @@ export function PlayerInGame() {
     return nightOrder;
   }, [script, game.playersToRoles]);
 
+  const travelerCharacters = Object.values(game.playersToRoles)
+    .map((role) => getCharacter(role))
+    .filter((character) => character.team === "Traveler");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { Traveler, ...distributionsByPlayerCount } = {
-    ...DistributionsByPlayerCount[game.playerList.length],
+    ...DistributionsByPlayerCount[
+      game.playerList.length - travelerCharacters.length
+    ],
   };
 
   return (

@@ -7,7 +7,7 @@ import { getCharacter } from "../assets/game_data/gameData";
 import { Role } from "@hidden-identity/server";
 import { useState } from "react";
 import { AlignmentText } from "../shared/RoleIcon";
-import { usePlayer } from "../store/secretKey";
+import { usePlayer } from "../store/usePlayer";
 import { useSetPlayerSeenRole } from "../store/actions/playerActions";
 
 interface PlayerRoleProps {
@@ -30,7 +30,12 @@ export function PlayerRole({ role }: PlayerRoleProps) {
         {hasSeenRole ? (
           <>
             <Text className="m-5 text-center">
-              <i>{getCharacter(role).ability}</i>
+              <AlignmentText player={player!}>
+                {getCharacter(role).name}
+              </AlignmentText>
+              <p>
+                <i>{getCharacter(role).ability}</i>
+              </p>
             </Text>
             <Text className="mb-4 text-center" size="1" weight="light">
               You don't need to memorize this ability
@@ -84,9 +89,6 @@ export function PlayerRole({ role }: PlayerRoleProps) {
                 event.stopPropagation();
               }}
             />
-            <AlignmentText player={player!}>
-              {getCharacter(role).name}
-            </AlignmentText>
           </div>
         </div>
       </div>

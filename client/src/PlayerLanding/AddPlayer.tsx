@@ -8,14 +8,15 @@ import {
 } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
-import { usePlayer } from "../store/secretKey";
+import { useLastUsedName, usePlayer } from "../store/usePlayer";
 import { useAddPlayer } from "../store/actions/playerActions";
 
 function AddPlayer() {
   const { game } = useDefiniteGame();
 
-  const [name, setName] = React.useState("");
   const [_, setPlayer] = usePlayer();
+  const [lastUsedName, setLastUsedName] = useLastUsedName();
+  const [name, setName] = React.useState(lastUsedName ?? "");
   const [rejoinOpen, setRejoinOpen] = useState(false);
   const [error, isLoading, , addPlayer] = useAddPlayer();
   const parsedName = name.trim().toLowerCase();
@@ -30,6 +31,7 @@ function AddPlayer() {
     if (taken) {
       setRejoinOpen(true);
     } else {
+      setLastUsedName(parsedName);
       await addPlayer(parsedName);
     }
   };
@@ -44,22 +46,23 @@ function AddPlayer() {
         </Callout.Text>
       </Callout.Root>
       <Flex direction="column" gap="2" className="p-2">
-        <label htmlFor="name-input">NAME:</label>
-        <TextField.Input
-          autoFocus
-          id="name-input"
-          placeholder="Player name..."
-          value={name}
-          onChange={(event) => setName(event.currentTarget.value)}
-          onKeyDown={async (event) => {
-            if (event.key === "Enter") {
-              handleSubmit();
-              // Otherwise it will also select in the dialog
-              event.stopPropagation();
-              event.preventDefault();
-            }
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
           }}
-        />
+        >
+          <label htmlFor="name-input">NAME:</label>
+          <TextField.Input
+            autoFocus
+            id="name-input"
+            className="capitalize"
+            placeholder="Player name..."
+            value={name}
+            onChange={(event) => setName(event.currentTarget.value)}
+          />
+        </form>
+
         <Dialog.Root
           open={rejoinOpen}
           onOpenChange={() => setRejoinOpen(false)}

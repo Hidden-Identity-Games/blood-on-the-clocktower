@@ -9,7 +9,7 @@ export function usePlayer(): [string | null, (key: string | null) => void] {
     [gameId],
   );
   const localhostKey = gameId
-    ? `${gameId}${String(localhostKeyFromUrl)}_player`
+    ? `${gameId}${localhostKeyFromUrl ?? ""}_player`
     : null;
   const [value, setValue] = useLocalStorage(localhostKey);
 
@@ -22,4 +22,13 @@ export function useMe(): string {
     throw new Error("Name not yet declared!");
   }
   return myName;
+}
+
+export function useLastUsedName(): [
+  string | null,
+  (key: string | null) => void,
+] {
+  const [value, setValue] = useLocalStorage("player_last_used_name");
+
+  return [value, setValue];
 }
