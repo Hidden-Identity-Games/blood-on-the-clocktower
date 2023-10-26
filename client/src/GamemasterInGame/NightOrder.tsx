@@ -13,12 +13,12 @@ import { Reveal } from "@hidden-identity/server";
 import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 import { ScriptList } from "../shared/ScriptList";
 
-type Tabs = "grimoir" | "night" | "message" | "menu";
+type Tabs = "grimoire" | "night" | "message" | "menu";
 export function NightOrder() {
   const { game } = useDefiniteGame();
 
   const [, , , setGameStatus] = useSetGameStatus();
-  const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoir");
+  const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoire");
   const [interfaceLocked, setInterfaceLocked] = React.useState(false);
 
   const [playerMessage, setPlayerMessage] = React.useState("");
@@ -32,7 +32,7 @@ export function NightOrder() {
     if (game.gameStatus === "Setup") {
       setGameStatus("Started");
     }
-    setSelectedTab("grimoir");
+    setSelectedTab("grimoire");
   };
 
   const openPlayerMessage = (
@@ -53,8 +53,8 @@ export function NightOrder() {
     >
       <Tabs.List>
         <LockableTabTrigger
-          value="grimoir"
-          heading="Grimoir"
+          value="grimoire"
+          heading="Grimoire"
           selectedTab={selectedTab}
           isLocked={interfaceLocked}
         >

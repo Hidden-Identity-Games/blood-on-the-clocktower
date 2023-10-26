@@ -1,6 +1,6 @@
 import { Callout, Flex, IconButton, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../store/GameContext";
-import { useMe } from "../../store/secretKey";
+import { useMe } from "../../store/usePlayer";
 import { ImArrowLeft, ImArrowRight } from "react-icons/im";
 import { FaPersonCircleQuestion } from "react-icons/fa6";
 import { CgArrowsExchangeAlt } from "react-icons/cg";

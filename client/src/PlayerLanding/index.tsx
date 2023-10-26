@@ -2,7 +2,7 @@ import AddPlayer from "./AddPlayer";
 import { PlayerRole } from "./PlayerRole";
 import { GameProvider } from "../store/GameContextProvider";
 import { useParams } from "react-router-dom";
-import { usePlayer } from "../store/secretKey";
+import { useHasJoinedGame, usePlayer } from "../store/usePlayer";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { PlayerWaiting } from "./PlayerWaiting";
@@ -23,7 +23,8 @@ export function PlayerRoot() {
 }
 
 function PlayerLanding() {
-  const [player, setPlayer] = usePlayer();
+  const [player] = usePlayer();
+  const [hasJoined] = useHasJoinedGame();
   const [kicked, setKicked] = useState(false);
   const { game } = useGame();
   const role = (player && game?.playersToRoles[player]) ?? null;
@@ -34,15 +35,14 @@ function PlayerLanding() {
       return;
     }
     // They have joined, but have been removed from the server
-    if (!role) {
-      setPlayer(null);
+    if (hasJoined && !role) {
       setKicked(true);
     }
-  }, [role, player, setPlayer, game]);
+  }, [role, player, game, hasJoined]);
 
   if (!game) return <LoadingExperience>Loading...</LoadingExperience>;
 
-  if (!player) {
+  if (!player || !game.playerList.includes(player)) {
     return (
       <>
         {kicked && (

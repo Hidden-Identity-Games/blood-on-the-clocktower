@@ -1,6 +1,6 @@
 import { trpc } from "../../shared/trpcClient";
 import { useAction, useGame } from "../GameContext";
-import { usePlayer } from "../secretKey";
+import { usePlayer } from "../usePlayer";
 
 export function useAddPlayer() {
   const { gameId } = useGame();

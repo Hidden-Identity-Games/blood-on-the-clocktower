@@ -1,6 +1,6 @@
 import { Flex, Grid, Heading } from "@radix-ui/themes";
 import tokenBack from "../assets/token_logo.png";
-import { usePlayer } from "../store/secretKey";
+import { usePlayer } from "../store/usePlayer";
 import { useTakeRole } from "../store/actions/playerActions";
 import classNames from "classnames";
 import { useDefiniteGame } from "../store/GameContext";
