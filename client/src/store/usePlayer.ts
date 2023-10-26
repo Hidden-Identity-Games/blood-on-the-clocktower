@@ -9,7 +9,7 @@ export function usePlayer(): [string | null, (key: string | null) => void] {
     [gameId],
   );
   const localhostKey = gameId
-    ? `${gameId}${String(localhostKeyFromUrl ?? "")}_player`
+    ? `${gameId}${localhostKeyFromUrl ?? ""}_player`
     : null;
   const [value, setValue] = useLocalStorage(localhostKey);
 

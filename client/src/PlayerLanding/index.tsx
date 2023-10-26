@@ -31,7 +31,7 @@ function PlayerLanding() {
   if (!player || !game.playerList.includes(player)) {
     return (
       <>
-        {!role && (
+        {player && !role && (
           <Callout.Root>
             <Callout.Text>
               It looks like you were kicked from the game, consult the
