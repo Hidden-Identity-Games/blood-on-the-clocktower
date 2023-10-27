@@ -24,7 +24,7 @@ export interface CharacterNightData {
   order: number
   reminder: string
   playerMessage?: PlayerMessage
-  status?: PlayerStatusType
+  status?: PlayerStatusType[]
 }
 
 export interface Character {

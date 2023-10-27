@@ -35,7 +35,7 @@ export async function setupTestGames (): Promise<void> {
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
     },
     playerNotes: {},
     deadVotes: {},
@@ -61,7 +61,7 @@ export async function setupTestGames (): Promise<void> {
     },
     deadPlayers: {},
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
     },
     playerNotes: {},
     deadVotes: {},
@@ -127,7 +127,7 @@ export async function setupTestGames (): Promise<void> {
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
     },
     playerNotes: {},
     deadVotes: {},
@@ -144,7 +144,7 @@ export async function setupTestGames (): Promise<void> {
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
     },
     playerNotes: {},
     deadVotes: {},
@@ -165,7 +165,7 @@ export async function setupTestGames (): Promise<void> {
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
     },
     playerNotes: {},
     deadVotes: {},
@@ -184,7 +184,7 @@ export async function setupTestGames (): Promise<void> {
     deadPlayers: {},
     partialPlayerOrdering: Object.fromEntries(selectorsPlayers.map((p, i) => [p, { rightNeighbor: selectorsPlayers[(i + 1) % selectorsPlayers.length] }])),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
     },
     playerNotes: {},
     deadVotes: {},
@@ -235,7 +235,6 @@ const bmrScript = [
   { id: 'pacifist' },
   { id: 'fool' },
   { id: 'goon' },
-  { id: 'lunatic' },
   { id: 'tinker' },
   { id: 'moonchild' },
   { id: 'godfather' },

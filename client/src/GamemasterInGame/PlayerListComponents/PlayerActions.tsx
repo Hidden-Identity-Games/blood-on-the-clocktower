@@ -78,6 +78,36 @@ export function PlayerActions({ player }: { player: string }) {
               </IconButton>
             </Dialog.Close>
           </PlayerList.MenuItem>
+          <PlayerList.MenuItem id={`${player}-set-protected`} label="Protected">
+            <Dialog.Close>
+              <IconButton
+                onClick={() =>
+                  setPlayerStatus(player, "add", {
+                    type: "protected",
+                    id: v4(),
+                  })
+                }
+                disabled={playerStatusesLoading}
+              >
+                <PlayerStatusIcon statusType="protected" />
+              </IconButton>
+            </Dialog.Close>
+          </PlayerList.MenuItem>
+          <PlayerList.MenuItem id={`${player}-set-other`} label="Other">
+            <Dialog.Close>
+              <IconButton
+                onClick={() =>
+                  setPlayerStatus(player, "add", {
+                    type: "characterAbility",
+                    id: v4(),
+                  })
+                }
+                disabled={playerStatusesLoading}
+              >
+                <PlayerStatusIcon statusType="characterAbility" />
+              </IconButton>
+            </Dialog.Close>
+          </PlayerList.MenuItem>
           {game.deadVotes[player] && (
             <PlayerList.MenuItem
               id={`${player}-return-dead-vote`}

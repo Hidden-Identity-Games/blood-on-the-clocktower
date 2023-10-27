@@ -9,12 +9,16 @@ export type PlayerStatus = PlayerStatusMap[keyof PlayerStatusMap]
 
 export const poisonStatusShape = z.object({ type: z.enum(['poison']), id: z.string() })
 export const drunkStatusShape = z.object({ type: z.enum(['drunk']), id: z.string() })
-export const customStatusShape = z.object({ type: z.enum(['custom']), desc: z.string(), id: z.string() })
+export const protectedStatusShape = z.object({ type: z.enum(['protected']), id: z.string() })
+export const characterAbilityStatusShape = z.object({ type: z.enum(['characterAbility']), id: z.string() })
+export const deadStatusShape = z.object({ type: z.enum(['dead']), id: z.string() })
 const allStatusShapes =
 {
   poison: poisonStatusShape,
   drunk: drunkStatusShape,
-  custom: customStatusShape,
+  protected: protectedStatusShape,
+  characterAbility: characterAbilityStatusShape,
+  dead: deadStatusShape,
 }
 
 export type PlayerStatusMap = { [K in keyof typeof allStatusShapes]: z.TypeOf<typeof allStatusShapes[K]> }

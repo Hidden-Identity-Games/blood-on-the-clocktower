@@ -48,6 +48,7 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "If the Assassin has not yet used their ability: The Assassin either shows the 'no' head signal, or points to a player. That player dies.",
       order: 36,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -199,11 +200,13 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 19,
+      status: [{ type: "drunk" }],
     },
     otherNight: {
       reminder:
         "Reduce the remaining number of days the marked player is poisoned. If the Courtier has not yet used their ability: The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 8,
+      status: [{ type: "drunk" }],
     },
   },
   {
@@ -220,11 +223,13 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "The Devil’s Advocate points to a living player. That player survives execution tomorrow.",
       order: 22,
+      status: [{ type: "protected" }],
     },
     otherNight: {
       reminder:
         "The Devil’s Advocate points to a living player, different from the previous night. That player survives execution tomorrow.",
       order: 13,
+      status: [{ type: "protected" }],
     },
   },
   {
@@ -333,6 +338,7 @@ export const characters: CharacterDefinition[] = [
         type: "role-change",
         alignmentChange: true,
       },
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -414,11 +420,19 @@ export const characters: CharacterDefinition[] = [
     firstNight: {
       reminder: "Show each of the Outsider tokens in play.",
       order: 21,
+      playerMessage: {
+        type: "reveal-role",
+        count: 1,
+        restriction: {
+          team: ["Outsider"],
+        },
+      },
     },
     otherNight: {
       reminder:
         "If an Outsider died today: The Godfather points to a player. That player dies.",
       order: 37,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -449,6 +463,7 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "If the Gossip’s public statement was true: Choose a player not protected from dying tonight. That player dies.",
       order: 38,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -464,11 +479,19 @@ export const characters: CharacterDefinition[] = [
     firstNight: {
       reminder: "Show the marked character token. Point to the marked player.",
       order: 40,
+      playerMessage: {
+        type: "reveal-role",
+        count: 2,
+        restriction: {
+          team: ["Townsfolk", "Outsider"],
+        },
+      },
     },
     otherNight: {
       reminder:
         "If the Grandmother’s grandchild was killed by the Demon tonight: The Grandmother dies.",
       order: 51,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -486,6 +509,7 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "The Imp points to a player. That player dies. If the Imp chose themselves: Replace the character of 1 alive minion with a spare Imp token. Show the 'You are' card, then the Imp token.",
       order: 24,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -503,6 +527,14 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "The previously protected and drunk players lose those markers. The Innkeeper points to two players. Those players are protected. One is drunk.",
       order: 9,
+      status: [
+        {
+          type: "characterAbility",
+        },
+        {
+          type: "drunk",
+        },
+      ],
     },
   },
   {
@@ -581,30 +613,6 @@ export const characters: CharacterDefinition[] = [
       },
     },
     otherNight: null,
-  },
-  {
-    id: "lunatic",
-    name: "Lunatic",
-    edition: "bmr",
-    team: "Outsider",
-    reminders: ["Attack 1", "Attack 2", "Attack 3"],
-    setup: false,
-    ability:
-      "You think you are a Demon, but you are not. The Demon knows who you are & who you choose at night.",
-    imageSrc: "lunatic.png",
-    firstNight: {
-      reminder:
-        "First, wake the minions, show them who their demon.  Then, wake the demon, and show them whon their minions are.",
-      order: 8,
-      playerMessage: {
-        type: "demon-first-night",
-      },
-    },
-    otherNight: {
-      reminder:
-        "Allow the Lunatic to do the actions of the Demon. Place their 'attack' markers. If the Lunatic selected players: Wake the Demon. Show the 'attack' marker, then point to each marked player. Remove any Lunatic 'attack' markers.",
-      order: 20,
-    },
   },
   {
     id: "mastermind",
@@ -698,6 +706,7 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "If the Moonchild used their ability to target a player today: If that player is good, they die.",
       order: 50,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -726,6 +735,7 @@ export const characters: CharacterDefinition[] = [
     otherNight: {
       reminder: "The No Dashii points to a player. That player dies.",
       order: 30,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -813,6 +823,7 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "If the Po chose no-one the previous night: The Po points to three players. Otherwise: The Po either shows the 'no' head signal , or points to a player. Chosen players die",
       order: 28,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -828,13 +839,13 @@ export const characters: CharacterDefinition[] = [
     firstNight: {
       reminder: "The Poisoner points to a player. That player is poisoned.",
       order: 17,
-      status: { type: "poison" },
+      status: [{ type: "poison" }],
     },
     otherNight: {
       reminder:
         "The previously poisoned player is no longer poisoned. The Poisoner points to a player. That player is poisoned.",
       order: 7,
-      status: { type: "poison" },
+      status: [{ type: "poison" }],
     },
   },
   {
@@ -855,6 +866,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "revived",
       },
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -870,11 +882,13 @@ export const characters: CharacterDefinition[] = [
     firstNight: {
       reminder: "The Pukka points to a player. That player is poisoned.",
       order: 28,
+      status: [{ type: "poison" }],
     },
     otherNight: {
       reminder:
         "The Pukka points to a player. That player is poisoned. The previously poisoned player dies. ",
       order: 26,
+      status: [{ type: "dead" }, { type: "poison" }],
     },
   },
   {
@@ -947,11 +961,13 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "The Sailor points to a living player. Either the Sailor, or the chosen player, is drunk.",
       order: 11,
+      status: [{ type: "drunk" }],
     },
     otherNight: {
       reminder:
         "The previously drunk player is no longer drunk. The Sailor points to a living player. Either the Sailor, or the chosen player, is drunk.",
       order: 4,
+      status: [{ type: "drunk" }],
     },
   },
   {
@@ -1039,6 +1055,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "revived",
       },
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -1207,6 +1224,7 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "The Vigormortis points to a player. That player dies. If a Minion, they keep their ability and one of their Townsfolk neighbours is poisoned.",
       order: 32,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -1295,6 +1313,7 @@ export const characters: CharacterDefinition[] = [
       reminder:
         "If no-one died during the day: The Zombuul points to a player. That player dies.",
       order: 25,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -2081,6 +2100,7 @@ export const characters: CharacterDefinition[] = [
     otherNight: {
       reminder: "The Lleech points to a player. That player dies.",
       order: 34,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -2365,18 +2385,4 @@ export const characters: CharacterDefinition[] = [
   },
 ];
 
-// console.log(
-//   JSON.stringify(
-//     Object.values(
-//       Object.fromEntries(
-//         characters.map((c) => [
-//           c.otherNight?.playerMessage?.type ??
-//             c.firstNight?.playerMessage?.type,
-//           c,
-//         ]),
-//       ),
-//     ).map((value) => ({
-//       id: value.id,
-//     })),
-//   ),
-// );
+console.log(JSON.stringify(characters.filter((c) => c.edition === "bmr")));

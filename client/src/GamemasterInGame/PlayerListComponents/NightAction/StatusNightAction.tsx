@@ -8,13 +8,26 @@ import { PlayerStatusIcon } from "../../NotesIcons";
 import { usePlayerStatuses } from "../../../store/actions/gmPlayerActions";
 
 export function PoisonActon() {
+  return <StatusAction status={{ type: "poison" }} />;
+}
+export function DrunkActon() {
+  return <StatusAction status={{ type: "drunk" }} />;
+}
+export function ProtectedActon() {
+  return <StatusAction status={{ type: "protected" }} />;
+}
+export function CharacterAbilityActon() {
+  return <StatusAction status={{ type: "characterAbility" }} />;
+}
+
+export function StatusAction(props: { status: PlayerStatusType }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>Poison players</Button>
+        <Button>Add {props.status.type} status to players</Button>
       </Dialog.Trigger>
       <Dialog.Content>
-        <PlayerActionSelect status={{ type: "poison" }} />
+        <PlayerActionSelect status={props.status} />
       </Dialog.Content>
     </Dialog.Root>
   );

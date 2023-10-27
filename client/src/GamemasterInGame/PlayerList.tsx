@@ -133,6 +133,7 @@ export function NightPlayerList({
   const [, , , setPlayerNote] = usePlayerNotes();
 
   const nightKey = firstNight ? "firstNight" : "otherNight";
+
   const [nightActions, _leftoverPlayers] = React.useMemo(() => {
     const playerActions = game.playerList
       .map((player) => ({
@@ -173,7 +174,16 @@ export function NightPlayerList({
 
   const endNight = () => {
     endNightCallback();
-    setCheckedActions({});
+    setCheckedActions(
+      Object.fromEntries(
+        nightActions.map((action) => {
+          if (action.type === "character" && game.deadPlayers[action.player]) {
+            return [action.name, true];
+          }
+          return [];
+        }),
+      ),
+    );
   };
 
   return (

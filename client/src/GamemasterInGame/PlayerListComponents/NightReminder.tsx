@@ -34,7 +34,11 @@ export function PlayerNightReminder({
             <>
               Status:
               {game.playerPlayerStatuses[player]?.map((status) => (
-                <PlayerStatusIcon statusType={status.type} className="mt-.5" />
+                <PlayerStatusIcon
+                  key={status.id}
+                  statusType={status.type}
+                  className="mt-.5"
+                />
               ))}
             </>
           )}
