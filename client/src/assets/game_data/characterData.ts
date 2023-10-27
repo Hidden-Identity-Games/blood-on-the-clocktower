@@ -583,6 +583,30 @@ export const characters: CharacterDefinition[] = [
     otherNight: null,
   },
   {
+    id: "lunatic",
+    name: "Lunatic",
+    edition: "bmr",
+    team: "Outsider",
+    reminders: ["Attack 1", "Attack 2", "Attack 3"],
+    setup: false,
+    ability:
+      "You think you are a Demon, but you are not. The Demon knows who you are & who you choose at night.",
+    imageSrc: "lunatic.png",
+    firstNight: {
+      reminder:
+        "First, wake the minions, show them who their demon.  Then, wake the demon, and show them whon their minions are.",
+      order: 8,
+      playerMessage: {
+        type: "demon-first-night",
+      },
+    },
+    otherNight: {
+      reminder:
+        "Allow the Lunatic to do the actions of the Demon. Place their 'attack' markers. If the Lunatic selected players: Wake the Demon. Show the 'attack' marker, then point to each marked player. Remove any Lunatic 'attack' markers.",
+      order: 20,
+    },
+  },
+  {
     id: "mastermind",
     name: "Mastermind",
     edition: "bmr",

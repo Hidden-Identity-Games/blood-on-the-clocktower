@@ -42,7 +42,7 @@ export function PlayerInGame() {
 
   const nightOrder = React.useMemo(() => {
     const charactersFromScript =
-      script?.map(({ id }) => getCharacter(id)) ?? [];
+      script?.map(({ id }) => getCharacter(id)).filter(Boolean) ?? [];
     const travelerCharacters = Object.values(game.playersToRoles)
       .map((role) => getCharacter(role))
       .filter((character) => character.team === "Traveler");
