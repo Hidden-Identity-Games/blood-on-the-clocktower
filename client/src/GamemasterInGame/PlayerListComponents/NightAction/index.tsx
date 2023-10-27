@@ -40,7 +40,7 @@ export function NightAction({ nightData }: NightActionProps) {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        return <Component status={nightData.status} />;
+        return <Component key={status.type} status={status} />;
       })}
     </>
   );

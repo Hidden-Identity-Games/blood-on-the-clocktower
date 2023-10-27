@@ -420,6 +420,13 @@ export const characters: CharacterDefinition[] = [
     firstNight: {
       reminder: "Show each of the Outsider tokens in play.",
       order: 21,
+      playerMessage: {
+        type: "reveal-role",
+        count: 1,
+        restriction: {
+          team: ["Outsider"],
+        },
+      },
     },
     otherNight: {
       reminder:
@@ -875,6 +882,7 @@ export const characters: CharacterDefinition[] = [
     firstNight: {
       reminder: "The Pukka points to a player. That player is poisoned.",
       order: 28,
+      status: [{ type: "poison" }],
     },
     otherNight: {
       reminder:
