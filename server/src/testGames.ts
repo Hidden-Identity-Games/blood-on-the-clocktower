@@ -137,6 +137,23 @@ export async function setupTestGames (): Promise<void> {
     playersSeenRoles: players,
   }))
 
+  await addGame('tg-bmr', ({
+    gameStatus: 'Setup',
+    gmSecretHash: 't',
+    playersToRoles: Object.fromEntries(shuffleList(players).map((p, idx) => [p, bmrScript[bmrScript.length - idx - 1].id])),
+    deadPlayers: {},
+    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
+    playerPlayerStatuses: {
+      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }, { type: 'custom', desc: 'I am the custom status effect', id: 'custom1' }],
+    },
+    playerNotes: {},
+    deadVotes: {},
+    travelers: {},
+    alignmentsOverrides: {},
+    roleBag: {},
+    playersSeenRoles: players,
+  }), bmrScript)
+
   await addGame('tg-travelers', ({
     gameStatus: 'Setup',
     gmSecretHash: 't',
@@ -202,6 +219,33 @@ const tbScript = [
   { id: 'spy' },
   { id: 'scarlet_woman' },
   { id: 'imp' }] as Script
+
+const bmrScript = [
+  { id: 'grandmother' },
+  { id: 'sailor' },
+  { id: 'chambermaid' },
+  { id: 'exorcist' },
+  { id: 'innkeeper' },
+  { id: 'gambler' },
+  { id: 'gossip' },
+  { id: 'courtier' },
+  { id: 'professor' },
+  { id: 'minstrel' },
+  { id: 'tea_lady' },
+  { id: 'pacifist' },
+  { id: 'fool' },
+  { id: 'goon' },
+  { id: 'lunatic' },
+  { id: 'tinker' },
+  { id: 'moonchild' },
+  { id: 'godfather' },
+  { id: 'devils_advocate' },
+  { id: 'assassin' },
+  { id: 'mastermind' },
+  { id: 'zombuul' },
+  { id: 'pukka' },
+  { id: 'shabaloth' },
+  { id: 'po' }] as Script
 
 const testSelectorsScript = [
   { id: 'riot' },
