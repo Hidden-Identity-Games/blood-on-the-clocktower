@@ -525,9 +525,6 @@ export const characters: CharacterDefinition[] = [
           type: "characterAbility",
         },
         {
-          type: "characterAbility",
-        },
-        {
           type: "drunk",
         },
       ],
@@ -731,8 +728,8 @@ export const characters: CharacterDefinition[] = [
     otherNight: {
       reminder: "The No Dashii points to a player. That player dies.",
       order: 30,
+      status: [{ type: "dead" }],
     },
-    status: [{ type: "dead" }],
   },
   {
     id: "oracle",
@@ -862,7 +859,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "revived",
       },
-      status: [{ type: "revived" }],
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -1050,7 +1047,7 @@ export const characters: CharacterDefinition[] = [
       playerMessage: {
         type: "revived",
       },
-      status: [{ type: "dead" }, { type: "revive" }],
+      status: [{ type: "dead" }],
     },
   },
   {

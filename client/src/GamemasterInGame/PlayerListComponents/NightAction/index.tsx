@@ -1,9 +1,13 @@
 import { CharacterNightData, PlayerStatusMap } from "@hidden-identity/server";
-import { PoisonActon } from "./PoisonNightAction";
+import {
+  CharacterAbilityActon,
+  DrunkActon,
+  PoisonActon,
+  ProtectedActon,
+} from "./StatusNightAction";
+import { KillAction } from "./KillAction";
 
-type PlayeractionMap = PlayerStatusMap & {
-  dead: { type: "dead" };
-};
+type PlayeractionMap = PlayerStatusMap;
 type NightActionPossibility = PlayeractionMap[keyof PlayeractionMap]["type"];
 const NightActionComponents: {
   [K in NightActionPossibility]: React.ComponentType<{
@@ -11,9 +15,10 @@ const NightActionComponents: {
   }>;
 } = {
   poison: PoisonActon,
-  custom: () => null,
-  drunk: () => null,
-  dead: () => null,
+  drunk: DrunkActon,
+  dead: KillAction,
+  protected: ProtectedActon,
+  characterAbility: CharacterAbilityActon,
 };
 
 interface NightActionProps {
@@ -23,11 +28,20 @@ export function NightAction({ nightData }: NightActionProps) {
   if (!nightData.status) {
     return null;
   }
-  const Component = NightActionComponents[
-    nightData.status.type
-  ] as React.ComponentType<{
-    status: Omit<PlayerStatusMap[typeof nightData.status.type], "id">;
-  }>;
 
-  return <Component status={nightData.status} />;
+  return (
+    <>
+      {nightData.status.map((status) => {
+        const Component = NightActionComponents[
+          status.type
+        ] as React.ComponentType<{
+          status: Omit<PlayerStatusMap[typeof status.type], "id">;
+        }>;
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return <Component status={nightData.status} />;
+      })}
+    </>
+  );
 }

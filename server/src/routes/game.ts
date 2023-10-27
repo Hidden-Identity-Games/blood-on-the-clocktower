@@ -25,7 +25,7 @@ import { setupTestGames } from '../testGames.ts'
 import { gmProcedure, playerProcedure, publicProcedure } from '../trpcServerInternals/trpc.ts'
 import { z } from 'zod'
 import { alignmentShape } from '../types/Role.ts'
-import { poisonStatusShape, drunkStatusShape, customStatusShape, gameStatusShape } from '../types/UnifiedGame.ts'
+import { poisonStatusShape, drunkStatusShape, gameStatusShape, protectedStatusShape, characterAbilityStatusShape, deadStatusShape } from '../types/UnifiedGame.ts'
 import { gameIdShape, playerAndGameIdShape, roleShape } from './baseApiShapes.ts'
 
 await setupTestGames()
@@ -110,7 +110,7 @@ export const gameRoutes = {
         playerAndGameIdShape,
         z.object({
           playerStatus:
-          z.union([poisonStatusShape, drunkStatusShape, customStatusShape]),
+          z.union([poisonStatusShape, drunkStatusShape, protectedStatusShape, characterAbilityStatusShape, deadStatusShape]),
         }),
       ),
     )

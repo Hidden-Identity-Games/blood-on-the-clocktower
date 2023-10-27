@@ -1,16 +1,16 @@
 import { IoIosBeer } from "react-icons/io";
 import { FaVial } from "react-icons/fa6";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { GiFeather } from "react-icons/gi";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { MeaningfulStatusIcon } from "../shared/MeaningfulIcon";
 import { useDefiniteGame } from "../store/GameContext";
-import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import { Flex, IconButton } from "@radix-ui/themes";
 import { PlayerStatus } from "@hidden-identity/server";
 import { ExtnesionProps } from "../types/radixTypes";
 import { IconBaseProps } from "react-icons";
 import { usePlayerStatuses } from "../store/actions/gmPlayerActions";
 import { useDeadVote } from "../store/actions/gmActions";
+import { BsFillGearFill, BsShieldShaded } from "react-icons/bs";
 
 const StatusIconMap: Record<
   PlayerStatus["type"],
@@ -18,7 +18,9 @@ const StatusIconMap: Record<
 > = {
   poison: FaVial,
   drunk: IoIosBeer,
-  custom: GiFeather,
+  protected: BsShieldShaded,
+  characterAbility: BsFillGearFill,
+  dead: () => null,
 };
 interface PlayerStatusIconProps extends IconBaseProps {
   statusType: PlayerStatus["type"];
@@ -52,62 +54,17 @@ function PlayerStatusIconList({
         variant: "soft",
         color: "violet",
       } as const;
-      switch (status.type) {
-        case "drunk":
-          return (
-            <IconButton
-              key={status.id}
-              {...buttonProps}
-              onClick={() => {
-                updatePlayerStatus(player, "remove", status);
-              }}
-            >
-              <PlayerStatusIcon statusType="drunk" className={className} />
-            </IconButton>
-          );
-        case "poison":
-          return (
-            <IconButton
-              key={status.id}
-              {...buttonProps}
-              onClick={() => {
-                updatePlayerStatus(player, "remove", status);
-              }}
-            >
-              <PlayerStatusIcon statusType="poison" className={className} />
-            </IconButton>
-          );
-        case "custom":
-          return (
-            <MeaningfulStatusIcon
-              {...radixButtonProps}
-              key={status.id}
-              color="violet"
-              header={
-                <Flex gap="1">
-                  <PlayerStatusIcon statusType="custom" className={className} />
-                  <div>Custom Status</div>
-                </Flex>
-              }
-              explanation={
-                <>
-                  <Text as="div">{status.desc}</Text>
-                  <Dialog.Close>
-                    <Button
-                      onClick={() => {
-                        updatePlayerStatus(player, "remove", status);
-                      }}
-                    >
-                      Clear Status
-                    </Button>
-                  </Dialog.Close>
-                </>
-              }
-            >
-              <PlayerStatusIcon statusType="custom" className={className} />
-            </MeaningfulStatusIcon>
-          );
-      }
+      return (
+        <IconButton
+          key={status.id}
+          {...buttonProps}
+          onClick={() => {
+            updatePlayerStatus(player, "remove", status);
+          }}
+        >
+          <PlayerStatusIcon statusType={status.type} className={className} />
+        </IconButton>
+      );
     });
 }
 
