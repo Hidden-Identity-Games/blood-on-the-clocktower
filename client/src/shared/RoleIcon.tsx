@@ -60,14 +60,14 @@ export type RoleTextProps = {
 } & ExtnesionProps["Text"];
 
 export function RoleText({ role, children, className, size }: RoleTextProps) {
-  const charType = getCharacter(role).team;
+  const charType = getCharacter(role)?.team;
   return (
     <Text
       size={size}
       color={colorMap[charType] ?? undefined}
       className={classNames("capitalize", className)}
     >
-      {children ?? getCharacter(role).name ?? role}
+      {children ?? getCharacter(role)?.name ?? role}
     </Text>
   );
 }
@@ -82,7 +82,7 @@ export function CharacterName({ role, size, className }: CharacterNameProps) {
     <Flex gap="1" className={className}>
       <RoleIcon role={role} />
       <RoleText role={role} size={size}>
-        {getCharacter(role).name}
+        {getCharacter(role)?.name}
       </RoleText>
     </Flex>
   );

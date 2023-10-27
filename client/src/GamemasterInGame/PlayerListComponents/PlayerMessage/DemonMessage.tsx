@@ -17,7 +17,7 @@ export function DemonMessage({ openMessageCallback }: DemonMessageProps) {
   const { game, script } = useDefiniteGame();
   const [minions, setMinions] = useState(() =>
     game.playerList.filter(
-      (player) => getCharacter(game.playersToRoles[player]).team === "Minion",
+      (player) => getCharacter(game.playersToRoles[player])?.team === "Minion",
     ),
   );
   const rolesInPlay = Object.fromEntries(
@@ -31,8 +31,8 @@ export function DemonMessage({ openMessageCallback }: DemonMessageProps) {
         .filter((id) => !rolesInPlay[id])
         .filter(
           (id) =>
-            getCharacter(id).team === "Outsider" ||
-            getCharacter(id).team === "Townsfolk",
+            getCharacter(id)?.team === "Outsider" ||
+            getCharacter(id)?.team === "Townsfolk",
         ),
     ),
   );

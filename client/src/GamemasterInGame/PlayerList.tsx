@@ -295,7 +295,7 @@ export function IngamePlayerList() {
           <Text size="4" asChild>
             <Flex justify="between" align="center" gap="3">
               <PlayerList.RoleIcon player={player}>
-                {getCharacter(game.playersToRoles[player]).ability}
+                {getCharacter(game.playersToRoles[player])?.ability}
               </PlayerList.RoleIcon>
               <PlayerList.NoteInputModal
                 player={player}

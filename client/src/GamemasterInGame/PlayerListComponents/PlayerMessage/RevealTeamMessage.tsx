@@ -29,7 +29,7 @@ export function RevealTeamMessage({
   const [team, setTeam] = useState<CharacterType>("Demon");
   const playersState = useDynamicList<string>(game.playerList, {
     recommended: game.playerList.filter(
-      (p) => getCharacter(game.playersToRoles[p]).team === team,
+      (p) => getCharacter(game.playersToRoles[p])?.team === team,
     ),
     defaultCount: message.count,
   });
