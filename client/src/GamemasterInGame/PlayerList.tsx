@@ -297,11 +297,19 @@ export function NightPlayerList({
   );
 }
 
-export function IngamePlayerList() {
+interface IngamePlayerListProps {
+  selectedOrder: PlayerOrder;
+  setSelectedOrder: (order: PlayerOrder) => void;
+  firstSeat: string;
+  setFirstSeat: (player: string) => void;
+}
+export function IngamePlayerList({
+  selectedOrder,
+  setSelectedOrder,
+  firstSeat,
+  setFirstSeat,
+}: IngamePlayerListProps) {
   const { game } = useDefiniteGame();
-  const [selectedOrder, setSelectedOrder] =
-    useState<PlayerOrder>("alphabetical");
-  const [firstSeat, setFirstSeat] = useState("");
   const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
   const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");

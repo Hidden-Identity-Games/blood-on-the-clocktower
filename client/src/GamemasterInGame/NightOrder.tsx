@@ -12,6 +12,7 @@ import classNames from "classnames";
 import { Reveal } from "@hidden-identity/server";
 import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 import { ScriptList } from "../shared/ScriptList";
+import { PlayerOrder } from "../shared/PlayerListOrder";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
 export function NightOrder() {
@@ -20,6 +21,10 @@ export function NightOrder() {
   const [, , , setGameStatus] = useSetGameStatus();
   const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoire");
   const [interfaceLocked, setInterfaceLocked] = React.useState(false);
+
+  const [selectedOrder, setSelectedOrder] =
+    React.useState<PlayerOrder>("alphabetical");
+  const [firstSeat, setFirstSeat] = React.useState("");
 
   const [playerMessage, setPlayerMessage] = React.useState("");
   const [playerReveal, setPlayerReveal] = React.useState<
@@ -78,7 +83,7 @@ export function NightOrder() {
         </LockableTabTrigger>
         <LockableTabTrigger
           value="menu"
-          heading="Menu & Script"
+          heading="Menu"
           selectedTab={selectedTab}
           isLocked={interfaceLocked}
         >
@@ -87,7 +92,12 @@ export function NightOrder() {
       </Tabs.List>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="grimoire">
-        <IngamePlayerList />
+        <IngamePlayerList
+          selectedOrder={selectedOrder}
+          setSelectedOrder={setSelectedOrder}
+          firstSeat={firstSeat}
+          setFirstSeat={setFirstSeat}
+        />
       </Tabs.Content>
 
       <Tabs.Content
