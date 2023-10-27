@@ -31,7 +31,7 @@ export function RevealTeamMessage({
   });
   const playersState = useDynamicList<string>(game.playerList, {
     recommended: game.playerList
-      .filter((p) => getCharacter(game.playersToRoles[p]).team === team)
+      .filter((p) => getCharacter(game.playersToRoles[p])?.team === team)
       .filter(playerFilter),
     defaultCount: message.count,
   });
