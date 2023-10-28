@@ -1,8 +1,9 @@
-import { UNASSIGNED, addTestGame } from './database/gameDB/base.ts'
+import { UNASSIGNED, addTestGame, createGame } from './database/gameDB/base.ts'
 import { setScript } from './database/scriptDB.ts'
 import { type Role } from './types/Role.ts'
 import { type Script } from './types/Script.ts'
 import { type BaseUnifiedGame } from './types/UnifiedGame.ts'
+import { fakerEN } from '@faker-js/faker'
 
 export function shuffleList<T> (list: readonly T[]): T[] {
   return [...list]
@@ -195,6 +196,11 @@ export async function setupTestGames (): Promise<void> {
   }, [...testSelectorsScript, { id: 'ravenkeeper' },
     { id: 'washerwoman' },
     { id: 'butler' }] as Script)
+}
+
+function createTestGame (script: Script, playerCount: number) {
+  const game = createGame()
+  const players = Array.from({ length: playerCount }).map(() => faker.person.firstName())
 }
 
 const tbScript = [

@@ -50,5 +50,8 @@
     "typescript": "*",
     "ws": "^8.14.2",
     "zod": "^3.22.2"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.2.0"
   }
 }
