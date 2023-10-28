@@ -1,4 +1,4 @@
-import { CharacterNightData, PlayerStatusMap } from "@hidden-identity/server";
+import { CharacterNightData, PlayerStatusMap } from "@hidden-identity/shared";
 import {
   CharacterAbilityActon,
   DrunkActon,

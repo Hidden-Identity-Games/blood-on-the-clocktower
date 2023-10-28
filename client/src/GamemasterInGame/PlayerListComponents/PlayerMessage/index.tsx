@@ -1,8 +1,4 @@
-import {
-  PlayerMessage,
-  PlayerMessageMap,
-  Reveal,
-} from "@hidden-identity/server";
+import { PlayerMessage, PlayerMessageMap } from "@hidden-identity/shared";
 // import { exhaustiveCheck } from "../../../utils/exhaustiveCheck";
 import { RevealRoleMessage } from "./RevealRoleMessage";
 import { DemonMessage } from "./DemonMessage";
@@ -14,6 +10,7 @@ import { RoleChangeMessage } from "./RoleChangeMessage";
 import { AlignmentChangeMessage } from "./AlignmentChangeMessage";
 import { CharacterSelectedYouMessage } from "./CharacterSelectedYouMessage";
 import { ComponentType } from "react";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 interface PlayerMessageFlowProps {
   message: PlayerMessage;

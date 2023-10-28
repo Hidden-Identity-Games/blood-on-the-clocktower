@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { CharacterName } from "../../../shared/RoleIcon";

@@ -5,7 +5,7 @@ import {
 } from "./CharacterSelectList";
 import { useDefiniteGame } from "../store/GameContext";
 import { TeamDistributionBar } from "./TeamDistributionBar";
-import { Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import { GameMasterActions } from "./GameMasterActions";
 import { BsPeopleFill } from "react-icons/bs";
 import { FaMasksTheater } from "react-icons/fa6";

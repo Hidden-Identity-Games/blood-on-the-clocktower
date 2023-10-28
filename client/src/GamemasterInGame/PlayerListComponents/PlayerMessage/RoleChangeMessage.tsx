@@ -1,9 +1,4 @@
-import {
-  Alignment,
-  PlayerMessageMap,
-  Reveal,
-  Role,
-} from "@hidden-identity/server";
+import { Alignment, PlayerMessageMap, Role } from "@hidden-identity/shared";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useState } from "react";
 import { Flex, Heading } from "@radix-ui/themes";
@@ -13,6 +8,7 @@ import { AlignmentSelect, RoleSelectList } from "../Selectors";
 import { getDefaultAlignment } from "@hidden-identity/shared";
 import { useCharacterRestriction } from "../Selectors/Restrictions";
 import { useDynamicList } from "../Selectors/useDynamicList";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 export interface RoleChangeMessageProps {
   message: PlayerMessageMap["role-change"];

@@ -8,7 +8,7 @@ import { SeatingProblem } from "./SeatingProblem";
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { PlayerNameButton } from "../../shared/PlayerNameButton";
 import { AnimatePresence, motion } from "framer-motion";
-import { BrokenOrderedPlayers } from "@hidden-identity/server";
+import { BrokenOrderedPlayers } from "@hidden-identity/shared";
 import { useOrderPlayer } from "../../store/actions/playerActions";
 
 export function PlayerWaiting() {

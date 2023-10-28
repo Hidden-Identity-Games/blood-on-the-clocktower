@@ -1,4 +1,4 @@
-import { Restriction, Role } from "@hidden-identity/server";
+import { Restriction, Role } from "@hidden-identity/shared";
 import { useGetPlayerAlignment } from "../../../store/useStore";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { getCharacter } from "@hidden-identity/shared";

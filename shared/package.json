@@ -13,7 +13,7 @@
   "scripts": {
     "test": "",
     "dev": "tsup --watch",
-    "build": "tsup",
+    "build-client": "tsup",
     "updateJson": "node ./src/gameData/modifyJson.cjs"
   },
   "keywords": [],

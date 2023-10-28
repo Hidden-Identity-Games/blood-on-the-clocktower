@@ -4,7 +4,7 @@ import tokenBack from "../assets/token_logo.png";
 import tokenBlank from "../assets/token_blank.png";
 import fingerprintImage from "../assets/fingerprint.png";
 import { getCharacter } from "@hidden-identity/shared";
-import { Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import { useState } from "react";
 import { AlignmentText } from "../shared/RoleIcon";
 import { usePlayer } from "../store/usePlayer";

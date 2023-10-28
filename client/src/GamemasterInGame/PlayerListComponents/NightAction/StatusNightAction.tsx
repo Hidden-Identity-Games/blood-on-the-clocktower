@@ -1,5 +1,5 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { PlayerStatus, PlayerStatusType } from "@hidden-identity/server";
+import { PlayerStatus, PlayerStatusType } from "@hidden-identity/shared";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useMemo } from "react";
 import { v4 } from "uuid";

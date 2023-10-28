@@ -4,7 +4,7 @@ import type {
   ScriptItem,
   CharacterType,
   Alignment,
-} from "@hidden-identity/server";
+} from "@hidden-identity/shared";
 
 // Can't share actual code with the server right now, only types
 export const CharacterTypes = [

@@ -1,4 +1,4 @@
-import { Restriction } from "@hidden-identity/server";
+import { Restriction } from "@hidden-identity/shared";
 
 interface RestrictionsProps {
   restrictions?: Restriction;

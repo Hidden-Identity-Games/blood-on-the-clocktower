@@ -11,15 +11,11 @@
   },
   "exports": {
     ".": {
-      "types": "./declarations/types/index.d.ts"
-    },
-    "./server": {
-      "types": "./declarations/index.d.ts"
+      "types": "./declarations/contracts/index.d.ts"
     }
   },
   "scripts": {
     "build-client": "tsc",
-    "build-server": "",
     "start-prod": "SERVER_PORT=3000 ts-node --esm src/index.ts",
     "dev": "concurrently \"pnpm run build-client --watch\" \"SERVER_PORT=6001 nodemon --esm src/index.ts\"",
     "lint": "eslint . --ext ts --report-unused-disable-directives ",

@@ -1,4 +1,4 @@
-import { ProblemType } from "@hidden-identity/server";
+import { ProblemType } from "@hidden-identity/shared";
 import { Callout } from "@radix-ui/themes";
 import { BiFastForward, BiSolidHide } from "react-icons/bi";
 import { GiAngularSpider, GiCrossMark } from "react-icons/gi";

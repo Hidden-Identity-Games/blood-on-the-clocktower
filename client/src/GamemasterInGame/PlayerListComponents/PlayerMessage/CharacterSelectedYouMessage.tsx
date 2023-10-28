@@ -1,4 +1,4 @@
-import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
+import { PlayerMessageMap, Role } from "@hidden-identity/shared";
 import { RoleSelectList } from "../Selectors";
 import { Restrictions } from "./Restrictions";
 import { Flex, Heading } from "@radix-ui/themes";
@@ -6,6 +6,7 @@ import { PlayerMessageLink } from "./PlayerMessageLink";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useCharacterRestriction } from "../Selectors/Restrictions";
 import { useDynamicList } from "../Selectors/useDynamicList";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 interface CharacterSelectedYouMessageProps {
   message: PlayerMessageMap["character-selected-you"];

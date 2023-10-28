@@ -30,9 +30,5 @@
     /* build */
     "outDir": "./dist"
   },
-  "include": [
-    "src",
-    "src/trpcServerInternals/createServer.ts",
-    "src/trpcServerInternals/trpc.ts"
-  ]
+  "include": ["src"]
 }

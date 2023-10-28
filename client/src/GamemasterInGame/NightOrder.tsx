@@ -9,10 +9,10 @@ import { GiNotebook, GiOpenBook } from "react-icons/gi";
 import { AiOutlineMenu } from "react-icons/ai";
 import { PlayerMessage } from "../PlayerMessagePage";
 import classNames from "classnames";
-import { Reveal } from "@hidden-identity/server";
 import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 import { ScriptList } from "../shared/ScriptList";
 import { PlayerOrder } from "../shared/PlayerListOrder";
+import { Reveal } from "../types/PlayerMessageScreen";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
 export function NightOrder() {

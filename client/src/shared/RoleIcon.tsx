@@ -2,7 +2,7 @@ import { getCharacter } from "@hidden-identity/shared";
 import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { alignmentColorMap, colorMap } from "./CharacterTypes";
 import { Flex, Text } from "@radix-ui/themes";
-import { Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import classNames from "classnames";
 import { useDefiniteGame } from "../store/GameContext";
 import { useGetPlayerAlignment } from "../store/useStore";

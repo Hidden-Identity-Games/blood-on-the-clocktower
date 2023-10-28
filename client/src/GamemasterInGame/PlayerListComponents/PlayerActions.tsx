@@ -6,7 +6,7 @@ import { PiKnifeBold } from "react-icons/pi";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PlayerList } from ".";
 import { AlignmentSelect, RoleSelect } from "./Selectors";
-import { UnifiedGame } from "@hidden-identity/server";
+import { UnifiedGame } from "@hidden-identity/shared";
 import { v4 } from "uuid";
 import { PlayerStatusIcon } from "../NotesIcons";
 import {

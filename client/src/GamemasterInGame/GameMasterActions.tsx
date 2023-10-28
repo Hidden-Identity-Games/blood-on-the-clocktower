@@ -7,7 +7,7 @@ import {
   Text,
 } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
-import { Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ExportButton } from "./ExportButton";
 import {

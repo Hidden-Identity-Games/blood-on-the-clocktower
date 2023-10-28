@@ -25,13 +25,14 @@ import {
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
 import { DestructiveButton } from "./DestructiveButton";
-import { Reveal, Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import {
   PlayerListOrder,
   PlayerOrder,
   usePlayerOrder,
 } from "../shared/PlayerListOrder";
 import { usePlayerNotes } from "../store/actions/gmPlayerActions";
+import { Reveal } from "../types/PlayerMessageScreen";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();

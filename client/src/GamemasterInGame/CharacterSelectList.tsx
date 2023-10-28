@@ -14,7 +14,7 @@ import { FaQuestion } from "react-icons/fa6";
 
 import { colorMap } from "../shared/CharacterTypes";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
-import { Character, Role } from "@hidden-identity/server";
+import { Character, Role } from "@hidden-identity/shared";
 import {
   getCharacter,
   CHARACTERS,
