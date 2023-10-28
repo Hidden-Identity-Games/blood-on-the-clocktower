@@ -1,9 +1,10 @@
-import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
+import { PlayerMessageMap, Role } from "@hidden-identity/shared";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex } from "@radix-ui/themes";
 import { RoleSelectList } from "../Selectors";
 import { useDynamicList } from "../Selectors/useDynamicList";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 export interface MadnessMessageProps {
   onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;

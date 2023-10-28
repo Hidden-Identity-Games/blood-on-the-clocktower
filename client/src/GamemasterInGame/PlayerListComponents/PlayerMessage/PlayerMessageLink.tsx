@@ -1,4 +1,7 @@
-import { PlayerMessageScreenMessage, Reveal } from "@hidden-identity/server";
+import {
+  PlayerMessageScreenMessage,
+  Reveal,
+} from "../../../types/PlayerMessageScreen";
 import { Button, Dialog } from "@radix-ui/themes";
 
 export interface PlayerMessageLinkProps

@@ -9,7 +9,7 @@ import {
 import { useDefiniteGame } from "../store/GameContext";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ProblemsPanel } from "./ProblemsPanel";
-import { UnifiedGame, WellOrderedPlayers } from "@hidden-identity/server";
+import { UnifiedGame, WellOrderedPlayers } from "@hidden-identity/shared";
 import { useState } from "react";
 import { PlayerNameButton } from "../shared/PlayerNameButton";
 import classNames from "classnames";

@@ -1,4 +1,4 @@
-import { Reveal, Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
@@ -9,6 +9,7 @@ import {
   useCharacterRestriction,
   usePlayerRestrictions,
 } from "../Selectors/Restrictions";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 export interface DemonMessageProps {
   onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;

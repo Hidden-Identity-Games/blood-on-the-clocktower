@@ -5,7 +5,7 @@ import { LiaVoteYeaSolid } from "react-icons/lia";
 import { MeaningfulStatusIcon } from "../shared/MeaningfulIcon";
 import { useDefiniteGame } from "../store/GameContext";
 import { Flex, IconButton } from "@radix-ui/themes";
-import { PlayerStatus } from "@hidden-identity/server";
+import { PlayerStatus } from "@hidden-identity/shared";
 import { ExtnesionProps } from "../types/radixTypes";
 import { IconBaseProps } from "react-icons";
 import { usePlayerStatuses } from "../store/actions/gmPlayerActions";

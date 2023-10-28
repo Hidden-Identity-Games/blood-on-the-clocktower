@@ -15,7 +15,7 @@ import {
   getScript,
   getScriptImg,
   getScriptNames,
-} from "../assets/game_data/gameData";
+} from "@hidden-identity/shared";
 import { DialogHeader } from "../shared/DialogHeader";
 
 interface ScriptSelectProps {

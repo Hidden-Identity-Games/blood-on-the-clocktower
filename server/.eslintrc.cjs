@@ -3,8 +3,9 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: "standard-with-typescript",
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  extends: ["standard-with-typescript", "plugin:prettier/recommended"],
+  plugins: ["prettier"],
+  ignorePatterns: ["dist", ".eslintrc.cjs", "declarations"],
   overrides: [
     {
       env: {
@@ -23,7 +24,11 @@ module.exports = {
   rules: {
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { destructuredArrayIgnorePattern: "^_", argsIgnorePattern: "^_", ignoreRestSiblings: true },
+    ],
 
   },
 };

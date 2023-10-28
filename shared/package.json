@@ -1,0 +1,30 @@
+{
+  "name": "@hidden-identity/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "test": "",
+    "dev": "tsup --watch",
+    "build-client": "tsup",
+    "updateJson": "node ./src/gameData/modifyJson.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "zod": "^3.22.2"
+  }
+}

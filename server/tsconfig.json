@@ -3,13 +3,12 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["es2021"],
-    "module": "node16",
+    "module": "NodeNext",
     "skipLibCheck": true,
     "declarationMap": true,
 
     /* Bundler mode */
-    "moduleResolution": "node16",
-    "resolveJsonModule": true,
+    "moduleResolution": "NodeNext",
     "isolatedModules": true,
     "noEmit": false,
     "allowSyntheticDefaultImports": true,
@@ -31,9 +30,5 @@
     /* build */
     "outDir": "./dist"
   },
-  "include": [
-    "src",
-    "src/trpcServerInternals/createServer.ts",
-    "src/trpcServerInternals/trpc.ts"
-  ]
+  "include": ["src"]
 }

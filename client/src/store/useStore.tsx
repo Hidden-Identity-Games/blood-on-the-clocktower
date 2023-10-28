@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 import { UnifiedGame } from "./Game";
 import { useAction, useDefiniteGame, useGame } from "./GameContext";
-import { Script } from "@hidden-identity/server";
-import { getDefaultAlignment } from "../assets/game_data/gameData";
+import { Script } from "@hidden-identity/shared";
+import { getDefaultAlignment } from "@hidden-identity/shared";
 import { trpc } from "../shared/trpcClient";
 
 function randomUppercase() {

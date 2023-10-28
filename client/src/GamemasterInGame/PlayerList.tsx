@@ -9,7 +9,7 @@ import {
   Text,
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
-import { getCharacter } from "../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
@@ -25,13 +25,14 @@ import {
 } from "../shared/PlayerListFilters";
 import { useKickPlayer } from "../store/actions/playerActions";
 import { DestructiveButton } from "./DestructiveButton";
-import { Reveal, Role } from "@hidden-identity/server";
+import { Role } from "@hidden-identity/shared";
 import {
   PlayerListOrder,
   PlayerOrder,
   usePlayerOrder,
 } from "../shared/PlayerListOrder";
 import { usePlayerNotes } from "../store/actions/gmPlayerActions";
+import { Reveal } from "../types/PlayerMessageScreen";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();

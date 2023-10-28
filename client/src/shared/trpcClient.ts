@@ -1,4 +1,4 @@
-import type { AppRouter } from "@hidden-identity/server/server";
+import type { AppRouter } from "@hidden-identity/server";
 import {
   createTRPCProxyClient,
   httpBatchLink,

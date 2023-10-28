@@ -1,11 +1,11 @@
 import { Flex, Text } from "@radix-ui/themes";
 import { useGame } from "../store/GameContext";
 import { colorMap } from "../shared/CharacterTypes";
-import { KnownCharacterType, Role } from "@hidden-identity/server";
+import { KnownCharacterType, Role } from "@hidden-identity/shared";
 import {
   DistributionsByPlayerCount,
   getCharacter,
-} from "../assets/game_data/gameData";
+} from "@hidden-identity/shared";
 
 interface TeamDistributionBarProps {
   charsSelected: Role[];

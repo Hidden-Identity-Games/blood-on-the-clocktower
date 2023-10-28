@@ -1,7 +1,7 @@
 import { TRPCClientError } from "@trpc/client";
 import { trpc } from "../../shared/trpcClient";
 import { useAction, useGame } from "../GameContext";
-import { GameStatus, Role } from "@hidden-identity/server";
+import { GameStatus, Role } from "@hidden-identity/shared";
 
 export function useDeadVote() {
   const { gameId } = useGame();

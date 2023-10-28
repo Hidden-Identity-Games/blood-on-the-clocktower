@@ -1,4 +1,4 @@
-import { Alignment, PlayerStatus, Role } from "@hidden-identity/server";
+import { Alignment, PlayerStatus, Role } from "@hidden-identity/shared";
 import { useAction, useGame } from "../GameContext";
 import { trpc } from "../../shared/trpcClient";
 

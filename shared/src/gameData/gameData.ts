@@ -4,12 +4,12 @@ import {
   CharacterType,
   KnownCharacterType,
   Role,
-  Script,
-} from "@hidden-identity/server";
-import scriptsJson from "./scripts.json";
-import { characters as charactersList } from "./characterData";
+} from "../shapes/Role.ts";
+import { Script } from "../shapes/Script.ts";
+import { SCRIPTS } from "./scripts.ts";
+import { CHARACTERS as charactersList } from "./characterData.ts";
 
-const characters: Record<Role, Character> = Object.fromEntries(
+const characters = Object.fromEntries(
   charactersList.map((role) => [
     role.id as Role,
     {
@@ -18,7 +18,7 @@ const characters: Record<Role, Character> = Object.fromEntries(
       imageSrc: new URL(`../icon/role/${role.imageSrc}`, import.meta.url).href,
     },
   ]),
-);
+) as unknown as Record<Role, Character>;
 
 export const defaultAlignments: Record<CharacterType, Alignment> = {
   Demon: "Evil",
@@ -62,15 +62,11 @@ export function getCharacter(role: Role): Character {
 }
 
 const scripts: Record<string, Script> = Object.fromEntries(
-  scriptsJson.scripts.map(
-    ({ name, characters }) => [name, characters as Script] as const,
-  ),
+  SCRIPTS.map(({ name, characters }) => [name, characters as Script] as const),
 );
 const scriptDescriptions: Record<string, { imageSrc: string }> =
   Object.fromEntries(
-    scriptsJson.scripts.map(
-      ({ name, imageSrc }) => [name, { imageSrc }] as const,
-    ),
+    SCRIPTS.map(({ name, imageSrc }) => [name, { imageSrc }] as const),
   );
 
 export function getScript(scriptID: string): Script | undefined {

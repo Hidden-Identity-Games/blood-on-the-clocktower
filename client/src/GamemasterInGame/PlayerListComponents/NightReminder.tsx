@@ -1,11 +1,12 @@
-import { Reveal, UnifiedGame } from "@hidden-identity/server";
+import { UnifiedGame } from "@hidden-identity/shared";
 import { Flex, Heading, Text } from "@radix-ui/themes";
-import { getCharacter } from "../../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 import { useDefiniteGame } from "../../store/GameContext";
 import { PlayerList } from ".";
 import { NightAction } from "./NightAction";
 import { PlayerStatusIcon } from "../NotesIcons";
 import { PlayerOrderAction } from "./NightAction/PlayerOrderAction";
+import { Reveal } from "../../types/PlayerMessageScreen";
 
 type AbilityKey = "firstNight" | "otherNight";
 

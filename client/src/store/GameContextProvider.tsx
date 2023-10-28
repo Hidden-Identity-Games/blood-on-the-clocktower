@@ -4,7 +4,7 @@ import { UnifiedGameContext } from "./GameContext";
 import { Callout } from "@radix-ui/themes";
 import { ReadyState } from "react-use-websocket";
 import { LoadingExperience } from "../shared/LoadingExperience";
-import { Script } from "@hidden-identity/server";
+import { Script } from "@hidden-identity/shared";
 import { trpc } from "../shared/trpcClient";
 
 export function GameProvider({

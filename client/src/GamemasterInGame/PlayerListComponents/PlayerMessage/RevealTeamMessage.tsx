@@ -1,8 +1,4 @@
-import {
-  CharacterType,
-  PlayerMessageMap,
-  Reveal,
-} from "@hidden-identity/server";
+import { CharacterType, PlayerMessageMap } from "@hidden-identity/shared";
 import { useDynamicList } from "../Selectors/useDynamicList";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useState } from "react";
@@ -11,8 +7,9 @@ import { Restrictions } from "./Restrictions";
 import { Flex, Heading } from "@radix-ui/themes";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { TeamSelect } from "../Selectors/TeamSelect";
-import { getCharacter } from "../../../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 import { usePlayerRestrictions } from "../Selectors/Restrictions";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 export interface RevealTeamMessageProps {
   message: PlayerMessageMap["reveal-team"];

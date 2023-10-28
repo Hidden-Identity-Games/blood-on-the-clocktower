@@ -1,1 +1,1 @@
-export type { UnifiedGame } from "@hidden-identity/server";
+export type { UnifiedGame } from "@hidden-identity/shared";

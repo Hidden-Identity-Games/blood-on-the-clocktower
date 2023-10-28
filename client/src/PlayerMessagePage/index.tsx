@@ -1,7 +1,10 @@
 import { Flex, Heading, Text, TextArea } from "@radix-ui/themes";
 import { useSearchParams } from "react-router-dom";
 import { CharacterName } from "../shared/RoleIcon";
-import { PlayerMessageScreenMessage, Reveal } from "@hidden-identity/server";
+import {
+  PlayerMessageScreenMessage,
+  Reveal,
+} from "../types/PlayerMessageScreen";
 import { alignmentColorMap, colorMap } from "../shared/CharacterTypes";
 
 export function PlayerMessagePage() {

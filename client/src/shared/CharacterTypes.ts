@@ -1,4 +1,4 @@
-import { Alignment, CharacterType } from "@hidden-identity/server";
+import { Alignment, CharacterType } from "@hidden-identity/shared";
 import { RadixColor } from "../types/radixTypes";
 
 export const colorMap: Record<CharacterType, RadixColor> = {

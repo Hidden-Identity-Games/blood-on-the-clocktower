@@ -1,4 +1,4 @@
-import { PlayerMessageMap, Reveal, Role } from "@hidden-identity/server";
+import { PlayerMessageMap, Role } from "@hidden-identity/shared";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex, Heading } from "@radix-ui/themes";
@@ -10,6 +10,7 @@ import {
   useCharacterRestriction,
   usePlayerRestrictions,
 } from "../Selectors/Restrictions";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 interface RevealPlayerMessageProps {
   message: PlayerMessageMap["reveal-player"];

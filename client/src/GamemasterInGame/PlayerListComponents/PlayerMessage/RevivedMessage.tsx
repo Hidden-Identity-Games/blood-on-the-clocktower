@@ -1,6 +1,7 @@
-import { PlayerMessageMap, Reveal } from "@hidden-identity/server";
+import { PlayerMessageMap } from "@hidden-identity/shared";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex } from "@radix-ui/themes";
+import { Reveal } from "../../../types/PlayerMessageScreen";
 
 export interface RevivedMessageProps {
   message: PlayerMessageMap["revived"];
