@@ -92,7 +92,9 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
         </Dialog.Title>
 
         <Flex mt="4" direction="column" justify="center" align="center" gap="5">
-          <QRCode value={url} size={256} fgColor="darkred" />
+          <div className="bg-white p-1">
+            <QRCode value={url} size={256} fgColor="darkred" />
+          </div>
           <Button className="w-full" onClick={handleShare} size="4">
             <BsShare className="inline" />
             Or share the link!

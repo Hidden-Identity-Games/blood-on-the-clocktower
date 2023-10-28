@@ -29,7 +29,7 @@ export function PlayerRoleSelect() {
 
   return (
     <Flex
-      className="h-full w-full"
+      className="h-full w-full p-1"
       direction="column"
       align="center"
       justify="center"
