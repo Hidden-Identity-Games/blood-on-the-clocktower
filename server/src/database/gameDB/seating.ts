@@ -1,77 +1,98 @@
-import { type Role, type BaseUnifiedGame, type BrokenOrderedPlayers, type Problem, type WellOrderedPlayers, type UnifiedGame } from '@hidden-identity/shared'
-import { retrieveGame } from './base.ts'
+import {
+  type Role,
+  type BaseUnifiedGame,
+  type BrokenOrderedPlayers,
+  type Problem,
+  type WellOrderedPlayers,
+  type UnifiedGame,
+} from "@hidden-identity/shared";
+import { retrieveGame } from "./base.ts";
 
-function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {
-  const allPlayers = Object.keys(players)
-  let currentPlayer: string | null = allPlayers[0]
-  const chain: string[] = []
+function followGraph(players: UnifiedGame["partialPlayerOrdering"]): string[] {
+  const allPlayers = Object.keys(players);
+  let currentPlayer: string | null = allPlayers[0];
+  const chain: string[] = [];
   while (currentPlayer && !chain.includes(currentPlayer)) {
-    chain.push(currentPlayer)
-    const nextPlayer: string | null = players[currentPlayer]?.rightNeighbor ?? null
+    chain.push(currentPlayer);
+    const nextPlayer: string | null =
+      players[currentPlayer]?.rightNeighbor ?? null;
     if (!nextPlayer) {
-      return []
+      return [];
     }
-    currentPlayer = nextPlayer
+    currentPlayer = nextPlayer;
   }
 
-  if (chain.length === allPlayers.length && players[chain[chain.length - 1]]?.rightNeighbor === chain[0]) {
-    return chain
+  if (
+    chain.length === allPlayers.length &&
+    players[chain[chain.length - 1]]?.rightNeighbor === chain[0]
+  ) {
+    return chain;
   }
-  return []
+  return [];
 }
 
-function getProblems (game: BaseUnifiedGame, player: string): Problem | null {
-  const neighbor = game.partialPlayerOrdering[player]?.rightNeighbor
+function getProblems(game: BaseUnifiedGame, player: string): Problem | null {
+  const neighbor = game.partialPlayerOrdering[player]?.rightNeighbor;
   if (!(neighbor && game.playersToRoles[neighbor])) {
-    return { type: 'broken-link' }
+    return { type: "broken-link" };
   }
 
   // if you're pointing at the person who is pointing at you
   if (game.partialPlayerOrdering[neighbor]?.rightNeighbor === player) {
-    return ({ type: 'spiderman' })
+    return { type: "spiderman" };
   }
 
-  const chosenPlayers = Object.values(game.partialPlayerOrdering).map(neighbors => neighbors?.rightNeighbor).filter(Boolean)
+  const chosenPlayers = Object.values(game.partialPlayerOrdering)
+    .map((neighbors) => neighbors?.rightNeighbor)
+    .filter(Boolean);
   if (
     // If nobody is pointing at you yet.
-    chosenPlayers.filter(p => p === player).length !== 0 &&
+    chosenPlayers.filter((p) => p === player).length !== 0 &&
     // you're pointing at the same person as someone else.
-    chosenPlayers.filter(n => n === neighbor).length > 1) {
+    chosenPlayers.filter((n) => n === neighbor).length > 1
+  ) {
     // if you've been chosen, and you have a duplicate choice, you're an excluder
-    return ({ type: 'excluder' })
+    return { type: "excluder" };
   }
 
-  return null
+  return null;
 }
 
-export function getOrderedPlayers (
+export function getOrderedPlayers(
   game: BaseUnifiedGame,
 ): BrokenOrderedPlayers | WellOrderedPlayers {
-  const players = Object.keys(game.playersToRoles)
-  const fullList = followGraph(game.partialPlayerOrdering)
-  console.log(fullList)
+  const players = Object.keys(game.playersToRoles);
+  const fullList = followGraph(game.partialPlayerOrdering);
+  console.log(fullList);
   if (fullList.length === players.length) {
-    return { fullList, problems: false }
+    return { fullList, problems: false };
   }
 
   return {
     problems: true,
-    playerProblems: players.reduce<Record<string, Problem | null>>((problemMap, player) => {
-      return {
-        ...problemMap,
-        [player]: getProblems(game, player),
-      }
-    }, {}),
-  }
+    playerProblems: players.reduce<Record<string, Problem | null>>(
+      (problemMap, player) => {
+        return {
+          ...problemMap,
+          [player]: getProblems(game, player),
+        };
+      },
+      {},
+    ),
+  };
 }
-export async function assignPlayerToRole (gameId: string, player: string, role: Role): Promise<void> {
-  const game = await retrieveGame(gameId)
-  const gameInstance = game.readOnce()
+export async function assignPlayerToRole(
+  gameId: string,
+  player: string,
+  role: Role,
+): Promise<void> {
+  const game = await retrieveGame(gameId);
+  const gameInstance = game.readOnce();
   game.update({
     ...gameInstance,
     playersToRoles: {
       ...gameInstance.playersToRoles,
       [player]: role,
     },
-  })
+  });
 }

@@ -1,39 +1,51 @@
-import { UNASSIGNED, addTestGame } from './database/gameDB/base.ts'
-import { setScript } from './database/scriptDB.ts'
-import { type Role, type Script, type BaseUnifiedGame } from '@hidden-identity/shared'
+import { UNASSIGNED, addTestGame } from "./database/gameDB/base.ts";
+import { setScript } from "./database/scriptDB.ts";
+import {
+  type Role,
+  type Script,
+  type BaseUnifiedGame,
+} from "@hidden-identity/shared";
 
-export function shuffleList<T> (list: readonly T[]): T[] {
+export function shuffleList<T>(list: readonly T[]): T[] {
   return [...list]
     .map((item) => [item, Math.random()] as const)
     .sort(([, order1], [, order2]) => order1 - order2)
-    .map(([item]) => item)
+    .map(([item]) => item);
 }
 
-export async function setupTestGames (): Promise<void> {
+export async function setupTestGames(): Promise<void> {
   const players = [
-    'linh',
-    'alex',
-    'tali',
-    'elan',
-    'joey',
-    'jess',
-    'kennedy',
-    'auden',
-    'maria',
-    'victoria',
-    'mrinal',
-    'patrick',
-    'nadir',
-    'cameron',
-  ]
-  await addGame('test-game', {
-    gameStatus: 'PlayersJoining',
-    gmSecretHash: 't',
-    playersToRoles: Object.fromEntries(players.map(p => [p, UNASSIGNED])),
+    "linh",
+    "alex",
+    "tali",
+    "elan",
+    "joey",
+    "jess",
+    "kennedy",
+    "auden",
+    "maria",
+    "victoria",
+    "mrinal",
+    "patrick",
+    "nadir",
+    "cameron",
+  ];
+  await addGame("test-game", {
+    gameStatus: "PlayersJoining",
+    gmSecretHash: "t",
+    playersToRoles: Object.fromEntries(players.map((p) => [p, UNASSIGNED])),
     deadPlayers: {},
-    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
+    partialPlayerOrdering: Object.fromEntries(
+      players.map((p, i) => [
+        p,
+        { rightNeighbor: players[(i + 1) % players.length] },
+      ]),
+    ),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
+      alex: [
+        { type: "poison", id: "poison" },
+        { type: "drunk", id: "drunk" },
+      ],
     },
     playerNotes: {},
     deadVotes: {},
@@ -41,25 +53,27 @@ export async function setupTestGames (): Promise<void> {
     alignmentsOverrides: {},
     roleBag: {},
     playersSeenRoles: players,
-  })
+  });
 
-  await addGame('tg-wrong-way', {
-    gameStatus: 'PlayersJoining',
-    gmSecretHash: 't',
+  await addGame("tg-wrong-way", {
+    gameStatus: "PlayersJoining",
+    gmSecretHash: "t",
     playersToRoles: {
       correct1: UNASSIGNED,
       correct2: UNASSIGNED,
       wrongway: UNASSIGNED,
-
     },
     partialPlayerOrdering: {
-      correct1: { rightNeighbor: 'correct2' },
-      correct2: { rightNeighbor: 'wrongway' },
-      wrongway: { rightNeighbor: 'correct2' },
+      correct1: { rightNeighbor: "correct2" },
+      correct2: { rightNeighbor: "wrongway" },
+      wrongway: { rightNeighbor: "correct2" },
     },
     deadPlayers: {},
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
+      alex: [
+        { type: "poison", id: "poison" },
+        { type: "drunk", id: "drunk" },
+      ],
     },
     playerNotes: {},
     deadVotes: {},
@@ -67,20 +81,19 @@ export async function setupTestGames (): Promise<void> {
     alignmentsOverrides: {},
     roleBag: {},
     playersSeenRoles: [],
-  })
+  });
 
-  await addGame('tg-broken-link', {
-    gameStatus: 'PlayersJoining',
-    gmSecretHash: 't',
+  await addGame("tg-broken-link", {
+    gameStatus: "PlayersJoining",
+    gmSecretHash: "t",
     playersToRoles: {
       excluded: UNASSIGNED,
       correct2: UNASSIGNED,
       brokenLink: UNASSIGNED,
-
     },
     partialPlayerOrdering: {
-      excluded: { rightNeighbor: 'correct2' },
-      correct2: { rightNeighbor: 'brokenLink' },
+      excluded: { rightNeighbor: "correct2" },
+      correct2: { rightNeighbor: "brokenLink" },
       brokenLink: null,
     },
     deadPlayers: {},
@@ -91,11 +104,11 @@ export async function setupTestGames (): Promise<void> {
     alignmentsOverrides: {},
     roleBag: {},
     playersSeenRoles: [],
-  })
+  });
 
-  await addGame('tg-excluded', {
-    gameStatus: 'PlayersJoining',
-    gmSecretHash: 't',
+  await addGame("tg-excluded", {
+    gameStatus: "PlayersJoining",
+    gmSecretHash: "t",
     playersToRoles: {
       correct1: UNASSIGNED,
       correct2: UNASSIGNED,
@@ -103,10 +116,10 @@ export async function setupTestGames (): Promise<void> {
       excluded: UNASSIGNED,
     },
     partialPlayerOrdering: {
-      correct1: { rightNeighbor: 'correct2' },
-      correct2: { rightNeighbor: 'excluder' },
-      excluder: { rightNeighbor: 'correct1' },
-      excluded: { rightNeighbor: 'correct1' },
+      correct1: { rightNeighbor: "correct2" },
+      correct2: { rightNeighbor: "excluder" },
+      excluder: { rightNeighbor: "correct1" },
+      excluded: { rightNeighbor: "correct1" },
     },
     deadPlayers: {},
     playerPlayerStatuses: {},
@@ -116,16 +129,29 @@ export async function setupTestGames (): Promise<void> {
     alignmentsOverrides: {},
     roleBag: {},
     playersSeenRoles: [],
-  })
+  });
 
-  await addGame('tg-f-night', ({
-    gameStatus: 'Setup',
-    gmSecretHash: 't',
-    playersToRoles: Object.fromEntries(shuffleList(players).map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
+  await addGame("tg-f-night", {
+    gameStatus: "Setup",
+    gmSecretHash: "t",
+    playersToRoles: Object.fromEntries(
+      shuffleList(players).map((p, idx) => [
+        p,
+        tbScript[tbScript.length - idx - 1].id,
+      ]),
+    ),
     deadPlayers: {},
-    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
+    partialPlayerOrdering: Object.fromEntries(
+      players.map((p, i) => [
+        p,
+        { rightNeighbor: players[(i + 1) % players.length] },
+      ]),
+    ),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
+      alex: [
+        { type: "poison", id: "poison" },
+        { type: "drunk", id: "drunk" },
+      ],
     },
     playerNotes: {},
     deadVotes: {},
@@ -133,132 +159,190 @@ export async function setupTestGames (): Promise<void> {
     alignmentsOverrides: {},
     roleBag: {},
     playersSeenRoles: players,
-  }))
+  });
 
-  await addGame('tg-bmr', ({
-    gameStatus: 'Setup',
-    gmSecretHash: 't',
-    playersToRoles: Object.fromEntries(shuffleList(players).map((p, idx) => [p, bmrScript[bmrScript.length - idx - 1].id])),
-    deadPlayers: {},
-    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
-    playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
+  await addGame(
+    "tg-bmr",
+    {
+      gameStatus: "Setup",
+      gmSecretHash: "t",
+      playersToRoles: Object.fromEntries(
+        shuffleList(players).map((p, idx) => [
+          p,
+          bmrScript[bmrScript.length - idx - 1].id,
+        ]),
+      ),
+      deadPlayers: {},
+      partialPlayerOrdering: Object.fromEntries(
+        players.map((p, i) => [
+          p,
+          { rightNeighbor: players[(i + 1) % players.length] },
+        ]),
+      ),
+      playerPlayerStatuses: {
+        alex: [
+          { type: "poison", id: "poison" },
+          { type: "drunk", id: "drunk" },
+        ],
+      },
+      playerNotes: {},
+      deadVotes: {},
+      travelers: {},
+      alignmentsOverrides: {},
+      roleBag: {},
+      playersSeenRoles: players,
     },
-    playerNotes: {},
-    deadVotes: {},
-    travelers: {},
-    alignmentsOverrides: {},
-    roleBag: {},
-    playersSeenRoles: players,
-  }), bmrScript)
+    bmrScript,
+  );
 
-  await addGame('tg-travelers', ({
-    gameStatus: 'Setup',
-    gmSecretHash: 't',
+  await addGame("tg-travelers", {
+    gameStatus: "Setup",
+    gmSecretHash: "t",
     playersToRoles: {
-      ...Object.fromEntries(shuffleList(players)
-        .map((p, idx) => [p, tbScript[tbScript.length - idx - 1].id])),
-      'travelling billy': 'gunslinger' as Role,
+      ...Object.fromEntries(
+        shuffleList(players).map((p, idx) => [
+          p,
+          tbScript[tbScript.length - idx - 1].id,
+        ]),
+      ),
+      "travelling billy": "gunslinger" as Role,
     },
     deadPlayers: {},
-    partialPlayerOrdering: Object.fromEntries(players.map((p, i) => [p, { rightNeighbor: players[(i + 1) % players.length] }])),
+    partialPlayerOrdering: Object.fromEntries(
+      players.map((p, i) => [
+        p,
+        { rightNeighbor: players[(i + 1) % players.length] },
+      ]),
+    ),
     playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
+      alex: [
+        { type: "poison", id: "poison" },
+        { type: "drunk", id: "drunk" },
+      ],
     },
     playerNotes: {},
     deadVotes: {},
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
-    playersSeenRoles: [...players, 'travelling billy'],
-  }))
+    playersSeenRoles: [...players, "travelling billy"],
+  });
 
-  const selectorsPlayers = players.slice(0, testSelectorsScript.length)
+  const selectorsPlayers = players.slice(0, testSelectorsScript.length);
 
-  await addGame('tg-selectors', {
-    gameStatus: 'Setup',
-    gmSecretHash: 't',
-    playersToRoles: Object.fromEntries(selectorsPlayers.map((p, idx) => [p, testSelectorsScript[testSelectorsScript.length - idx - 1].id])),
-    deadPlayers: {},
-    partialPlayerOrdering: Object.fromEntries(selectorsPlayers.map((p, i) => [p, { rightNeighbor: selectorsPlayers[(i + 1) % selectorsPlayers.length] }])),
-    playerPlayerStatuses: {
-      alex: [{ type: 'poison', id: 'poison' }, { type: 'drunk', id: 'drunk' }],
+  await addGame(
+    "tg-selectors",
+    {
+      gameStatus: "Setup",
+      gmSecretHash: "t",
+      playersToRoles: Object.fromEntries(
+        selectorsPlayers.map((p, idx) => [
+          p,
+          testSelectorsScript[testSelectorsScript.length - idx - 1].id,
+        ]),
+      ),
+      deadPlayers: {},
+      partialPlayerOrdering: Object.fromEntries(
+        selectorsPlayers.map((p, i) => [
+          p,
+          {
+            rightNeighbor: selectorsPlayers[(i + 1) % selectorsPlayers.length],
+          },
+        ]),
+      ),
+      playerPlayerStatuses: {
+        alex: [
+          { type: "poison", id: "poison" },
+          { type: "drunk", id: "drunk" },
+        ],
+      },
+      playerNotes: {},
+      deadVotes: {},
+      travelers: {},
+      alignmentsOverrides: {},
+      roleBag: {},
+      playersSeenRoles: players,
     },
-    playerNotes: {},
-    deadVotes: {},
-    travelers: {},
-    alignmentsOverrides: {},
-    roleBag: {},
-    playersSeenRoles: players,
-  }, [...testSelectorsScript, { id: 'ravenkeeper' },
-    { id: 'washerwoman' },
-    { id: 'butler' }] as Script)
+    [
+      ...testSelectorsScript,
+      { id: "ravenkeeper" },
+      { id: "washerwoman" },
+      { id: "butler" },
+    ] as Script,
+  );
 }
 
 const tbScript = [
-  { id: 'baron' },
-  { id: 'chef' },
-  { id: 'empath' },
-  { id: 'fortune_teller' },
-  { id: 'monk' },
-  { id: 'virgin' },
-  { id: 'slayer' },
-  { id: 'soldier' },
-  { id: 'mayor' },
-  { id: 'librarian' },
-  { id: 'investigator' },
-  { id: 'undertaker' },
-  { id: 'ravenkeeper' },
-  { id: 'washerwoman' },
-  { id: 'butler' },
-  { id: 'recluse' },
-  { id: 'saint' },
-  { id: 'poisoner' },
-  { id: 'spy' },
-  { id: 'scarlet_woman' },
-  { id: 'imp' }] as Script
+  { id: "baron" },
+  { id: "chef" },
+  { id: "empath" },
+  { id: "fortune_teller" },
+  { id: "monk" },
+  { id: "virgin" },
+  { id: "slayer" },
+  { id: "soldier" },
+  { id: "mayor" },
+  { id: "librarian" },
+  { id: "investigator" },
+  { id: "undertaker" },
+  { id: "ravenkeeper" },
+  { id: "washerwoman" },
+  { id: "butler" },
+  { id: "recluse" },
+  { id: "saint" },
+  { id: "poisoner" },
+  { id: "spy" },
+  { id: "scarlet_woman" },
+  { id: "imp" },
+] as Script;
 
 const bmrScript = [
-  { id: 'grandmother' },
-  { id: 'sailor' },
-  { id: 'chambermaid' },
-  { id: 'exorcist' },
-  { id: 'innkeeper' },
-  { id: 'gambler' },
-  { id: 'gossip' },
-  { id: 'courtier' },
-  { id: 'professor' },
-  { id: 'minstrel' },
-  { id: 'tea_lady' },
-  { id: 'pacifist' },
-  { id: 'fool' },
-  { id: 'goon' },
-  { id: 'tinker' },
-  { id: 'moonchild' },
-  { id: 'godfather' },
-  { id: 'devils_advocate' },
-  { id: 'assassin' },
-  { id: 'mastermind' },
-  { id: 'zombuul' },
-  { id: 'pukka' },
-  { id: 'shabaloth' },
-  { id: 'po' }] as Script
+  { id: "grandmother" },
+  { id: "sailor" },
+  { id: "chambermaid" },
+  { id: "exorcist" },
+  { id: "innkeeper" },
+  { id: "gambler" },
+  { id: "gossip" },
+  { id: "courtier" },
+  { id: "professor" },
+  { id: "minstrel" },
+  { id: "tea_lady" },
+  { id: "pacifist" },
+  { id: "fool" },
+  { id: "goon" },
+  { id: "tinker" },
+  { id: "moonchild" },
+  { id: "godfather" },
+  { id: "devils_advocate" },
+  { id: "assassin" },
+  { id: "mastermind" },
+  { id: "zombuul" },
+  { id: "pukka" },
+  { id: "shabaloth" },
+  { id: "po" },
+] as Script;
 
 const testSelectorsScript = [
-  { id: 'riot' },
-  { id: 'widow' },
-  { id: 'cerenovus' },
-  { id: 'undertaker' },
-  { id: 'marionette' },
-  { id: 'damsel' },
-  { id: 'snitch' },
-  { id: 'shabaloth' },
-  { id: 'noble' },
-  { id: 'mezepheles' }] as Script
+  { id: "riot" },
+  { id: "widow" },
+  { id: "cerenovus" },
+  { id: "undertaker" },
+  { id: "marionette" },
+  { id: "damsel" },
+  { id: "snitch" },
+  { id: "shabaloth" },
+  { id: "noble" },
+  { id: "mezepheles" },
+] as Script;
 
-async function addGame (name: string, game: BaseUnifiedGame, script: Script = tbScript): Promise<void> {
-  await addTestGame(name, game)
-  if (game.gameStatus !== 'PlayersJoining') {
-    await setScript(name, script)
+async function addGame(
+  name: string,
+  game: BaseUnifiedGame,
+  script: Script = tbScript,
+): Promise<void> {
+  await addTestGame(name, game);
+  if (game.gameStatus !== "PlayersJoining") {
+    await setScript(name, script);
   }
 }

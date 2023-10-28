@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "",
     "dev": "tsup --watch",
     "build": "tsup",
     "updateJson": "node ./src/gameData/modifyJson.cjs"
