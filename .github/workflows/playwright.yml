@@ -34,7 +34,8 @@ jobs:
     - name: Install dependencies
       run: pnpm install
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: pnpm exec playwright install --with-deps
+      working-directory: e2es/ 
     - name: Run server
       run: pnpm dev & sleep 5
     - name: Run Playwright tests

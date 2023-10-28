@@ -9,16 +9,18 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix"
   },
   "dependencies": {
-    "@playwright/test": "^1.38.1",
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.5.9",
     "@types/uuid": "^9.0.2",
-    "uuid": "^9.0.0",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "eslint-plugin-tailwindcss": "^3.13.0",
-    "prettier": "^3.0.2"
+    "playwright": "^1.39.0",
+    "prettier": "^3.0.2",
+    "uuid": "^9.0.0"
   },
   "keywords": [],
   "author": "",
