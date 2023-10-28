@@ -72,7 +72,6 @@ test("can 15 players join", async ({ context, page }) => {
     await myPage.goto(`/${gameId}?testPlayerKey=${playerNumber}`);
     await myPage.getByRole("textbox", { name: "NAME:" }).fill(name);
     await myPage.getByRole("button", { name: "Join" }).click();
-    await page.waitForTimeout(1000);
     pages.push(myPage);
   }
 
