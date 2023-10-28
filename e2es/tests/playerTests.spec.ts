@@ -17,7 +17,8 @@ test("re-join game", async ({ page }) => {
   await page.getByRole("button", { name: "Join" }).click();
   await expect(page.getByRole("button", { name: "Alex" })).toBeVisible();
 });
-test.only("can 15 players join", async ({ context, page }) => {
+
+test("can 15 players join", async ({ context, page }) => {
   const gameId = await createNewGame(page);
   const size = 15;
   await page
@@ -65,7 +66,7 @@ test.only("can 15 players join", async ({ context, page }) => {
   const pages: Page[] = [];
 
   // We do these all sequentially because they bug out if you go too fast in CI.
-  for await (const playerNumber of players) {
+  for (const playerNumber of players) {
     const name = `player${playerNumber}`;
     const myPage = await context.newPage();
     await myPage.goto(`/${gameId}?testPlayerKey=${playerNumber}`);
@@ -75,7 +76,7 @@ test.only("can 15 players join", async ({ context, page }) => {
     pages.push(myPage);
   }
 
-  for await (const playerNumber of players) {
+  for (const playerNumber of players) {
     const myPage = pages[playerNumber];
     const nextPlayerNumber = (playerNumber + 1) % size;
     await myPage
@@ -92,11 +93,11 @@ test.only("can 15 players join", async ({ context, page }) => {
       .click();
   }
 
-  for await (const playerNumber of players) {
+  for (const playerNumber of players) {
     const myPage = pages[playerNumber];
     const name = `player${playerNumber}`;
     await myPage.getByText(`Hello ${name}`).waitFor({ timeout: 4000 });
-    await myPage.waitForTimeout(1000);
+    await myPage.waitForTimeout(100);
     await expect(myPage.url()).toContain(gameId);
   }
 
