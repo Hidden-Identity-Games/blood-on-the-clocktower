@@ -40,7 +40,7 @@ export function RoleSelect({
           variant="outline"
           size="3"
           className="w-full"
-          color={colorMap[getCharacter(currentRole)?.team]}
+          color={colorMap[getCharacter(currentRole).team]}
         >
           <CharacterName role={currentRole} size="3" />
           {!!game.rolesToPlayers[currentRole]?.length && (
@@ -66,7 +66,7 @@ export function RoleSelect({
             <Dialog.Close key={role}>
               <Button
                 size="3"
-                color={colorMap[getCharacter(role)?.team]}
+                color={colorMap[getCharacter(role).team]}
                 variant={role === currentRole ? "soft" : "outline"}
                 onClick={() => currentRole !== role && onSelect(role)}
               >

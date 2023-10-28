@@ -240,8 +240,7 @@ export function NightPlayerList({
                             const player = Object.entries(
                               game.playersToRoles,
                             ).find(
-                              ([, role]) =>
-                                getCharacter(role)?.team === "Demon",
+                              ([, role]) => getCharacter(role).team === "Demon",
                             ) ?? [""];
                             const bluffs = `Bluffs:\n${reveal["bluffs"]
                               .map(
@@ -326,7 +325,7 @@ export function IngamePlayerList() {
           <Text size="4" asChild>
             <Flex justify="between" align="center" gap="3">
               <PlayerList.RoleIcon player={player}>
-                {getCharacter(game.playersToRoles[player])?.ability}
+                {getCharacter(game.playersToRoles[player]).ability}
               </PlayerList.RoleIcon>
               <PlayerList.NoteInputModal
                 player={player}

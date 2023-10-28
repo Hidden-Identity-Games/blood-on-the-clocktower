@@ -36,6 +36,7 @@ export interface Character {
   ability: string
   imageSrc: string
   team: CharacterType
+  delusional?: boolean
 }
 
 export interface Restriction {

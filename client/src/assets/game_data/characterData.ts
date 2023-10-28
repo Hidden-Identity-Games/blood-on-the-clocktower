@@ -15,6 +15,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: true,
+    delusional: false,
     ability: "Please see the storyteller for a role!",
     imageSrc: "",
     firstNight: null,
@@ -27,6 +28,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, during the day, privately ask the Storyteller any yes/no question.",
     imageSrc: "artist.png",
@@ -40,6 +42,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Dead", "No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night*, choose a player: they die, even if for some reason they could not.",
     imageSrc: "assassin.png",
@@ -58,6 +61,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Haircuts tonight"],
     setup: false,
+    delusional: false,
     ability:
       "If you died today or tonight, the Demon may choose 2 players (not another Demon) to swap characters.",
     imageSrc: "barber.png",
@@ -81,6 +85,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: [],
     setup: true,
+    delusional: false,
     ability: "There are extra Outsiders in play. [+2 Outsiders]",
     imageSrc: "baron.png",
     firstNight: null,
@@ -93,6 +98,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Master"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player (not yourself): tomorrow, you may only vote if they are voting too.",
     imageSrc: "butler.png",
@@ -112,6 +118,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Mad"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player & a good character: they are “mad” they are this character tomorrow, or might be executed.",
     imageSrc: "cerenovus.png",
@@ -139,6 +146,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose 2 alive players (not yourself): you learn how many woke tonight due to their ability.",
     imageSrc: "chambermaid.png",
@@ -160,6 +168,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "You start knowing how many pairs of evil players there are.",
     imageSrc: "chef.png",
     firstNight: {
@@ -176,6 +185,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "You start knowing how many steps from the Demon to its nearest Minion.",
     imageSrc: "clockmaker.png",
@@ -193,6 +203,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Drunk 3", "Drunk 2", "Drunk 1", "No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night, choose a character: they are drunk for 3 nights & 3 days.",
     imageSrc: "courtier.png",
@@ -216,6 +227,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Survives execution"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a living player (different to last night): if executed tomorrow, they don't die.",
     imageSrc: "devilsadvocate.png",
@@ -239,6 +251,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player (not yourself or Travelers): you learn 1 good and 1 evil character, 1 of which is correct.",
     imageSrc: "dreamer.png",
@@ -258,12 +271,27 @@ export const characters: CharacterDefinition[] = [
     },
   },
   {
+    id: "drunk",
+    name: "Drunk",
+    edition: "tb",
+    team: "Outsider",
+    reminders: [],
+    setup: true,
+    delusional: true,
+    ability:
+      "You do not know you are the Drunk. You think you are a Townsfolk character, but you are not.",
+    imageSrc: "drunk.png",
+    firstNight: null,
+    otherNight: null,
+  },
+  {
     id: "empath",
     name: "Empath",
     edition: "tb",
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night, you learn how many of your 2 alive neighbours are evil.",
     imageSrc: "empath.png",
@@ -285,6 +313,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Twin"],
     setup: false,
+    delusional: false,
     ability:
       "You & an opposing player know each other. If the good player is executed, evil wins. Good can't win if you both live.",
     imageSrc: "eviltwin.png",
@@ -302,6 +331,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Chosen"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player (different to last night): the Demon, if chosen, learns who you are then doesn't wake tonight.",
     imageSrc: "exorcist.png",
@@ -326,6 +356,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead", "Once"],
     setup: true,
+    delusional: false,
     ability:
       "Each night*, choose a player: they die. The 1st Outsider this kills becomes an evil Fang Gu & you die instead. [+1 Outsider]",
     imageSrc: "fanggu.png",
@@ -348,6 +379,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Demon voted", "Demon not voted"],
     setup: false,
+    delusional: false,
     ability: "Each night*, you learn if a Demon voted today.",
     imageSrc: "flowergirl.png",
     firstNight: null,
@@ -364,6 +396,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability: "The first time you die, you don't.",
     imageSrc: "fool.png",
     firstNight: null,
@@ -376,6 +409,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Red herring"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose 2 players: you learn if either is a Demon. There is a good player that registers as a Demon to you.",
     imageSrc: "fortuneteller.png",
@@ -397,6 +431,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player & guess their character: if you guess wrong, you die.",
     imageSrc: "gambler.png",
@@ -414,6 +449,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Died today", "Dead"],
     setup: true,
+    delusional: false,
     ability:
       "You start knowing which Outsiders are in play. If 1 died today, choose a player tonight: they die. [−1 or +1 Outsider]",
     imageSrc: "godfather.png",
@@ -442,6 +478,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Drunk"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, the 1st player to choose you with their ability is drunk until dusk. You become their alignment.",
     imageSrc: "goon.png",
@@ -455,6 +492,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each day, you may make a public statement. Tonight, if it was true, a player dies.",
     imageSrc: "gossip.png",
@@ -473,6 +511,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Grandchild"],
     setup: false,
+    delusional: false,
     ability:
       "You start knowing a good player & their character. If the Demon kills them, you die too.",
     imageSrc: "grandmother.png",
@@ -501,6 +540,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player: they die. If you kill yourself this way, a Minion becomes the Imp.",
     imageSrc: "imp.png",
@@ -519,6 +559,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Protected", "Drunk"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose 2 players: they can't die tonight, but 1 is drunk until dusk.",
     imageSrc: "innkeeper.png",
@@ -544,6 +585,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Minion", "Wrong"],
     setup: false,
+    delusional: false,
     ability: "You start knowing that 1 of 2 players is a particular Minion.",
     imageSrc: "investigator.png",
     firstNight: {
@@ -567,6 +609,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Correct"],
     setup: false,
+    delusional: false,
     ability:
       "On your 1st day, publicly guess up to 5 players' characters. That night, you learn how many you got correct.",
     imageSrc: "juggler.png",
@@ -584,6 +627,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "When you learn that you died, publicly choose 1 alive player: if they are evil, your team loses.",
     imageSrc: "klutz.png",
@@ -597,6 +641,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Outsider", "Wrong"],
     setup: false,
+    delusional: false,
     ability:
       "You start knowing that 1 of 2 players is a particular Outsider. (Or that zero are in play.)",
     imageSrc: "librarian.png",
@@ -621,6 +666,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "If the Demon dies by execution (ending the game), play for 1 more day. If a player is then executed, their team loses.",
     imageSrc: "mastermind.png",
@@ -634,6 +680,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Abnormal"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, you learn how many players’ abilities worked abnormally (since dawn) due to another character's ability.",
     imageSrc: "mathematician.png",
@@ -655,6 +702,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "If only 3 players live & no execution occurs, your team wins. If you die at night, another player might die instead.",
     imageSrc: "mayor.png",
@@ -668,6 +716,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Everyone drunk"],
     setup: false,
+    delusional: false,
     ability:
       "When a Minion dies by execution, all other players (except Travellers) are drunk until dusk tomorrow.",
     imageSrc: "minstrel.png",
@@ -681,6 +730,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Protected"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player (not yourself): they are safe from the Demon tonight.",
     imageSrc: "monk.png",
@@ -698,6 +748,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "When you learn that you died, publicly choose 1 alive player. Tonight, if it was a good player, they die.",
     imageSrc: "moonchild.png",
@@ -716,6 +767,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "If you are “mad” about being an Outsider, you might be executed.",
     imageSrc: "mutant.png",
     firstNight: null,
@@ -728,6 +780,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead", "Poisoned"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player: they die. Your 2 Townsfolk neighbours are poisoned.",
     imageSrc: "nodashii.png",
@@ -745,6 +798,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "Each night*, you learn how many dead players are evil.",
     imageSrc: "oracle.png",
     firstNight: null,
@@ -761,6 +815,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "Executed good players might not die.",
     imageSrc: "pacifist.png",
     firstNight: null,
@@ -773,6 +828,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Drunk", "Is the Philosopher"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night, choose a good character: gain that ability. If this character is in play, they are drunk.",
     imageSrc: "philosopher.png",
@@ -794,6 +850,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player & a character they become (if not-in-play). If a Demon is made, deaths tonight are arbitrary.",
     imageSrc: "pithag.png",
@@ -815,6 +872,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead", "3 attacks"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, you may choose a player: they die. If your last choice was no-one, choose 3 players tonight.",
     imageSrc: "po.png",
@@ -833,6 +891,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Poisoned"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player: they are poisoned tonight and tomorrow day.",
     imageSrc: "poisoner.png",
@@ -855,6 +914,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Alive", "No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night*, choose a dead player: if they are a Townsfolk, they are resurrected.",
     imageSrc: "professor.png",
@@ -876,6 +936,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Poisoned", "Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player: they are poisoned. The previously poisoned player dies then becomes healthy.",
     imageSrc: "pukka.png",
@@ -898,6 +959,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "If you die at night, you are woken to choose a player: you learn their character.",
     imageSrc: "ravenkeeper.png",
@@ -919,6 +981,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "You might register as evil & as a Minion or Demon, even if dead.",
     imageSrc: "recluse.png",
     firstNight: null,
@@ -931,6 +994,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "If the Demon kills you, you learn that it is 1 of 2 players.",
     imageSrc: "sage.png",
     firstNight: null,
@@ -954,6 +1018,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Drunk"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose an alive player: either you or they are drunk until dusk. You can't die.",
     imageSrc: "sailor.png",
@@ -977,6 +1042,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "If you die by execution, your team loses.",
     imageSrc: "saint.png",
     firstNight: null,
@@ -989,6 +1055,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each day, you may visit the Storyteller to learn 2 things in private: 1 is true & 1 is false.",
     imageSrc: "savant.png",
@@ -1002,6 +1069,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Demon"],
     setup: false,
+    delusional: false,
     ability:
       "If there are 5 or more players alive & the Demon dies, you become the Demon. (Travellers don’t count)",
     imageSrc: "scarletwoman.png",
@@ -1023,6 +1091,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night, choose 2 players (not yourself): you learn if they are the same alignment.",
     imageSrc: "seamstress.png",
@@ -1044,6 +1113,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead", "Alive"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose 2 players: they die. A dead player you chose last night might be regurgitated.",
     imageSrc: "shabaloth.png",
@@ -1065,6 +1135,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, during the day, publicly choose a player: if they are the Demon, they die.",
     imageSrc: "slayer.png",
@@ -1078,6 +1149,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Poisoned"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose an alive player: a chosen Demon swaps characters & alignments with you & is then poisoned.",
     imageSrc: "snakecharmer.png",
@@ -1107,6 +1179,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "You are safe from the Demon.",
     imageSrc: "soldier.png",
     firstNight: null,
@@ -1119,6 +1192,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night, you see the Grimoire. You might register as good & as a Townsfolk or Outsider, even if dead.",
     imageSrc: "spy.png",
@@ -1138,6 +1212,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Drunk"],
     setup: false,
+    delusional: false,
     ability: "When you die, 1 player is drunk from now on.",
     imageSrc: "sweetheart.png",
     firstNight: null,
@@ -1153,6 +1228,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Can not die"],
     setup: false,
+    delusional: false,
     ability: "If both your alive neighbours are good, they can't die.",
     imageSrc: "tealady.png",
     firstNight: null,
@@ -1165,6 +1241,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability: "You might die at any time.",
     imageSrc: "tinker.png",
     firstNight: null,
@@ -1180,6 +1257,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Minions not nominated", "Minion nominated"],
     setup: false,
+    delusional: false,
     ability: "Each night*, you learn if a Minion nominated today.",
     imageSrc: "towncrier.png",
     firstNight: null,
@@ -1196,6 +1274,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Executed"],
     setup: false,
+    delusional: false,
     ability: "Each night*, you learn which character died by execution today.",
     imageSrc: "undertaker.png",
     firstNight: null,
@@ -1216,6 +1295,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead", "Has ability", "Poisoned"],
     setup: true,
+    delusional: false,
     ability:
       "Each night*, choose a player: they die. Minions you kill keep their ability & poison 1 Townsfolk neighbour. [−1 Outsider]",
     imageSrc: "vigormortis.png",
@@ -1234,6 +1314,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "The 1st time you are nominated, if the nominator is a Townsfolk, they are executed immediately.",
     imageSrc: "virgin.png",
@@ -1247,6 +1328,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player: they die. Townsfolk abilities yield false info. Each day, if no-one is executed, evil wins.",
     imageSrc: "vortox.png",
@@ -1263,6 +1345,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Townsfolk", "Wrong"],
     setup: false,
+    delusional: false,
     ability: "You start knowing that 1 of 2 players is a particular Townsfolk.",
     imageSrc: "washerwoman.png",
     firstNight: {
@@ -1284,6 +1367,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Cursed"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player: if they nominate tomorrow, they die. If just 3 players live, you lose this ability.",
     imageSrc: "witch.png",
@@ -1305,6 +1389,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Died today", "Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, if no-one died today, choose a player: they die. The 1st time you die, you live but register as dead.",
     imageSrc: "zombuul.png",
@@ -1324,6 +1409,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     remindersGlobal: ["Is the Alchemist"],
     setup: false,
+    delusional: false,
     ability: "You have a not-in-play Minion ability.",
     imageSrc: "alchemist.png",
     firstNight: {
@@ -1346,6 +1432,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["?"],
     setup: false,
+    delusional: false,
     ability:
       "You do not know what your ability is. Each day, privately guess what it is: you learn how accurate you are.",
     imageSrc: "amnesiac.png",
@@ -1367,6 +1454,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: true,
+    delusional: false,
     ability:
       "The Storyteller can break the game rules & if executed, good wins, even if you are dead. [No evil characters]",
     imageSrc: "atheist.png",
@@ -1386,6 +1474,7 @@ export const characters: CharacterDefinition[] = [
       "Seen Traveler",
     ],
     setup: true,
+    delusional: false,
     ability:
       "Each night, you learn 1 player of each character type, until there are no more types to learn. [+1 Outsider]",
     imageSrc: "balloonist.png",
@@ -1415,6 +1504,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Known"],
     setup: true,
+    delusional: false,
     ability:
       "You start knowing 1 evil player. If the player you know dies, you learn another evil player tonight. [1 Townsfolk is evil]",
     imageSrc: "bountyhunter.png",
@@ -1442,6 +1532,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Poisoned", "Died today"],
     setup: false,
+    delusional: false,
     ability:
       "You have the ability of the recently killed executee. If they are evil, you are poisoned until a good player dies by execution.",
     imageSrc: "cannibal.png",
@@ -1455,6 +1546,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: true,
+    delusional: false,
     ability:
       "If the Demon kills the King, you learn which player is the Demon. [+ the King]",
     imageSrc: "choirboy.png",
@@ -1479,6 +1571,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night, you become the alignment of an alive neighbour. If all good players choose to join your cult, your team wins.",
     imageSrc: "cultleader.png",
@@ -1506,6 +1599,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night, choose which Minions or which Demon is in play.",
     imageSrc: "engineer.png",
@@ -1535,6 +1629,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "If you die at night, an alive good player becomes a Farmer.",
     imageSrc: "farmer.png",
     firstNight: null,
@@ -1555,6 +1650,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, during the day, visit the Storyteller for some advice to help you win.",
     imageSrc: "fisherman.png",
@@ -1568,6 +1664,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night, you learn which alignment the Storyteller believes is winning: good, evil, or neither.",
     imageSrc: "general.png",
@@ -1589,6 +1686,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: true,
+    delusional: false,
     ability:
       "Once per game, at night, choose a living player: the Damsel, if chosen, becomes a not-in-play Townsfolk. [+the Damsel]",
     imageSrc: "huntsman.png",
@@ -1626,6 +1724,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each night, if the dead outnumber the living, you learn 1 alive character. The Demon knows who you are.",
     imageSrc: "king.png",
@@ -1657,6 +1756,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a living player: if good, they die, but they are the only player that can die tonight.",
     imageSrc: "lycanthrope.png",
@@ -1674,6 +1774,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "The Demon thinks you are a Minion. Minions think you are a Demon.",
     imageSrc: "magician.png",
@@ -1691,6 +1792,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night, choose a player: they learn who you are.",
     imageSrc: "nightwatchman.png",
@@ -1719,6 +1821,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Seen"],
     setup: false,
+    delusional: false,
     ability: "You start knowing 3 players, 1 and only 1 of which is evil.",
     imageSrc: "noble.png",
     firstNight: {
@@ -1743,6 +1846,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Mad", "Has ability"],
     setup: false,
+    delusional: false,
     ability:
       "You start knowing 1 in-play Townsfolk. If you were mad that you were this character, you gain their ability when they die.",
     imageSrc: "pixie.png",
@@ -1766,6 +1870,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["Evil wakes"],
     setup: false,
+    delusional: false,
     ability:
       "Minions & Demons do not know each other. If you die, they learn who each other are that night.",
     imageSrc: "poppygrower.png",
@@ -1789,6 +1894,7 @@ export const characters: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: ["At a sermon"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player: a Minion, if chosen, learns this. All chosen Minions have no ability.",
     imageSrc: "preacher.png",
@@ -1816,6 +1922,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, if either good living neighbour is drunk or poisoned, you die.",
     imageSrc: "acrobat.png",
@@ -1833,6 +1940,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Guess used"],
     setup: false,
+    delusional: false,
     ability:
       "All Minions know you are in play. If a Minion publicly guesses you (once), your team loses.",
     imageSrc: "damsel.png",
@@ -1865,6 +1973,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Can not nominate"],
     setup: false,
+    delusional: false,
     ability:
       "You may only nominate once per game. When you do, if the nominee is not the Demon, they die.",
     imageSrc: "golem.png",
@@ -1878,6 +1987,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "Whoever wins, loses & whoever loses, wins, even if you are dead.",
     imageSrc: "heretic.png",
     firstNight: null,
@@ -1890,6 +2000,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "If you were the player most responsible for your team losing, you change alignment & win, even if dead.",
     imageSrc: "politician.png",
@@ -1903,6 +2014,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: ["Drunk", "Guess used"],
     setup: false,
+    delusional: false,
     ability:
       "1 player is drunk, even if you die. If you guess (once) who it is, learn the Demon player, but guess wrong & get false info.",
     imageSrc: "puzzlemaster.png",
@@ -1916,6 +2028,7 @@ export const characters: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "Minions start knowing 3 not-in-play characters.",
     imageSrc: "snitch.png",
     firstNight: {
@@ -1935,6 +2048,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "If you are executed, all but 3 players die. 1 minute later, the player with the most players pointing at them dies.",
     imageSrc: "boomdandy.png",
@@ -1948,6 +2062,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Fear"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player. If you nominate & execute them, their team loses. All players know if you choose a new player.",
     imageSrc: "fearmonger.png",
@@ -1969,6 +2084,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Claimed"],
     setup: false,
+    delusional: false,
     ability:
       "If you publicly claim to be the Goblin when nominated & are executed that day, your team wins.",
     imageSrc: "goblin.png",
@@ -1982,6 +2098,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead", "About to die"],
     setup: true,
+    delusional: false,
     ability:
       "Each night*, a player might die. Executions fail if only evil voted. You register as a Minion too. [Most players are Legion]",
     imageSrc: "legion.png",
@@ -2005,6 +2122,7 @@ export const characters: CharacterDefinition[] = [
       "Good player executed",
     ],
     setup: false,
+    delusional: false,
     ability:
       "If more than 1 good player is executed, you win. All players know you are in play. After day 5, evil wins.",
     imageSrc: "leviathan.png",
@@ -2019,6 +2137,21 @@ export const characters: CharacterDefinition[] = [
     },
   },
   {
+    id: "lunatic",
+    name: "Lunatic",
+    edition: "bmr",
+    team: "Outsider",
+    reminders: [],
+    remindersGlobal: [],
+    setup: true,
+    delusional: true,
+    ability:
+      "You think you are a Demon, but you are not. The Demon knows who you are & who you choose at night.",
+    imageSrc: "lunatic.png",
+    firstNight: null,
+    otherNight: null,
+  },
+  {
     id: "marionette",
     name: "Marionette",
     edition: "",
@@ -2026,6 +2159,7 @@ export const characters: CharacterDefinition[] = [
     reminders: [],
     remindersGlobal: ["Is the Marionette"],
     setup: true,
+    delusional: true,
     ability:
       "You think you are a good character but you are not. The Demon knows who you are. [You neighbour the Demon]",
     imageSrc: "marionette.png",
@@ -2050,6 +2184,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: ["Turns evil", "No ability"],
     setup: false,
+    delusional: false,
     ability:
       "You start knowing a secret word. The 1st good player to say this word becomes evil that night.",
     imageSrc: "mezepheles.png",
@@ -2076,6 +2211,7 @@ export const characters: CharacterDefinition[] = [
     team: "Minion",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each day, before nominations, you may publicly choose a player: they die. If executed, you only die if you lose roshambo.",
     imageSrc: "psychopath.png",
@@ -2089,6 +2225,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: ["Dead", "Poisoned"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a player: they die. You start by choosing an alive player: they are poisoned - you die if & only if they die.",
     imageSrc: "lleech.png",
@@ -2110,6 +2247,7 @@ export const characters: CharacterDefinition[] = [
     team: "Demon",
     reminders: [],
     setup: true,
+    delusional: false,
     ability:
       "Nominees die, but may nominate again immediately (on day 3, they must). After day 3, evil wins. [All Minions are Riot]",
     imageSrc: "riot.png",
@@ -2124,6 +2262,7 @@ export const characters: CharacterDefinition[] = [
     reminders: ["Poisoned"],
     remindersGlobal: ["Knows"],
     setup: false,
+    delusional: false,
     ability:
       "On your 1st night, look at the Grimoire and choose a player: they are poisoned. 1 good player knows a Widow is in play.",
     imageSrc: "widow.png",
@@ -2148,6 +2287,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["3 votes"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player (not yourself): their vote counts as 3 votes tomorrow.",
     firstNight: {
@@ -2169,6 +2309,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["Negative vote"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, choose a player (not yourself): their vote counts negatively tomorrow.",
     firstNight: {
@@ -2190,6 +2331,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each day, after the 1st vote has been tallied, you may choose a player that voted: they die.",
     firstNight: null,
@@ -2203,6 +2345,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "If a player of your alignment is executed, you might be executed instead.",
     firstNight: null,
@@ -2216,6 +2359,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "You must use a vote token to vote. Dead players may choose to give you theirs. If so, you learn their alignment. You are sober & healthy.",
     firstNight: null,
@@ -2229,6 +2373,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["Is the Apprentice"],
     setup: false,
+    delusional: false,
     ability:
       "On your 1st night, you gain a Townsfolk ability (if good), or a Minion ability (if evil).",
     firstNight: {
@@ -2246,6 +2391,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Each day, you may choose up to 3 sets of 2 players to swap seats. Players may not leave their seats to talk in private.",
     firstNight: null,
@@ -2259,6 +2405,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["No ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, if another player nominated, you may choose to force the current execution to pass or fail.",
     firstNight: null,
@@ -2272,6 +2419,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["Nominate good", "Nominate evil"],
     setup: false,
+    delusional: false,
     ability:
       "Only the Storyteller can nominate. At least 1 opposite player must be nominated each day.",
     firstNight: null,
@@ -2285,6 +2433,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Only you and the dead can vote. They don't need a vote token to do so. A 50% majority is not required.",
     firstNight: null,
@@ -2298,6 +2447,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["Sober & Healthy", "Ability twice"],
     setup: false,
+    delusional: false,
     ability:
       "Each night, until dusk, 1) a player becomes sober, healthy and gets true info, or 2) their ability works twice. They learn which.",
     firstNight: {
@@ -2319,6 +2469,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["Dead"],
     setup: false,
+    delusional: false,
     ability:
       "Each night*, choose a living player: if they agree, you learn their character, but you both might die.",
     firstNight: null,
@@ -2336,6 +2487,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "Each day, after the 1st execution, you may nominate again.",
     firstNight: null,
     otherNight: null,
@@ -2348,6 +2500,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: ["No ability", "Has ability"],
     setup: false,
+    delusional: false,
     ability:
       "Once per game, at night, choose a dead player: they regain their ability until dusk.",
     firstNight: null,
@@ -2365,6 +2518,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability: "If you were funny today, you cannot die by exile.",
     firstNight: null,
     otherNight: null,
@@ -2377,6 +2531,7 @@ export const characters: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [],
     setup: false,
+    delusional: false,
     ability:
       "Once per day, you may choose to kill an alive neighbour, if your other alive neighbour agrees.",
     firstNight: null,

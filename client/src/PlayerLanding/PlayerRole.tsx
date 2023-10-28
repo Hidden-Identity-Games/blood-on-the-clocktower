@@ -31,10 +31,10 @@ export function PlayerRole({ role }: PlayerRoleProps) {
           <>
             <Text className="m-5 text-center">
               <AlignmentText player={player!}>
-                {getCharacter(role)?.name}
+                {getCharacter(role).name}
               </AlignmentText>
               <p>
-                <i>{getCharacter(role)?.ability}</i>
+                <i>{getCharacter(role).ability}</i>
               </p>
             </Text>
             <Text className="mb-4 text-center" size="1" weight="light">
@@ -83,7 +83,7 @@ export function PlayerRole({ role }: PlayerRoleProps) {
           <div data-card-side="back" className="h-full w-full text-center">
             <img
               className="mt-3 h-full w-full"
-              src={getCharacter(role)?.imageSrc}
+              src={getCharacter(role).imageSrc}
               onContextMenu={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
