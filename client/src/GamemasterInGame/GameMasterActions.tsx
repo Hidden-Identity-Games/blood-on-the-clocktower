@@ -34,6 +34,7 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
   const problems =
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
   const gameStartable =
+    availableRolesList.length !== 0 &&
     !game.orderedPlayers.problems &&
     availableRolesList.length === game.orderedPlayers.fullList.length;
 

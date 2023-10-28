@@ -42,7 +42,7 @@ export function PlayerInGame() {
 
   const nightOrder = React.useMemo(() => {
     const charactersFromScript =
-      script?.map(({ id }) => getCharacter(id))?.filter(Boolean) ?? [];
+      script?.map(({ id }) => getCharacter(id)) ?? [];
     const travelerCharacters = Object.values(game.playersToRoles)
       .map((role) => getCharacter(role))
       .filter((character) => character.team === "Traveler");
@@ -230,7 +230,7 @@ export function PlayerInGame() {
                 </Text>
                 {game.travelers[player] && (
                   <ForPlayerPlayerRoleIcon player={player}>
-                    {getCharacter(game.playersToRoles[player])?.ability}
+                    {getCharacter(game.playersToRoles[player]).ability}
                   </ForPlayerPlayerRoleIcon>
                 )}
               </Flex>

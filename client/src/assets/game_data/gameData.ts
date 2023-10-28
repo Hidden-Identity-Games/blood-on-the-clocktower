@@ -50,7 +50,7 @@ export function oppositeAlignment(alignment: Alignment): "Evil" | "Good" {
 }
 
 export function getDefaultAlignment(role: Role) {
-  return defaultAlignments[getCharacter(role)?.team];
+  return defaultAlignments[getCharacter(role).team];
 }
 
 const travelers: Role[] = charactersList

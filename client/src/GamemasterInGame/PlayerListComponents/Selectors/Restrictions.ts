@@ -26,7 +26,7 @@ function usePlayerOnlyRestriction(
 
     if (restriction.role) {
       if (
-        restriction.role.includes(getCharacter(game.playersToRoles[player])?.id)
+        restriction.role.includes(getCharacter(game.playersToRoles[player]).id)
       ) {
         return false;
       }
@@ -35,7 +35,7 @@ function usePlayerOnlyRestriction(
     if (restriction.team) {
       if (
         !restriction.team.includes(
-          getCharacter(game.playersToRoles[player])?.team,
+          getCharacter(game.playersToRoles[player]).team,
         )
       ) {
         return false;
@@ -68,7 +68,7 @@ export function useCharacterRestriction(
     }
 
     if (restriction.team) {
-      if (!restriction.team.includes(getCharacter(role)?.team)) {
+      if (!restriction.team.includes(getCharacter(role).team)) {
         return false;
       }
     }

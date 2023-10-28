@@ -11,6 +11,8 @@ import {
   Button,
 } from "@radix-ui/themes";
 import React from "react";
+import { FaQuestion } from "react-icons/fa6";
+
 import { colorMap } from "../shared/CharacterTypes";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
 import { Character, Role } from "@hidden-identity/server";
@@ -21,6 +23,7 @@ import { useDefiniteGame } from "../store/GameContext";
 import { DestructiveButton } from "./DestructiveButton";
 import { AiOutlineClose, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Fuse from "fuse.js";
+import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 
 interface StateContainer<T> {
   value: T;
@@ -98,17 +101,37 @@ export function CharacterSelectList({
               <Flex key={role} align="center" justify="between">
                 <label className="flex-1">
                   <Flex gap="1" align="center" style={{ height: "2em" }}>
-                    <Checkbox
-                      id={role}
-                      className="mr-1"
-                      checked={state.selectedRoles.value[role] > 0}
-                      onClick={() => {
-                        state.selectedRoles.set((selectedroles) => ({
-                          ...selectedroles,
-                          [role]: selectedroles[role] ? 0 : 1,
-                        }));
-                      }}
-                    />
+                    {getCharacter(role).delusional ? (
+                      <Flex ml={"-1"}>
+                        <MeaningfulIcon
+                          size="1"
+                          header={<Text>Delusional</Text>}
+                          explanation={
+                            <Text>
+                              This is a character that thinks they are a
+                              different character. To play a game with this
+                              character, instead just add the character the
+                              player things they are. Then add a note once the
+                              game starts.
+                            </Text>
+                          }
+                        >
+                          <FaQuestion />
+                        </MeaningfulIcon>
+                      </Flex>
+                    ) : (
+                      <Checkbox
+                        id={role}
+                        className="mr-1"
+                        checked={state.selectedRoles.value[role] > 0}
+                        onClick={() => {
+                          state.selectedRoles.set((selectedroles) => ({
+                            ...selectedroles,
+                            [role]: selectedroles[role] ? 0 : 1,
+                          }));
+                        }}
+                      />
+                    )}
                     <RoleIcon role={role} className="h-4" />
                     <span className="capitalize">{RoleName(role)}</span>
                   </Flex>
