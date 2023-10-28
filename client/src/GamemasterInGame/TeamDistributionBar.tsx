@@ -5,7 +5,7 @@ import { KnownCharacterType, Role } from "@hidden-identity/server";
 import {
   DistributionsByPlayerCount,
   getCharacter,
-} from "../assets/game_data/gameData";
+} from "@hidden-identity/shared";
 
 interface TeamDistributionBarProps {
   charsSelected: Role[];

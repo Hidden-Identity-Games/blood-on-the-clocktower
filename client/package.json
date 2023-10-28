@@ -21,6 +21,7 @@
     "vitest": "TEST_MODE=1 vitest --run"
   },
   "dependencies": {
+    "@hidden-identity/shared": "workspace:^",
     "@hidden-identity/server": "workspace:*",
     "@tanstack/react-query": "^4.35.3",
     "@trpc/client": "^10.38.3",

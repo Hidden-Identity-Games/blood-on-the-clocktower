@@ -1,7 +1,7 @@
 import { Alignment, PlayerMessageMap, Reveal } from "@hidden-identity/server";
 import { AlignmentSelect } from "../Selectors";
 import { useState } from "react";
-import { oppositeAlignment } from "../../../assets/game_data/gameData";
+import { oppositeAlignment } from "@hidden-identity/shared";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Flex, Heading } from "@radix-ui/themes";
 import { useGetPlayerAlignment } from "../../../store/useStore";

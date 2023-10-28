@@ -1,5 +1,4 @@
-import { type Role } from '../../types/Role.ts'
-import { type BaseUnifiedGame, type BrokenOrderedPlayers, type Problem, type WellOrderedPlayers, type UnifiedGame } from '../../types/UnifiedGame.ts'
+import { type Role, type BaseUnifiedGame, type BrokenOrderedPlayers, type Problem, type WellOrderedPlayers, type UnifiedGame } from '@hidden-identity/shared'
 import { retrieveGame } from './base.ts'
 
 function followGraph (players: UnifiedGame['partialPlayerOrdering']): string[] {

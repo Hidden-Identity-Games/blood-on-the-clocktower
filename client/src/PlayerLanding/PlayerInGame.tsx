@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import {
   getCharacter,
   DistributionsByPlayerCount,
-} from "../assets/game_data/gameData";
+} from "@hidden-identity/shared";
 import { colorMap } from "../shared/CharacterTypes";
 import { CharacterType } from "../types/script";
 import {

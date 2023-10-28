@@ -1,6 +1,6 @@
 import { Reveal, UnifiedGame } from "@hidden-identity/server";
 import { Flex, Heading, Text } from "@radix-ui/themes";
-import { getCharacter } from "../../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 import { useDefiniteGame } from "../../store/GameContext";
 import { PlayerList } from ".";
 import { NightAction } from "./NightAction";

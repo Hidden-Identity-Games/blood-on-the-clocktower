@@ -1,6 +1,5 @@
 import { generate } from 'random-words'
-import { type Role } from '../../types/Role.ts'
-import { type UnifiedGame, type BaseUnifiedGame, type UnifiedGameComputed, type GameStatus } from '../../types/UnifiedGame.ts'
+import { type UnifiedGame, type BaseUnifiedGame, type UnifiedGameComputed, type GameStatus, type Role } from '@hidden-identity/shared'
 import { getOrderedPlayers } from '../gameDB/seating.ts'
 import { addScript, addTestScript } from '../scriptDB.ts'
 import { WatchableResource, type Computer } from '../watchableResource.ts'

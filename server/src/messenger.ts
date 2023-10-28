@@ -1,7 +1,7 @@
 import {
   type MessageFromClient,
   type MessageFromServer,
-} from './types/messageShapes.ts';
+} from './types/messageShapes.ts'
 
 export function createMessage (message: MessageFromServer): string {
   return JSON.stringify(message)

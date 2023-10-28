@@ -1,5 +1,4 @@
-import { type Role, type Alignment } from '../../types/Role.ts'
-import { type PlayerStatus } from '../../types/UnifiedGame.ts'
+import { type Role, type Alignment, type PlayerStatus } from '@hidden-identity/shared'
 import { removeKey } from '../../utils/objectUtils.ts'
 import { UNASSIGNED, gameInProgress, retrieveGame } from './base.ts'
 

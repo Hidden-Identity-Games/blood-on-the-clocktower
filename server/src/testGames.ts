@@ -1,8 +1,6 @@
 import { UNASSIGNED, addTestGame } from './database/gameDB/base.ts'
 import { setScript } from './database/scriptDB.ts'
-import { type Role } from './types/Role.ts'
-import { type Script } from './types/Script.ts'
-import { type BaseUnifiedGame } from './types/UnifiedGame.ts'
+import { type Role, type Script, type BaseUnifiedGame } from '@hidden-identity/shared'
 
 export function shuffleList<T> (list: readonly T[]): T[] {
   return [...list]

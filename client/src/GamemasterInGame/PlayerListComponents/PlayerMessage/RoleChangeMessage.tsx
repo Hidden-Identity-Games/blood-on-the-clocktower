@@ -10,7 +10,7 @@ import { Flex, Heading } from "@radix-ui/themes";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { Restrictions } from "./Restrictions";
 import { AlignmentSelect, RoleSelectList } from "../Selectors";
-import { getDefaultAlignment } from "../../../assets/game_data/gameData";
+import { getDefaultAlignment } from "@hidden-identity/shared";
 import { useCharacterRestriction } from "../Selectors/Restrictions";
 import { useDynamicList } from "../Selectors/useDynamicList";
 

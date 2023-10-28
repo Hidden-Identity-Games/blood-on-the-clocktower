@@ -8,7 +8,7 @@ import {
   allTravelers,
   getCharacter,
   getDefaultAlignment,
-} from "../../../assets/game_data/gameData";
+} from "@hidden-identity/shared";
 import { colorMap } from "../../../shared/CharacterTypes";
 
 interface RoleSelectProps {

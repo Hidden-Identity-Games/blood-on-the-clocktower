@@ -1,4 +1,4 @@
-import { getCharacter } from "../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { alignmentColorMap, colorMap } from "./CharacterTypes";
 import { Flex, Text } from "@radix-ui/themes";

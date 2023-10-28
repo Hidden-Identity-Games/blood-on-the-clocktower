@@ -5,7 +5,7 @@ import { Character, CharacterType } from "@hidden-identity/server";
 import { BsFillMoonFill } from "react-icons/bs";
 import { CharacterName } from "./RoleIcon";
 import { useDefiniteGame } from "../store/GameContext";
-import { getCharacter } from "../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 
 interface ScriptListProps {
   className?: string;

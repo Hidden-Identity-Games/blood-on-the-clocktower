@@ -11,7 +11,7 @@ import { Restrictions } from "./Restrictions";
 import { Flex, Heading } from "@radix-ui/themes";
 import { PlayerMessageLink } from "./PlayerMessageLink";
 import { TeamSelect } from "../Selectors/TeamSelect";
-import { getCharacter } from "../../../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 import { usePlayerRestrictions } from "../Selectors/Restrictions";
 
 export interface RevealTeamMessageProps {

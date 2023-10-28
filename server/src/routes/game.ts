@@ -24,8 +24,7 @@ import {
 import { setupTestGames } from '../testGames.ts'
 import { gmProcedure, playerProcedure, publicProcedure } from '../trpcServerInternals/trpc.ts'
 import { z } from 'zod'
-import { alignmentShape } from '../types/Role.ts'
-import { poisonStatusShape, drunkStatusShape, gameStatusShape, protectedStatusShape, characterAbilityStatusShape, deadStatusShape } from '../types/UnifiedGame.ts'
+import { poisonStatusShape, drunkStatusShape, gameStatusShape, protectedStatusShape, characterAbilityStatusShape, deadStatusShape, alignmentShape } from '@hidden-identity/shared'
 import { gameIdShape, playerAndGameIdShape, roleShape } from './baseApiShapes.ts'
 
 await setupTestGames()

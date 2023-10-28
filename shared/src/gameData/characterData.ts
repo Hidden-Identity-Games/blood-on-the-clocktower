@@ -1,4 +1,4 @@
-import { Character } from "@hidden-identity/server";
+import { Character } from "../shapes/index.ts";
 
 type CharacterDefinition = Omit<Character, "id"> & {
   id: string;
@@ -7,7 +7,7 @@ type CharacterDefinition = Omit<Character, "id"> & {
   remindersGlobal?: string[];
 };
 
-export const characters: CharacterDefinition[] = [
+export const CHARACTERS: CharacterDefinition[] = [
   {
     id: "unassigned",
     name: "Unassigned",
@@ -2539,5 +2539,3 @@ export const characters: CharacterDefinition[] = [
     imageSrc: "gangster.png",
   },
 ];
-
-console.log(JSON.stringify(characters.filter((c) => c.edition === "bmr")));

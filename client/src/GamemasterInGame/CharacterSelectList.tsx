@@ -1,4 +1,3 @@
-import { CharacterType } from "../types/script";
 import {
   Checkbox,
   Flex,
@@ -16,8 +15,11 @@ import { FaQuestion } from "react-icons/fa6";
 import { colorMap } from "../shared/CharacterTypes";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
 import { Character, Role } from "@hidden-identity/server";
-import { getCharacter } from "../assets/game_data/gameData";
-import { characters } from "../assets/game_data/characterData";
+import {
+  getCharacter,
+  CHARACTERS,
+  CharacterType,
+} from "@hidden-identity/shared";
 import { useSetScript } from "../store/useStore";
 import { useDefiniteGame } from "../store/GameContext";
 import { DestructiveButton } from "./DestructiveButton";
@@ -175,7 +177,7 @@ function AddRole({ characterSelectState }: AddRoleProps) {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [results, setResults] = React.useState<Character[]>([]);
   const fuse = React.useMemo(
-    () => new Fuse(characters, { keys: ["name"] }),
+    () => new Fuse(CHARACTERS, { keys: ["name"] }),
     [],
   );
 

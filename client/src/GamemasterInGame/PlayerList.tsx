@@ -9,7 +9,7 @@ import {
   Text,
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
-import { getCharacter } from "../assets/game_data/gameData";
+import { getCharacter } from "@hidden-identity/shared";
 import { GiBootKick, GiFeather } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";

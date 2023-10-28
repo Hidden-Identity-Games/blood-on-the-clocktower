@@ -10,7 +10,6 @@
   },
   "scripts": {
     "e2e-test": "pnpm run --stream -r e2e-test",
-    "updateJson": "node ./client/src/assets/game_data/modifyJson.cjs",
     "dev": "pnpm run --stream -r --parallel dev",
     "build-client": "pnpm run --stream -r build-client",
     "build-server": "pnpm run --stream -r build-server",
