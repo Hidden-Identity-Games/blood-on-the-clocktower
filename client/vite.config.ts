@@ -22,6 +22,9 @@ export default defineConfig((env) => ({
     rollupOptions: {},
   },
   server: {
+    watch: {
+      ignored: ["!node_modules/@hidden-identity/**/*"],
+    },
     port: CLIENT_PORT,
     proxy: {
       "/api": {

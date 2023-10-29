@@ -29,7 +29,6 @@ export const SCRIPTS: ScriptDefinition[] = [
       { id: "mayor" },
       { id: "drunk" },
       { id: "butler" },
-      { id: "drunk" },
       { id: "recluse" },
       { id: "saint" },
       { id: "poisoner" },

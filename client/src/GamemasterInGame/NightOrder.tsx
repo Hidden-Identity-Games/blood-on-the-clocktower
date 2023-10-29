@@ -152,7 +152,7 @@ export function NightOrder() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="menu">
         <Flex className="h-full" direction="column" gap="2" m="3">
-          <GameMasterActions selectedRoles={{}} />
+          <GameMasterActions gameStartable={false} availableRolesList={[]} />
           <ScriptList className="my-5" />
         </Flex>
       </Tabs.Content>

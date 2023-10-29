@@ -28,7 +28,6 @@ export function NewGameLanding() {
         boxShadow: "0 0 40px 40px var(--color-page-background) inset",
       }}
     >
-      <div>Header</div>
       <Flex className="mt-6" justify="center" align="center">
         <img src={title} />
       </Flex>

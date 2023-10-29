@@ -28,7 +28,7 @@ export function ExportButton({
     <Dialog.Root>
       <Dialog.Trigger>
         <Button disabled={disabled} className={className}>
-          Export
+          Export to Townsquare
         </Button>
       </Dialog.Trigger>
 

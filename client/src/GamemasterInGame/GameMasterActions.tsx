@@ -7,7 +7,6 @@ import {
   Text,
 } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
-import { Role } from "@hidden-identity/shared";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ExportButton } from "./ExportButton";
 import {
@@ -16,27 +15,23 @@ import {
 } from "../store/actions/gmActions";
 import { useCreateGame } from "../store/useStore";
 import { DestructiveButton } from "./DestructiveButton";
+import { Role } from "@hidden-identity/shared";
 
 interface GameMasterActionsProps {
-  selectedRoles: Record<Role, number>;
+  gameStartable: boolean;
+  availableRolesList: Role[];
 }
 
-export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
+export function GameMasterActions({
+  gameStartable,
+  availableRolesList,
+}: GameMasterActionsProps) {
   const { game } = useDefiniteGame();
   const [, , , setGameStatus] = useSetGameStatus();
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
-
-  const availableRolesList = Object.entries(selectedRoles).flatMap(
-    ([role, qty]) => Array.from({ length: qty }).map(() => role),
-  ) as Role[];
-
   const problems =
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
-  const gameStartable =
-    availableRolesList.length !== 0 &&
-    !game.orderedPlayers.problems &&
-    availableRolesList.length === game.orderedPlayers.fullList.length;
 
   return (
     <Flex gap="2" direction="column">
@@ -117,7 +112,22 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
           </DestructiveButton>
         ))}
       <NewGameButton />
+      {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
     </Flex>
+  );
+}
+
+function SandboxOptions() {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button>Sandbox tools</Button>
+      </Dialog.Trigger>
+      <Dialog.Content>
+        <DialogHeader>Sandbox tools</DialogHeader>
+        Coming Soon
+      </Dialog.Content>
+    </Dialog.Root>
   );
 }
 

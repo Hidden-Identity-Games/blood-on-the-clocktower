@@ -7,13 +7,8 @@ import {
 } from "../shapes/Role.ts";
 import { Script } from "../shapes/Script.ts";
 import { SCRIPTS, ScriptDefinition, ScriptName } from "./scripts.ts";
-import { CHARACTERS } from "./characterData.ts";
+import { CHARACTERS as charactersList } from "./characterData.ts";
 
-const charactersList = CHARACTERS.map((role) => ({
-  ...role,
-  id: role.id as Role,
-  imageSrc: new URL(`../icon/role/${role.imageSrc}`, import.meta.url).href,
-}));
 const characters = Object.fromEntries(
   charactersList.map((character) => [character.id, character]),
 ) as unknown as Record<Role, Character>;
@@ -77,9 +72,9 @@ export function getScriptNames(): ScriptName[] {
   return Object.keys(scripts) as ScriptName[];
 }
 
-const travelers: Role[] = CHARACTERS.filter(
-  (role) => role.team === "Traveler",
-).map(({ id }) => id as Role);
+const travelers: Role[] = charactersList
+  .filter((role) => role.team === "Traveler")
+  .map(({ id }) => id as Role);
 
 export function allTravelers() {
   return travelers;
