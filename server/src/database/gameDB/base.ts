@@ -84,8 +84,6 @@ export async function addTestGame(
   gameId: string,
   game: BaseUnifiedGame,
 ): Promise<boolean> {
-  console.log(`adding ${gameId}`);
-
   gameDB[gameId] = new WatchableResource(game, gameComputer);
   await addTestScript(gameId);
 

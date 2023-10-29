@@ -18,28 +18,29 @@ export function NewGameLanding() {
   const navigate = useNavigate();
 
   return (
-    <>
-      <div
-        className="flex h-full flex-col bg-contain bg-center"
-        style={{
-          backgroundImage: `url(${backgroundImg})`,
-          backgroundRepeat: "no-repeat",
-          boxShadow: "0 0 40px 40px var(--color-page-background) inset",
-        }}
-      >
-        <Flex className="mx-2 my-[60px]" justify="center">
-          <img src={title} />
-        </Flex>
-        {error && (
-          <div className="relative h-0 w-full">
-            <Callout.Root className="absolute bottom-0">
-              <Callout.Text>{error}</Callout.Text>
-            </Callout.Root>
-          </div>
-        )}
-      </div>
+    <Flex
+      className="h-screen min-h-0 flex-col bg-contain bg-bottom"
+      style={{
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "bottom",
+        boxShadow: "0 0 40px 40px var(--color-page-background) inset",
+      }}
+    >
+      <div>Header</div>
+      <Flex className="mt-6" justify="center" align="center">
+        <img src={title} />
+      </Flex>
+      {error && (
+        <div className="h-0 w-full">
+          <Callout.Root className="absolute bottom-0">
+            <Callout.Text>{error}</Callout.Text>
+          </Callout.Root>
+        </div>
+      )}
       <Flex
-        className="mb-3 mt-[-18vh] w-full "
+        className="mb-3 mt-auto w-full self-end"
         direction="row"
         align="center"
         gap="6"
@@ -89,6 +90,6 @@ export function NewGameLanding() {
           </Dialog.Content>
         </Dialog.Root>
       </Flex>
-    </>
+    </Flex>
   );
 }

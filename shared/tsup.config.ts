@@ -8,5 +8,5 @@ export default defineConfig({
   outExtension: () => ({ js: ".js", dts: ".dts" }),
   onSuccess: "tsc --emitDeclarationOnly --declaration",
   outDir: "dist",
-  clean: true,
+  clean: false,
 });

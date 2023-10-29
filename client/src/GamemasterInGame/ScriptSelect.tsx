@@ -7,8 +7,9 @@ import {
   Callout,
   Dialog,
   DialogClose,
+  Checkbox,
 } from "@radix-ui/themes";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import { Script, ScriptItem } from "../types/script";
 import scriptIcon from "../assets/icon/feather.svg";
 import {
@@ -42,6 +43,7 @@ function ScriptOption({
   );
 }
 export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
+  const [isTestGame, setIsTestGame] = useState(false);
   return (
     <Flex
       gap="1"
@@ -64,6 +66,16 @@ export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
         ))}
         <CustomScriptInputDialog handleSubmit={handleSubmit} />
       </Grid>
+      <Flex gap="2" asChild>
+        <label>
+          <Checkbox
+            checked={isTestGame}
+            onCheckedChange={(checked) =>
+              setIsTestGame(checked === "indeterminate" ? false : true)
+            }
+          />
+        </label>
+      </Flex>
     </Flex>
   );
 }

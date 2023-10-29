@@ -60,7 +60,9 @@ const scripts: Record<ScriptName, Script> = Object.fromEntries(
 ) as Record<ScriptName, Script>;
 
 const scriptDefinitions: Record<string, ScriptDefinition> = Object.fromEntries(
-  SCRIPTS.map((scriptDefinition) => [name, scriptDefinition] as const),
+  SCRIPTS.map(
+    (scriptDefinition) => [scriptDefinition.name, scriptDefinition] as const,
+  ),
 );
 
 export function getScript(scriptID: ScriptName): Script {

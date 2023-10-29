@@ -2,7 +2,7 @@
   "eslint.codeActionsOnSave.mode": "all",
   "eslint.format.enable": true,
   "editor.formatOnSave": true,
-  "eslint.workingDirectories": ["client", "server"],
+  "eslint.workingDirectories": ["client", "server", "e2es", "shared"],
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "search.useIgnoreFiles": true,
   "files.exclude": {
@@ -12,7 +12,8 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "**/declarations/**/*": true
+    "**/declarations/**/*": true,
+    "**/dist/**/*": true
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
