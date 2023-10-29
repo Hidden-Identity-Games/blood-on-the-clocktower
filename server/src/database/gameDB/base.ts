@@ -92,7 +92,7 @@ export async function addTestGame(
   return true;
 }
 
-function createGame(): BaseUnifiedGame {
+export function createGame(): BaseUnifiedGame {
   return {
     gameStatus: "PlayersJoining",
     gmSecretHash: generate(3).join("-"),

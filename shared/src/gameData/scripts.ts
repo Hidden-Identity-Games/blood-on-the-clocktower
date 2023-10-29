@@ -1,4 +1,14 @@
-export const SCRIPTS = [
+export type ScriptName =
+  | "Trouble Brewing"
+  | "Bad Moon Rising"
+  | "Sects & Violets";
+export type ScriptDefinition = {
+  name: ScriptName;
+  imageSrc: string;
+  characters: { id: string }[];
+};
+
+export const SCRIPTS: ScriptDefinition[] = [
   {
     name: "Trouble Brewing",
     imageSrc:

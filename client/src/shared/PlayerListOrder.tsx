@@ -2,7 +2,7 @@ import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { MdSort } from "react-icons/md";
-import { exhaustiveCheck } from "../utils/exhaustiveCheck";
+import { exhaustiveCheck } from "@hidden-identity/shared";
 
 const orders = ["alphabetical", "seat order"] as const;
 export type PlayerOrder = (typeof orders)[number];

@@ -6,18 +6,16 @@ import {
   Role,
 } from "../shapes/Role.ts";
 import { Script } from "../shapes/Script.ts";
-import { SCRIPTS } from "./scripts.ts";
-import { CHARACTERS as charactersList } from "./characterData.ts";
+import { SCRIPTS, ScriptDefinition, ScriptName } from "./scripts.ts";
+import { CHARACTERS } from "./characterData.ts";
 
+const charactersList = CHARACTERS.map((role) => ({
+  ...role,
+  id: role.id as Role,
+  imageSrc: new URL(`../icon/role/${role.imageSrc}`, import.meta.url).href,
+}));
 const characters = Object.fromEntries(
-  charactersList.map((role) => [
-    role.id as Role,
-    {
-      ...role,
-      id: role.id as Role,
-      imageSrc: new URL(`../icon/role/${role.imageSrc}`, import.meta.url).href,
-    },
-  ]),
+  charactersList.map((character) => [character.id, character]),
 ) as unknown as Record<Role, Character>;
 
 export const defaultAlignments: Record<CharacterType, Alignment> = {
@@ -53,34 +51,41 @@ export function getDefaultAlignment(role: Role) {
   return defaultAlignments[getCharacter(role).team];
 }
 
-const travelers: Role[] = charactersList
-  .filter((role) => role.team === "Traveler")
-  .map(({ id }) => id as Role);
-
 export function getCharacter(role: Role): Character {
   return characters[role ?? "unassigned"];
 }
 
-const scripts: Record<string, Script> = Object.fromEntries(
+const scripts: Record<ScriptName, Script> = Object.fromEntries(
   SCRIPTS.map(({ name, characters }) => [name, characters as Script] as const),
-);
-const scriptDescriptions: Record<string, { imageSrc: string }> =
-  Object.fromEntries(
-    SCRIPTS.map(({ name, imageSrc }) => [name, { imageSrc }] as const),
-  );
+) as Record<ScriptName, Script>;
 
-export function getScript(scriptID: string): Script | undefined {
+const scriptDefinitions: Record<string, ScriptDefinition> = Object.fromEntries(
+  SCRIPTS.map((scriptDefinition) => [name, scriptDefinition] as const),
+);
+
+export function getScript(scriptID: ScriptName): Script {
   return scripts[scriptID];
 }
 
-export function getScriptImg(scriptID: string): string | undefined {
-  return scriptDescriptions[scriptID]?.imageSrc || undefined;
+export function getScriptImg(scriptID: ScriptName): string | undefined {
+  return scriptDefinitions[scriptID]?.imageSrc || undefined;
 }
 
-export function getScriptNames() {
-  return Object.keys(scripts);
+export function getScriptNames(): ScriptName[] {
+  return Object.keys(scripts) as ScriptName[];
 }
+
+const travelers: Role[] = CHARACTERS.filter(
+  (role) => role.team === "Traveler",
+).map(({ id }) => id as Role);
 
 export function allTravelers() {
   return travelers;
+}
+
+export function validCharactersList() {
+  return charactersList.filter((c) => !c.delusional);
+}
+export function allCharactersList() {
+  return charactersList;
 }
