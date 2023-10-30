@@ -110,6 +110,7 @@ export class GameCreator {
       };
 
       game.playersSeenRoles = [...nonTravelers, ...travelers];
+      game.gameStatus = "Setup";
 
       return game;
     });

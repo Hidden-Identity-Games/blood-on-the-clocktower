@@ -1,20 +1,15 @@
 import { addTestGame } from "./database/gameDB/base.ts";
-import { setScript } from "./database/scriptDB.ts";
-import {
-  type Script,
-  type BaseUnifiedGame,
-  getScript,
-} from "@hidden-identity/shared";
+import { getScript } from "@hidden-identity/shared";
 import { GameCreator } from "./testingUtils/gameCreator.ts";
 
 export async function setupTestGames(): Promise<void> {
-  await addGame(
+  await addTestGame(
     "test-game",
     new GameCreator().addPlayers(15).assignSeating().toGame(),
     getScript("Trouble Brewing"),
   );
 
-  await addGame(
+  await addTestGame(
     "tg-f-night",
     new GameCreator()
       .addPlayers(15)
@@ -38,7 +33,7 @@ export async function setupTestGames(): Promise<void> {
     getScript("Trouble Brewing"),
   );
 
-  await addGame(
+  await addTestGame(
     "tg-bmr",
     new GameCreator()
       .addPlayers(15)
@@ -62,7 +57,7 @@ export async function setupTestGames(): Promise<void> {
     getScript("Bad Moon Rising"),
   );
 
-  await addGame(
+  await addTestGame(
     "tg-travelers",
     new GameCreator()
       .addPlayers(15)
@@ -73,15 +68,4 @@ export async function setupTestGames(): Promise<void> {
       .toGame(),
     getScript("Bad Moon Rising"),
   );
-}
-
-async function addGame(
-  name: string,
-  game: BaseUnifiedGame,
-  script: Script,
-): Promise<void> {
-  await addTestGame(name, game);
-  if (game.gameStatus !== "PlayersJoining") {
-    await setScript(name, script);
-  }
 }

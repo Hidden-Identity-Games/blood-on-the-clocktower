@@ -12,36 +12,58 @@ import React, { ReactNode } from "react";
 import { Script, ScriptItem } from "../types/script";
 import scriptIcon from "../assets/icon/feather.svg";
 import {
+  ScriptName,
   getScript,
   getScriptImg,
   getScriptNames,
 } from "@hidden-identity/shared";
 import { DialogHeader } from "../shared/DialogHeader";
+import classNames from "classnames";
 
 interface ScriptSelectProps {
-  handleSubmit: (script: ScriptItem[]) => void;
+  onScriptChange: (script: ScriptItem[]) => void;
 }
 
-function ScriptOption({
-  children,
-  onClick,
-  name,
-}: {
-  children: ReactNode;
-  onClick?: React.MouseEventHandler;
-  name: string;
-}) {
+export const ScriptOption = React.forwardRef(function ScriptOption(
+  {
+    children,
+    onClick,
+    name,
+    selected,
+  }: {
+    children: ReactNode;
+    onClick?: React.MouseEventHandler;
+    name: string;
+    selected?: boolean;
+  },
+  ref: React.ForwardedRef<HTMLButtonElement>,
+) {
   return (
     <button
-      className="aspect-square max-h-[25vh] rounded-[10%] border-2 border-purple-800 bg-transparent p-3"
+      ref={ref}
+      className={classNames(
+        "aspect-square max-h-[25vh] rounded-[10%] border-2 border-purple-800 bg-transparent p-3",
+        selected && "border-red-500 outline outline-red-500",
+      )}
       onClick={onClick}
       aria-label={name}
+      type="button"
     >
       {children}
     </button>
   );
-}
-export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
+});
+export function ScriptSelect({ onScriptChange }: ScriptSelectProps) {
+  const [selectedScript, setSelectedScript] = React.useState<
+    ScriptName | "custom"
+  >("Trouble Brewing");
+  const handleScriptChange = (
+    scriptName: ScriptName | "custom",
+    script: Script,
+  ) => {
+    onScriptChange(script);
+    setSelectedScript(scriptName);
+  };
   return (
     <Flex
       gap="1"
@@ -54,15 +76,19 @@ export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
         {getScriptNames().map((name) => (
           <ScriptOption
             key={name}
+            selected={name === selectedScript}
             onClick={() => {
-              handleSubmit(getScript(name)!);
+              handleScriptChange(name, getScript(name));
             }}
             name={name}
           >
             <img className="h-full w-full" src={getScriptImg(name)} />
           </ScriptOption>
         ))}
-        <CustomScriptInputDialog handleSubmit={handleSubmit} />
+        <CustomScriptInputDialog
+          handleSubmit={(script) => handleScriptChange("custom", script)}
+          selected={"custom" === selectedScript}
+        />
       </Grid>
     </Flex>
   );
@@ -70,10 +96,12 @@ export function ScriptSelect({ handleSubmit }: ScriptSelectProps) {
 
 interface CustomScriptInputDialogProps {
   handleSubmit: (customScript: Script) => void;
+  selected?: boolean;
 }
 
 function CustomScriptInputDialog({
   handleSubmit,
+  selected,
 }: CustomScriptInputDialogProps) {
   const [customScript, setCustomScript] = React.useState("");
   const [errorMsg, setErrorMsg] = React.useState("");
@@ -93,8 +121,12 @@ function CustomScriptInputDialog({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <ScriptOption name="custom">
-          <div className="relative flex h-full w-full items-center justify-center">
+        <ScriptOption name="custom" selected={selected}>
+          <div
+            className={
+              "relative flex h-full w-full items-center justify-center"
+            }
+          >
             <img className="absolute left-0 top-0" src={scriptIcon} />
             <Heading mb="1" color="ruby" className="relative z-10">
               CUSTOM

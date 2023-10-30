@@ -1,11 +1,4 @@
-import {
-  Button,
-  Callout,
-  Dialog,
-  DialogClose,
-  Flex,
-  Text,
-} from "@radix-ui/themes";
+import { Button, Dialog, DialogClose, Flex, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ExportButton } from "./ExportButton";
@@ -13,9 +6,9 @@ import {
   useDistributeRoles,
   useSetGameStatus,
 } from "../store/actions/gmActions";
-import { useCreateGame } from "../store/useStore";
 import { DestructiveButton } from "./DestructiveButton";
 import { Role } from "@hidden-identity/shared";
+import { NewGameButton } from "../NewGamePage/NewGameButton";
 
 interface GameMasterActionsProps {
   gameStartable: boolean;
@@ -111,7 +104,7 @@ export function GameMasterActions({
             Back to First Day
           </DestructiveButton>
         ))}
-      <NewGameButton />
+      <NewGameButton>Create new game</NewGameButton>
       {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
     </Flex>
   );
@@ -126,48 +119,6 @@ function SandboxOptions() {
       <Dialog.Content>
         <DialogHeader>Sandbox tools</DialogHeader>
         Coming Soon
-      </Dialog.Content>
-    </Dialog.Root>
-  );
-}
-
-function NewGameButton() {
-  const { gameId } = useDefiniteGame();
-  const [newGameError, newGameLoading, , newGame] = useCreateGame();
-
-  return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <Button className="">New game</Button>
-      </Dialog.Trigger>
-      <Dialog.Content className="m-2">
-        <Flex direction="column" gap="2">
-          <Flex className="w-full" justify="end">
-            <DialogHeader>Create a new game?</DialogHeader>
-          </Flex>
-          {newGameLoading && "Setting up, one moment..."}
-          {!newGameLoading && (
-            <>
-              {newGameError && (
-                <Callout.Root>
-                  <Callout.Text>
-                    It looks there was an error, please try again.
-                  </Callout.Text>
-                </Callout.Root>
-              )}
-              <Text as="div" className="mb-2">
-                Are you sure? The current game will end, and everyone will be
-                given a link to join the new game.
-              </Text>
-              <Flex className="w-full" justify="between">
-                <Dialog.Close>
-                  <Button>Cancel</Button>
-                </Dialog.Close>
-                <Button onClick={() => newGame(gameId)}>New game</Button>
-              </Flex>
-            </>
-          )}
-        </Flex>
       </Dialog.Content>
     </Dialog.Root>
   );

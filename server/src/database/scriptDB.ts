@@ -41,12 +41,12 @@ export async function setScript(
   script.update(newScript);
 }
 
-export async function addScript(gameId: string): Promise<void> {
+export async function addScript(gameId: string, script: Script): Promise<void> {
   if (await scriptExists(gameId)) {
     throw new Error(`Script for game ${gameId} already exists"`);
   }
 
-  scriptDB[gameId] = new WatchableResource([] as Script, {});
+  scriptDB[gameId] = new WatchableResource(script, {});
   scriptDB[gameId].subscribe((value) => {
     storage.putFile(gameId, value as Script).catch((e) => {
       console.error(e);
@@ -54,8 +54,11 @@ export async function addScript(gameId: string): Promise<void> {
   });
 }
 
-export async function addTestScript(gameId: string): Promise<void> {
-  scriptDB[gameId] = new WatchableResource([] as Script, {});
+export async function addTestScript(
+  gameId: string,
+  script: Script,
+): Promise<void> {
+  scriptDB[gameId] = new WatchableResource(script, {});
 }
 
 export async function subscribeToScript(

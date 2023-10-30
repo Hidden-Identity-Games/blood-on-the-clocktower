@@ -17,13 +17,17 @@ export function useCreateGame() {
     [],
   );
   const navigate = useNavigate();
-  return useAction(async (currentGameId?: string) => {
-    const parsedResponse: UnifiedGame = await trpc.createGame.mutate({
-      gameId: newGameId,
-      oldGameId: currentGameId ?? undefined,
-    });
-    navigate(`/${newGameId}/gm/${parsedResponse.gmSecretHash}`);
-  });
+  return useAction(
+    async (
+      arg: Omit<Parameters<typeof trpc.createGame.mutate>[0], "gameId">,
+    ) => {
+      const parsedResponse: UnifiedGame = await trpc.createGame.mutate({
+        ...arg,
+        gameId: newGameId,
+      });
+      navigate(`/${newGameId}/gm/${parsedResponse.gmSecretHash}`);
+    },
+  );
 }
 
 export function useSetScript() {

@@ -56,7 +56,7 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
         (script?.length ? (
           <Lobby />
         ) : (
-          <ScriptSelect handleSubmit={setScript} />
+          <ScriptSelect onScriptChange={setScript} />
         ))}
       {game.gameStatus === "Setup" && playersNotSeenRole.length > 0 && (
         <Callout.Root>
