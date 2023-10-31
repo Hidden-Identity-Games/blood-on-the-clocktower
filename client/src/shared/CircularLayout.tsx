@@ -30,32 +30,34 @@ export function CircularLayout({ children, className }: CircularLayoutProps) {
 }
 
 interface PlaceInCircleProps {
-  num: number;
-  of: number;
+  index: number;
+  totalCountInCircle: number;
   children: React.ReactNode;
 }
-export function PlaceInCircle({ num, of, children }: PlaceInCircleProps) {
-  const ref = React.useRef<HTMLDivElement>(null);
+export function PlaceInCircle({
+  index,
+  totalCountInCircle,
+  children,
+}: PlaceInCircleProps) {
   const { width: parentWidth, height: parentHeight } = React.useContext(
     CircularLayoutContext,
   );
-  const width = (1.8 * parentHeight) / of;
-  const height = (1.8 * parentHeight) / of;
 
-  const angle = ((2 * Math.PI) / of) * num;
+  const width = (1.8 * parentHeight) / totalCountInCircle;
+  const height = (1.8 * parentHeight) / totalCountInCircle;
+
+  const angle = ((2 * Math.PI) / totalCountInCircle) * index;
   const containerRadius = {
     X: parentWidth / 2 - width / 2,
     Y: parentHeight / 2 - height / 2,
   };
   const position = {
-    x: containerRadius.X * Math.cos(angle) + containerRadius.X,
-    y: containerRadius.Y * Math.sin(angle) + containerRadius.Y,
+    x: containerRadius.X * -Math.sin(angle) + containerRadius.X,
+    y: containerRadius.Y * -Math.cos(angle) + containerRadius.Y,
   };
 
   return (
     <div
-      ref={ref}
-      className="hover:z-30"
       style={{
         position: "absolute",
         left: position.x,
@@ -63,6 +65,41 @@ export function PlaceInCircle({ num, of, children }: PlaceInCircleProps) {
         height,
         width,
       }}
+    >
+      {children}
+    </div>
+  );
+}
+
+interface PlaceInCenterProps {
+  children: React.ReactNode;
+}
+export function PlaceInCenter({ children }: PlaceInCenterProps) {
+  const { width: parentWidth, height: parentHeight } = React.useContext(
+    CircularLayoutContext,
+  );
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [refWidth, setRefWidth] = React.useState(0);
+  const [refHeight, setRefHeight] = React.useState(0);
+
+  React.useLayoutEffect(() => {
+    if (ref.current) {
+      const { width, height } = ref.current.getBoundingClientRect();
+      setRefWidth(width);
+      setRefHeight(height);
+    }
+  }, []);
+
+  const center = {
+    x: parentWidth / 2 - refWidth / 2,
+    y: parentHeight / 2 - refHeight / 2,
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="absolute"
+      style={{ left: center.x, top: center.y }}
     >
       {children}
     </div>

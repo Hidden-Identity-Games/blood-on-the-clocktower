@@ -1,11 +1,17 @@
 import { useParams } from "react-router-dom";
-import { CircularLayout, PlaceInCircle } from "../shared/CircularLayout";
+import {
+  CircularLayout,
+  PlaceInCenter,
+  PlaceInCircle,
+} from "../shared/CircularLayout";
 import { useGame } from "../store/GameContext";
 import { GameProvider } from "../store/GameContextProvider";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { Flex } from "@radix-ui/themes";
 import { RoleToken } from "../shared/RoleToken";
 import { getCharacter } from "@hidden-identity/shared";
+import { usePlayerOrder } from "../shared/PlayerListOrder";
+import React from "react";
 
 export function GrimoireView() {
   const { gameId } = useParams();
@@ -18,6 +24,8 @@ export function GrimoireView() {
 
 function Grimoire() {
   const { game } = useGame();
+  const [firstSeat, _setFirstSeat] = React.useState("");
+  const players = usePlayerOrder("seat order", firstSeat);
 
   if (!game) {
     return <LoadingExperience>Loading</LoadingExperience>;
@@ -26,18 +34,25 @@ function Grimoire() {
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
       <CircularLayout className="aspect-square flex-1">
-        {Object.entries(game.playersToRoles).map(([player, role], idx) => (
-          <PlaceInCircle key={player} num={idx} of={game.playerList.length}>
-            <div className="flex h-full w-full flex-col">
-              <RoleToken role={role}>
-                <div className="line-clamp-1 truncate">{player}</div>
-                <div className="line-clamp-1 truncate">
-                  {getCharacter(role).name}
-                </div>
-              </RoleToken>
-            </div>
-          </PlaceInCircle>
-        ))}
+        <PlaceInCenter>This is the center</PlaceInCenter>
+        <>
+          {players.map((player, idx) => (
+            <PlaceInCircle
+              key={player}
+              index={idx}
+              totalCountInCircle={players.length}
+            >
+              <div className="flex h-full w-full">
+                <RoleToken role={game.playersToRoles[player]}>
+                  <div className="line-clamp-1 truncate">{player}</div>
+                  <div className="line-clamp-1 truncate">
+                    {getCharacter(game.playersToRoles[player]).name}
+                  </div>
+                </RoleToken>
+              </div>
+            </PlaceInCircle>
+          ))}
+        </>
       </CircularLayout>
     </Flex>
   );
