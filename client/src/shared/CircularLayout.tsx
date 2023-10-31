@@ -39,25 +39,31 @@ export function PlaceInCircle({ num, of, children }: PlaceInCircleProps) {
   const { width: parentWidth, height: parentHeight } = React.useContext(
     CircularLayoutContext,
   );
-  const [thisWidth, setWidth] = React.useState(0);
-  const [thisHeight, setHeight] = React.useState(0);
-
-  React.useLayoutEffect(() => {
-    if (ref.current) {
-      const { width, height } = ref.current.getBoundingClientRect();
-      setWidth(width);
-      setHeight(height);
-    }
-  }, []);
+  const width = (1.8 * parentHeight) / of;
+  const height = (1.8 * parentHeight) / of;
 
   const angle = ((2 * Math.PI) / of) * num;
-  const effectiveWidth = parentWidth / 2 - thisWidth / 2;
-  const effectiveHeight = parentHeight / 2 - thisHeight / 2;
-  const x = effectiveWidth * Math.cos(angle) + effectiveWidth;
-  const y = effectiveHeight * Math.sin(angle) + effectiveHeight;
+  const containerRadius = {
+    X: parentWidth / 2 - width / 2,
+    Y: parentHeight / 2 - height / 2,
+  };
+  const position = {
+    x: containerRadius.X * Math.cos(angle) + containerRadius.X,
+    y: containerRadius.Y * Math.sin(angle) + containerRadius.Y,
+  };
 
   return (
-    <div ref={ref} style={{ position: "absolute", left: x, top: y }}>
+    <div
+      ref={ref}
+      className="hover:z-30"
+      style={{
+        position: "absolute",
+        left: position.x,
+        top: position.y,
+        height,
+        width,
+      }}
+    >
       {children}
     </div>
   );
