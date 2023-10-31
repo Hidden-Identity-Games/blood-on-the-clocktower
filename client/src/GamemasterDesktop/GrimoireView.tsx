@@ -37,7 +37,7 @@ function Grimoire() {
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
-      <CircularLayout className="aspect-square flex-1">
+      <CircularLayout className="w-full flex-1">
         <PlaceInCenter>
           <Flex direction="column">
             {isDayView && (

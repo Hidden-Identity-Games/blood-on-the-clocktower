@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React from "react";
+import useResizeObserver from "use-resize-observer";
 
 const CircularLayoutContext = React.createContext({ width: 0, height: 0 });
 
@@ -8,17 +9,7 @@ interface CircularLayoutProps {
   className?: string;
 }
 export function CircularLayout({ children, className }: CircularLayoutProps) {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const [width, setWidth] = React.useState(0);
-  const [height, setHeight] = React.useState(0);
-
-  React.useLayoutEffect(() => {
-    if (ref.current) {
-      const { width, height } = ref.current.getBoundingClientRect();
-      setWidth(width);
-      setHeight(height);
-    }
-  }, []);
+  const { ref, width = 0, height = 0 } = useResizeObserver();
 
   return (
     <CircularLayoutContext.Provider value={{ width, height }}>
@@ -39,9 +30,12 @@ export function PlaceInCircle({
   totalCountInCircle,
   children,
 }: PlaceInCircleProps) {
-  const { width: parentWidth, height: parentHeight } = React.useContext(
+  const { width: _parentWidth, height: _parentHeight } = React.useContext(
     CircularLayoutContext,
   );
+
+  const parentWidth = Math.min(_parentHeight, _parentWidth);
+  const parentHeight = Math.min(_parentHeight, _parentWidth);
 
   const width = (1.8 * parentHeight) / totalCountInCircle;
   const height = (1.8 * parentHeight) / totalCountInCircle;
@@ -78,21 +72,13 @@ export function PlaceInCenter({ children }: PlaceInCenterProps) {
   const { width: parentWidth, height: parentHeight } = React.useContext(
     CircularLayoutContext,
   );
-  const ref = React.useRef<HTMLDivElement>(null);
-  const [refWidth, setRefWidth] = React.useState(0);
-  const [refHeight, setRefHeight] = React.useState(0);
 
-  React.useLayoutEffect(() => {
-    if (ref.current) {
-      const { width, height } = ref.current.getBoundingClientRect();
-      setRefWidth(width);
-      setRefHeight(height);
-    }
-  }, []);
+  const { ref, width = 0, height = 0 } = useResizeObserver();
+  const radius = Math.min(parentWidth, parentHeight);
 
   const center = {
-    x: parentWidth / 2 - refWidth / 2,
-    y: parentHeight / 2 - refHeight / 2,
+    x: radius / 2 - width / 2,
+    y: radius / 2 - height / 2,
   };
 
   return (
