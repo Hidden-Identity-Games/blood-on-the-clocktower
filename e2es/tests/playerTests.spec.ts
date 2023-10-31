@@ -3,7 +3,7 @@ import { createNewGame } from "./utils";
 import { v4 } from "uuid";
 
 test("join game", async ({ page }) => {
-  const gameId = await createNewGame(page);
+  const gameId = await createNewGame(page, "Trouble Brewing");
   await page.goto("/");
   await page.getByRole("button", { name: "Join" }).click();
   await page.getByRole("textbox", { name: "code" }).fill(gameId);
@@ -19,13 +19,9 @@ test("re-join game", async ({ page }) => {
 });
 
 test("can 15 players join", async ({ context, page }) => {
-  const gameId = await createNewGame(page);
+  const gameId = await createNewGame(page, "Trouble Brewing");
   const size = 15;
-  await page
-    .getByRole("button", {
-      name: "Trouble Brewing",
-    })
-    .click();
+
   await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
   const roleIds = [
     "Washerwoman",
@@ -54,7 +50,7 @@ test("can 15 players join", async ({ context, page }) => {
   for await (const role of roleIds.slice(0, size)) {
     await page.getByRole("checkbox", { name: role }).click();
   }
-
+  await page.getByRole("tab", { name: "menu" }).click();
   const startGameButton1 = await page.getByRole("button", {
     name: "Start Game",
   });
