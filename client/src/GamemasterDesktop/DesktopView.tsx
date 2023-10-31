@@ -10,22 +10,44 @@ import { LoadingExperience } from "../shared/LoadingExperience";
 import { Button, Flex } from "@radix-ui/themes";
 import { RoleToken } from "../shared/RoleToken";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
-import React from "react";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
+import { NightOrder } from "../GamemasterInGame/NightOrder";
+import { GameHeader } from "../shared/GameHeader";
 
-export function GrimoireView() {
+export function DesktopView() {
   const { gameId } = useParams();
+
   return (
     <GameProvider gameId={gameId!}>
-      <Grimoire />
+      <Flex direction="column" className="h-full">
+        <GameHeader />
+        <Flex className="min-h-0 flex-1 overflow-hidden p-1" justify="between">
+          <Flex className="flex-1">
+            <Grimoire />
+          </Flex>
+          <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
+            <SideBar />
+          </Flex>
+        </Flex>
+      </Flex>
     </GameProvider>
   );
+}
+
+function SideBar() {
+  const { game } = useGame();
+
+  if (!game) {
+    return <LoadingExperience>Loading</LoadingExperience>;
+  }
+
+  return <NightOrder />;
 }
 
 function Grimoire() {
   const { game } = useGame();
   const [search, setSearch] = useSearchParams();
-  const [firstSeat, _setFirstSeat] = React.useState("");
+  const firstSeat = search.get("firstSeat") ?? "";
   const players = usePlayerOrder("seat order", firstSeat);
 
   if (!game) {

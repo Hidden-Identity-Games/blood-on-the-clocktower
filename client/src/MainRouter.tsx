@@ -4,7 +4,7 @@ import { GameMasterRoot } from "./GamemasterInGame/GamemasterLanding";
 import { NewGameLanding } from "./NewGamePage";
 import { Theme } from "@radix-ui/themes";
 import { CSSProperties } from "react";
-import { GrimoireView } from "./GamemasterDesktop/GrimoireView";
+import { DesktopView } from "./GamemasterDesktop/DesktopView";
 
 function MainRouter() {
   const router = createBrowserRouter([
@@ -34,7 +34,7 @@ function MainRouter() {
       ),
     },
     {
-      path: "/:gameId/gm/:gmHash/grimoire",
+      path: "/:gameId/gm/:gmHash/desktop",
       element: (
         <Theme
           appearance="dark"
@@ -50,7 +50,7 @@ function MainRouter() {
             } as CSSProperties
           }
         >
-          <GrimoireView />
+          <DesktopView />
         </Theme>
       ),
     },

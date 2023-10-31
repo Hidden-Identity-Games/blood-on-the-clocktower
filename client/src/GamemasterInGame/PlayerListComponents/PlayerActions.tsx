@@ -122,16 +122,16 @@ export function PlayerActions({
           >
             <PlayerStatusIcon statusType="characterAbility" />
           </PlayerList.MenuItem>
-          {game.deadVotes[player] && (
-            <PlayerList.MenuItem
-              id={`${player}-return-dead-vote`}
-              label="Return Dead Vote"
-              onClick={() => setDeadVote(player, false)}
-              disabled={deadVoteLoading}
-            >
-              <LiaVoteYeaSolid />
-            </PlayerList.MenuItem>
-          )}
+          <PlayerList.MenuItem
+            id={`${player}-toggle-dead-vote`}
+            label={
+              game.deadVotes[player] ? "Return Dead Vote" : "Use Dead Vote"
+            }
+            onClick={() => setDeadVote(player, !game.deadVotes[player])}
+            disabled={deadVoteLoading}
+          >
+            <LiaVoteYeaSolid />
+          </PlayerList.MenuItem>
           <PlayerList.NoteInputModal player={player}>
             {game.playerNotes[player] ? (
               <button className="text-left">
