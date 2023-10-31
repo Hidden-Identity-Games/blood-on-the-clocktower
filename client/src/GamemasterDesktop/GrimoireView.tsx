@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import {
   CircularLayout,
   PlaceInCenter,
@@ -7,7 +7,7 @@ import {
 import { useGame } from "../store/GameContext";
 import { GameProvider } from "../store/GameContextProvider";
 import { LoadingExperience } from "../shared/LoadingExperience";
-import { Flex } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import { RoleToken } from "../shared/RoleToken";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
 import React from "react";
@@ -24,7 +24,7 @@ export function GrimoireView() {
 
 function Grimoire() {
   const { game } = useGame();
-  const isDayView = true;
+  const [search, setSearch] = useSearchParams();
   const [firstSeat, _setFirstSeat] = React.useState("");
   const players = usePlayerOrder("seat order", firstSeat);
 
@@ -32,21 +32,33 @@ function Grimoire() {
     return <LoadingExperience>Loading</LoadingExperience>;
   }
 
+  const isDayView = search.get("view") !== "night";
+  const showDayswitcher = !!search.get("view");
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
       <CircularLayout className="aspect-square flex-1">
         <PlaceInCenter>
-          {isDayView ? (
-            <div className="text-center">
-              <div>Alive players: {alivePlayers.length}</div>
-              <div>{`Votes to execute: ${Math.ceil(
-                alivePlayers.length / 2,
-              )}`}</div>
-            </div>
-          ) : (
-            "This is the center"
-          )}
+          <Flex direction="column">
+            {isDayView && (
+              <div className="text-center">
+                <div>Alive players: {alivePlayers.length}</div>
+                <div>{`Votes to execute: ${Math.ceil(
+                  alivePlayers.length / 2,
+                )}`}</div>
+              </div>
+            )}
+            {showDayswitcher && (
+              <Button
+                onClick={() => {
+                  search.set("view", isDayView ? "night" : "day");
+                  setSearch(search);
+                }}
+              >
+                Switch to {isDayView ? "Night" : "Day"}
+              </Button>
+            )}
+          </Flex>
         </PlaceInCenter>
         <>
           {players.map((player, idx) => (
