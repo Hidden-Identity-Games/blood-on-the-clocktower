@@ -175,7 +175,12 @@ function LockableTabTrigger({
   children,
 }: LockableTabTriggerProps) {
   return (
-    <Tabs.Trigger className="flex-1" disabled={isLocked} value={value}>
+    <Tabs.Trigger
+      className="flex-1"
+      disabled={isLocked}
+      value={value}
+      aria-label={value}
+    >
       <Flex align="center" gap="1">
         {isLocked && selectedTab !== value ? <BiSolidLock /> : children}
         {selectedTab === value && heading}

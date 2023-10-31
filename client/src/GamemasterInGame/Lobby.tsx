@@ -57,7 +57,11 @@ export function Lobby() {
         onValueChange={(e) => setSelectedTab(e)}
       >
         <Tabs.List>
-          <Tabs.Trigger className="max-w-[200px] flex-1" value="players">
+          <Tabs.Trigger
+            className="max-w-[200px] flex-1"
+            value="players"
+            aria-label="players"
+          >
             <Text color="red" asChild>
               <BsPeopleFill />
             </Text>
@@ -67,7 +71,11 @@ export function Lobby() {
             </Text>
           </Tabs.Trigger>
 
-          <Tabs.Trigger className="max-w-[200px] flex-1" value="roles">
+          <Tabs.Trigger
+            className="max-w-[200px] flex-1"
+            value="roles"
+            aria-label="role"
+          >
             <Text color="red" asChild>
               <FaMasksTheater />
             </Text>
@@ -80,7 +88,11 @@ export function Lobby() {
               )
             </Text>
           </Tabs.Trigger>
-          <Tabs.Trigger className="max-w-[200px] flex-1" value="menu">
+          <Tabs.Trigger
+            className="max-w-[200px] flex-1"
+            value="menu"
+            aria-label="menu"
+          >
             <Text color="red" asChild>
               <AiOutlineMenu />
             </Text>
