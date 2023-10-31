@@ -33,7 +33,7 @@ export function PlayerStatusIcon({
   return <Icon {...iconProps} />;
 }
 
-function PlayerStatusIconList({
+export function PlayerStatusIconList({
   playerStatuses,
   player,
   ...radixButtonProps

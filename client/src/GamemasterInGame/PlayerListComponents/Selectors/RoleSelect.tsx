@@ -15,12 +15,14 @@ interface RoleSelectProps {
   traveler?: boolean;
   currentRole: Role;
   onSelect: (nextrole: Role | null) => void;
+  children?: React.ReactNode;
 }
 
 export function RoleSelect({
   currentRole,
   onSelect,
   traveler,
+  children,
 }: RoleSelectProps) {
   const { script, game } = useDefiniteGame();
   const roles = useMemo(() => {
@@ -42,11 +44,15 @@ export function RoleSelect({
           className="w-full"
           color={colorMap[getCharacter(currentRole).team]}
         >
-          <CharacterName role={currentRole} size="3" />
-          {!!game.rolesToPlayers[currentRole]?.length && (
-            <span className="-ml-1 truncate capitalize">
-              - {game.rolesToPlayers[currentRole].join(",")}
-            </span>
+          {children || (
+            <>
+              <CharacterName role={currentRole} size="3" />
+              {!!game.rolesToPlayers[currentRole]?.length && (
+                <span className="-ml-1 truncate capitalize">
+                  - {game.rolesToPlayers[currentRole].join(",")}
+                </span>
+              )}
+            </>
           )}
         </Button>
       </Dialog.Trigger>

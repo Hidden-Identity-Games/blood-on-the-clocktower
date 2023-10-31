@@ -10,7 +10,7 @@ import {
 } from "@radix-ui/themes";
 import { RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "@hidden-identity/shared";
-import { GiBootKick, GiFeather } from "react-icons/gi";
+import { GiBootKick } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
@@ -33,6 +33,7 @@ import {
 } from "../shared/PlayerListOrder";
 import { usePlayerNotes } from "../store/actions/gmPlayerActions";
 import { Reveal } from "../types/PlayerMessageScreen";
+import { FaFeather } from "react-icons/fa6";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -81,16 +82,16 @@ export function PregamePlayerList() {
               </Dialog.Trigger>
               <Dialog.Content className="m-2">
                 <Flex direction="column" gap="2">
-                  <PlayerList.MenuItem id="kick-player" label="Kick Player">
-                    <Dialog.Close>
-                      <IconButton
-                        onClick={() => handleKickPlayer(player)}
-                        disabled={kickPlayerLoading}
-                      >
-                        <GiBootKick />
-                      </IconButton>
-                    </Dialog.Close>
-                  </PlayerList.MenuItem>
+                  <Dialog.Close>
+                    <PlayerList.MenuItem
+                      id="kick-player"
+                      label="Kick Player"
+                      onClick={() => handleKickPlayer(player)}
+                      disabled={kickPlayerLoading}
+                    >
+                      <GiBootKick />
+                    </PlayerList.MenuItem>
+                  </Dialog.Close>
                 </Flex>
               </Dialog.Content>
             </Dialog.Root>
@@ -219,7 +220,14 @@ export function NightPlayerList({
                       <PlayerList.Name player={action.player} />
                     </button>
                   </PlayerList.NoteInputModal>
-                  <PlayerList.Actions player={action.player} />
+                  <PlayerList.Actions player={action.player}>
+                    <IconButton
+                      id={`${action.player}-menu-btn`}
+                      variant="ghost"
+                    >
+                      <RxHamburgerMenu />
+                    </IconButton>
+                  </PlayerList.Actions>
                 </>
               )}
               {action.type === "game-action" && (
@@ -345,7 +353,11 @@ export function IngamePlayerList({
                 </button>
               </PlayerList.NoteInputModal>
               <DeadVoteIcon player={player} />
-              <PlayerList.Actions player={player} />
+              <PlayerList.Actions player={player}>
+                <IconButton id={`${player}-menu-btn`} variant="ghost">
+                  <RxHamburgerMenu />
+                </IconButton>
+              </PlayerList.Actions>
             </Flex>
           </Text>
 
@@ -378,7 +390,7 @@ function PlayerNotes({ player, ...props }: PlayerNotesProps) {
           <PlayerList.NoteInputModal player={player} note={notes}>
             <button className="ml-1 flex-1 whitespace-pre-line text-left">
               <Flex gap="2">
-                <GiFeather />
+                <FaFeather />
                 {notes}
               </Flex>
             </button>
