@@ -2,9 +2,41 @@ import {
   type Role,
   type Alignment,
   type PlayerStatus,
+  removeKey,
+  type BaseUnifiedGame,
 } from "@hidden-identity/shared";
-import { removeKey } from "../../utils/objectUtils.ts";
 import { UNASSIGNED, gameInProgress, retrieveGame } from "./base.ts";
+
+export function _addPLayerToGame(
+  game: BaseUnifiedGame,
+  player: string,
+  traveling: boolean | undefined,
+): BaseUnifiedGame {
+  return {
+    ...game,
+    partialPlayerOrdering: {
+      ...game.partialPlayerOrdering,
+      [player]: { rightNeighbor: null },
+    },
+    playersToRoles: {
+      ...game.playersToRoles,
+      [player]: UNASSIGNED,
+    },
+    deadPlayers: {
+      ...game.deadPlayers,
+      [player]: false,
+    },
+    travelers: {
+      ...game.travelers,
+      ...(traveling && { [player]: true }),
+    },
+    alignmentsOverrides: {
+      ...game.alignmentsOverrides,
+      // default to good so there's never a character without alignment.
+      ...(traveling && { [player]: "Good" }),
+    },
+  };
+}
 
 export async function addPlayer(
   gameId: string,
@@ -22,30 +54,7 @@ export async function addPlayer(
     throw new Error(`Duplicate Playerid found: ${player}`);
   }
 
-  game.update({
-    ...gameInstance,
-    partialPlayerOrdering: {
-      ...gameInstance.partialPlayerOrdering,
-      [player]: { rightNeighbor: null },
-    },
-    playersToRoles: {
-      ...gameInstance.playersToRoles,
-      [player]: UNASSIGNED,
-    },
-    deadPlayers: {
-      ...gameInstance.deadPlayers,
-      [player]: false,
-    },
-    travelers: {
-      ...gameInstance.travelers,
-      ...(traveling && { [player]: true }),
-    },
-    alignmentsOverrides: {
-      ...gameInstance.alignmentsOverrides,
-      // default to good so there's never a character without alignment.
-      ...(traveling && { [player]: "Good" }),
-    },
-  });
+  game.update(_addPLayerToGame(gameInstance, player, traveling));
 }
 
 export async function kickPlayer(

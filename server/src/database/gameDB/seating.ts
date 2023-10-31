@@ -63,7 +63,6 @@ export function getOrderedPlayers(
 ): BrokenOrderedPlayers | WellOrderedPlayers {
   const players = Object.keys(game.playersToRoles);
   const fullList = followGraph(game.partialPlayerOrdering);
-  console.log(fullList);
   if (fullList.length === players.length) {
     return { fullList, problems: false };
   }

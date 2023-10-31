@@ -1,4 +1,4 @@
-import { getCharacter } from "@hidden-identity/shared";
+import { Character, getCharacter } from "@hidden-identity/shared";
 import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { alignmentColorMap, colorMap } from "./CharacterTypes";
 import { Flex, Text } from "@radix-ui/themes";
@@ -8,9 +8,15 @@ import { useDefiniteGame } from "../store/GameContext";
 import { useGetPlayerAlignment } from "../store/useStore";
 import { ExtnesionProps, RadixTextProps } from "../types/radixTypes";
 
+const getRoleIcon = (character: Character) =>
+  character.imageSrc
+    ? new URL(`../assets/icon/role/${character.imageSrc}`, import.meta.url).href
+    : DefaultRoleImageSrc;
+
 export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
   role: Role;
 }
+
 export function RoleIcon({ role, ...props }: RoleIconProps) {
   return (
     <div
@@ -21,9 +27,7 @@ export function RoleIcon({ role, ...props }: RoleIconProps) {
       )}
       style={{
         backgroundPosition: "center 3px",
-        backgroundImage: `url(${
-          getCharacter(role)?.imageSrc ?? DefaultRoleImageSrc
-        })`,
+        backgroundImage: `url(${getRoleIcon(getCharacter(role))})`,
       }}
     ></div>
   );

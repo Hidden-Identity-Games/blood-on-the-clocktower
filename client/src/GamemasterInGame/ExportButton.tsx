@@ -24,12 +24,11 @@ export function ExportButton({
   className,
 }: ExportButtonProps) {
   const { game } = useDefiniteGame();
-  console.log(game);
   return (
     <Dialog.Root>
       <Dialog.Trigger>
         <Button disabled={disabled} className={className}>
-          Export
+          Export to Townsquare
         </Button>
       </Dialog.Trigger>
 

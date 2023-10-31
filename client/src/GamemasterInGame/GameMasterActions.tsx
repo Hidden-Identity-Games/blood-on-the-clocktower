@@ -1,42 +1,30 @@
-import {
-  Button,
-  Callout,
-  Dialog,
-  DialogClose,
-  Flex,
-  Text,
-} from "@radix-ui/themes";
+import { Button, Dialog, DialogClose, Flex, Text } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
-import { Role } from "@hidden-identity/shared";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ExportButton } from "./ExportButton";
 import {
   useDistributeRoles,
   useSetGameStatus,
 } from "../store/actions/gmActions";
-import { useCreateGame } from "../store/useStore";
 import { DestructiveButton } from "./DestructiveButton";
+import { Role } from "@hidden-identity/shared";
+import { NewGameButton } from "../NewGamePage/NewGameButton";
 
 interface GameMasterActionsProps {
-  selectedRoles: Record<Role, number>;
+  gameStartable: boolean;
+  availableRolesList: Role[];
 }
 
-export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
+export function GameMasterActions({
+  gameStartable,
+  availableRolesList,
+}: GameMasterActionsProps) {
   const { game } = useDefiniteGame();
   const [, , , setGameStatus] = useSetGameStatus();
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
-
-  const availableRolesList = Object.entries(selectedRoles).flatMap(
-    ([role, qty]) => Array.from({ length: qty }).map(() => role),
-  ) as Role[];
-
   const problems =
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
-  const gameStartable =
-    availableRolesList.length !== 0 &&
-    !game.orderedPlayers.problems &&
-    availableRolesList.length === game.orderedPlayers.fullList.length;
 
   return (
     <Flex gap="2" direction="column">
@@ -116,48 +104,21 @@ export function GameMasterActions({ selectedRoles }: GameMasterActionsProps) {
             Back to First Day
           </DestructiveButton>
         ))}
-      <NewGameButton />
+      <NewGameButton>Create new game</NewGameButton>
+      {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
     </Flex>
   );
 }
 
-function NewGameButton() {
-  const { gameId } = useDefiniteGame();
-  const [newGameError, newGameLoading, , newGame] = useCreateGame();
-
+function SandboxOptions() {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button className="">New game</Button>
+        <Button>Sandbox tools</Button>
       </Dialog.Trigger>
-      <Dialog.Content className="m-2">
-        <Flex direction="column" gap="2">
-          <Flex className="w-full" justify="end">
-            <DialogHeader>Create a new game?</DialogHeader>
-          </Flex>
-          {newGameLoading && "Setting up, one moment..."}
-          {!newGameLoading && (
-            <>
-              {newGameError && (
-                <Callout.Root>
-                  <Callout.Text>
-                    It looks there was an error, please try again.
-                  </Callout.Text>
-                </Callout.Root>
-              )}
-              <Text as="div" className="mb-2">
-                Are you sure? The current game will end, and everyone will be
-                given a link to join the new game.
-              </Text>
-              <Flex className="w-full" justify="between">
-                <Dialog.Close>
-                  <Button>Cancel</Button>
-                </Dialog.Close>
-                <Button onClick={() => newGame(gameId)}>New game</Button>
-              </Flex>
-            </>
-          )}
-        </Flex>
+      <Dialog.Content>
+        <DialogHeader>Sandbox tools</DialogHeader>
+        Coming Soon
       </Dialog.Content>
     </Dialog.Root>
   );

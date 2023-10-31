@@ -12,6 +12,7 @@ import { FaMasksTheater } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { PregamePlayerList } from "./PlayerList";
+import { AiOutlineMenu } from "react-icons/ai";
 
 export interface LobbyProps {
   rolesList: Role[];
@@ -25,6 +26,17 @@ export function Lobby() {
     script.map(({ id }) => id),
   );
 
+  const availableRolesList = Object.entries(
+    characterSelectState.selectedRoles.value,
+  ).flatMap(([role, qty]) =>
+    Array.from({ length: qty }).map(() => role),
+  ) as Role[];
+
+  const gameStartable =
+    availableRolesList.length !== 0 &&
+    !game.orderedPlayers.problems &&
+    availableRolesList.length === game.orderedPlayers.fullList.length;
+
   return (
     <Flex
       gap="3"
@@ -32,9 +44,6 @@ export function Lobby() {
       direction="column"
       className="flex flex-1 flex-col overflow-y-auto"
     >
-      <GameMasterActions
-        selectedRoles={characterSelectState.selectedRoles.value}
-      />
       <TeamDistributionBar
         charsSelected={
           Object.entries(characterSelectState.selectedRoles.value).flatMap(
@@ -49,26 +58,33 @@ export function Lobby() {
       >
         <Tabs.List>
           <Tabs.Trigger className="max-w-[200px] flex-1" value="players">
-            <Text className="mr-1">
-              Players ({Object.keys(game.playersToRoles).length})
-            </Text>
             <Text color="red" asChild>
               <BsPeopleFill />
+            </Text>
+            <Text className="ml-1">
+              {selectedTab === "players" && "Players"} (
+              {Object.keys(game.playersToRoles).length})
             </Text>
           </Tabs.Trigger>
 
           <Tabs.Trigger className="max-w-[200px] flex-1" value="roles">
-            <Text className="mr-1">
-              Roles(
+            <Text color="red" asChild>
+              <FaMasksTheater />
+            </Text>
+            <Text className="ml-1">
+              {selectedTab === "roles" && "Roles"}(
               {Object.values(characterSelectState.selectedRoles.value).reduce(
                 (sum, qty) => sum + qty,
                 0,
               )}
               )
             </Text>
+          </Tabs.Trigger>
+          <Tabs.Trigger className="max-w-[200px] flex-1" value="menu">
             <Text color="red" asChild>
-              <FaMasksTheater />
+              <AiOutlineMenu />
             </Text>
+            <Text className="ml-1">{selectedTab === "menu" && "Menu"}</Text>
           </Tabs.Trigger>
         </Tabs.List>
         <div className="relative flex-1 overflow-x-hidden">
@@ -113,6 +129,29 @@ export function Lobby() {
                   value="roles"
                 >
                   <CharacterSelectList state={characterSelectState} />
+                </Tabs.Content>
+              </motion.div>
+            )}
+            {selectedTab === "menu" && (
+              <motion.div
+                className="absolute h-full w-full"
+                key="menu"
+                initial={{ x: "100%", opacity: 0.3 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0.3 }}
+                transition={{ type: "tween" }}
+              >
+                <Tabs.Content
+                  forceMount
+                  className="h-full overflow-y-auto"
+                  value="menu"
+                >
+                  <div className="p-2">
+                    <GameMasterActions
+                      gameStartable={gameStartable}
+                      availableRolesList={availableRolesList}
+                    />
+                  </div>
                 </Tabs.Content>
               </motion.div>
             )}

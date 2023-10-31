@@ -1,5 +1,5 @@
+import { pluck } from "@hidden-identity/shared";
 import { useEffect, useState } from "react";
-import { pluck } from "../../../utils/shuffleList";
 
 export interface DynamicListArgs<T> {
   recommended: T[];

@@ -1,5 +1,4 @@
 import { PlayerMessage, PlayerMessageMap } from "@hidden-identity/shared";
-// import { exhaustiveCheck } from "../../../utils/exhaustiveCheck";
 import { RevealRoleMessage } from "./RevealRoleMessage";
 import { DemonMessage } from "./DemonMessage";
 import { RevealPlayerMessage } from "./RevealPlayerMessage";

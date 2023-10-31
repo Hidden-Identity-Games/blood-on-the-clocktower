@@ -5,6 +5,7 @@ import {
   type UnifiedGameComputed,
   type GameStatus,
   type Role,
+  type Script,
 } from "@hidden-identity/shared";
 import { getOrderedPlayers } from "../gameDB/seating.ts";
 import { addScript, addTestScript } from "../scriptDB.ts";
@@ -63,36 +64,36 @@ export async function getGame(gameId: string): Promise<UnifiedGame> {
   return (await retrieveGame(gameId)).readOnce();
 }
 
-export async function addGame(gameId: string): Promise<boolean> {
+export async function addGame(
+  gameId: string,
+  game: BaseUnifiedGame,
+  script: Script,
+): Promise<void> {
   console.log(`adding ${gameId}`);
   if (await gameExists(gameId)) {
     throw new Error("Game already exists");
   }
 
-  gameDB[gameId] = new WatchableResource(createGame(), gameComputer);
+  gameDB[gameId] = new WatchableResource(game, gameComputer);
+  await addScript(gameId, script);
+
   gameDB[gameId].subscribe((value) => {
     storage.putFile(gameId, value as BaseUnifiedGame).catch((e) => {
       console.error(e);
     });
   });
-  await addScript(gameId);
-
-  return true;
 }
 
 export async function addTestGame(
   gameId: string,
   game: BaseUnifiedGame,
-): Promise<boolean> {
-  console.log(`adding ${gameId}`);
-
+  script: Script,
+): Promise<void> {
   gameDB[gameId] = new WatchableResource(game, gameComputer);
-  await addTestScript(gameId);
-
-  return true;
+  await addTestScript(gameId, script);
 }
 
-function createGame(): BaseUnifiedGame {
+export function createGame(): BaseUnifiedGame {
   return {
     gameStatus: "PlayersJoining",
     gmSecretHash: generate(3).join("-"),

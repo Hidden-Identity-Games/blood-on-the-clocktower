@@ -29,7 +29,7 @@ export function GameHeader() {
         <Flex gap="1" align="center">
           <QRCodeDialog gameId={gameId} />
         </Flex>
-        <Heading size="2" className="shrink truncate capitalize">
+        <Heading size="2" className="max-w-[50%] shrink truncate capitalize">
           Status: {game?.gameStatus}
         </Heading>
       </Flex>
@@ -73,7 +73,8 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
       <Dialog.Trigger>
         <Flex align="center" gap="1" asChild>
           <button>
-            <Text color="amber">Game:</Text> {gameId}
+            <Text color="amber">Game:</Text>
+            <Text className="truncate">{gameId}</Text>
             <BsShare className="text-sm" />
           </button>
         </Flex>

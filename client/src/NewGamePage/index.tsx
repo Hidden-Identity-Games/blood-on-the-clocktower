@@ -1,57 +1,37 @@
-import {
-  Button,
-  Callout,
-  Dialog,
-  DialogClose,
-  Flex,
-  TextField,
-} from "@radix-ui/themes";
-import { useCreateGame } from "../store/useStore";
+import { Button, Dialog, DialogClose, Flex, TextField } from "@radix-ui/themes";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import title from "../assets/title_banner.png";
 import backgroundImg from "../assets/hidden_identity_cover.png";
+import { NewGameButton } from "./NewGameButton";
 
 export function NewGameLanding() {
-  const [error, isLoading, , createGame] = useCreateGame();
   const [joinCode, setJoinCode] = React.useState("");
   const navigate = useNavigate();
 
   return (
-    <>
-      <div
-        className="flex h-full flex-col bg-contain bg-center"
-        style={{
-          backgroundImage: `url(${backgroundImg})`,
-          backgroundRepeat: "no-repeat",
-          boxShadow: "0 0 40px 40px var(--color-page-background) inset",
-        }}
-      >
-        <Flex className="mx-2 my-[60px]" justify="center">
-          <img src={title} />
-        </Flex>
-        {error && (
-          <div className="relative h-0 w-full">
-            <Callout.Root className="absolute bottom-0">
-              <Callout.Text>{error}</Callout.Text>
-            </Callout.Root>
-          </div>
-        )}
-      </div>
+    <Flex
+      className="h-screen min-h-0 flex-col px-4"
+      style={{
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        boxShadow: "0 0 40px 40px var(--color-page-background) inset",
+      }}
+    >
+      <img src={title} className="mx-auto mt-6" />
       <Flex
-        className="mb-3 mt-[-18vh] w-full "
+        className="mx-auto mb-6 mt-auto w-full min-w-[300px] max-w-[450px] self-end"
         direction="row"
         align="center"
-        gap="6"
-        justify={"center"}
+        justify={"between"}
       >
-        <Button onClick={() => createGame()} disabled={isLoading}>
-          Create Game
-        </Button>
+        <NewGameButton>Create game</NewGameButton>
 
         <Dialog.Root>
           <Dialog.Trigger>
-            <Button disabled={isLoading}>Join Game</Button>
+            <Button>Join Game</Button>
           </Dialog.Trigger>
           <Dialog.Content className="m-2">
             <Dialog.Title align="center">
@@ -89,6 +69,6 @@ export function NewGameLanding() {
           </Dialog.Content>
         </Dialog.Root>
       </Flex>
-    </>
+    </Flex>
   );
 }

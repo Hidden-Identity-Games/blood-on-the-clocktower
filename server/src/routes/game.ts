@@ -40,8 +40,17 @@ import {
   playerAndGameIdShape,
   roleShape,
 } from "./baseApiShapes.ts";
+import { GameCreator } from "../testingUtils/gameCreator.ts";
 
 await setupTestGames();
+
+const testGameOptions = z.object({
+  isTestGame: z.boolean(),
+  players: z.onumber(),
+  randomRoles: z.oboolean(),
+});
+
+export type TestGameOptions = z.TypeOf<typeof testGameOptions>;
 
 export const gameRoutes = {
   getGame: publicProcedure
@@ -57,24 +66,47 @@ export const gameRoutes = {
       z.intersection(
         gameIdShape,
         z.object({
+          script: z.array(z.object({ id: roleShape })),
           oldGameId: z.string().optional(),
+          testGameOptions,
         }),
       ),
     )
-    .mutation(async ({ input: { gameId, oldGameId } }) => {
-      await addGame(gameId);
-      if (oldGameId) {
-        console.log(`recieved old gameID: ${oldGameId}, updating old game`);
+    .mutation(
+      async ({ input: { gameId, oldGameId, testGameOptions, script } }) => {
+        let gameCreator = new GameCreator();
+        if (testGameOptions?.isTestGame) {
+          console.log(
+            `generating test game: ${gameId}, ${JSON.stringify(
+              testGameOptions,
+            )}`,
+          );
 
-        const oldGame = await retrieveGame(oldGameId);
-        oldGame.update({
-          ...oldGame.readOnce(),
-          nextGameId: gameId,
-        });
-      }
+          if (testGameOptions.players) {
+            gameCreator = gameCreator
+              .addPlayers(testGameOptions.players)
+              .assignSeating();
+            if (testGameOptions.randomRoles) {
+              gameCreator.assignRandomRolesToCharacters(script);
+            }
+          }
+        }
 
-      return await getGame(gameId);
-    }),
+        await addGame(gameId, gameCreator.toGame(), script);
+
+        if (oldGameId) {
+          console.log(`recieved old gameID: ${oldGameId}, updating old game`);
+
+          const oldGame = await retrieveGame(oldGameId);
+          oldGame.update({
+            ...oldGame.readOnce(),
+            nextGameId: gameId,
+          });
+        }
+
+        return await getGame(gameId);
+      },
+    ),
   addPlayer: playerProcedure
     .input(playerAndGameIdShape)
     .mutation(async ({ input: { gameId, player } }) => {

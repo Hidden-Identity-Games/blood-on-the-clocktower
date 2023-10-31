@@ -17,7 +17,7 @@
   "scripts": {
     "build-client": "tsc",
     "start-prod": "SERVER_PORT=3000 ts-node --esm src/index.ts",
-    "dev": "concurrently \"pnpm run build-client --watch\" \"SERVER_PORT=6001 nodemon --esm src/index.ts\"",
+    "dev": "concurrently \"pnpm run build-client --watch\" \"SERVER_PORT=6001 nodemon --esm src/index.ts\" --watch ../shared/src",
     "lint": "eslint . --ext ts --report-unused-disable-directives ",
     "type-check": "tsc",
     "test": "pnpm run type-check && pnpm run lint"
@@ -26,6 +26,7 @@
   "author": "",
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.417.0",
+    "@faker-js/faker": "^8.2.0",
     "@hidden-identity/shared": "workspace:^",
     "@trpc/server": "^10.38.3",
     "@types/cors": "^2.8.14",

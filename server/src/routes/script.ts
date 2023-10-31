@@ -8,7 +8,9 @@ export const scriptRoutes = {
     .input(
       z.intersection(
         gameIdShape,
-        z.object({ script: z.array(z.object({ id: roleShape })) }),
+        z.object({
+          script: z.array(z.object({ id: roleShape })),
+        }),
       ),
     )
     .mutation(async ({ input: { gameId, script } }) => {
