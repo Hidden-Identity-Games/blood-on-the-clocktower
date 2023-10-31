@@ -1,6 +1,5 @@
 import { test, expect, Page } from "@playwright/test";
-import { createNewGame } from "./utils";
-import { v4 } from "uuid";
+import { createNewGame, joinGameAs } from "./utils";
 
 test("join game", async ({ page }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
@@ -12,10 +11,19 @@ test("join game", async ({ page }) => {
 });
 
 test("re-join game", async ({ page }) => {
-  await page.goto("/test-game");
-  await page.getByRole("textbox", { name: "name" }).fill(v4());
-  await page.getByRole("button", { name: "Join" }).click();
-  await expect(page.getByRole("button", { name: "Alex" })).toBeVisible();
+  const gameId = await createNewGame(page, "Trouble Brewing");
+  await page.goto("/");
+
+  await joinGameAs(page, gameId, "Alex");
+  await page.goto("/?testPlayerKey=1");
+  await joinGameAs(page, gameId, "Steve");
+
+  await page.goto("/?testPlayerKey=2");
+  await joinGameAs(page, gameId, "Alex");
+
+  await page.getByRole("button", { name: /Yes/ }).click();
+
+  await expect(page.getByRole("button", { name: "Steve" })).toBeVisible();
 });
 
 test("can 15 players join", async ({ context, page }) => {
