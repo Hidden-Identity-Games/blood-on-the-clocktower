@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import React from "react";
 
+const CircularLayoutContext = React.createContext({ width: 0, height: 0 });
+
 interface CircularLayoutProps {
-  children:
-    | React.ReactElement<PlaceInCircleProps>
-    | React.ReactElement<PlaceInCircleProps>[];
+  children: React.ReactElement | React.ReactElement[];
   className?: string;
 }
 export function CircularLayout({ children, className }: CircularLayoutProps) {
@@ -20,39 +20,25 @@ export function CircularLayout({ children, className }: CircularLayoutProps) {
     }
   }, []);
 
-  const childArray = Array.isArray(children) ? children : [children];
-
   return (
-    <div className={classNames("relative", className)} ref={ref}>
-      {childArray.map((child, idx) => (
-        <PlaceInCircle
-          num={idx}
-          of={childArray.length}
-          parentWidth={width}
-          parentHeight={height}
-        >
-          {child}
-        </PlaceInCircle>
-      ))}
-    </div>
+    <CircularLayoutContext.Provider value={{ width, height }}>
+      <div className={classNames("relative", className)} ref={ref}>
+        {children}
+      </div>
+    </CircularLayoutContext.Provider>
   );
 }
 
 interface PlaceInCircleProps {
   num: number;
   of: number;
-  parentWidth: number;
-  parentHeight: number;
   children: React.ReactNode;
 }
-function PlaceInCircle({
-  num,
-  of,
-  parentWidth,
-  parentHeight,
-  children,
-}: PlaceInCircleProps) {
+export function PlaceInCircle({ num, of, children }: PlaceInCircleProps) {
   const ref = React.useRef<HTMLDivElement>(null);
+  const { width: parentWidth, height: parentHeight } = React.useContext(
+    CircularLayoutContext,
+  );
   const [thisWidth, setWidth] = React.useState(0);
   const [thisHeight, setHeight] = React.useState(0);
 
