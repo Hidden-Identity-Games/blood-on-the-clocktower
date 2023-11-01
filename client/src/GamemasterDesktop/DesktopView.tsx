@@ -13,9 +13,12 @@ import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { GameHeader } from "../shared/GameHeader";
+import classNames from "classnames";
 
 export function DesktopView() {
   const { gameId } = useParams();
+  const [search] = useSearchParams();
+  const isDayView = search.get("view") !== "night";
 
   return (
     <GameProvider gameId={gameId!}>
@@ -25,7 +28,12 @@ export function DesktopView() {
           <Flex className="flex-1">
             <Grimoire />
           </Flex>
-          <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
+          <Flex
+            className={classNames(
+              "h-full w-1/4 min-w-[400px] overflow-hidden",
+              { "opacity-0": isDayView },
+            )}
+          >
             <SideBar />
           </Flex>
         </Flex>
@@ -47,7 +55,7 @@ function SideBar() {
 function Grimoire() {
   const { game } = useGame();
   const [search, setSearch] = useSearchParams();
-  const firstSeat = search.get("firstSeat") ?? "";
+  const firstSeat = search.get("firstSeat")?.toLowerCase() ?? "";
   const players = usePlayerOrder("seat order", firstSeat);
 
   if (!game) {
