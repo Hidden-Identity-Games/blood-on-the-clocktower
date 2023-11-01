@@ -24,7 +24,6 @@ export function NightOrder() {
 
   const [selectedOrder, setSelectedOrder] =
     React.useState<PlayerOrder>("alphabetical");
-  const [firstSeat, setFirstSeat] = React.useState("");
 
   const [playerMessage, setPlayerMessage] = React.useState("");
   const [playerReveal, setPlayerReveal] = React.useState<
@@ -95,8 +94,6 @@ export function NightOrder() {
         <IngamePlayerList
           selectedOrder={selectedOrder}
           setSelectedOrder={setSelectedOrder}
-          firstSeat={firstSeat}
-          setFirstSeat={setFirstSeat}
         />
       </Tabs.Content>
 

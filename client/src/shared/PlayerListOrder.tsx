@@ -3,6 +3,7 @@ import { useGame } from "../store/GameContext";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { MdSort } from "react-icons/md";
 import { exhaustiveCheck } from "@hidden-identity/shared";
+import { useFirstSeat } from "../store/useFirstSeat";
 
 const orders = ["alphabetical", "seat order"] as const;
 export type PlayerOrder = (typeof orders)[number];
@@ -10,16 +11,16 @@ export type PlayerOrder = (typeof orders)[number];
 interface PlayerListOrderProps {
   selectedOrder: PlayerOrder;
   setSelectedOrder: (order: PlayerOrder) => void;
-  setFirstSeat: (player: string) => void;
   player?: string;
 }
 
 export function PlayerListOrder({
   selectedOrder,
   setSelectedOrder,
-  setFirstSeat,
   player,
 }: PlayerListOrderProps) {
+  const [_, setFirstSeat] = useFirstSeat();
+
   return (
     <Flex gap="2">
       <Button

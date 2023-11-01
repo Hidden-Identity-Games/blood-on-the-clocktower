@@ -34,6 +34,8 @@ import {
 import { usePlayerNotes } from "../store/actions/gmPlayerActions";
 import { Reveal } from "../types/PlayerMessageScreen";
 import { FaFeather } from "react-icons/fa6";
+import { useSearchParams } from "react-router-dom";
+import { useFirstSeat } from "../store/useFirstSeat";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -133,6 +135,7 @@ export function NightPlayerList({
 }: NightPlayerListProps) {
   const { game } = useDefiniteGame();
   const [, , , setPlayerNote] = usePlayerNotes();
+  const [_, setSearch] = useSearchParams();
 
   const nightKey = firstNight ? "firstNight" : "otherNight";
 
@@ -176,6 +179,10 @@ export function NightPlayerList({
 
   const endNight = () => {
     endNightCallback();
+    setSearch((search) => {
+      search.set("view", "day");
+      return search;
+    });
     setCheckedActions(
       Object.fromEntries(
         nightActions.map((action) => {
@@ -309,16 +316,13 @@ export function NightPlayerList({
 interface IngamePlayerListProps {
   selectedOrder: PlayerOrder;
   setSelectedOrder: (order: PlayerOrder) => void;
-  firstSeat: string;
-  setFirstSeat: (player: string) => void;
 }
 export function IngamePlayerList({
   selectedOrder,
   setSelectedOrder,
-  firstSeat,
-  setFirstSeat,
 }: IngamePlayerListProps) {
   const { game } = useDefiniteGame();
+  const [firstSeat] = useFirstSeat();
   const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
   const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
@@ -334,7 +338,6 @@ export function IngamePlayerList({
       <PlayerListOrder
         selectedOrder={selectedOrder}
         setSelectedOrder={setSelectedOrder}
-        setFirstSeat={setFirstSeat}
       />
       <Separator size="4" />
       {filteredPlayers.map((player) => (

@@ -26,6 +26,7 @@ import {
   PlayerOrder,
   usePlayerOrder,
 } from "../shared/PlayerListOrder";
+import { useFirstSeat } from "../store/useFirstSeat";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -33,7 +34,7 @@ export function PlayerInGame() {
   const [selectedTab, setSelectedTab] = React.useState("script");
   const [selectedOrder, setSelectedOrder] =
     useState<PlayerOrder>("alphabetical");
-  const [firstSeat, setFirstSeat] = useState(me);
+  const [firstSeat] = useFirstSeat();
   const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
   const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
@@ -189,7 +190,6 @@ export function PlayerInGame() {
             <PlayerListOrder
               selectedOrder={selectedOrder}
               setSelectedOrder={setSelectedOrder}
-              setFirstSeat={setFirstSeat}
               player={me}
             />
             <Separator size="4" />
