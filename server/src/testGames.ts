@@ -129,6 +129,6 @@ export async function setupTestGames(): Promise<void> {
       .moveToSetup()
       .addTraveler()
       .toGame(),
-    getScript("🌶️ Trouble Brewing"),
+    getScript("🌶️ TB"),
   );
 }

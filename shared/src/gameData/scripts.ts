@@ -3,7 +3,7 @@ export type ScriptName =
   | "Bad Moon Rising"
   | "Sects & Violets"
   | "Trouble with Violets"
-  | "🌶️ Trouble Brewing";
+  | "🌶️ TB";
 export type ScriptDefinition = {
   name: ScriptName;
   imageSrc: string;
@@ -137,7 +137,7 @@ export const SCRIPTS: ScriptDefinition[] = [
     ],
   },
   {
-    name: "🌶️ Trouble Brewing",
+    name: "🌶️ TB",
     imageSrc:
       "https://i5.walmartimages.com/asr/d84e2293-9320-4867-b0f0-8532b1328cb7_1.2e5f695ebd8d419128c9e7c050de0999.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF",
     characters: [
