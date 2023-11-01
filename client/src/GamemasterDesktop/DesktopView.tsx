@@ -13,6 +13,7 @@ import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { GameHeader } from "../shared/GameHeader";
+import { useFirstSeat } from "../store/useFirstSeat";
 
 export function DesktopView() {
   const { gameId } = useParams();
@@ -49,7 +50,7 @@ function SideBar() {
 function Grimoire() {
   const { game } = useGame();
   const [search, setSearch] = useSearchParams();
-  const firstSeat = search.get("firstSeat")?.toLowerCase() ?? "";
+  const [firstSeat] = useFirstSeat();
   const players = usePlayerOrder("seat order", firstSeat);
 
   if (!game) {
