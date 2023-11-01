@@ -1,5 +1,11 @@
 import { addTestGame } from "./database/gameDB/base.ts";
-import { getScript } from "@hidden-identity/shared";
+import {
+  type Role,
+  getCharacter,
+  getScript,
+  shuffleList,
+  allTravelers,
+} from "@hidden-identity/shared";
 import { GameCreator } from "./testingUtils/gameCreator.ts";
 
 export async function setupTestGames(): Promise<void> {
@@ -67,5 +73,62 @@ export async function setupTestGames(): Promise<void> {
       .addTraveler()
       .toGame(),
     getScript("Bad Moon Rising"),
+  );
+  await addTestGame(
+    "tg-legion",
+    new GameCreator()
+      .addPlayers(15)
+      .assignSeating()
+      .update((game) => {
+        const nonTravelers = Object.keys(game.playersToRoles).filter(
+          (player) => !game.travelers[player],
+        );
+        const travelers = Object.keys(game.playersToRoles).filter(
+          // could be in travelers but false
+          (player) => game.travelers[player],
+        );
+
+        const travelerCharacters = shuffleList(allTravelers());
+
+        const characters = [
+          ...Array.from({ length: 8 }).map(() =>
+            getCharacter("legion" as Role),
+          ),
+          getCharacter("undertaker" as Role),
+          getCharacter("undertaker" as Role),
+          getCharacter("empath" as Role),
+          getCharacter("empath" as Role),
+          getCharacter("virgin" as Role),
+          getCharacter("recluse" as Role),
+          getCharacter("saint" as Role),
+        ];
+
+        const nonTravelersAndRoles = Object.fromEntries(
+          shuffleList(nonTravelers).map((player, idx) => [
+            player,
+            characters[idx].id,
+          ]),
+        );
+
+        const travelersAndRoles = Object.fromEntries(
+          shuffleList(travelers).map((player, idx) => [
+            player,
+            travelerCharacters[idx],
+          ]),
+        );
+        game.playersToRoles = {
+          ...nonTravelersAndRoles,
+          ...travelersAndRoles,
+        };
+
+        game.playersSeenRoles = [...nonTravelers, ...travelers];
+        game.gameStatus = "Setup";
+
+        return game;
+      })
+      .moveToSetup()
+      .addTraveler()
+      .toGame(),
+    getScript("🌶️ TB"),
   );
 }

@@ -1,7 +1,9 @@
 export type ScriptName =
   | "Trouble Brewing"
   | "Bad Moon Rising"
-  | "Sects & Violets";
+  | "Sects & Violets"
+  | "Trouble with Violets"
+  | "🌶️ TB";
 export type ScriptDefinition = {
   name: ScriptName;
   imageSrc: string;
@@ -100,6 +102,70 @@ export const SCRIPTS: ScriptDefinition[] = [
       { id: "pukka" },
       { id: "shabaloth" },
       { id: "po" },
+    ],
+  },
+  {
+    name: "Trouble with Violets",
+    imageSrc:
+      "data:image/png;base64,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",
+    characters: [
+      { id: "washerwoman" },
+      { id: "librarian" },
+      { id: "investigator" },
+      { id: "chef" },
+      { id: "empath" },
+      { id: "fortune_teller" },
+      { id: "undertaker" },
+      { id: "monk" },
+      { id: "ravenkeeper" },
+      { id: "virgin" },
+      { id: "slayer" },
+      { id: "soldier" },
+      { id: "mayor" },
+      { id: "butler" },
+      { id: "drunk" },
+      { id: "recluse" },
+      { id: "saint" },
+      { id: "evil_twin" },
+      { id: "witch" },
+      { id: "cerenovus" },
+      { id: "pit-hag" },
+      { id: "fang_gu" },
+      { id: "vigormortis" },
+      { id: "no_dashii" },
+      { id: "vortox" },
+    ],
+  },
+  {
+    name: "🌶️ TB",
+    imageSrc:
+      "https://i5.walmartimages.com/asr/d84e2293-9320-4867-b0f0-8532b1328cb7_1.2e5f695ebd8d419128c9e7c050de0999.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF",
+    characters: [
+      { id: "washerwoman" },
+      { id: "librarian" },
+      { id: "investigator" },
+      { id: "chef" },
+      { id: "empath" },
+      { id: "fortune_teller" },
+      { id: "undertaker" },
+      { id: "monk" },
+      { id: "ravenkeeper" },
+      { id: "virgin" },
+      { id: "slayer" },
+      { id: "soldier" },
+      { id: "mayor" },
+      { id: "atheist" },
+      { id: "drunk" },
+      { id: "recluse" },
+      { id: "saint" },
+      { id: "lunatic" },
+      { id: "baron" },
+      { id: "poisoner" },
+      { id: "scarlet_woman" },
+      { id: "spy" },
+      { id: "marionette" },
+      { id: "imp" },
+      { id: "legion" },
     ],
   },
 ];

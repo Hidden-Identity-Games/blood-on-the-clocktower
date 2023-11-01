@@ -129,6 +129,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "madness",
       },
+      status: [{ type: "characterAbility" }],
     },
     otherNight: {
       reminder:
@@ -137,6 +138,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "madness",
       },
+      status: [{ type: "characterAbility" }],
     },
   },
   {
@@ -739,6 +741,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The previously protected player is no longer protected. The Monk points to a player not themself. Mark that player 'Protected'.",
       order: 12,
+      status: [{ type: "protected" }],
     },
   },
   {
@@ -1304,7 +1307,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Vigormortis points to a player. That player dies. If a Minion, they keep their ability and one of their Townsfolk neighbours is poisoned.",
       order: 32,
-      status: [{ type: "dead" }],
+      status: [{ type: "dead" }, { type: "characterAbility" }],
     },
   },
   {
@@ -1375,11 +1378,13 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Witch points to a player. If that player nominates tomorrow they die immediately.",
       order: 24,
+      status: [{ type: "characterAbility" }],
     },
     otherNight: {
       reminder:
         "If there are 4 or more players alive: The Witch points to a player. If that player nominates tomorrow they die immediately.",
       order: 14,
+      status: [{ type: "characterAbility" }],
     },
   },
   {
@@ -2106,6 +2111,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "Choose a player, that player dies.",
       order: 23,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -2273,7 +2279,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "character-selected-you",
         restriction: {
-          role: ["witch"],
+          role: ["widow"],
         },
       },
     },
