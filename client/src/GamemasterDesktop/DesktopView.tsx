@@ -13,7 +13,6 @@ import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { GameHeader } from "../shared/GameHeader";
-import classNames from "classnames";
 
 export function DesktopView() {
   const { gameId } = useParams();
@@ -28,13 +27,8 @@ export function DesktopView() {
           <Flex className="flex-1">
             <Grimoire />
           </Flex>
-          <Flex
-            className={classNames(
-              "h-full w-1/4 min-w-[400px] overflow-hidden",
-              { "opacity-0": isDayView },
-            )}
-          >
-            <SideBar />
+          <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
+            {!isDayView && <SideBar />}
           </Flex>
         </Flex>
       </Flex>
