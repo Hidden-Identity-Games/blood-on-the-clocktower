@@ -1,5 +1,5 @@
 import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
-import { useDefiniteGame } from "../store/GameContext";
+import { useGame } from "../store/GameContext";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { MdSort } from "react-icons/md";
 import { exhaustiveCheck } from "@hidden-identity/shared";
@@ -50,7 +50,9 @@ export function PlayerListOrder({
 }
 
 export function usePlayerOrder(order: PlayerOrder, firstSeat?: string) {
-  const { game } = useDefiniteGame();
+  const { game } = useGame();
+
+  if (!game) return [];
 
   if (order === "alphabetical" || game.orderedPlayers.problems) {
     return game.playerList ?? [];

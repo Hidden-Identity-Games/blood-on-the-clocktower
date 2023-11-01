@@ -6,7 +6,7 @@ import fingerprintImage from "../assets/fingerprint.png";
 import { getCharacter } from "@hidden-identity/shared";
 import { Role } from "@hidden-identity/shared";
 import { useState } from "react";
-import { AlignmentText } from "../shared/RoleIcon";
+import { AlignmentText, getRoleIcon } from "../shared/RoleIcon";
 import { usePlayer } from "../store/usePlayer";
 import { useSetPlayerSeenRole } from "../store/actions/playerActions";
 
@@ -83,7 +83,7 @@ export function PlayerRole({ role }: PlayerRoleProps) {
           <div data-card-side="back" className="h-full w-full text-center">
             <img
               className="mt-3 h-full w-full"
-              src={getCharacter(role).imageSrc}
+              src={getRoleIcon(getCharacter(role))}
               onContextMenu={(event) => {
                 event.preventDefault();
                 event.stopPropagation();

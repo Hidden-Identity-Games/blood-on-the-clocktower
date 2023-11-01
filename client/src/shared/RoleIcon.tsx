@@ -8,7 +8,7 @@ import { useDefiniteGame } from "../store/GameContext";
 import { useGetPlayerAlignment } from "../store/useStore";
 import { ExtnesionProps, RadixTextProps } from "../types/radixTypes";
 
-const getRoleIcon = (character: Character) =>
+export const getRoleIcon = (character: Character) =>
   character.imageSrc
     ? new URL(`../assets/icon/role/${character.imageSrc}`, import.meta.url).href
     : DefaultRoleImageSrc;

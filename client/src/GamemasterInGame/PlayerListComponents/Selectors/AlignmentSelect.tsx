@@ -18,7 +18,7 @@ export function AlignmentSelect({
         <Button
           variant="soft"
           size="3"
-          className="capitalize"
+          className="w-full capitalize"
           color={alignmentColorMap[currentAlignment]}
         >
           <Flex className="w-full text-center" align="center" justify="center">
