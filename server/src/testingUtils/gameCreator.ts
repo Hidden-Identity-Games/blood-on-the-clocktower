@@ -24,7 +24,7 @@ export class GameCreator {
   addPlayers(playerCount: number) {
     return this.update((game) => {
       const players = Array.from({ length: playerCount }).map(() =>
-        fakerEN.person.firstName(),
+        fakerEN.person.firstName().toLocaleLowerCase(),
       );
 
       return players.reduce(
