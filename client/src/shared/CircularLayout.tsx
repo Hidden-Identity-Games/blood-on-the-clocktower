@@ -13,7 +13,11 @@ export function CircularLayout({ children, className }: CircularLayoutProps) {
 
   return (
     <CircularLayoutContext.Provider value={{ width, height }}>
-      <div className={classNames("relative", className)} ref={ref}>
+      <div
+        className={classNames("relative", className)}
+        style={{ marginLeft: Math.max(width - height, 0) }}
+        ref={ref}
+      >
         {children}
       </div>
     </CircularLayoutContext.Provider>
@@ -45,6 +49,7 @@ export function PlaceInCircle({
     X: parentWidth / 2 - width / 2,
     Y: parentHeight / 2 - height / 2,
   };
+
   const position = {
     x: containerRadius.X * -Math.sin(angle) + containerRadius.X,
     y: containerRadius.Y * -Math.cos(angle) + containerRadius.Y,

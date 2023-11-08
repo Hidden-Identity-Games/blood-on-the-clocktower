@@ -10,7 +10,9 @@ export function NewGameLanding() {
   const navigate = useNavigate();
   const [search] = useSearchParams();
   const handleJoinGame = () => {
-    navigate(`/${joinCode.toUpperCase()}?${search.toString()}`);
+    navigate(
+      `/${joinCode.toUpperCase()}/desktop?${search.toString()}&view=night`,
+    );
   };
 
   return (
@@ -31,7 +33,7 @@ export function NewGameLanding() {
         align="center"
         justify={"between"}
       >
-        <NewGameButton>Create game</NewGameButton>
+        <NewGameButton fromRoot>Create game</NewGameButton>
 
         <Dialog.Root>
           <Dialog.Trigger>
