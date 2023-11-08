@@ -5,6 +5,7 @@ import {
   Dialog,
   Flex,
   TextFieldInput,
+  Switch,
 } from "@radix-ui/themes";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ScriptSelect } from "../GamemasterInGame/ScriptSelect";
@@ -59,9 +60,10 @@ export function NewGameButton({
             <ScriptSelect onScriptChange={(s) => setScript(s)} />
             <Flex asChild gap="2" align="center">
               <label>
-                <Checkbox
+                <Switch
                   checked={isTestGame}
                   onCheckedChange={(e) => setIsTestGame(!!e)}
+                  radius="full"
                 />
                 Create test game
               </label>
@@ -73,6 +75,8 @@ export function NewGameButton({
                   placeholder="number of players"
                   type="number"
                   onChange={(e) => setPlayerCount(e.target.value)}
+                  // stop the wheel from changing this input
+                  onWheel={(e) => e.currentTarget.blur()}
                 />
                 <Flex asChild gap="2" align="center">
                   <label>
