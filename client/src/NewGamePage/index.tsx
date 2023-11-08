@@ -10,9 +10,7 @@ export function NewGameLanding() {
   const navigate = useNavigate();
   const [search] = useSearchParams();
   const handleJoinGame = () => {
-    navigate(
-      `/${joinCode.toUpperCase()}/desktop?${search.toString()}&view=night`,
-    );
+    navigate(`/${joinCode.toUpperCase()}?${search.toString()}`);
   };
 
   return (
