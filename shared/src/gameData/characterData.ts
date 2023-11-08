@@ -261,6 +261,10 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Dreamer points to a player. Show 1 good and 1 evil character token; one of these is correct.",
       order: 42,
+      playerMessage: {
+        type: "reveal-player",
+        count: 2,
+      },
     },
     otherNight: {
       reminder:
@@ -839,11 +843,13 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Philosopher either shows a 'no' head signal, or points to a good character on their sheet. If they chose a character: Swap the out-of-play character token with the Philosopher token and add the 'Is the Philosopher' reminder. If the character is in play, place the drunk marker by that player.",
       order: 2,
+      status: [{ type: "drunk" }],
     },
     otherNight: {
       reminder:
         "If the Philosopher has not used their ability: the Philosopher either shows a 'no' head signal, or points to a good character on their sheet. If they chose a character: Swap the out-of-play character token with the Philosopher token and add the 'Is the Philosopher' reminder. If the character is in play, place the drunk marker by that player.",
       order: 2,
+      status: [{ type: "drunk" }],
     },
   },
   {
@@ -1222,6 +1228,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "Choose a player that is drunk.",
       order: 41,
+      status: [{ type: "drunk" }],
     },
   },
   {
@@ -2075,11 +2082,13 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Fearmonger points to a player. Place the Fear token next to that player and announce that a new player has been selected with the Fearmonger ability.",
       order: 26,
+      status: [{ type: "characterAbility" }],
     },
     otherNight: {
       reminder:
         "The Fearmonger points to a player. If different from the previous night, place the Fear token next to that player and announce that a new player has been selected with the Fearmonger ability.",
       order: 17,
+      status: [{ type: "characterAbility" }],
     },
   },
   {
@@ -2282,6 +2291,7 @@ export const CHARACTERS: CharacterDefinition[] = [
           role: ["widow"],
         },
       },
+      status: [{ type: "poison" }],
     },
     otherNight: null,
   },
@@ -2543,5 +2553,27 @@ export const CHARACTERS: CharacterDefinition[] = [
     firstNight: null,
     otherNight: null,
     imageSrc: "gangster.png",
+  },
+  {
+    id: "lil_monsta",
+    name: "Lil' Monsta",
+    edition: "",
+    team: "Demon",
+    reminders: [],
+    remindersGlobal: ["Is the Demon", "Dead"],
+    setup: true,
+    ability:
+      "Each night, Minions choose who babysits Lil' Monsta's token & \"is the Demon\". A player dies each night*. [+1 Minion]",
+    firstNight: {
+      order: 15,
+      reminder:
+        "Wake all Minions together, allow them to vote by pointing at who they want to babysit Lil' Monsta.",
+    },
+    otherNight: {
+      order: 15,
+      reminder:
+        "Wake all Minions together, allow them to vote by pointing at who they want to babysit Lil' Monsta. Choose a player, that player dies.",
+    },
+    imageSrc: "lilmonsta.png",
   },
 ];

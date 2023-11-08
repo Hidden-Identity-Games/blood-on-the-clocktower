@@ -9,6 +9,8 @@ import {
 import { DestructiveButton } from "./DestructiveButton";
 import { Role } from "@hidden-identity/shared";
 import { NewGameButton } from "../NewGamePage/NewGameButton";
+import { QRCodeModal } from "../shared/QRCodeModal";
+import { useLocation } from "react-router-dom";
 
 interface GameMasterActionsProps {
   gameStartable: boolean;
@@ -20,6 +22,7 @@ export function GameMasterActions({
   availableRolesList,
 }: GameMasterActionsProps) {
   const { game } = useDefiniteGame();
+  const location = useLocation();
   const [, , , setGameStatus] = useSetGameStatus();
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
@@ -105,6 +108,20 @@ export function GameMasterActions({
           </DestructiveButton>
         ))}
       <NewGameButton>Create new game</NewGameButton>
+      {location.pathname.match(/\/desktop/) ? (
+        <QRCodeModal
+          message="Scan to open phone view"
+          url={window.location.href.replace(/\/desktop/, "")}
+        >
+          <Button>Open phone view</Button>
+        </QRCodeModal>
+      ) : (
+        <Button asChild>
+          <a href={`${location.pathname}/desktop?view=night`}>
+            Open Desktop View
+          </a>
+        </Button>
+      )}
       {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
     </Flex>
   );

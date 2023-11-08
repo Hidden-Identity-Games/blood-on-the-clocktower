@@ -11,16 +11,26 @@ import { ScriptSelect } from "../GamemasterInGame/ScriptSelect";
 import { useState } from "react";
 import { Script, getScript } from "@hidden-identity/shared";
 import { useCreateGame, useGame } from "../store/useStore";
+import { useLocation } from "react-router-dom";
 
-export function NewGameButton({ children }: { children: React.ReactNode }) {
+export function NewGameButton({
+  children,
+  fromRoot,
+}: {
+  children: React.ReactNode;
+  fromRoot?: boolean;
+}) {
   const { gameId } = useGame();
+  const location = useLocation();
   const [isTestGame, setIsTestGame] = useState(false);
   const [isFillRoles, setIsFillRoles] = useState(true);
   const [playerCount, setPlayerCount] = useState("");
   const [script, setScript] = useState<Script | null>(
     getScript("Trouble Brewing"),
   );
-  const [newGameError, newGameLoading, , newGame] = useCreateGame();
+  const [newGameError, newGameLoading, , newGame] = useCreateGame(
+    fromRoot || location.pathname.includes("/desktop"),
+  );
 
   return (
     <Dialog.Root>

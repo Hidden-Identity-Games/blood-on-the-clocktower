@@ -19,6 +19,7 @@ export function DesktopView() {
   const { gameId } = useParams();
   const [search] = useSearchParams();
   const isDayView = search.get("view") !== "night";
+  const isPlayerView = !search.get("view");
 
   return (
     <GameProvider gameId={gameId!}>
@@ -28,9 +29,11 @@ export function DesktopView() {
           <Flex className="flex-1">
             <Grimoire />
           </Flex>
-          <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
-            {!isDayView && <SideBar />}
-          </Flex>
+          {!isPlayerView && (
+            <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
+              {!isDayView && <SideBar />}
+            </Flex>
+          )}
         </Flex>
       </Flex>
     </GameProvider>
