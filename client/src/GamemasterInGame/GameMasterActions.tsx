@@ -10,7 +10,8 @@ import { DestructiveButton } from "./DestructiveButton";
 import { Role } from "@hidden-identity/shared";
 import { NewGameButton } from "../NewGamePage/NewGameButton";
 import { QRCodeModal } from "../shared/QRCodeModal";
-import { useLocation } from "react-router-dom";
+import { useDesktopOrMobile } from "../store/useDesktopOrMobile";
+import { BsShare } from "react-icons/bs";
 
 interface GameMasterActionsProps {
   gameStartable: boolean;
@@ -22,10 +23,11 @@ export function GameMasterActions({
   availableRolesList,
 }: GameMasterActionsProps) {
   const { game } = useDefiniteGame();
-  const location = useLocation();
   const [, , , setGameStatus] = useSetGameStatus();
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
+  const [view, setView] = useDesktopOrMobile();
+  const toggleView = () => setView(view === "desktop" ? "mobile" : "desktop");
   const problems =
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
@@ -96,6 +98,7 @@ export function GameMasterActions({
           </Dialog.Content>
         </Dialog.Root>
       )}
+      <NewGameButton>New Game</NewGameButton>
       {game.gameStatus !== "PlayersJoining" &&
         (game.gameStatus === "Setup" ? (
           <ExportButton />
@@ -107,20 +110,20 @@ export function GameMasterActions({
             Back to First Day
           </DestructiveButton>
         ))}
-      <NewGameButton>Create new game</NewGameButton>
-      {location.pathname.match(/\/desktop/) ? (
+      <Button onClick={toggleView}>
+        {view === "desktop"
+          ? "Switch to Mobile View"
+          : "Switch to Desktop View"}
+      </Button>
+      {view === "desktop" && (
         <QRCodeModal
-          message="Scan to open phone view"
+          message="Scan to open phone view:"
           url={window.location.href.replace(/\/desktop/, "")}
         >
-          <Button>Open phone view</Button>
+          <Button>
+            <BsShare className="inline" /> Share to Your Phone
+          </Button>
         </QRCodeModal>
-      ) : (
-        <Button asChild>
-          <a href={`${location.pathname}/desktop?view=night`}>
-            Open Desktop View
-          </a>
-        </Button>
       )}
       {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
     </Flex>

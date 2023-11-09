@@ -14,12 +14,15 @@ import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { GameHeader } from "../shared/GameHeader";
 import { useFirstSeat } from "../store/useFirstSeat";
+import { Lobby } from "../GamemasterInGame/Lobby";
 
-export function DesktopView() {
+interface DesktopViewProps {
+  isPlayerView?: boolean;
+}
+export function DesktopView({ isPlayerView = true }: DesktopViewProps) {
   const { gameId } = useParams();
   const [search] = useSearchParams();
   const isDayView = search.get("view") !== "night";
-  const isPlayerView = !search.get("view");
 
   return (
     <GameProvider gameId={gameId!}>
@@ -27,7 +30,7 @@ export function DesktopView() {
         <GameHeader />
         <Flex className="min-h-0 flex-1 overflow-hidden p-1" justify="between">
           <Flex className="flex-1">
-            <Grimoire />
+            <Grimoire isPlayerView={isPlayerView} />
           </Flex>
           {!isPlayerView && (
             <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
@@ -47,10 +50,13 @@ function SideBar() {
     return <LoadingExperience>Loading</LoadingExperience>;
   }
 
-  return <NightOrder />;
+  return game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />;
 }
 
-function Grimoire() {
+interface GrimoireProps {
+  isPlayerView?: boolean;
+}
+function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const { game } = useGame();
   const [search, setSearch] = useSearchParams();
   const [firstSeat] = useFirstSeat();
@@ -60,8 +66,7 @@ function Grimoire() {
     return <LoadingExperience>Loading</LoadingExperience>;
   }
 
-  const isDayView = search.get("view") !== "night";
-  const showDayswitcher = !!search.get("view");
+  const isDayView = isPlayerView || search.get("view") !== "night";
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
@@ -76,7 +81,7 @@ function Grimoire() {
                 )}`}</div>
               </div>
             )}
-            {showDayswitcher && (
+            {!isPlayerView && (
               <Button
                 onClick={() => {
                   search.set("view", isDayView ? "night" : "day");

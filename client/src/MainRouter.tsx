@@ -34,7 +34,7 @@ function MainRouter() {
       ),
     },
     {
-      path: "/:gameId/gm/:gmHash/desktop",
+      path: "/:gameId/display",
       element: (
         <Theme
           appearance="dark"
@@ -50,7 +50,7 @@ function MainRouter() {
             } as CSSProperties
           }
         >
-          <DesktopView />
+          <DesktopView isPlayerView={true} />
         </Theme>
       ),
     },

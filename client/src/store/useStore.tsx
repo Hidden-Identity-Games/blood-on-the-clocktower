@@ -11,7 +11,7 @@ function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
 }
 
-export function useCreateGame(desktop: boolean) {
+export function useCreateGame() {
   const newGameId = useMemo(
     () => Array.from({ length: 5 }).map(randomUppercase).join(""),
     [],
@@ -25,11 +25,7 @@ export function useCreateGame(desktop: boolean) {
         ...arg,
         gameId: newGameId,
       });
-      navigate(
-        `/${newGameId}/gm/${parsedResponse.gmSecretHash}${
-          desktop ? "/desktop?view=night" : ""
-        }`,
-      );
+      navigate(`/${newGameId}/gm/${parsedResponse.gmSecretHash}`);
     },
   );
 }
