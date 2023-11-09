@@ -9,9 +9,13 @@ import { NightOrder } from "./NightOrder";
 import { Callout, Theme } from "@radix-ui/themes";
 import { CSSProperties } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
+import { useDesktopOrMobile } from "../store/useDesktopOrMobile";
+import { DesktopView } from "../GamemasterDesktop/DesktopView";
 
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
+  const [view] = useDesktopOrMobile();
+
   return (
     <Theme
       appearance="dark"
@@ -28,7 +32,11 @@ export function GameMasterRoot() {
       }
     >
       <GameProvider gameId={gameId!}>
-        <GamemasterLanding providedGMHash={gmHash!} />
+        {view === "mobile" ? (
+          <GamemasterLanding providedGMHash={gmHash!} />
+        ) : (
+          <DesktopView isPlayerView={false} />
+        )}
       </GameProvider>
     </Theme>
   );

@@ -31,7 +31,7 @@ export function NewGameLanding() {
         align="center"
         justify={"between"}
       >
-        <NewGameButton fromRoot>Create game</NewGameButton>
+        <NewGameButton>Create game</NewGameButton>
 
         <Dialog.Root>
           <Dialog.Trigger>
