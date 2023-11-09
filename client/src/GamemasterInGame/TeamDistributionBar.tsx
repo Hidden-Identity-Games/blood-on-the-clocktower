@@ -32,7 +32,7 @@ function CharacterTypeSection({
   return (
     <Text
       color={colorMap[charType]}
-      className="min-w-[60px] flex-1 text-center"
+      className="min-w-[80px] flex-1 text-center"
       onClick={() => {
         document.querySelector(`#${charType}`)?.scrollIntoView();
       }}
