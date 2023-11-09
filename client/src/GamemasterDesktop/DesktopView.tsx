@@ -14,6 +14,7 @@ import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { GameHeader } from "../shared/GameHeader";
 import { useFirstSeat } from "../store/useFirstSeat";
+import { Lobby } from "../GamemasterInGame/Lobby";
 
 export function DesktopView() {
   const { gameId } = useParams();
@@ -47,7 +48,7 @@ function SideBar() {
     return <LoadingExperience>Loading</LoadingExperience>;
   }
 
-  return <NightOrder />;
+  return game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />;
 }
 
 function Grimoire() {
