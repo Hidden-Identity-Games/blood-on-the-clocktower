@@ -1,5 +1,5 @@
 import { useGame, useSetScript } from "../store/useStore";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { GameProvider } from "../store/GameContextProvider";
 import { Lobby } from "./Lobby";
 import { ScriptSelect } from "./ScriptSelect";
@@ -15,6 +15,8 @@ import { DesktopView } from "../GamemasterDesktop/DesktopView";
 export function GameMasterRoot() {
   const { gameId, gmHash } = useParams();
   const [view] = useDesktopOrMobile();
+  const [search] = useSearchParams();
+  const displayMode = search.get("display") ?? view;
 
   return (
     <Theme
@@ -32,10 +34,10 @@ export function GameMasterRoot() {
       }
     >
       <GameProvider gameId={gameId!}>
-        {view === "mobile" ? (
-          <GamemasterLanding providedGMHash={gmHash!} />
-        ) : (
+        {displayMode === "desktop" ? (
           <DesktopView isPlayerView={false} />
+        ) : (
+          <GamemasterLanding providedGMHash={gmHash!} />
         )}
       </GameProvider>
     </Theme>
