@@ -27,7 +27,8 @@ export function RoleToken({ role, player, isDayView }: RoleTokenProps) {
       className={classNames(
         "h-full w-full group relative flex flex-col p-2 hover:z-30 bg-violet-500 bg-opacity-70 rounded-full align-middle justify-between",
         {
-          "bg-gray-700": game.deadVotes[player],
+          "outline outline-8 outline-green-600":
+            game.deadPlayers[player] && !game.deadVotes[player],
           "opacity-30 hover:opacity-100": game.deadPlayers[player],
           "text-3xl": is(height).inBounds(150),
           "text-2xl": is(height).inBounds(125, 150),
