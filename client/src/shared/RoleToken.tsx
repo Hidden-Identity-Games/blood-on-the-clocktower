@@ -74,6 +74,9 @@ export function RoleToken({ role, player, isDayView }: RoleTokenProps) {
       >
         {player}
       </div>
+      {isDayView && game.onTheBlock[player] > 0 && (
+        <div>Votes: {game.onTheBlock[player]}</div>
+      )}
     </div>
   );
 }
