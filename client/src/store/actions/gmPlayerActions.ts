@@ -63,6 +63,7 @@ export function usePlayerNotes() {
     await trpc.setPlayerNote.mutate({ gameId, player, note });
   });
 }
+
 export function useDecideFate() {
   const { gameId } = useGame();
 
@@ -72,5 +73,29 @@ export function useDecideFate() {
     }
 
     await trpc.decideFate.mutate({ player, gameId, dead });
+  });
+}
+
+export function useVotesToExecute() {
+  const { gameId } = useGame();
+
+  return useAction(async (player: string, votes: number) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.setVotesToExecute.mutate({ gameId, player, votes });
+  });
+}
+
+export function useClearVotesToExecute() {
+  const { gameId } = useGame();
+
+  return useAction(async () => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.clearVotesToExecute.mutate({ gameId });
   });
 }

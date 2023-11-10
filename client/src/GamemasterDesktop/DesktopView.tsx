@@ -13,6 +13,8 @@ import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { useFirstSeat, useIsHiddenView, useSearchParams } from "../store/url";
 import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
+import { useVotesToExecute } from "../store/actions/gmPlayerActions";
+import { SetCount } from "../shared/SetCount";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -53,6 +55,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const [_isHiddenView, setIsHiddenView] = useIsHiddenView();
   const hideInfo = _isHiddenView || isPlayerView;
   const players = usePlayerOrder("seat order", firstSeat);
+  const [, , , setVotesToExecute] = useVotesToExecute();
 
   if (!game) {
     return <LoadingExperience>Loading</LoadingExperience>;
@@ -94,15 +97,30 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
               totalCountInCircle={players.length}
             >
               <div className="flex h-full w-full">
-                <PlayerList.Actions player={player}>
-                  <button className="h-full w-full" disabled={hideInfo}>
-                    <RoleToken
-                      isHiddenView={hideInfo}
-                      role={game.playersToRoles[player]}
-                      player={player}
-                    />
-                  </button>
-                </PlayerList.Actions>
+                {hideInfo ? (
+                  <SetCount
+                    title="Votes to Execute:"
+                    onSet={(votes: number) => setVotesToExecute(player, votes)}
+                  >
+                    <button className="h-full w-full">
+                      <RoleToken
+                        isHiddenView={hideInfo}
+                        role={game.playersToRoles[player]}
+                        player={player}
+                      />
+                    </button>
+                  </SetCount>
+                ) : (
+                  <PlayerList.Actions player={player}>
+                    <button className="h-full w-full" disabled={hideInfo}>
+                      <RoleToken
+                        isHiddenView={hideInfo}
+                        role={game.playersToRoles[player]}
+                        player={player}
+                      />
+                    </button>
+                  </PlayerList.Actions>
+                )}
               </div>
             </PlaceInCircle>
           ))}
