@@ -6,14 +6,10 @@ import { ReadyState } from "react-use-websocket";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { Script } from "@hidden-identity/shared";
 import { trpc } from "../shared/trpcClient";
+import { useGameId } from "./url";
 
-export function GameProvider({
-  gameId,
-  children,
-}: {
-  gameId: string;
-  children: React.ReactNode;
-}) {
+export function GameProvider({ children }: { children: React.ReactNode }) {
+  const gameId = useGameId();
   const [game, setGame] = useState<UnifiedGame | null>(null);
   const [script, setScript] = useState<Script | null>([
     { id: "baron" },
@@ -52,6 +48,10 @@ export function GameProvider({
   );
 
   useEffect(() => {
+    if (!gameId) {
+      return;
+    }
+
     const unsub = trpc.subscribeToGame.subscribe(
       { gameId },
       {

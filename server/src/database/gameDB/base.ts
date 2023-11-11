@@ -90,7 +90,7 @@ export async function addTestGame(
   script: Script,
 ): Promise<void> {
   gameDB[gameId] = new WatchableResource(game, gameComputer);
-  await addTestScript(gameId, script);
+  await addTestScript(gameId.toUpperCase(), script);
 }
 
 export function createGame(): BaseUnifiedGame {

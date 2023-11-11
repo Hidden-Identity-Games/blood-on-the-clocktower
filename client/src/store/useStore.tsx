@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom";
-
 import { useCallback, useMemo } from "react";
 import { UnifiedGame } from "./Game";
 import { useAction, useDefiniteGame, useGame } from "./GameContext";
 import { Script } from "@hidden-identity/shared";
 import { getDefaultAlignment } from "@hidden-identity/shared";
 import { trpc } from "../shared/trpcClient";
+import { useSafeNavigate } from "./url";
 
 function randomUppercase() {
   return String.fromCharCode(Math.random() * 26 + 65);
@@ -16,16 +15,16 @@ export function useCreateGame() {
     () => Array.from({ length: 5 }).map(randomUppercase).join(""),
     [],
   );
-  const navigate = useNavigate();
+  const navigate = useSafeNavigate();
   return useAction(
     async (
       arg: Omit<Parameters<typeof trpc.createGame.mutate>[0], "gameId">,
     ) => {
-      const parsedResponse: UnifiedGame = await trpc.createGame.mutate({
+      const { gmSecretHash }: UnifiedGame = await trpc.createGame.mutate({
         ...arg,
         gameId: newGameId,
       });
-      navigate(`/${newGameId}/gm/${parsedResponse.gmSecretHash}`);
+      navigate(`/gm`, { gmSecretHash, gameId: newGameId });
     },
   );
 }

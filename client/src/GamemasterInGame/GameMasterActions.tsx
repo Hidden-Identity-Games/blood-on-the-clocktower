@@ -118,7 +118,8 @@ export function GameMasterActions({
       {view === "desktop" && (
         <QRCodeModal
           message="Scan to open phone view:"
-          url={window.location.href.replace(/\/desktop/, "")}
+          // TODO: update to use url.ts
+          url={window.location.href.replace(/\/desktop/, "/mobile")}
         >
           <Button>
             <BsShare className="inline" /> Share to Your Phone

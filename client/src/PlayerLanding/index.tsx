@@ -1,9 +1,6 @@
 import AddPlayer from "./AddPlayer";
 import { PlayerRole } from "./PlayerRole";
-import { GameProvider } from "../store/GameContextProvider";
-import { useParams } from "react-router-dom";
 import { usePlayer } from "../store/usePlayer";
-import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { PlayerWaiting } from "./PlayerWaiting";
 import { useGame } from "../store/GameContext";
@@ -12,13 +9,7 @@ import { PlayerInGame } from "./PlayerInGame";
 import { PlayerRoleSelect } from "./PlayerRoleSelect";
 
 export function PlayerRoot() {
-  const { gameId } = useParams();
-  return (
-    <GameProvider gameId={gameId!}>
-      <GameHeader />
-      <PlayerLanding />
-    </GameProvider>
-  );
+  return <PlayerLanding />;
 }
 
 function PlayerLanding() {

@@ -28,3 +28,13 @@ export function mapObject<OgValue, OutValue>(
     Object.entries(input).map(([key, value]) => cb(key, value as OgValue)),
   ) as Record<string, OutValue>;
 }
+
+export function filterObject<OgValue extends Record<string, unknown>>(
+  input: OgValue,
+  filter: (arg: [key: keyof OgValue, value: OgValue[keyof OgValue]]) => boolean,
+): Partial<OgValue> {
+  return Object.fromEntries(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Object.entries(input).filter(filter as any),
+  ) as Partial<OgValue>;
+}

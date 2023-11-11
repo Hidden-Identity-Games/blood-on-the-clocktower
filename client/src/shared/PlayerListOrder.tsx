@@ -3,7 +3,7 @@ import { useGame } from "../store/GameContext";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { MdSort } from "react-icons/md";
 import { exhaustiveCheck } from "@hidden-identity/shared";
-import { useFirstSeat } from "../store/useFirstSeat";
+import { useFirstSeat } from "../store/url";
 
 const orders = ["alphabetical", "seat order"] as const;
 export type PlayerOrder = (typeof orders)[number];
