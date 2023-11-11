@@ -1,6 +1,6 @@
 import { Flex, Text } from "@radix-ui/themes";
 import { useGame } from "../store/GameContext";
-import { colorMap } from "../shared/CharacterTypes";
+import { colorMap } from "./CharacterTypes";
 import { KnownCharacterType, Role } from "@hidden-identity/shared";
 import {
   DistributionsByPlayerCount,
@@ -8,11 +8,11 @@ import {
 } from "@hidden-identity/shared";
 
 interface TeamDistributionBarProps {
-  charsSelected: Role[];
+  charsSelected?: Role[];
 }
 
 interface CharacterTypeSectionProps {
-  charsSelected: Role[];
+  charsSelected?: Role[];
   charType: KnownCharacterType;
 }
 
@@ -24,10 +24,9 @@ function CharacterTypeSection({
   if (!game) {
     return;
   }
-  const target = getDistribution(
-    Object.keys(game.playersToRoles).length,
-    charType,
-  );
+
+  const target =
+    getDistribution(Object.keys(game.playersToRoles).length, charType) ?? "?";
 
   return (
     <Text
@@ -47,8 +46,9 @@ function CharacterTypeSection({
       >
         {charType}
       </Text>
-      {uniqueCharsByTeam(charType, charsSelected)}
-      {target != null && `/${target}`}
+      {charsSelected
+        ? `${uniqueCharsByTeam(charType, charsSelected)}/${target}`
+        : target}{" "}
     </Text>
   );
 }

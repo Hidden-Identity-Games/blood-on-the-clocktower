@@ -15,6 +15,7 @@ import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { GameHeader } from "../shared/GameHeader";
 import { useFirstSeat } from "../store/useFirstSeat";
 import { Lobby } from "../GamemasterInGame/Lobby";
+import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -75,7 +76,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
           <Flex direction="column" gap="3">
             {isDayView && (
               <>
-                {/* <TeamDistributionBar charsSelected={[]} /> */}
+                <TeamDistributionBar />
                 <div className="text-center">
                   <div>Alive players: {alivePlayers.length}</div>
                   <div>{`Votes to execute: ${Math.ceil(

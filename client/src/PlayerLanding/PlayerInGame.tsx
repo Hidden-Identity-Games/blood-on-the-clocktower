@@ -7,12 +7,7 @@ import { useMe } from "../store/usePlayer";
 import { BsFillMoonStarsFill, BsPeopleFill } from "react-icons/bs";
 import { GiScrollQuill } from "react-icons/gi";
 import React, { useState } from "react";
-import {
-  getCharacter,
-  DistributionsByPlayerCount,
-} from "@hidden-identity/shared";
-import { colorMap } from "../shared/CharacterTypes";
-import { CharacterType } from "../types/script";
+import { getCharacter } from "@hidden-identity/shared";
 import {
   PlayerFilter,
   PlayerListFilters,
@@ -27,6 +22,7 @@ import {
   usePlayerOrder,
 } from "../shared/PlayerListOrder";
 import { useFirstSeat } from "../store/useFirstSeat";
+import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -65,16 +61,6 @@ export function PlayerInGame() {
 
     return nightOrder;
   }, [script, game.playersToRoles]);
-
-  const travelerCharacters = Object.values(game.playersToRoles)
-    .map((role) => getCharacter(role))
-    .filter((character) => character.team === "Traveler");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { Traveler, ...distributionsByPlayerCount } = {
-    ...DistributionsByPlayerCount[
-      game.playerList.length - travelerCharacters.length
-    ],
-  };
 
   return (
     <Tabs.Root
@@ -116,29 +102,7 @@ export function PlayerInGame() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
         <Flex className="m-2" direction="column" gap="3">
-          <Flex wrap="wrap">
-            {Object.entries(distributionsByPlayerCount).map(([team, count]) => (
-              <Text
-                color={colorMap[team as CharacterType]}
-                className="min-w-[60px] flex-1 text-center"
-                onClick={() => {
-                  document.querySelector(`#${team}`)?.scrollIntoView();
-                }}
-              >
-                <Text
-                  size="1"
-                  as="div"
-                  className="text-clip whitespace-nowrap"
-                  style={{
-                    fontSize: 16,
-                  }}
-                >
-                  {["Townsfolk"].includes(team) ? team : `${team}s`}
-                </Text>
-                {count}
-              </Text>
-            ))}
-          </Flex>
+          <TeamDistributionBar />
           <Separator size="4" />
           <ScriptList />
         </Flex>
