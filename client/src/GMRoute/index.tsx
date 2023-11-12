@@ -9,8 +9,8 @@ function SelectView() {
   const navigate = useSafeNavigate();
   return (
     <Flex className="flex-1 justify-around px-[25%]" direction="column">
-      <Button onClick={() => navigate("./desktop")}>Desktop</Button>
-      <Button onClick={() => navigate("./mobile")}>Mobile</Button>
+      <Button onClick={() => navigate("gm/desktop")}>Desktop</Button>
+      <Button onClick={() => navigate("gm/mobile")}>Mobile</Button>
     </Flex>
   );
 }

@@ -79,7 +79,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <UnifiedGameContext.Provider value={contextValue}>
-      {readyState !== ReadyState.OPEN && (
+      {gameId && readyState !== ReadyState.OPEN && (
         <LoadingExperience>
           <Callout.Root>
             <Callout.Text>

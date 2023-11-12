@@ -50,7 +50,7 @@ export function PlayerListOrder({
   );
 }
 
-export function usePlayerOrder(order: PlayerOrder, firstSeat?: string) {
+export function usePlayerOrder(order: PlayerOrder, firstSeat?: string | null) {
   const { game } = useGame();
 
   if (!game) return [];

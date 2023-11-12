@@ -8,8 +8,8 @@ import {
 import { alignmentColorMap, colorMap } from "../shared/CharacterTypes";
 
 export function PlayerMessagePage() {
-  const [queryParams] = useSearchParams();
-  const unparsed = queryParams.get("playerMessage") ?? "";
+  const [searchParams] = useSearchParams();
+  const unparsed = searchParams.get("playerMessage") ?? "";
   const parsedMessage = JSON.parse(unparsed) as PlayerMessageScreenMessage;
   const { message, reveal } = parsedMessage;
 

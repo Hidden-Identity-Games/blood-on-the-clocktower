@@ -16,6 +16,9 @@ import QRCode from "qrcode.react";
 
 export function GameHeader() {
   const { gameId, game } = useGame();
+  if (!gameId) {
+    return null;
+  }
 
   return (
     <>

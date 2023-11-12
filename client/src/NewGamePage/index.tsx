@@ -9,7 +9,7 @@ export function NewGameLanding() {
   const [joinCode, setJoinCode] = React.useState("");
   const navigate = useSafeNavigate();
   const handleJoinGame = () => {
-    navigate("/game", { gameId: joinCode.toUpperCase() });
+    navigate("game", { gameId: joinCode.toUpperCase() });
   };
 
   return (

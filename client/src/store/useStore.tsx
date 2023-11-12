@@ -24,7 +24,7 @@ export function useCreateGame() {
         ...arg,
         gameId: newGameId,
       });
-      navigate(`/gm`, { gmSecretHash, gameId: newGameId });
+      navigate(`gm`, { gmSecretHash, gameId: newGameId });
     },
   );
 }

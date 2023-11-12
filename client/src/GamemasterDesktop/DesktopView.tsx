@@ -10,7 +10,7 @@ import { RoleToken } from "../shared/RoleToken";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
-import { useFirstSeat, useIsHiddenView, useQueryParams } from "../store/url";
+import { useFirstSeat, useIsHiddenView, useSearchParams } from "../store/url";
 import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 
@@ -18,7 +18,7 @@ interface DesktopViewProps {
   isPlayerView?: boolean;
 }
 export function DesktopView({ isPlayerView = true }: DesktopViewProps) {
-  const [{ hiddenView }] = useQueryParams();
+  const [{ hiddenView }] = useSearchParams();
 
   return (
     <Flex className="min-h-0 flex-1 overflow-hidden p-1" justify="between">

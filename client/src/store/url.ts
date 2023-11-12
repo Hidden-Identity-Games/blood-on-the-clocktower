@@ -1,110 +1,134 @@
-import { filterObject } from "@hidden-identity/shared";
 import { useCallback, useMemo } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useNavigate,
+  useSearchParams as useRouterSearchParams,
+} from "react-router-dom";
 
-const queryParamKeys = [
+import { filterObject } from "@hidden-identity/shared";
+
+const routeMap = {
+  [""]: [],
+  game: [],
+  gm: ["desktop", "mobile"],
+  spectator: [],
+} as const;
+type RouteMap = typeof routeMap;
+export type Route = {
+  [K in keyof RouteMap]:
+    | K
+    | {
+        [Nested in RouteMap[K][number]]: `${K}/${Nested}`;
+      }[RouteMap[K][number]];
+}[keyof RouteMap];
+
+export const searchParamKeys = [
   "gameId",
   "gmSecretHash",
   "firstSeat",
   "hiddenView",
+  "testPlayerKey",
 ] as const;
-export type QueryParamKey = (typeof queryParamKeys)[number];
-export type QueryParams = Record<QueryParamKey, string>;
+export type SearchParamKey = (typeof searchParamKeys)[number];
+export type SearchParams = Partial<Record<SearchParamKey, string>>;
 
-export function useFirstSeat(): [string | undefined, (next: string) => void] {
-  const [{ firstSeat }, setQueryParams] = useQueryParams();
-  const setFirstPlayer = useCallback(
-    (player: string) => {
-      setQueryParams({ firstSeat: player });
-    },
-    [setQueryParams],
-  );
-  return [firstSeat ?? undefined, setFirstPlayer];
+export function searchParamsString(searchParams: SearchParams): string {
+  return new URLSearchParams(
+    filterObject({ ...searchParams }, ([_, v]) => !!v),
+  ).toString();
 }
 
-export function useGameId() {
-  const [{ gameId }] = useQueryParams();
+export function urlFromBase(url: Route, searchParams: SearchParams): string {
+  return `/${url}?${searchParamsString(searchParams)}`;
+}
+
+export function urlFromOrigin(url: Route, searchParams: SearchParams): string {
+  return `${window.location.origin}${urlFromBase(url, searchParams)}`;
+}
+
+export function useFirstSeat(): [string | null, (next: string) => void] {
+  const [{ firstSeat }, setSearchParams] = useSearchParams();
+  const setFirstPlayer = useCallback(
+    (player: string) => {
+      setSearchParams({ firstSeat: player });
+    },
+    [setSearchParams],
+  );
+  return [firstSeat ?? null, setFirstPlayer];
+}
+
+export function useTestPlayerKey(): string | null {
+  const [{ testPlayerKey }] = useSearchParams();
+  return testPlayerKey?.toLowerCase() ?? null;
+}
+
+export function useGameId(): string | null {
+  const [{ gameId }] = useSearchParams();
   return gameId?.toUpperCase() ?? null;
 }
 
 export function useGMSecretHash(): string | null {
-  const [{ gmSecretHash }] = useQueryParams();
+  const [{ gmSecretHash }] = useSearchParams();
   return gmSecretHash ?? null;
 }
 
 export function useIsHiddenView(): [boolean, (next: boolean) => void] {
-  const [{ hiddenView }, setQueryParams] = useQueryParams();
+  const [{ hiddenView }, setSearchParams] = useSearchParams();
   const setFirstPlayer = useCallback(
     (isHiddenView: boolean) => {
-      setQueryParams({ hiddenView: isHiddenView ? "true" : "" });
+      setSearchParams({ hiddenView: isHiddenView ? "true" : "" });
     },
-    [setQueryParams],
+    [setSearchParams],
   );
   return [!!hiddenView, setFirstPlayer];
 }
 
-export function useQueryParams(): [
-  QueryParams,
-  (nextQueryParams: Partial<QueryParams>) => void,
+export function useSearchParams(): [
+  SearchParams,
+  (nextSearchParams: Partial<SearchParams>) => void,
 ] {
-  const [_query, _setQuery] = useSearchParams();
-  const query = useMemo(
+  const [_search, _setSearch] = useRouterSearchParams();
+  const search = useMemo(
     () =>
-      Object.fromEntries(queryParamKeys.map((q) => [q, _query.get(q) ?? ""])),
-    [_query],
-  ) as QueryParams;
-  const setQueryParams = useCallback(
-    (nextQueryParams: Partial<QueryParams>) => {
-      _setQuery(
-        (oldQuery) =>
+      Object.fromEntries(searchParamKeys.map((q) => [q, _search.get(q) ?? ""])),
+    [_search],
+  ) as SearchParams;
+  const setSearchParams = useCallback(
+    (nextSearchParams: Partial<SearchParams>) => {
+      _setSearch(
+        (oldSearch) =>
           new URLSearchParams(
-            Object.entries({
-              ...Object.fromEntries(oldQuery.entries()),
-              ...nextQueryParams,
-            }).filter(([_, value]) => value),
+            searchParamsString({
+              ...(Object.fromEntries(oldSearch.entries()) as SearchParams),
+              ...nextSearchParams,
+            }),
           ),
       );
     },
-    [_setQuery],
+    [_setSearch],
   );
-  return [query, setQueryParams];
+  return [search, setSearchParams];
 }
 
 export function useSafeNavigate() {
   const navigate = useNavigate();
-  const [queryParams] = useQueryParams();
+  const [searchParams] = useSearchParams();
   const safeNavigate = useCallback(
-    (url: string, queryParamChanges?: Partial<QueryParams>) => {
-      navigate(
-        `${url}?${new URLSearchParams(
-          filterObject(
-            {
-              ...queryParams,
-              ...queryParamChanges,
-            },
-            ([_, v]) => !!v,
-          ),
-        ).toString()}`,
-      );
+    (url: Route, searchParamChanges?: Partial<SearchParams>) => {
+      navigate(urlFromBase(url, { ...searchParams, ...searchParamChanges }));
     },
-    [navigate, queryParams],
+    [navigate, searchParams],
   );
   return safeNavigate;
 }
 
-export function useQueryString() {
-  const [queryParams] = useQueryParams();
-  const getQueryString = useCallback(
-    (changedQueryParams: Partial<QueryParams>) => {
-      return new URLSearchParams(
-        filterObject(
-          { ...queryParams, ...changedQueryParams },
-          ([_, v]) => !!v,
-        ),
-      ).toString();
+export function useSearchString() {
+  const [searchParams] = useSearchParams();
+  const getSearchString = useCallback(
+    (changedSearchParams: Partial<SearchParams>) => {
+      searchParamsString({ ...searchParams, ...changedSearchParams });
     },
-    [queryParams],
+    [searchParams],
   );
 
-  return getQueryString;
+  return getSearchString;
 }

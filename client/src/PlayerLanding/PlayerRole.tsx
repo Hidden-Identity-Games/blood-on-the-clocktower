@@ -33,9 +33,9 @@ export function PlayerRole({ role }: PlayerRoleProps) {
               <AlignmentText player={player!}>
                 {getCharacter(role).name}
               </AlignmentText>
-              <p>
+              <span>
                 <i>{getCharacter(role).ability}</i>
-              </p>
+              </span>
             </Text>
             <Text className="mb-4 text-center" size="1" weight="light">
               You don't need to memorize this ability
