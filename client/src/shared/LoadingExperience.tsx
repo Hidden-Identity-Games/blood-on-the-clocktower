@@ -7,11 +7,11 @@ export function LoadingExperience({
   children: ReactNode;
   delayInMs?: number;
 }) {
-  const [delayMet, setDelayMet] = useState(false);
+  const [delayMs, setDelayMs] = useState(false);
   useEffect(() => {
-    const delay = setTimeout(() => setDelayMet(true), delayInMs);
+    const delay = setTimeout(() => setDelayMs(true), delayInMs);
     return () => clearTimeout(delay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return delayMet ? children : null;
+  return delayMs ? children : null;
 }

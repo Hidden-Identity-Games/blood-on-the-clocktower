@@ -1,9 +1,11 @@
 import { test, expect, Page } from "@playwright/test";
 import { createNewGame, joinGameAs } from "./utils";
 
+import { urlFromBase } from "./productUrls";
+
 test("join game", async ({ page }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
-  await page.goto("/");
+  await page.goto(urlFromBase("", {}));
   await page.getByRole("button", { name: "Join" }).click();
   await page.getByRole("textbox", { name: "code" }).fill(gameId);
   await page.getByRole("button", { name: "Join" }).click();
@@ -12,13 +14,13 @@ test("join game", async ({ page }) => {
 
 test("re-join game", async ({ page }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
-  await page.goto("/");
+  await page.goto(urlFromBase("", {}));
 
   await joinGameAs(page, gameId, "Alex");
-  await page.goto("/?testPlayerKey=1");
+  await page.goto(urlFromBase("", { testPlayerKey: "1" }));
   await joinGameAs(page, gameId, "Steve");
 
-  await page.goto("/?testPlayerKey=2");
+  await page.goto(urlFromBase("", { testPlayerKey: "2" }));
   await joinGameAs(page, gameId, "Alex");
 
   await page.getByRole("button", { name: /Yes/ }).click();
@@ -29,7 +31,7 @@ test("re-join game", async ({ page }) => {
 test("can 15 players join", async ({ context, page }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
   const size = 15;
-
+  await page.getByRole("button", { name: "desktop" }).click();
   await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
   const roleIds = [
     "Washerwoman",
@@ -73,7 +75,9 @@ test("can 15 players join", async ({ context, page }) => {
   for (const playerNumber of players) {
     const name = `player${playerNumber}`;
     const myPage = await context.newPage();
-    await myPage.goto(`/${gameId}?testPlayerKey=${playerNumber}`);
+    await myPage.goto(
+      urlFromBase("game", { testPlayerKey: String(playerNumber), gameId }),
+    );
     await myPage.getByRole("textbox", { name: "NAME:" }).fill(name);
     await myPage.getByRole("button", { name: "Join" }).click();
     pages.push(myPage);

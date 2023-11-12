@@ -1,16 +1,15 @@
 import { Button, Dialog, DialogClose, Flex, TextField } from "@radix-ui/themes";
 import React from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import title from "../assets/title_banner.png";
 import backgroundImg from "../assets/hidden_identity_cover.png";
 import { NewGameButton } from "./NewGameButton";
+import { useSafeNavigate } from "../store/url";
 
 export function NewGameLanding() {
   const [joinCode, setJoinCode] = React.useState("");
-  const navigate = useNavigate();
-  const [search] = useSearchParams();
+  const navigate = useSafeNavigate();
   const handleJoinGame = () => {
-    navigate(`/${joinCode.toUpperCase()}?${search.toString()}`);
+    navigate("game", { gameId: joinCode.toUpperCase() });
   };
 
   return (

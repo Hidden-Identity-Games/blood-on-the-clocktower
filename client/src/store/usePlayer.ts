@@ -1,13 +1,10 @@
-import { useMemo } from "react";
 import { useGame } from "./GameContext";
 import { useLocalStorage } from "./useLocalStorage";
+import { useTestPlayerKey } from "./url";
 
 export function usePlayer(): [string | null, (key: string | null) => void] {
   const { gameId } = useGame();
-  const localhostKeyFromUrl = useMemo(
-    () => new URLSearchParams(window.location.search).get("testPlayerKey"),
-    [gameId],
-  );
+  const localhostKeyFromUrl = useTestPlayerKey();
   const localhostKey = gameId
     ? `${gameId}${localhostKeyFromUrl ?? ""}_player`
     : null;

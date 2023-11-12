@@ -1,50 +1,13 @@
 import { useGame, useSetScript } from "../store/useStore";
-import { useParams, useSearchParams } from "react-router-dom";
-import { GameProvider } from "../store/GameContextProvider";
 import { Lobby } from "./Lobby";
 import { ScriptSelect } from "./ScriptSelect";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { NightOrder } from "./NightOrder";
-import { Callout, Theme } from "@radix-ui/themes";
-import { CSSProperties } from "react";
+import { Callout } from "@radix-ui/themes";
 import { BsFillInfoCircleFill } from "react-icons/bs";
-import { useDesktopOrMobile } from "../store/useDesktopOrMobile";
-import { DesktopView } from "../GamemasterDesktop/DesktopView";
 
-export function GameMasterRoot() {
-  const { gameId, gmHash } = useParams();
-  const [view] = useDesktopOrMobile();
-  const [search] = useSearchParams();
-  const displayMode = search.get("display") ?? view;
-
-  return (
-    <Theme
-      appearance="dark"
-      accentColor="purple"
-      panelBackground="solid"
-      hasBackground
-      style={
-        {
-          "--scaling": 1.5,
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-        } as CSSProperties
-      }
-    >
-      <GameProvider gameId={gameId!}>
-        {displayMode === "desktop" ? (
-          <DesktopView isPlayerView={false} />
-        ) : (
-          <GamemasterLanding providedGMHash={gmHash!} />
-        )}
-      </GameProvider>
-    </Theme>
-  );
-}
-
-function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
+function GamemasterLanding() {
   const { game, script } = useGame();
   const [, loadingSetScript, , setScript] = useSetScript();
   const playersNotSeenRole =
@@ -54,9 +17,6 @@ function GamemasterLanding({ providedGMHash }: { providedGMHash: string }) {
 
   if (!game || loadingSetScript) {
     return <LoadingExperience>Loading...</LoadingExperience>;
-  }
-  if (providedGMHash !== game.gmSecretHash) {
-    return <div>You are in the wrong place.</div>;
   }
 
   return (

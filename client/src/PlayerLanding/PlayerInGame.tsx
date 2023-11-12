@@ -21,8 +21,8 @@ import {
   PlayerOrder,
   usePlayerOrder,
 } from "../shared/PlayerListOrder";
-import { useFirstSeat } from "../store/useFirstSeat";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
+import { useFirstSeat } from "../store/url";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();

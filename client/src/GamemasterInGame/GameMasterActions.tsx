@@ -12,6 +12,7 @@ import { NewGameButton } from "../NewGamePage/NewGameButton";
 import { QRCodeModal } from "../shared/QRCodeModal";
 import { useDesktopOrMobile } from "../store/useDesktopOrMobile";
 import { BsShare } from "react-icons/bs";
+import { urlFromOrigin, useSearchParams } from "../store/url";
 
 interface GameMasterActionsProps {
   gameStartable: boolean;
@@ -23,6 +24,7 @@ export function GameMasterActions({
   availableRolesList,
 }: GameMasterActionsProps) {
   const { game } = useDefiniteGame();
+  const [searchParams] = useSearchParams();
   const [, , , setGameStatus] = useSetGameStatus();
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
@@ -118,7 +120,8 @@ export function GameMasterActions({
       {view === "desktop" && (
         <QRCodeModal
           message="Scan to open phone view:"
-          url={window.location.href.replace(/\/desktop/, "")}
+          // TODO: update to use url.ts
+          url={urlFromOrigin("gm/desktop", searchParams)}
         >
           <Button>
             <BsShare className="inline" /> Share to Your Phone

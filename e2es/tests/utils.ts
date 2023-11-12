@@ -1,7 +1,8 @@
+import { urlFromBase } from "./productUrls";
 import { Page } from "@playwright/test";
 
 export async function createNewGame(page: Page, script: string) {
-  await page.goto("/");
+  await page.goto(urlFromBase("", {}));
   await page.getByRole("button", { name: "Create" }).click();
   await page
     .getByRole("button", {
@@ -10,10 +11,10 @@ export async function createNewGame(page: Page, script: string) {
     .click();
   await page.getByRole("button", { name: "Create" }).click();
 
-  await page.waitForURL(/\/gm\//);
+  await page.waitForURL(/\/gm/);
 
   const url = new URL(page.url());
-  return url.pathname.split("/")[1];
+  return url.searchParams.get("gameId")!;
 }
 
 export async function joinGameAs(

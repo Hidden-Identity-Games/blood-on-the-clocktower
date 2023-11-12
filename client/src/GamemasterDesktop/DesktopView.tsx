@@ -1,19 +1,16 @@
-import { useParams, useSearchParams } from "react-router-dom";
 import {
   CircularLayout,
   PlaceInCenter,
   PlaceInCircle,
 } from "../shared/CircularLayout";
 import { useGame } from "../store/GameContext";
-import { GameProvider } from "../store/GameContextProvider";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { Button, Flex } from "@radix-ui/themes";
 import { RoleToken } from "../shared/RoleToken";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
-import { GameHeader } from "../shared/GameHeader";
-import { useFirstSeat } from "../store/useFirstSeat";
+import { useFirstSeat, useIsHiddenView, useSearchParams } from "../store/url";
 import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 
@@ -21,26 +18,19 @@ interface DesktopViewProps {
   isPlayerView?: boolean;
 }
 export function DesktopView({ isPlayerView = true }: DesktopViewProps) {
-  const { gameId } = useParams();
-  const [search] = useSearchParams();
-  const isDayView = search.get("view") !== "night";
+  const [{ hiddenView }] = useSearchParams();
 
   return (
-    <GameProvider gameId={gameId!}>
-      <Flex direction="column" className="h-full">
-        <GameHeader />
-        <Flex className="min-h-0 flex-1 overflow-hidden p-1" justify="between">
-          <Flex className="flex-1">
-            <Grimoire isPlayerView={isPlayerView} />
-          </Flex>
-          {!isPlayerView && (
-            <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
-              {!isDayView && <SideBar />}
-            </Flex>
-          )}
-        </Flex>
+    <Flex className="min-h-0 flex-1 overflow-hidden p-1" justify="between">
+      <Flex className="flex-1">
+        <Grimoire isPlayerView={isPlayerView} />
       </Flex>
-    </GameProvider>
+      {!isPlayerView && (
+        <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
+          {!hiddenView && <SideBar />}
+        </Flex>
+      )}
+    </Flex>
   );
 }
 
@@ -59,22 +49,22 @@ interface GrimoireProps {
 }
 function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const { game } = useGame();
-  const [search, setSearch] = useSearchParams();
   const [firstSeat] = useFirstSeat();
+  const [_isHiddenView, setIsHiddenView] = useIsHiddenView();
+  const hideInfo = _isHiddenView || isPlayerView;
   const players = usePlayerOrder("seat order", firstSeat);
 
   if (!game) {
     return <LoadingExperience>Loading</LoadingExperience>;
   }
 
-  const isDayView = isPlayerView || search.get("view") !== "night";
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
       <CircularLayout className="w-full flex-1">
         <PlaceInCenter>
           <Flex direction="column" gap="3">
-            {isDayView && (
+            {isPlayerView && (
               <>
                 <TeamDistributionBar />
                 <div className="text-center">
@@ -88,11 +78,10 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
             {!isPlayerView && (
               <Button
                 onClick={() => {
-                  search.set("view", isDayView ? "night" : "day");
-                  setSearch(search);
+                  setIsHiddenView(!hideInfo);
                 }}
               >
-                Switch to {isDayView ? "Night" : "Day"}
+                Switch to {hideInfo ? "Night" : "Day"}
               </Button>
             )}
           </Flex>
@@ -106,9 +95,9 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
             >
               <div className="flex h-full w-full">
                 <PlayerList.Actions player={player}>
-                  <button className="h-full w-full" disabled={isDayView}>
+                  <button className="h-full w-full" disabled={hideInfo}>
                     <RoleToken
-                      isDayView={isDayView}
+                      isHiddenView={hideInfo}
                       role={game.playersToRoles[player]}
                       player={player}
                     />

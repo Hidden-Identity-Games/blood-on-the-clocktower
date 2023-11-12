@@ -2,6 +2,7 @@
   "name": "e2es",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "e2e-test": "playwright test",
     "dev": "",
@@ -9,6 +10,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix"
   },
   "dependencies": {
+    "@hidden-identity/shared": "workspace:*",
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.5.9",
     "@types/uuid": "^9.0.2",

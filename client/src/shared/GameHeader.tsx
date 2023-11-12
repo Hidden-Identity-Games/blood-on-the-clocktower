@@ -16,6 +16,9 @@ import QRCode from "qrcode.react";
 
 export function GameHeader() {
   const { gameId, game } = useGame();
+  if (!gameId) {
+    return null;
+  }
 
   return (
     <>
@@ -52,9 +55,8 @@ interface QRCodeDialogProps {
   gameId: string | null;
 }
 function QRCodeDialog({ gameId }: QRCodeDialogProps) {
-  const url = `${document.location.protocol}//${document.location.hostname}${
-    document.location.port ? `:${document.location.port}` : ""
-  }/${gameId}`;
+  // TODO: update to use url.ts
+  const url = `${document.location.origin}/game?gameId=${gameId}`;
 
   const handleShare = async () => {
     if (navigator.share) {

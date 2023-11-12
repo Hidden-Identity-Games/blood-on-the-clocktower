@@ -34,8 +34,7 @@ import {
 import { usePlayerNotes } from "../store/actions/gmPlayerActions";
 import { Reveal } from "../types/PlayerMessageScreen";
 import { FaFeather } from "react-icons/fa6";
-import { useSearchParams } from "react-router-dom";
-import { useFirstSeat } from "../store/useFirstSeat";
+import { useFirstSeat, useIsHiddenView } from "../store/url";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -135,7 +134,7 @@ export function NightPlayerList({
 }: NightPlayerListProps) {
   const { game } = useDefiniteGame();
   const [, , , setPlayerNote] = usePlayerNotes();
-  const [_, setSearch] = useSearchParams();
+  const [_, setIsHiddenView] = useIsHiddenView();
 
   const nightKey = firstNight ? "firstNight" : "otherNight";
 
@@ -179,10 +178,7 @@ export function NightPlayerList({
 
   const endNight = () => {
     endNightCallback();
-    setSearch((search) => {
-      search.set("view", "day");
-      return search;
-    });
+    setIsHiddenView(false);
     setCheckedActions(
       Object.fromEntries(
         nightActions.map((action) => {

@@ -8,7 +8,7 @@ import useResizeObserver from "use-resize-observer";
 interface RoleTokenProps {
   role: Role;
   player: string;
-  isDayView: boolean;
+  isHiddenView: boolean;
 }
 
 function is(num: number) {
@@ -18,7 +18,7 @@ function is(num: number) {
     },
   };
 }
-export function RoleToken({ role, player, isDayView }: RoleTokenProps) {
+export function RoleToken({ role, player, isHiddenView }: RoleTokenProps) {
   const { game } = useDefiniteGame();
   const { height = 0, ref } = useResizeObserver();
   return (
@@ -39,7 +39,7 @@ export function RoleToken({ role, player, isDayView }: RoleTokenProps) {
         },
       )}
     >
-      {!isDayView && (
+      {!isHiddenView && (
         <>
           <div className="mx-auto hidden max-w-full flex-1 break-words group-hover:block">
             <RoleText role={role} />
@@ -51,7 +51,7 @@ export function RoleToken({ role, player, isDayView }: RoleTokenProps) {
         </>
       )}
 
-      {!isDayView && (
+      {!isHiddenView && (
         <div className="absolute inset-x-0 top-0 flex h-[33%] w-full justify-around text-sm">
           {game.playerPlayerStatuses[player]?.slice(0, 3).map((status) => (
             <div className="rounded-full bg-lime-700 bg-opacity-[75%] p-[6px]">
@@ -66,7 +66,7 @@ export function RoleToken({ role, player, isDayView }: RoleTokenProps) {
           "line-clamp-1 truncate capitalize bg-transparent w-[100%] ",
           {
             "line-through": game.deadPlayers[player],
-            "my-auto": isDayView,
+            "my-auto": isHiddenView,
             // a temporary hack, the image and role text are not the same size, and I can't fix why
             "group-hover:opacity-0": true,
           },
