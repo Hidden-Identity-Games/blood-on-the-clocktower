@@ -43,14 +43,6 @@ export function RevealTeamMessage({
 
   return (
     <Flex direction="column" gap="2">
-      <PlayerMessageLink
-        className="mb-2"
-        note={{
-          reveal: reveal,
-          message: text,
-        }}
-        onOpenNote={onOpenNote}
-      />
       <Heading>Team</Heading>
       <Restrictions restrictions={message.restriction} />
       <TeamSelect
@@ -62,6 +54,14 @@ export function RevealTeamMessage({
         players={playersState.value}
         addPlayer={playersState.add}
         replacePlayer={playersState.replace}
+      />
+      <PlayerMessageLink
+        className="mt-2"
+        note={{
+          reveal: reveal,
+          message: text,
+        }}
+        onOpenNote={onOpenNote}
       />
     </Flex>
   );

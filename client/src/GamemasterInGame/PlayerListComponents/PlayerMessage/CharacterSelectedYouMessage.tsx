@@ -28,8 +28,15 @@ export function CharacterSelectedYouMessage({
 
   return (
     <Flex direction="column" gap="2">
+      <Heading>Role</Heading>
+      <Restrictions restrictions={message.restriction} />
+      <RoleSelectList
+        roles={rolesState.value}
+        addRole={rolesState.add}
+        replaceRole={rolesState.replace}
+      />
       <PlayerMessageLink
-        className="mb-2"
+        className="mt-2"
         note={{
           reveal: {
             "In play": rolesState.value.map((k) => ({ character: k })),
@@ -37,13 +44,6 @@ export function CharacterSelectedYouMessage({
           message: "",
         }}
         onOpenNote={onOpenNote}
-      />
-      <Heading>Role</Heading>
-      <Restrictions restrictions={message.restriction} />
-      <RoleSelectList
-        roles={rolesState.value}
-        addRole={rolesState.add}
-        replaceRole={rolesState.replace}
       />
     </Flex>
   );

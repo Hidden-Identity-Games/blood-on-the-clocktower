@@ -23,12 +23,16 @@ export function DesktopView({ isPlayerView = true }: DesktopViewProps) {
   const [{ hiddenView }] = useSearchParams();
 
   return (
-    <Flex className="min-h-0 flex-1 overflow-hidden p-1" justify="between">
-      <Flex className="flex-1">
+    <Flex
+      className="min-h-0 flex-1 overflow-hidden p-1"
+      justify="between"
+      gap="4"
+    >
+      <Flex className="hidden lg:flex lg:flex-1">
         <Grimoire isPlayerView={isPlayerView} />
       </Flex>
       {!isPlayerView && (
-        <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
+        <Flex className="h-full w-1/4 min-w-[400px] shrink grow overflow-hidden md:grow-0">
           {!hiddenView && <SideBar />}
         </Flex>
       )}

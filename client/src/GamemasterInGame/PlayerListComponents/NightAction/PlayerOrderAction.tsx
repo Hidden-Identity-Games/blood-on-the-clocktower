@@ -1,23 +1,8 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { DialogHeader } from "../../../shared/DialogHeader";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
 import { useGetPlayerAlignment } from "../../../store/useStore";
 import { alignmentColorMap } from "../../../shared/CharacterTypes";
-
-export function PlayerOrderAction({ player }: { player: string }) {
-  return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <Button variant="surface">Player Order</Button>
-      </Dialog.Trigger>
-      <Dialog.Content>
-        <DialogHeader>PlayerOrder</DialogHeader>
-        <PlayerOrderActionList player={player} />
-      </Dialog.Content>
-    </Dialog.Root>
-  );
-}
 
 function startListAtIndex<T>(list: T[], _index: number): T[] {
   const index = (_index + list.length) % list.length;

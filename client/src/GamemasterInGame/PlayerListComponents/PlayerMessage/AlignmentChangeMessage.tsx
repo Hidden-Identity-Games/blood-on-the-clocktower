@@ -33,18 +33,18 @@ export function AlignmentChangeMessage({
 
   return (
     <Flex direction="column" gap="2">
+      <Heading>Alignment</Heading>
+      <AlignmentSelect
+        currentAlignment={alignment}
+        onSelect={(next) => next && setAlignment(next)}
+      />
       <PlayerMessageLink
-        className="mb-2"
+        className="mt-2"
         note={{
           reveal: reveal,
           message: text,
         }}
         onOpenNote={onOpenNote}
-      />
-      <Heading>Alignment</Heading>
-      <AlignmentSelect
-        currentAlignment={alignment}
-        onSelect={(next) => next && setAlignment(next)}
       />
     </Flex>
   );

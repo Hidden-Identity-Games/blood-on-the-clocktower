@@ -37,7 +37,7 @@ export function DemonMessage({ onOpenNote }: DemonMessageProps) {
   return (
     <Flex direction="column" gap="2">
       <PlayerMessageLink
-        className="mb-2"
+        className="mt-2"
         note={{
           reveal: {
             minions: minionsState.value.map((minion) => ({ player: minion })),

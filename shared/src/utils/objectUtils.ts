@@ -38,3 +38,7 @@ export function filterObject<OgValue extends Record<string, unknown>>(
     Object.entries(input).filter(filter as any),
   ) as Partial<OgValue>;
 }
+
+export function filterFalsy<T>(arg: T | null | undefined): arg is T {
+  return !!arg;
+}

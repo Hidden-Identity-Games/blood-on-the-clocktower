@@ -138,7 +138,7 @@ export function NightPlayerList({
 
   const nightKey = firstNight ? "firstNight" : "otherNight";
 
-  const [nightActions, _leftoverPlayers] = React.useMemo(() => {
+  const [nightActions, leftoverPlayers] = React.useMemo(() => {
     const playerActions = game.playerList
       .map((player) => ({
         player,
@@ -174,7 +174,9 @@ export function NightPlayerList({
 
   const [checkedActions, setCheckedActions] = React.useState<
     Record<string, boolean>
-  >({});
+  >(() =>
+    Object.fromEntries(leftoverPlayers.map((player) => [player.name, true])),
+  );
 
   const endNight = () => {
     endNightCallback();
@@ -193,7 +195,7 @@ export function NightPlayerList({
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
-      {nightActions.map((action) => (
+      {[...nightActions, ...leftoverPlayers].map((action) => (
         <React.Fragment key={action.name}>
           <Text size="4" asChild>
             <Flex justify="between" align="center" px="3" gap="3">
@@ -215,10 +217,7 @@ export function NightPlayerList({
                       onOpenNote={onOpenNote}
                     />
                   </PlayerList.RoleIcon>
-                  <PlayerList.NoteInputModal
-                    player={action.player}
-                    note={game.playerNotes[action.player]}
-                  >
+                  <PlayerList.NoteInputModal player={action.player}>
                     <button className="flex-1 text-left">
                       <PlayerList.Name player={action.player} />
                     </button>
@@ -343,10 +342,7 @@ export function IngamePlayerList({
               <PlayerList.RoleIcon player={player}>
                 {getCharacter(game.playersToRoles[player]).ability}
               </PlayerList.RoleIcon>
-              <PlayerList.NoteInputModal
-                player={player}
-                note={game.playerNotes[player]}
-              >
+              <PlayerList.NoteInputModal player={player}>
                 <button className="flex-1 text-left">
                   <PlayerList.Name player={player} />
                 </button>
@@ -386,7 +382,7 @@ function PlayerNotes({ player, ...props }: PlayerNotesProps) {
           </Flex>
         )}
         {notes && (
-          <PlayerList.NoteInputModal player={player} note={notes}>
+          <PlayerList.NoteInputModal player={player}>
             <button className="ml-1 flex-1 whitespace-pre-line text-left">
               <Flex gap="2">
                 <FaFeather />

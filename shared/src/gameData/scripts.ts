@@ -171,8 +171,7 @@ export const SCRIPTS: ScriptDefinition[] = [
   },
   {
     name: "No Roles Barred",
-    imageSrc:
-      "https://static.wikia.nocookie.net/no-rolls-barred/images/e/e0/No_Rolls_Barred_Plays_Blood_On_The_Clocktower.jpg/revision/latest/scale-to-width-down/700?cb=20220518191823",
+    imageSrc: "",
     characters: [
       { id: "alchemist" },
       { id: "noble" },

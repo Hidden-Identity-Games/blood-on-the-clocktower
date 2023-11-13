@@ -49,19 +49,6 @@ export function RevealPlayerMessage({
 
   return (
     <Flex direction="column" gap="2">
-      <PlayerMessageLink
-        className="mb-2"
-        note={{
-          reveal: {
-            Reveal: roleState.value.map((potentialRole) => ({
-              character: potentialRole,
-              player: playersState.value[0],
-            })),
-          },
-          message: "",
-        }}
-        onOpenNote={onOpenNote}
-      />
       <Heading>Player</Heading>
       <Restrictions restrictions={message.restriction} />
       <PlayerSelectList
@@ -74,6 +61,19 @@ export function RevealPlayerMessage({
         roles={roleState.value}
         addRole={roleState.add}
         replaceRole={roleState.replace}
+      />
+      <PlayerMessageLink
+        className="mt-2"
+        note={{
+          reveal: {
+            Reveal: roleState.value.map((potentialRole) => ({
+              character: potentialRole,
+              player: playersState.value[0],
+            })),
+          },
+          message: "",
+        }}
+        onOpenNote={onOpenNote}
       />
     </Flex>
   );
