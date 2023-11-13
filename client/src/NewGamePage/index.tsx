@@ -38,7 +38,7 @@ export function NewGameLanding() {
         </GameSelectModal>
         <NewGameButton className="w-full">Create game</NewGameButton>
         <GameSelectModal
-          onSubmit={() => navigate("spectator")}
+          onSubmit={(gameId) => navigate("spectator", { gameId })}
           title="Spectate game"
         >
           <Button variant="surface" className="w-full">

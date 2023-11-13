@@ -14,7 +14,8 @@ test("can spectate a game", async ({ page, context }) => {
   page.goto(urlFromBase("", {}));
   await page.getByRole("button", { name: /spectate/i }).click();
   await page.getByRole("textbox").fill(gameId);
-  await page.getByRole("button", { name: /join/i });
-  expect(await page.getByText(/Alive players: 10/));
-  expect(await page.getByText(/votes to execute: 6/));
+  await page.getByRole("button", { name: /join/i }).click();
+  await page.getByText(/Alive players:/i).waitFor();
+  expect(await page.getByText(/Alive players:/i)).toHaveText(/ 10/);
+  expect(await page.getByText(/votes to execute:/i)).toHaveText(/ 5/);
 });
