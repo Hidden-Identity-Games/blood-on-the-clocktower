@@ -37,7 +37,6 @@ test("cannot start game with too few roles", async ({ page, context }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
   const pages = await populateGameWithPlayers(context, players, gameId);
   await assignSeats(pages);
-  await page.getByRole("button", { name: /desktop/i }).click();
   await page.getByRole("tab", { name: /menu/i }).click();
   const startGameButton1 = page.getByRole("button", {
     name: "Start Game",
