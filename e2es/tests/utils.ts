@@ -26,7 +26,6 @@ export async function createStartableGame(
   const gmPage = await context.newPage();
   const gameId = await createNewGame(gmPage, script);
 
-  await gmPage.getByRole("button", { name: "desktop" }).click();
   await gmPage.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
   const TBRoles = getAssignableCharactersNamesFromScript(script).slice(
     0,
