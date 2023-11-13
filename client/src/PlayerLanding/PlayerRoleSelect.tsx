@@ -1,4 +1,4 @@
-import { Flex, Grid, Heading } from "@radix-ui/themes";
+import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import tokenBack from "../assets/token_logo.png";
 import { usePlayer } from "../store/usePlayer";
 import { useTakeRole } from "../store/actions/playerActions";
@@ -26,6 +26,9 @@ export function PlayerRoleSelect() {
     9: "-rotate-6",
     10: "-rotate-12",
   };
+  if (game.travelers[player!]) {
+    return <Text>Please wait for the GM to assign you a role</Text>;
+  }
 
   return (
     <Flex
@@ -39,11 +42,13 @@ export function PlayerRoleSelect() {
       <Grid columns="3" gap="3" width="auto" align="center" justify="center">
         {Object.entries(game.roleBag ?? {}).map(([roleNum, role], idx) => (
           <button
+            key={idx}
             className={classNames(!role && "opacity-40")}
             disabled={!role}
             onClick={() => {
               takeRole(player!, parseInt(roleNum));
             }}
+            aria-label={`Role number ${roleNum}`}
           >
             <Heading className="absolute z-10">{idx + 1}</Heading>
             <img className={rotationMap[rotations[idx]]} src={tokenBack} />

@@ -1,3 +1,4 @@
+import { ScriptName, getCharacter, getScript } from "@hidden-identity/shared";
 import { urlFromBase } from "./productUrls";
 import { BrowserContext, Page } from "@playwright/test";
 
@@ -15,6 +16,28 @@ export async function createNewGame(page: Page, script: string) {
 
   const url = new URL(page.url());
   return url.searchParams.get("gameId")!;
+}
+
+export async function createStartableGame(
+  context: BrowserContext,
+  script: ScriptName,
+  players: string[],
+) {
+  const gmPage = await context.newPage();
+  const gameId = await createNewGame(gmPage, script);
+
+  await gmPage.getByRole("button", { name: "desktop" }).click();
+  await gmPage.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
+  const TBRoles = getAssignableCharactersNamesFromScript(script).slice(
+    0,
+    players.length,
+  );
+
+  await assignRoles(gmPage, { roles: TBRoles });
+
+  const playerPages = await populateGameWithPlayers(context, players, gameId);
+  await assignSeats(playerPages);
+  return { playerPages, gameId, gmPage };
 }
 
 export async function joinGameAs(
@@ -51,7 +74,7 @@ export async function addPlayerToGame(
   return page;
 }
 
-async function asyncMap<Input, Output>(
+export async function asyncMap<Input, Output>(
   inputList: Input[],
   mapper: (input: Input, index: number) => Promise<Output>,
 ) {
@@ -80,7 +103,7 @@ export async function populateGameWithPlayers(
   });
 }
 
-export async function assignRoles(players: PlayerPage[]) {
+export async function assignSeats(players: PlayerPage[]) {
   await asyncMap(players, async ({ page }, playerNumber) => {
     const nextPlayerNumber = (playerNumber + 1) % players.length;
 
@@ -90,5 +113,31 @@ export async function assignRoles(players: PlayerPage[]) {
         exact: true,
       })
       .click();
+  });
+}
+
+export function getAssignableCharactersNamesFromScript(script: ScriptName) {
+  return getScript(script)
+    .map((role) => getCharacter(role.id))
+    .filter((character) => !character.delusional)
+    .map((character) => character.name);
+}
+export async function assignRoles(page: Page, { roles }: { roles: string[] }) {
+  for (const role of roles) {
+    await page
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .getByRole("checkbox", { name: role })
+      .click();
+  }
+}
+export async function acknowledgeRoles(pages: PlayerPage[]) {
+  await asyncMap(pages, async ({ page }, playerNumber) => {
+    await page
+      .getByRole("button", { name: `Role number ${playerNumber + 1}` })
+      .click();
+
+    await page.getByRole("button", { name: /reveal role/i }).click();
+    await page.getByRole("button", { name: /i know my role/i }).click();
+    return null;
   });
 }

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { assignRoles, createNewGame, populateGameWithPlayers } from "./utils";
+import { assignSeats, createNewGame, populateGameWithPlayers } from "./utils";
 import { urlFromBase } from "./productUrls";
 
 test("can spectate a game", async ({ page, context }) => {
@@ -9,7 +9,7 @@ test("can spectate a game", async ({ page, context }) => {
     Array.from({ length: 10 }, (_, i) => `player${i}`),
     gameId,
   );
-  await assignRoles(playerPages);
+  await assignSeats(playerPages);
 
   page.goto(urlFromBase("", {}));
   await page.getByRole("button", { name: /spectate/i }).click();

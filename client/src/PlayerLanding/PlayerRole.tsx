@@ -107,6 +107,7 @@ function RevealRoleButton({ setHasSeenRole }: RevealRoleButtonProps) {
       onClick={() => {
         setHasSeenRole(true);
       }}
+      aria-label="Reveal role"
     >
       <img
         className="h-[110px] w-[85px]"

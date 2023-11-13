@@ -1,8 +1,11 @@
 import { test, expect } from "@playwright/test";
 import {
+  acknowledgeRoles,
   addPlayerToGame,
-  assignRoles,
+  assignSeats,
+  asyncMap,
   createNewGame,
+  createStartableGame,
   populateGameWithPlayers,
   rejoinGameAs,
 } from "./utils";
@@ -29,37 +32,11 @@ test("re-join game", async ({ page, context }) => {
   await expect(page.getByRole("button", { name: "Steve" })).toBeVisible();
 });
 
-test("can 15 players join", async ({ context, page }) => {
+test("cannot start game with too few roles", async ({ page, context }) => {
+  const players = Array.from({ length: 7 }, (_, i) => `player${i}`);
   const gameId = await createNewGame(page, "Trouble Brewing");
-  const size = 15;
-  await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
-  const roleIds = [
-    "Washerwoman",
-    "Librarian",
-    "Investigator",
-    "Chef",
-    "Empath",
-    "Fortune Teller",
-    "Undertaker",
-    "Monk",
-    "Ravenkeeper",
-    "Virgin",
-    "Slayer",
-    "Soldier",
-    "Mayor",
-    "Butler",
-    "Recluse",
-    "Saint",
-    "Poisoner",
-    "Spy",
-    "Scarlet Woman",
-    "Baron",
-    "Imp",
-  ];
-
-  for await (const role of roleIds.slice(0, size)) {
-    await page.getByRole("checkbox", { name: role }).click();
-  }
+  const pages = await populateGameWithPlayers(context, players, gameId);
+  await assignSeats(pages);
   await page.getByRole("tab", { name: "menu" }).click();
   const startGameButton1 = await page.getByRole("button", {
     name: "Start Game",
@@ -67,10 +44,17 @@ test("can 15 players join", async ({ context, page }) => {
   // Don't actually do this, it makes bad tests, but I want this here to trust this test more for now.
   // Always assert LAST
   expect(startGameButton1).toBeDisabled();
+});
 
+test("can 15 players join", async ({ context }) => {
+  const size = 15;
   const players = Array.from({ length: size }, (_, i) => `player${i}`);
-  const pages = await populateGameWithPlayers(context, players, gameId);
-  await assignRoles(pages);
+
+  const {
+    playerPages: pages,
+    gameId,
+    gmPage,
+  } = await createStartableGame(context, "Trouble Brewing", players);
 
   // We do these all sequentially because they bug out if you go too fast in CI.
 
@@ -83,9 +67,72 @@ test("can 15 players join", async ({ context, page }) => {
   }
 
   // Proper way to expect somehting to be enabled
-  await page
+  await gmPage.getByRole("tab", { name: "menu" }).click();
+  await gmPage
     .getByRole("button", {
       name: "Start Game",
     })
     .click({ trial: true, timeout: 1000 });
+});
+
+test("travelers keep player order", async ({ context }) => {
+  const players = Array.from({ length: 8 }, (_, i) => `player${i}`);
+
+  const {
+    playerPages: pages,
+    gameId,
+    gmPage,
+  } = await createStartableGame(context, "Trouble Brewing", players);
+
+  // Proper way to expect somehting to be enabled
+  await gmPage.getByRole("tab", { name: "menu" }).click();
+  await gmPage
+    .getByRole("button", {
+      name: "Start Game",
+    })
+    .click();
+  // click confirmation
+  await gmPage
+    .getByRole("button", {
+      name: "Start Game",
+    })
+    .click();
+
+  await acknowledgeRoles(pages);
+  await Promise.all(pages.map((p) => p.page.close()));
+  // comparing ordere is fucking hard
+  async function getOrderedValues() {
+    const allPlayerTiles = await gmPage.getByTestId(/tile_/).all();
+
+    return await asyncMap(
+      allPlayerTiles,
+      async (tile) =>
+        (await tile.getAttribute("data-testid"))
+          ?.replace(/tile_/i, "")
+          ?.toLocaleLowerCase(),
+    );
+  }
+
+  const expectedOrderedValues = players;
+  const playersFromDom = await getOrderedValues();
+  expect(playersFromDom).toMatchObject(expectedOrderedValues);
+  expect(playersFromDom.length).toEqual(players.length);
+
+  const insertTravelerBefore = 4;
+  const travelerName = "traveling bob";
+  const travelerPage = await addPlayerToGame(context, gameId, travelerName);
+  await travelerPage
+    .getByRole("button", {
+      name: players[insertTravelerBefore],
+      exact: true,
+    })
+    .click();
+
+  const postTravelersOrderedValues = [
+    ...expectedOrderedValues.slice(0, insertTravelerBefore),
+    travelerName,
+    ...expectedOrderedValues.slice(insertTravelerBefore),
+  ];
+
+  expect(await getOrderedValues()).toMatchObject(postTravelersOrderedValues);
 });
