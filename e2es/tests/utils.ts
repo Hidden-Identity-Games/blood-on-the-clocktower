@@ -23,7 +23,11 @@ export async function joinGameAs(
   playerName: string,
   testKey: string = playerName,
 ) {
+<<<<<<< HEAD
   await page.goto(urlFromBase("", { testPlayerKey: testKey }));
+=======
+  await page.goto(urlFromBase("", { testPlayerKey: playerName }));
+>>>>>>> 25d28f2 (spectate flow)
   await page.getByRole("button", { name: "Join game" }).click();
   await page.getByRole("textbox", { name: "code" }).fill(gameId);
   await page.getByRole("button", { name: "Join" }).click();
