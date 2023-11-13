@@ -47,8 +47,10 @@ function PlayerLanding() {
       </>
     );
   }
-
-  if (Object.keys(game.roleBag ?? {}).length === 0) {
+  if (
+    game.travelers[player] &&
+    !game.partialPlayerOrdering[player]?.rightNeighbor
+  ) {
     return <PlayerWaiting />;
   }
 

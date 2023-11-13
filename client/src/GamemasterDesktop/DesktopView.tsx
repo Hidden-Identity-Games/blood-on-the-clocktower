@@ -66,6 +66,22 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   }
 
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
+  const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
+    player: string | null;
+    votes: number;
+  }>(
+    (max, current) => {
+      if (max.votes === current[1] ?? 0) {
+        return { player: max.player ? null : current[0], votes: current[1] };
+      }
+      if (max.votes < current[1]) {
+        return { player: current[0], votes: current[1] };
+      }
+      return max;
+    },
+    { votes: Math.ceil(alivePlayers.length / 2), player: null },
+  );
+
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
       <CircularLayout className="w-full flex-1">
@@ -76,9 +92,11 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                 <TeamDistributionBar />
                 <div className="text-center">
                   <div>Alive players: {alivePlayers.length}</div>
-                  <div>{`Votes to execute: ${Math.ceil(
-                    alivePlayers.length / 2,
-                  )}`}</div>
+                  <div className="capitalize">{`Currently executeing: ${
+                    playerOnBlock.player ?? "Nobody"
+                  }`}</div>
+                  <div>{`Votes needed : ${playerOnBlock.votes}`}</div>
+                  {}
                 </div>
               </>
             )}

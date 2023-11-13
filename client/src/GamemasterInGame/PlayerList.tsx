@@ -8,7 +8,7 @@ import {
   Separator,
   Text,
 } from "@radix-ui/themes";
-import { RoleName } from "../shared/RoleIcon";
+import { PlayerNameWithRoleIcon, RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "@hidden-identity/shared";
 import { GiBootKick } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -271,9 +271,35 @@ export function NightPlayerList({
                     {action.name === "minions" && (
                       <>
                         <DialogHeader>Minions</DialogHeader>
-                        <Heading>
+                        <Text>
                           Wake up the minions, and show them who their demon is.
-                        </Heading>
+                        </Text>
+                        <Heading>Minions:</Heading>
+                        <ul className="pl-2">
+                          {Object.entries(game.playersToRoles)
+                            .filter(
+                              ([_, role]) =>
+                                getCharacter(role).team === "Minion",
+                            )
+                            .map(([player]) => (
+                              <li key={player}>
+                                <PlayerNameWithRoleIcon player={player} />
+                              </li>
+                            ))}
+                        </ul>
+                        <Heading>Demon:</Heading>
+                        <ul className="pl-2">
+                          {Object.entries(game.playersToRoles)
+                            .filter(
+                              ([_, role]) =>
+                                getCharacter(role).team === "Demon",
+                            )
+                            .map(([player]) => (
+                              <li key={player}>
+                                <PlayerNameWithRoleIcon player={player} />
+                              </li>
+                            ))}
+                        </ul>
                       </>
                     )}
                   </Dialog.Content>

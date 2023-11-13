@@ -68,7 +68,7 @@ export function RoleToken({ role, player, isHiddenView }: RoleTokenProps) {
             "line-through": game.deadPlayers[player],
             "my-auto": isHiddenView,
             // a temporary hack, the image and role text are not the same size, and I can't fix why
-            "group-hover:opacity-0": true,
+            "group-hover:opacity-0": !isHiddenView,
           },
         )}
       >
