@@ -12,8 +12,12 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   timeout: 60000,
   testMatch: "tests/*.spec.ts",
+  expect: {
+    timeout: 1000,
+  },
   /* Run tests in files in parallel */
   fullyParallel: true,
+  workers: 2,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   // forbidOnly: !!process.env.CI,
   /* Retry on CI only */

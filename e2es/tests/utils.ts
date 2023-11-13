@@ -124,10 +124,7 @@ export function getAssignableCharactersNamesFromScript(script: ScriptName) {
 }
 export async function assignRoles(page: Page, { roles }: { roles: string[] }) {
   for (const role of roles) {
-    await page
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .getByRole("checkbox", { name: role })
-      .click();
+    await page.getByRole("checkbox", { name: role }).click();
   }
 }
 export async function acknowledgeRoles(pages: PlayerPage[]) {

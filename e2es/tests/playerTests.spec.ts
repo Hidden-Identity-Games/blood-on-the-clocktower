@@ -37,13 +37,14 @@ test("cannot start game with too few roles", async ({ page, context }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
   const pages = await populateGameWithPlayers(context, players, gameId);
   await assignSeats(pages);
-  await page.getByRole("tab", { name: "menu" }).click();
-  const startGameButton1 = await page.getByRole("button", {
+  await page.getByRole("button", { name: /desktop/i }).click();
+  await page.getByRole("tab", { name: /menu/i }).click();
+  const startGameButton1 = page.getByRole("button", {
     name: "Start Game",
   });
   // Don't actually do this, it makes bad tests, but I want this here to trust this test more for now.
   // Always assert LAST
-  expect(startGameButton1).toBeDisabled();
+  await expect(startGameButton1).toBeDisabled();
 });
 
 test("can 15 players join", async ({ context }) => {
@@ -62,6 +63,7 @@ test("can 15 players join", async ({ context }) => {
     const { page: myPage } = pages[playerNumber];
     const name = `player${playerNumber}`;
     await myPage.getByText(`Hello ${name}`).waitFor({ timeout: 4000 });
+    // eslint-disable-next-line playwright/no-wait-for-timeout
     await myPage.waitForTimeout(100);
     await expect(myPage.url()).toContain(gameId);
   }
