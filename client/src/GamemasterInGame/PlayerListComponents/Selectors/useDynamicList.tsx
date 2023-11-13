@@ -1,4 +1,4 @@
-import { pluck } from "@hidden-identity/shared";
+import { filterFalsy, pluck } from "@hidden-identity/shared";
 import { useEffect, useState } from "react";
 
 export interface DynamicListArgs<T> {
@@ -38,9 +38,9 @@ export function useDynamicList<T>(
   return {
     value,
     replace: (replaceValue, index) => {
-      const nextValue = [...value];
+      const nextValue = [...value].map((v) => (v === replaceValue ? null : v));
       nextValue[index] = replaceValue!;
-      setValue(nextValue.filter(Boolean));
+      setValue(nextValue.filter(filterFalsy));
     },
     add: () =>
       setValue((last) => {

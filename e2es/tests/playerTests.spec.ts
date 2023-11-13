@@ -32,7 +32,6 @@ test("re-join game", async ({ page, context }) => {
 test("can 15 players join", async ({ context, page }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
   const size = 15;
-  await page.getByRole("button", { name: "desktop" }).click();
   await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
   const roleIds = [
     "Washerwoman",

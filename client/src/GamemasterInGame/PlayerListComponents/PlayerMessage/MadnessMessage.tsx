@@ -23,8 +23,13 @@ export function MadnessMessage({ onOpenNote }: MadnessMessageProps) {
 
   return (
     <Flex direction="column" gap="2">
+      <RoleSelectList
+        roles={rolesState.value}
+        addRole={rolesState.add}
+        replaceRole={rolesState.replace}
+      />
       <PlayerMessageLink
-        className="mb-2"
+        className="mt-2"
         note={{
           reveal: {
             "You are mad as:": rolesState.value.map((character) => ({
@@ -35,11 +40,6 @@ export function MadnessMessage({ onOpenNote }: MadnessMessageProps) {
             "You must make an effort to convince people you are this role or risk execution.",
         }}
         onOpenNote={onOpenNote}
-      />
-      <RoleSelectList
-        roles={rolesState.value}
-        addRole={rolesState.add}
-        replaceRole={rolesState.replace}
       />
     </Flex>
   );

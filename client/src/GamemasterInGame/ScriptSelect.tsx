@@ -1,5 +1,4 @@
 import {
-  Grid,
   Flex,
   Button,
   Heading,
@@ -30,11 +29,13 @@ export const ScriptOption = React.forwardRef(function ScriptOption(
     onClick,
     name,
     selected,
+    bgImageUrl,
   }: {
-    children: ReactNode;
+    children?: ReactNode;
     onClick?: React.MouseEventHandler;
     name: string;
     selected?: boolean;
+    bgImageUrl?: string;
   },
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) {
@@ -42,12 +43,20 @@ export const ScriptOption = React.forwardRef(function ScriptOption(
     <button
       ref={ref}
       className={classNames(
-        "aspect-square max-h-[25vh] rounded-[10%] border-2 border-purple-800 bg-transparent p-3",
+        "aspect-square max-h-[25vh] h-[200px] rounded-[10%] border-2 border-purple-800 bg-transparent p-3",
         selected && "border-red-500 outline outline-red-500",
       )}
       onClick={onClick}
       aria-label={name}
       type="button"
+      style={{
+        ...(bgImageUrl && {
+          backgroundImage: `url('${bgImageUrl}')`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }),
+      }}
     >
       {children}
     </button>
@@ -72,7 +81,7 @@ export function ScriptSelect({ onScriptChange }: ScriptSelectProps) {
       className="flex-1 overflow-y-auto"
     >
       <Heading color="tomato">Select a Script</Heading>
-      <Grid columns="2" align={"center"} gap="4" p="4">
+      <Flex wrap="wrap" align={"center"} gap="4" p="4" justify="center">
         {getScriptNames().map((name) => (
           <ScriptOption
             key={name}
@@ -81,15 +90,16 @@ export function ScriptSelect({ onScriptChange }: ScriptSelectProps) {
               handleScriptChange(name, getScript(name));
             }}
             name={name}
+            bgImageUrl={getScriptImg(name)}
           >
-            <img className="h-full w-full" src={getScriptImg(name)} />
+            {getScriptImg(name) ? null : <Heading>{name}</Heading>}
           </ScriptOption>
         ))}
         <CustomScriptInputDialog
           handleSubmit={(script) => handleScriptChange("custom", script)}
           selected={"custom" === selectedScript}
         />
-      </Grid>
+      </Flex>
     </Flex>
   );
 }
@@ -121,17 +131,8 @@ function CustomScriptInputDialog({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <ScriptOption name="custom" selected={selected}>
-          <div
-            className={
-              "relative flex h-full w-full items-center justify-center"
-            }
-          >
-            <img className="absolute left-0 top-0" src={scriptIcon} />
-            <Heading mb="1" color="ruby" className="relative z-10">
-              CUSTOM
-            </Heading>
-          </div>
+        <ScriptOption name="custom" selected={selected} bgImageUrl={scriptIcon}>
+          <Heading>CUSTOM</Heading>
         </ScriptOption>
       </Dialog.Trigger>
       <Dialog.Content className="m-2">

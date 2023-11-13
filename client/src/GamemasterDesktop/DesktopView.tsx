@@ -23,12 +23,16 @@ export function DesktopView({ isPlayerView = true }: DesktopViewProps) {
   const [{ hiddenView }] = useSearchParams();
 
   return (
-    <Flex className="min-h-0 flex-1 overflow-hidden p-1" justify="between">
-      <Flex className="flex-1">
+    <Flex
+      className="min-h-0 flex-1 overflow-hidden p-1"
+      justify="between"
+      gap="4"
+    >
+      <Flex className="hidden lg:flex lg:flex-1">
         <Grimoire isPlayerView={isPlayerView} />
       </Flex>
       {!isPlayerView && (
-        <Flex className="h-full w-1/4 min-w-[400px] overflow-hidden">
+        <Flex className="h-full w-1/4 min-w-[400px] shrink grow overflow-hidden md:grow-0">
           {!hiddenView && <SideBar />}
         </Flex>
       )}
@@ -62,6 +66,22 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   }
 
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
+  const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
+    player: string | null;
+    votes: number;
+  }>(
+    (max, current) => {
+      if (max.votes === current[1] ?? 0) {
+        return { player: max.player ? null : current[0], votes: current[1] };
+      }
+      if (max.votes < current[1]) {
+        return { player: current[0], votes: current[1] };
+      }
+      return max;
+    },
+    { votes: Math.ceil(alivePlayers.length / 2), player: null },
+  );
+
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
       <CircularLayout className="w-full flex-1">
@@ -72,9 +92,13 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                 <TeamDistributionBar />
                 <div className="text-center">
                   <div>Alive players: {alivePlayers.length}</div>
-                  <div>{`Votes to execute: ${Math.ceil(
-                    alivePlayers.length / 2,
-                  )}`}</div>
+                  <div className="capitalize">{`Currently executeing: ${
+                    playerOnBlock.player ?? "Nobody"
+                  }`}</div>
+                  <div>{`Votes ${
+                    playerOnBlock.player ? "to tie" : "to execute"
+                  }: ${playerOnBlock.votes}`}</div>
+                  {}
                 </div>
               </>
             )}

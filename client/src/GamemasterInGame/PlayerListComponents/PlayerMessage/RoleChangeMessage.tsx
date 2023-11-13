@@ -33,8 +33,22 @@ export function RoleChangeMessage({
 
   return (
     <Flex direction="column" gap="2">
+      <Heading>Role</Heading>
+      <Restrictions restrictions={message.restriction} />
+      <RoleSelectList
+        fixedSize
+        roles={rolesState.value}
+        addRole={rolesState.add}
+        replaceRole={rolesState.replace}
+      />
+      <AlignmentSelect
+        currentAlignment={
+          alignmentOverride || getDefaultAlignment(rolesState.value[0])
+        }
+        onSelect={(alignment) => setAlignmentOverride(alignment)}
+      />
       <PlayerMessageLink
-        className="mb-2"
+        className="mt-2"
         note={{
           reveal: {
             "You are now": [
@@ -51,20 +65,6 @@ export function RoleChangeMessage({
           message: "",
         }}
         onOpenNote={onOpenNote}
-      />
-      <Heading>Role</Heading>
-      <Restrictions restrictions={message.restriction} />
-      <RoleSelectList
-        fixedSize
-        roles={rolesState.value}
-        addRole={rolesState.add}
-        replaceRole={rolesState.replace}
-      />
-      <AlignmentSelect
-        currentAlignment={
-          alignmentOverride || getDefaultAlignment(rolesState.value[0])
-        }
-        onSelect={(alignment) => setAlignmentOverride(alignment)}
       />
     </Flex>
   );

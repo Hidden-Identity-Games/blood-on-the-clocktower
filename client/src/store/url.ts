@@ -9,7 +9,7 @@ import { filterObject } from "@hidden-identity/shared";
 const routeMap = {
   [""]: [],
   game: [],
-  gm: ["desktop", "mobile"],
+  gm: [],
   spectator: [],
 } as const;
 type RouteMap = typeof routeMap;

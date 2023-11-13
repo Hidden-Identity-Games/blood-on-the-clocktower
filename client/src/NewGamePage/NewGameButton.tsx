@@ -32,7 +32,7 @@ export function NewGameButton({
       <Dialog.Trigger>
         <Button {...buttonProps}>{children}</Button>
       </Dialog.Trigger>
-      <Dialog.Content>
+      <Dialog.Content className="flex min-w-[75vw] flex-col gap-1 p-2">
         <DialogHeader>Create a new game</DialogHeader>
         <Flex asChild direction="column" gap="3">
           <form

@@ -10,7 +10,6 @@ import { DestructiveButton } from "./DestructiveButton";
 import { Role } from "@hidden-identity/shared";
 import { NewGameButton } from "../NewGamePage/NewGameButton";
 import { QRCodeModal } from "../shared/QRCodeModal";
-import { useDesktopOrMobile } from "../store/useDesktopOrMobile";
 import { BsShare } from "react-icons/bs";
 import { urlFromOrigin, useSearchParams } from "../store/url";
 
@@ -28,8 +27,7 @@ export function GameMasterActions({
   const [, , , setGameStatus] = useSetGameStatus();
   const [distributeRolesError, , , distributeRoles, clear] =
     useDistributeRoles();
-  const [view, setView] = useDesktopOrMobile();
-  const toggleView = () => setView(view === "desktop" ? "mobile" : "desktop");
+
   const problems =
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
@@ -112,22 +110,16 @@ export function GameMasterActions({
             Back to First Day
           </DestructiveButton>
         ))}
-      <Button onClick={toggleView}>
-        {view === "desktop"
-          ? "Switch to Mobile View"
-          : "Switch to Desktop View"}
-      </Button>
-      {view === "desktop" && (
-        <QRCodeModal
-          message="Scan to open phone view:"
-          // TODO: update to use url.ts
-          url={urlFromOrigin("gm/desktop", searchParams)}
-        >
-          <Button>
-            <BsShare className="inline" /> Share to Your Phone
-          </Button>
-        </QRCodeModal>
-      )}
+
+      <QRCodeModal
+        message="Scan to open phone view:"
+        // TODO: update to use url.ts
+        url={urlFromOrigin("gm", searchParams)}
+      >
+        <Button>
+          <BsShare className="inline" /> Share GM view
+        </Button>
+      </QRCodeModal>
       {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
     </Flex>
   );
