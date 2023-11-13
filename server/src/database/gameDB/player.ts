@@ -2,8 +2,9 @@ import {
   type Role,
   type Alignment,
   type PlayerStatus,
-  removeKey,
   type BaseUnifiedGame,
+  removeKey,
+  mapObject,
 } from "@hidden-identity/shared";
 import { UNASSIGNED, gameInProgress, retrieveGame } from "./base.ts";
 
@@ -59,23 +60,40 @@ export async function addPlayer(
 
 export async function kickPlayer(
   gameId: string,
-  player: string,
+  playerToDelete: string,
 ): Promise<void> {
   const game = await retrieveGame(gameId);
   const gameInstance = game.readOnce();
 
   // player doesn't exist
-  if (!gameInstance.playersToRoles[player]) {
-    throw new Error(`Playerid not found: ${player}`);
+  if (!gameInstance.playersToRoles[playerToDelete]) {
+    throw new Error(`Playerid not found: ${playerToDelete}`);
   }
+
+  const nextPlayerOrdering = mapObject(
+    gameInstance.partialPlayerOrdering,
+    (currentPlayer, neighbor) => {
+      if (currentPlayer === playerToDelete) {
+        return null;
+      }
+      if (neighbor?.rightNeighbor === playerToDelete) {
+        return [
+          currentPlayer,
+          {
+            ...(gameInstance.partialPlayerOrdering[playerToDelete] ?? {
+              rightNeighbor: null,
+            }),
+          },
+        ];
+      }
+      return [currentPlayer, neighbor];
+    },
+  );
 
   game.update({
     ...gameInstance,
-    playersToRoles: removeKey(gameInstance.playersToRoles, player),
-    partialPlayerOrdering: removeKey(
-      gameInstance.partialPlayerOrdering,
-      player,
-    ),
+    playersToRoles: removeKey(gameInstance.playersToRoles, playerToDelete),
+    partialPlayerOrdering: nextPlayerOrdering,
   });
 }
 
@@ -90,7 +108,7 @@ export async function setPlayerFate(
   game.update({
     ...gameInstance,
     deadPlayers: { ...gameInstance.deadPlayers, [player]: dead },
-    deadVotes: { [player]: false },
+    deadVotes: { ...gameInstance.deadPlayers, [player]: false },
   });
 }
 
@@ -105,7 +123,8 @@ export async function setPlayerOrder(
 
   if (gameStarted) {
     const leftNeighbor = Object.keys(gameInstance.partialPlayerOrdering).find(
-      (p) => gameInstance.partialPlayerOrdering[p]?.rightNeighbor === player,
+      (p) =>
+        gameInstance.partialPlayerOrdering[p]?.rightNeighbor === rightNeighbor,
     );
     if (!leftNeighbor) {
       throw new Error(

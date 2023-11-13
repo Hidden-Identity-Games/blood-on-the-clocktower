@@ -22,10 +22,12 @@ export function removeKey<
 
 export function mapObject<OgValue, OutValue>(
   input: Record<string, OgValue>,
-  cb: (key: string, value: OgValue) => [string, OutValue],
+  cb: (key: string, value: OgValue) => [string, OutValue] | null,
 ): Record<string, OutValue> {
   return Object.fromEntries(
-    Object.entries(input).map(([key, value]) => cb(key, value as OgValue)),
+    Object.entries(input)
+      .map(([key, value]) => cb(key, value as OgValue))
+      .filter((v): v is [string, OutValue] => !!v),
   ) as Record<string, OutValue>;
 }
 

@@ -23,6 +23,7 @@ export function RoleToken({ role, player, isHiddenView }: RoleTokenProps) {
   const { height = 0, ref } = useResizeObserver();
   return (
     <div
+      data-testid={`tile_${player}`}
       ref={ref}
       className={classNames(
         "h-full w-full group relative flex flex-col p-2 hover:z-30 bg-violet-500 bg-opacity-70 rounded-full align-middle justify-between",
