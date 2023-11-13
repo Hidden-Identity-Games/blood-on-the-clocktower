@@ -47,10 +47,7 @@ function PlayerLanding() {
       </>
     );
   }
-  if (
-    game.travelers[player] &&
-    !game.partialPlayerOrdering[player]?.rightNeighbor
-  ) {
+  if (game.gameStatus === "PlayersJoining") {
     return <PlayerWaiting />;
   }
 
