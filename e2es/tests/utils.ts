@@ -21,8 +21,9 @@ export async function joinGameAs(
   page: Page,
   gameId: string,
   playerName: string,
+  testKey: string = playerName,
 ) {
-  await page.goto(urlFromBase("", { testPlayerKey: playerName }));
+  await page.goto(urlFromBase("", { testPlayerKey: testKey }));
   await page.getByRole("button", { name: "Join game" }).click();
   await page.getByRole("textbox", { name: "code" }).fill(gameId);
   await page.getByRole("button", { name: "Join" }).click();
@@ -34,8 +35,9 @@ export async function rejoinGameAs(
   page: Page,
   gameId: string,
   playerName: string,
+  testKey: string = playerName,
 ) {
-  await joinGameAs(page, gameId, playerName);
+  await joinGameAs(page, gameId, playerName, testKey);
   await page.getByRole("button", { name: /Yes/ }).click();
 }
 
@@ -43,28 +45,10 @@ export async function addPlayerToGame(
   context: BrowserContext,
   gameId: string,
   playerName: string,
-): Promise<void>;
-
-export async function addPlayerToGame(
-  context: BrowserContext,
-  gameId: string,
-  playerName: string,
-  keepPage: true,
-): Promise<Page>;
-
-export async function addPlayerToGame(
-  context: BrowserContext,
-  gameId: string,
-  playerName: string,
-  keepPage?: true,
-): Promise<Page | void> {
+): Promise<Page> {
   const page = await context.newPage();
   await joinGameAs(page, gameId, playerName);
-  if (keepPage) {
-    return page;
-  } else {
-    await page.close();
-  }
+  return page;
 }
 
 async function asyncMap<Input, Output>(
@@ -91,7 +75,7 @@ export async function populateGameWithPlayers(
   return await asyncMap(players, async (playerName) => {
     return {
       name: playerName,
-      page: await addPlayerToGame(context, gameId, playerName, true),
+      page: await addPlayerToGame(context, gameId, playerName),
     };
   });
 }

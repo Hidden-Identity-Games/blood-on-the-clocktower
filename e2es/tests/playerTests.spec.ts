@@ -24,7 +24,7 @@ test("re-join game", async ({ page, context }) => {
   await addPlayerToGame(context, gameId, "Alex");
   await addPlayerToGame(context, gameId, "Steve");
 
-  await rejoinGameAs(page, gameId, "Alex");
+  await rejoinGameAs(page, gameId, "Alex", "Alex2");
 
   await expect(page.getByRole("button", { name: "Steve" })).toBeVisible();
 });
