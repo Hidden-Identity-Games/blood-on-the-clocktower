@@ -95,7 +95,9 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                   <div className="capitalize">{`Currently executeing: ${
                     playerOnBlock.player ?? "Nobody"
                   }`}</div>
-                  <div>{`Votes needed : ${playerOnBlock.votes}`}</div>
+                  <div>{`Votes ${
+                    playerOnBlock.player ? "to tie" : "to execute"
+                  }: ${playerOnBlock.votes}`}</div>
                   {}
                 </div>
               </>
