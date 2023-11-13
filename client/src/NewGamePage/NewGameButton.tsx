@@ -9,11 +9,15 @@ import {
 } from "@radix-ui/themes";
 import { DialogHeader } from "../shared/DialogHeader";
 import { ScriptSelect } from "../GamemasterInGame/ScriptSelect";
-import { useState } from "react";
+import { ComponentProps, useState } from "react";
 import { Script, getScript } from "@hidden-identity/shared";
 import { useCreateGame, useGame } from "../store/useStore";
 
-export function NewGameButton({ children }: { children: React.ReactNode }) {
+export interface NewGameButtonProps extends ComponentProps<typeof Button> {}
+export function NewGameButton({
+  children,
+  ...buttonProps
+}: NewGameButtonProps) {
   const { gameId } = useGame();
   const [isTestGame, setIsTestGame] = useState(false);
   const [isFillRoles, setIsFillRoles] = useState(true);
@@ -26,7 +30,7 @@ export function NewGameButton({ children }: { children: React.ReactNode }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>{children}</Button>
+        <Button {...buttonProps}>{children}</Button>
       </Dialog.Trigger>
       <Dialog.Content>
         <DialogHeader>Create a new game</DialogHeader>

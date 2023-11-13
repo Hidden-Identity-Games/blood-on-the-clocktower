@@ -1,16 +1,19 @@
-import { Button, Dialog, DialogClose, Flex, TextField } from "@radix-ui/themes";
-import React from "react";
+import { Button, Flex } from "@radix-ui/themes";
+import { useCallback } from "react";
 import title from "../assets/title_banner.png";
 import backgroundImg from "../assets/hidden_identity_cover.png";
 import { NewGameButton } from "./NewGameButton";
 import { useSafeNavigate } from "../store/url";
+import { GameSelectModal } from "../shared/GameSelect";
 
 export function NewGameLanding() {
-  const [joinCode, setJoinCode] = React.useState("");
   const navigate = useSafeNavigate();
-  const handleJoinGame = () => {
-    navigate("game", { gameId: joinCode.toUpperCase() });
-  };
+  const handleJoinGame = useCallback(
+    (gameId: string) => {
+      navigate("game", { gameId: gameId });
+    },
+    [navigate],
+  );
 
   return (
     <Flex
@@ -25,52 +28,23 @@ export function NewGameLanding() {
     >
       <img src={title} className="mx-auto mt-6" />
       <Flex
-        className="mx-auto mb-6 mt-auto w-full min-w-[300px] max-w-[450px] self-end"
-        direction="row"
+        className="mx-auto mb-6 mt-auto w-full min-w-[300px] max-w-[450px] self-end opacity-[80%]"
+        direction="column"
         align="center"
-        justify={"between"}
+        gap="2"
       >
-        <NewGameButton>Create game</NewGameButton>
-
-        <Dialog.Root>
-          <Dialog.Trigger>
-            <Button>Join Game</Button>
-          </Dialog.Trigger>
-          <Dialog.Content className="m-2">
-            <Dialog.Title align="center">
-              <label htmlFor="game-code-input">Game code:</label>
-            </Dialog.Title>
-
-            <TextField.Input
-              id="game-code-input"
-              className="rounded"
-              value={joinCode}
-              onChange={(event) =>
-                setJoinCode(event.currentTarget.value.toUpperCase())
-              }
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  handleJoinGame();
-                }
-              }}
-            />
-
-            <Flex justify="between" mt="3">
-              <DialogClose>
-                <Button variant="soft">Cancel</Button>
-              </DialogClose>
-              <DialogClose>
-                <Button
-                  onClick={() => {
-                    handleJoinGame();
-                  }}
-                >
-                  Join
-                </Button>
-              </DialogClose>
-            </Flex>
-          </Dialog.Content>
-        </Dialog.Root>
+        <GameSelectModal onSubmit={handleJoinGame} title="Join game">
+          <Button className="w-full">Join Game</Button>
+        </GameSelectModal>
+        <NewGameButton className="w-full">Create game</NewGameButton>
+        <GameSelectModal
+          onSubmit={() => navigate("spectator")}
+          title="Spectate game"
+        >
+          <Button variant="surface" className="w-full">
+            Spectate
+          </Button>
+        </GameSelectModal>
       </Flex>
     </Flex>
   );
