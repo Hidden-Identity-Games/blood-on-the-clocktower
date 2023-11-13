@@ -226,6 +226,33 @@ export async function setAlignment(
   });
 }
 
+export async function setVotesToExecute(
+  gameId: string,
+  player: string,
+  votes: number,
+): Promise<void> {
+  const game = await retrieveGame(gameId);
+  const gameInstance = game.readOnce();
+
+  game.update({
+    ...gameInstance,
+    onTheBlock: {
+      ...gameInstance.onTheBlock,
+      [player]: votes,
+    },
+  });
+}
+
+export async function clearVotesToExecute(gameId: string): Promise<void> {
+  const game = await retrieveGame(gameId);
+  const gameInstance = game.readOnce();
+
+  game.update({
+    ...gameInstance,
+    onTheBlock: {},
+  });
+}
+
 export async function assignRoles(
   gameId: string,
   roles: Role[],

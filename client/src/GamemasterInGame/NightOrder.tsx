@@ -13,6 +13,7 @@ import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 import { ScriptList } from "../shared/ScriptList";
 import { PlayerOrder } from "../shared/PlayerListOrder";
 import { Reveal } from "../types/PlayerMessageScreen";
+import { useClearVotesToExecute } from "../store/actions/gmPlayerActions";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
 export function NightOrder() {
@@ -30,6 +31,8 @@ export function NightOrder() {
     Record<string, Reveal[]>
   >({});
 
+  const [, , , clearVotesToExecute] = useClearVotesToExecute();
+
   const firstNight = game.gameStatus === "Setup";
 
   const startDay = () => {
@@ -37,6 +40,7 @@ export function NightOrder() {
       setGameStatus("Started");
     }
     setSelectedTab("grimoire");
+    clearVotesToExecute();
   };
 
   const handleOpenPlayerMessage = (

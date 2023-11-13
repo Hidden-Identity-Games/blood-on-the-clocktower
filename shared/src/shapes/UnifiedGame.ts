@@ -65,6 +65,7 @@ export interface BaseUnifiedGame {
   playerPlayerStatuses: Record<string, PlayerStatus[]>;
   playerNotes: Record<string, string>;
   deadVotes: Record<string, boolean>;
+  onTheBlock: Record<string, number>;
   travelers: Record<string, boolean>;
   alignmentsOverrides: Record<string, Alignment>;
   roleBag: Record<number, Role | null>;

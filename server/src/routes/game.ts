@@ -18,6 +18,8 @@ import {
   setAlignment,
   setDrawRole,
   setPlayerHasSeenRole,
+  setVotesToExecute,
+  clearVotesToExecute,
 } from "../database/gameDB/player.ts";
 import { setupTestGames } from "../testGames.ts";
 import {
@@ -190,6 +192,18 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, voteUsed } }) => {
       await toggleDeadvote(gameId, player, voteUsed);
+    }),
+  setVotesToExecute: gmProcedure
+    .input(
+      z.intersection(playerAndGameIdShape, z.object({ votes: z.number() })),
+    )
+    .mutation(async ({ input: { gameId, player, votes } }) => {
+      await setVotesToExecute(gameId, player, votes);
+    }),
+  clearVotesToExecute: gmProcedure
+    .input(gameIdShape)
+    .mutation(async ({ input: { gameId } }) => {
+      await clearVotesToExecute(gameId);
     }),
   setGameStatus: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ status: gameStatusShape })))

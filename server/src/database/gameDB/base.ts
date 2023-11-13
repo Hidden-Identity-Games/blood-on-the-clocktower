@@ -103,6 +103,7 @@ export function createGame(): BaseUnifiedGame {
     playerPlayerStatuses: {},
     playerNotes: {},
     deadVotes: {},
+    onTheBlock: {},
     travelers: {},
     alignmentsOverrides: {},
     roleBag: {},
