@@ -10,8 +10,13 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: "./tsconfig.json",
+  },
   plugins: ["react-refresh", "prettier"],
   rules: {
+    "@typescript-eslint/require-await": ["error"],
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

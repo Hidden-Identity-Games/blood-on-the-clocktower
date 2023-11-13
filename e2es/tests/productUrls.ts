@@ -34,5 +34,6 @@ export function searchParamsString(searchParams: SearchParams): string {
 }
 
 export function urlFromBase(url: Route, searchParams: SearchParams): string {
-  return `/${url}?${searchParamsString(searchParams)}`;
+  const paramString = searchParamsString(searchParams);
+  return `/${url}` + (paramString ? `?${paramString}` : "");
 }

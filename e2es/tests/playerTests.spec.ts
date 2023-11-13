@@ -1,5 +1,11 @@
-import { test, expect, Page } from "@playwright/test";
-import { createNewGame, joinGameAs } from "./utils";
+import { test, expect } from "@playwright/test";
+import {
+  addPlayerToGame,
+  assignRoles,
+  createNewGame,
+  populateGameWithPlayers,
+  rejoinGameAs,
+} from "./utils";
 
 import { urlFromBase } from "./productUrls";
 
@@ -12,18 +18,13 @@ test("join game", async ({ page }) => {
   await expect(page.url()).toContain(gameId);
 });
 
-test("re-join game", async ({ page }) => {
+test("re-join game", async ({ page, context }) => {
   const gameId = await createNewGame(page, "Trouble Brewing");
-  await page.goto(urlFromBase("", {}));
 
-  await joinGameAs(page, gameId, "Alex");
-  await page.goto(urlFromBase("", { testPlayerKey: "1" }));
-  await joinGameAs(page, gameId, "Steve");
+  await addPlayerToGame(context, gameId, "Alex");
+  await addPlayerToGame(context, gameId, "Steve");
 
-  await page.goto(urlFromBase("", { testPlayerKey: "2" }));
-  await joinGameAs(page, gameId, "Alex");
-
-  await page.getByRole("button", { name: /Yes/ }).click();
+  await rejoinGameAs(page, gameId, "Alex", "Alex2");
 
   await expect(page.getByRole("button", { name: "Steve" })).toBeVisible();
 });
@@ -68,40 +69,14 @@ test("can 15 players join", async ({ context, page }) => {
   // Always assert LAST
   expect(startGameButton1).toBeDisabled();
 
-  const players = Array.from({ length: size }, (_, i) => i);
-  const pages: Page[] = [];
+  const players = Array.from({ length: size }, (_, i) => `player${i}`);
+  const pages = await populateGameWithPlayers(context, players, gameId);
+  await assignRoles(pages);
 
   // We do these all sequentially because they bug out if you go too fast in CI.
-  for (const playerNumber of players) {
-    const name = `player${playerNumber}`;
-    const myPage = await context.newPage();
-    await myPage.goto(
-      urlFromBase("game", { testPlayerKey: String(playerNumber), gameId }),
-    );
-    await myPage.getByRole("textbox", { name: "NAME:" }).fill(name);
-    await myPage.getByRole("button", { name: "Join" }).click();
-    pages.push(myPage);
-  }
 
-  for (const playerNumber of players) {
-    const myPage = pages[playerNumber];
-    const nextPlayerNumber = (playerNumber + 1) % size;
-    await myPage
-      .getByRole("button", {
-        name: `player${nextPlayerNumber}`,
-        exact: true,
-      })
-      .waitFor();
-    await myPage
-      .getByRole("button", {
-        name: `player${nextPlayerNumber}`,
-        exact: true,
-      })
-      .click();
-  }
-
-  for (const playerNumber of players) {
-    const myPage = pages[playerNumber];
+  for (const playerNumber in players) {
+    const { page: myPage } = pages[playerNumber];
     const name = `player${playerNumber}`;
     await myPage.getByText(`Hello ${name}`).waitFor({ timeout: 4000 });
     await myPage.waitForTimeout(100);

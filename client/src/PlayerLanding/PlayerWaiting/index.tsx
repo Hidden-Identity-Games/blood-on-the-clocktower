@@ -114,10 +114,8 @@ export function PlayerWaiting() {
                     <Callout.Icon></Callout.Icon>
                     <Callout.Text className="text-center">
                       Waiting on
-                      <Text asChild color="orange">
-                        <div className="capitalize">
-                          {playersWithSeatingProblems.join(", ")}
-                        </div>
+                      <Text className="block capitalize" color="orange">
+                        {playersWithSeatingProblems.join(", ")}
                       </Text>
                     </Callout.Text>
                   </Callout.Root>
