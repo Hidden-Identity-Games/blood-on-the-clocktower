@@ -23,9 +23,10 @@ import {
 import { useSetScript } from "../store/useStore";
 import { useDefiniteGame } from "../store/GameContext";
 import { DestructiveButton } from "./DestructiveButton";
-import { AiOutlineClose, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 import Fuse from "fuse.js";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
+import { SetCount } from "../shared/SetCount";
 
 interface StateContainer<T> {
   value: T;
@@ -285,23 +286,7 @@ function RoleCount({ role, characterSelectState }: RoleCountProps) {
           <Dialog.Title>Number of players to get this Role:</Dialog.Title>
           <Text size="8">
             <Flex justify="center" align="center" gap="7">
-              <IconButton
-                variant="soft"
-                radius="full"
-                size="3"
-                onClick={() => setRoleCount((curr) => Math.max(curr - 1, 0))}
-              >
-                <AiOutlineMinus />
-              </IconButton>
-              <span>{roleCount}</span>
-              <IconButton
-                variant="soft"
-                radius="full"
-                size="3"
-                onClick={() => setRoleCount((curr) => curr + 1)}
-              >
-                <AiOutlinePlus />
-              </IconButton>
+              <SetCount count={roleCount} setCount={setRoleCount} />
             </Flex>
           </Text>
           <Flex justify="between">
