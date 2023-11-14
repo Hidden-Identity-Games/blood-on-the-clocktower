@@ -10,7 +10,7 @@ import {
 } from "@radix-ui/themes";
 import { PlayerNameWithRoleIcon, RoleName } from "../shared/RoleIcon";
 import { getCharacter } from "@hidden-identity/shared";
-import { GiBootKick } from "react-icons/gi";
+import { GiAxeInStump, GiBootKick } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import React, { HTMLAttributes, useState } from "react";
 import { useDefiniteGame } from "../store/GameContext";
@@ -31,10 +31,14 @@ import {
   PlayerOrder,
   usePlayerOrder,
 } from "../shared/PlayerListOrder";
-import { usePlayerNotes } from "../store/actions/gmPlayerActions";
+import {
+  usePlayerNotes,
+  useVotesToExecute,
+} from "../store/actions/gmPlayerActions";
 import { Reveal } from "../types/PlayerMessageScreen";
 import { FaFeather } from "react-icons/fa6";
 import { useFirstSeat, useIsHiddenView } from "../store/url";
+import { SetCountModal } from "../shared/SetCount";
 
 export function PregamePlayerList() {
   const { game } = useDefiniteGame();
@@ -348,6 +352,7 @@ export function IngamePlayerList({
   const allFilters = usePlayerFilters(orderedPlayers);
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const filteredPlayers = allFilters[selectedFilter];
+  const [, , , setVotesToExecute] = useVotesToExecute();
 
   return (
     <Flex className="h-full overflow-y-auto" direction="column" p="2" gap="2">
@@ -374,6 +379,14 @@ export function IngamePlayerList({
                 </button>
               </PlayerList.NoteInputModal>
               <DeadVoteIcon player={player} />
+              <SetCountModal
+                title="Set votes to execute:"
+                onSet={(votes: number) => setVotesToExecute(player, votes)}
+              >
+                <IconButton variant="soft" radius="large">
+                  <GiAxeInStump />
+                </IconButton>
+              </SetCountModal>
               <PlayerList.Actions player={player}>
                 <IconButton id={`${player}-menu-btn`} variant="ghost">
                   <RxHamburgerMenu />

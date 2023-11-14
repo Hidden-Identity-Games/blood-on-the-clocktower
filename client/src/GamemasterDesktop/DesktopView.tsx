@@ -14,7 +14,7 @@ import { useFirstSeat, useIsHiddenView, useSearchParams } from "../store/url";
 import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useVotesToExecute } from "../store/actions/gmPlayerActions";
-import { SetCount } from "../shared/SetCount";
+import { SetCountModal } from "../shared/SetCount";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -122,7 +122,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
             >
               <div className="flex h-full w-full">
                 {hideInfo ? (
-                  <SetCount
+                  <SetCountModal
                     title="Votes to Execute:"
                     onSet={(votes: number) => setVotesToExecute(player, votes)}
                   >
@@ -133,7 +133,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                         player={player}
                       />
                     </button>
-                  </SetCount>
+                  </SetCountModal>
                 ) : (
                   <PlayerList.Actions player={player}>
                     <button className="h-full w-full" disabled={hideInfo}>

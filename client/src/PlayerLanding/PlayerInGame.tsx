@@ -1,11 +1,19 @@
-import { Button, Flex, Heading, Separator, Tabs, Text } from "@radix-ui/themes";
+import {
+  Button,
+  Flex,
+  Heading,
+  IconButton,
+  Separator,
+  Tabs,
+  Text,
+} from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { MeaningfulIcon } from "../shared/MeaningfulIcon";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
 import { useMe } from "../store/usePlayer";
 import { BsFillMoonStarsFill, BsPeopleFill } from "react-icons/bs";
-import { GiScrollQuill } from "react-icons/gi";
+import { GiAxeInStump, GiScrollQuill } from "react-icons/gi";
 import React, { useState } from "react";
 import { getCharacter } from "@hidden-identity/shared";
 import {
@@ -23,6 +31,8 @@ import {
 } from "../shared/PlayerListOrder";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useFirstSeat } from "../store/url";
+import { SetCountModal } from "../shared/SetCount";
+import { useVotesToExecute } from "../store/actions/gmPlayerActions";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -36,6 +46,7 @@ export function PlayerInGame() {
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const filteredPlayers = allFilters[selectedFilter];
   const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
+  const [, , , setVotesToExecute] = useVotesToExecute();
 
   const nightOrder = React.useMemo(() => {
     const charactersFromScript =
@@ -197,6 +208,14 @@ export function PlayerInGame() {
                     {getCharacter(game.playersToRoles[player]).ability}
                   </ForPlayerPlayerRoleIcon>
                 )}
+                <SetCountModal
+                  title="Set votes to execute:"
+                  onSet={(votes: number) => setVotesToExecute(player, votes)}
+                >
+                  <IconButton variant="soft" radius="large">
+                    <GiAxeInStump />
+                  </IconButton>
+                </SetCountModal>
               </Flex>
             ))}
           </Flex>
