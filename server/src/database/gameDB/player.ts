@@ -108,7 +108,7 @@ export async function setPlayerFate(
   game.update({
     ...gameInstance,
     deadPlayers: { ...gameInstance.deadPlayers, [player]: dead },
-    deadVotes: { ...gameInstance.deadPlayers, [player]: false },
+    deadVotes: { ...gameInstance.deadVotes, [player]: false },
   });
 }
 
