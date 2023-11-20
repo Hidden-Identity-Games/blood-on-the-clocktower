@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { colorMap } from "./CharacterTypes";
-import { Character, CharacterType } from "@hidden-identity/shared";
+import { Character, CharacterType, Role } from "@hidden-identity/shared";
 import { BsFillMoonFill } from "react-icons/bs";
 import { CharacterName } from "./RoleIcon";
 import { useDefiniteGame } from "../store/GameContext";
@@ -53,23 +53,34 @@ export function ScriptList({ className }: ScriptListProps) {
               </Heading>
             </Flex>
             {characters.map((char) => (
-              <Flex key={char.id} gap="2">
-                <Flex direction="column">
-                  <Heading
-                    size="2"
-                    className="flex-1"
-                    color={colorMap[team as CharacterType]}
-                  >
-                    <CharacterName role={char.id} />
-                  </Heading>
-                  <Text size="1" weight="light" className="pl-5">
-                    {char.ability}
-                  </Text>
-                </Flex>
-              </Flex>
+              <ScriptItem key={char.id} role={char.id} />
             ))}
           </React.Fragment>
         ))}
+    </Flex>
+  );
+}
+
+interface ScriptItemProps {
+  role: Role;
+}
+export function ScriptItem({ role }: ScriptItemProps) {
+  const char = getCharacter(role);
+
+  return (
+    <Flex gap="2">
+      <Flex direction="column">
+        <Heading
+          size="2"
+          className="flex-1"
+          color={colorMap[char.team as CharacterType]}
+        >
+          <CharacterName role={char.id} />
+        </Heading>
+        <Text size="1" weight="light" className="pl-5">
+          {char.ability}
+        </Text>
+      </Flex>
     </Flex>
   );
 }
