@@ -26,12 +26,19 @@ function CharacterTypeSection({
   }
 
   const target =
-    getDistribution(
-      Object.values(game.playersToRoles).filter(
-        (role) => getCharacter(role).team !== "Traveler",
-      ).length,
-      charType,
-    ) ?? "?";
+    charsSelected?.length ?? 0 > 0
+      ? getDistribution(
+          charsSelected!.filter(
+            (role) => getCharacter(role)?.team !== "Traveler",
+          ).length,
+          charType,
+        ) ?? "?"
+      : getDistribution(
+          Object.values(game.playersToRoles).filter(
+            (role) => getCharacter(role)?.team !== "Traveler",
+          ).length,
+          charType,
+        ) ?? "?";
 
   return (
     <Text
