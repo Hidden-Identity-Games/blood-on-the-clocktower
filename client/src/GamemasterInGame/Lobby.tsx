@@ -11,7 +11,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { FaMasksTheater } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { PregamePlayerList } from "./PlayerList";
+import { SetupPlayerList } from "./PlayerLists/SetupPlayerList";
 import { AiOutlineMenu } from "react-icons/ai";
 
 export interface LobbyProps {
@@ -121,7 +121,7 @@ export function Lobby() {
                     gap="2"
                     style={{ overflowY: "auto" }}
                   >
-                    <PregamePlayerList />
+                    <SetupPlayerList />
                   </Flex>
                 </Tabs.Content>
               </motion.div>

@@ -1,5 +1,6 @@
 import React from "react";
-import { IngamePlayerList, NightPlayerList } from "./PlayerList";
+import { IngamePlayerList } from "./PlayerLists/GMPlayerList";
+import { NightPlayerList } from "./PlayerLists/NightPlayerList";
 import { Button, Flex, Switch, Tabs } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { GameMasterActions } from "./GameMasterActions";
