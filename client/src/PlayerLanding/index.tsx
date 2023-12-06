@@ -35,19 +35,6 @@ function PlayerLanding() {
     );
   }
 
-  if (game.gameStatus === "Started" && role === "unassigned") {
-    return (
-      <>
-        <Callout.Root>
-          <Callout.Text>
-            It looks like you're joining as a Traveller. Please see the
-            Storyteller for a role.
-          </Callout.Text>
-        </Callout.Root>
-      </>
-    );
-  }
-
   if (
     game.travelers[player] &&
     !game.partialPlayerOrdering[player]?.rightNeighbor
