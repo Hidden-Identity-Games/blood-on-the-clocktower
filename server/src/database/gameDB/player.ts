@@ -135,7 +135,6 @@ export async function setPlayerOrder(
     }
     game.update({
       ...gameInstance,
-      ...gameInstance,
       partialPlayerOrdering: {
         ...gameInstance.partialPlayerOrdering,
         [player]: { rightNeighbor },
