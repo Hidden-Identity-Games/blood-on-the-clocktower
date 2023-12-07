@@ -19,6 +19,7 @@ import { useGetPlayerAlignment } from "../../store/useStore";
 import { FaFeather, FaSkull } from "react-icons/fa6";
 import { CharacterName } from "../../shared/RoleIcon";
 import { PlayerName } from "./PlayerName";
+import { MovePlayerModal } from "../../shared/MovePlayerModal";
 
 export function PlayerActions({
   player,
@@ -153,6 +154,7 @@ export function PlayerActions({
               </PlayerList.MenuItem>
             )}
           </PlayerList.NoteInputModal>
+          <MovePlayerModal player={player} />
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

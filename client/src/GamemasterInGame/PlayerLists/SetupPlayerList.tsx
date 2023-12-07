@@ -5,6 +5,7 @@ import { PlayerList } from "../PlayerListComponents";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GiBootKick } from "react-icons/gi";
 import { RoleName } from "../../shared/RoleIcon";
+import { MovePlayerModal } from "../../shared/MovePlayerModal";
 
 export function SetupPlayerList() {
   const { game } = useDefiniteGame();
@@ -63,6 +64,8 @@ export function SetupPlayerList() {
                       <GiBootKick />
                     </PlayerList.MenuItem>
                   </Dialog.Close>
+
+                  <MovePlayerModal player={player} />
                 </Flex>
               </Dialog.Content>
             </Dialog.Root>
