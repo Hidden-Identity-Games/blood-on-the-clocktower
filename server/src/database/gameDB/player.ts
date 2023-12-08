@@ -8,6 +8,7 @@ import {
 } from "@hidden-identity/shared";
 import { UNASSIGNED, gameInProgress, retrieveGame } from "./base.ts";
 
+// done
 export function _addPLayerToGame(
   game: BaseUnifiedGame,
   player: string,
@@ -39,6 +40,7 @@ export function _addPLayerToGame(
   };
 }
 
+// done
 export async function addPlayer(
   gameId: string,
   player: string,
@@ -58,6 +60,7 @@ export async function addPlayer(
   game.update(_addPLayerToGame(gameInstance, player, traveling));
 }
 
+// done
 export async function kickPlayer(
   gameId: string,
   playerToDelete: string,
@@ -97,6 +100,7 @@ export async function kickPlayer(
   });
 }
 
+// done
 export async function setPlayerFate(
   gameId: string,
   player: string,
@@ -112,6 +116,7 @@ export async function setPlayerFate(
   });
 }
 
+// done
 export async function setPlayerOrder(
   gameId: string,
   player: string,
@@ -152,6 +157,7 @@ export async function setPlayerOrder(
   }
 }
 
+// done
 export async function addPlayerStatus(
   gameId: string,
   player: string,
@@ -172,6 +178,7 @@ export async function addPlayerStatus(
   });
 }
 
+// done
 export async function clearPlayerStatus(
   gameId: string,
   player: string,
@@ -193,6 +200,7 @@ export async function clearPlayerStatus(
   });
 }
 
+// done
 export async function setPlayerNote(
   gameId: string,
   player: string,
@@ -210,6 +218,7 @@ export async function setPlayerNote(
   });
 }
 
+// done
 export async function toggleDeadvote(
   gameId: string,
   player: string,
@@ -227,6 +236,7 @@ export async function toggleDeadvote(
   });
 }
 
+// done
 export async function setAlignment(
   gameId: string,
   player: string,
@@ -271,6 +281,7 @@ export async function clearVotesToExecute(gameId: string): Promise<void> {
   });
 }
 
+// done
 export async function assignRoles(
   gameId: string,
   roles: Role[],
@@ -302,6 +313,7 @@ export async function assignRoles(
   });
 }
 
+// done
 export async function setDrawRole(
   gameId: string,
   player: string,
@@ -322,6 +334,7 @@ export async function setDrawRole(
   return true;
 }
 
+// done
 export async function setPlayerHasSeenRole(
   gameId: string,
   player: string,

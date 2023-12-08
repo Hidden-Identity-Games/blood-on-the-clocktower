@@ -1,4 +1,12 @@
-import { type BaseUnifiedGame } from "@hidden-identity/shared";
+import {
+  removeKey,
+  type BaseUnifiedGame,
+  toEntries,
+  type Role,
+  shuffleList,
+  type Alignment,
+  type PlayerStatus,
+} from "@hidden-identity/shared";
 import {
   configureStore,
   type EnhancedStore,
@@ -20,6 +28,14 @@ export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
             ...state,
             [action.player]: UNASSIGNED,
           };
+        case "KickPlayer":
+          return removeKey(state, action.player);
+        case "ChangePlayerRole":
+        case "DrawRole":
+          return {
+            ...state,
+            [action.player]: action.role,
+          };
         default:
           return state;
       }
@@ -32,6 +48,47 @@ export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
             ...state,
             [action.player]: { rightNeighbor: null },
           };
+        case "SetNeighbor": {
+          return {
+            ...state,
+            [action.player]: { rightNeighbor: action.newRightNeighbor },
+          };
+        }
+
+        // When kicking, extract from the circle
+        case "ExtractPlayerFromCircle":
+        case "KickPlayer": {
+          const { [action.player]: kickedPlayerNeighbor, ...nextState } = state;
+          const oprhanedNeighbor = toEntries(nextState).find(
+            ([_, value]) => value?.rightNeighbor === action.player,
+          );
+
+          if (oprhanedNeighbor) {
+            return {
+              ...nextState,
+              [oprhanedNeighbor[0]]: {
+                rightNeighbor: kickedPlayerNeighbor?.rightNeighbor ?? null,
+              },
+            };
+          } else {
+            return nextState;
+          }
+        }
+
+        case "PlacePlayerInCircle": {
+          const { newRightNeighbor } = action;
+          const newLeftNeighborEntry = toEntries(state).find(
+            ([_, neighbors]) => neighbors?.rightNeighbor === newRightNeighbor,
+          );
+
+          return {
+            ...state,
+            ...(newLeftNeighborEntry
+              ? { [newLeftNeighborEntry[0]]: { rightNeighbor: action.player } }
+              : {}),
+            [action.player]: { rightNeighbor: newRightNeighbor },
+          };
+        }
         default:
           return state;
       }
@@ -39,11 +96,19 @@ export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
 
     deadPlayers: (state = {}, action) => {
       switch (action.type) {
+        case "RevivePlayer":
         case "AddPlayer":
           return {
             ...state,
             [action.player]: false,
           };
+        case "KillPlayer":
+          return {
+            ...state,
+            [action.player]: true,
+          };
+        case "KickPlayer":
+          return removeKey(state, action.player);
         default:
           return state;
       }
@@ -55,6 +120,8 @@ export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
             ...state,
             [action.player]: !!action.traveling,
           };
+        case "KickPlayer":
+          return removeKey(state, action.player);
         default:
           return state;
       }
@@ -67,13 +134,27 @@ export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
             // Should make this automatic if game started.
             ...(action.traveling && { [action.player]: "Good" }),
           };
+        case "KickPlayer":
+          return removeKey(state, action.player);
+        case "OverrideAlignment":
+          return {
+            ...state,
+            [action.player]: action.newAlignment,
+          };
         default:
           return state;
       }
     },
 
     gmSecretHash: (state) => state ?? "t",
-    gameStatus: (state = "Setup") => state,
+    gameStatus: (state = "PlayersJoining", action) => {
+      switch (action.type) {
+        case "FillRoleBag":
+          return "Setup";
+        default:
+          return state;
+      }
+    },
     nextGameId: (state = "") => state,
     playerPlayerStatuses: (state = {}, action) => {
       switch (action.type) {
@@ -81,6 +162,20 @@ export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
           return {
             ...state,
             [action.player]: [],
+          };
+        case "KickPlayer":
+          return removeKey(state, action.player);
+        case "AddPlayerStatus":
+          return {
+            ...state,
+            [action.player]: [...state[action.player], action.status],
+          };
+        case "RemovePlayerStatus":
+          return {
+            ...state,
+            [action.player]: state[action.player].filter(
+              (status) => status.id !== action.statusId,
+            ),
           };
         default:
           return state;
@@ -93,39 +188,116 @@ export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
             ...state,
             [action.player]: "",
           };
+        case "KickPlayer":
+          return removeKey(state, action.player);
+        case "UpdateNote":
+          return {
+            ...state,
+            [action.player]: action.newNote,
+          };
         default:
           return state;
       }
     },
     deadVotes: (state = {}, action) => {
       switch (action.type) {
+        // by default no dead vote used.
+        case "KillPlayer":
+        case "RevivePlayer":
+        case "GiveBackDeadVote":
         case "AddPlayer":
           return {
             ...state,
             [action.player]: false,
           };
+        case "UseDeadVote":
+          return {
+            ...state,
+            [action.player]: true,
+          };
+        case "KickPlayer":
+          return removeKey(state, action.player);
         default:
           return state;
       }
     },
-    onTheBlock: () => ({}),
-    roleBag: () => ({}),
-    playersSeenRoles: () => [],
+    roleBag: (state = {}, action) => {
+      switch (action.type) {
+        case "DrawRole":
+          return removeKey(state, action.roleNumber);
+        case "FillRoleBag": {
+          return shuffleList(action.roles).reduce<Record<number, Role | null>>(
+            (acc, item, idx) => ({
+              ...acc,
+              [idx + 1]: item,
+            }),
+            {},
+          );
+        }
+        default:
+          return state;
+      }
+    },
+    playersSeenRoles: (state = [], action) => {
+      switch (action.type) {
+        case "SeenRole":
+          return [...state, action.player];
+        default:
+          return state;
+      }
+    },
+    onTheBlock: (state = {}, action) => {
+      switch (action.type) {
+        case "SetVotesToExecute":
+          return {
+            ...state,
+            [action.player]: action.votesToExecute,
+          };
+        case "ClearVotesToExecute":
+          return {};
+        default:
+          return state;
+      }
+    },
   },
 });
 
-type ActionName = "AddPlayer";
-
-type Action<ActionType extends ActionName, AdditonalProperties> = {
+type Action<ActionType extends string, AdditonalProperties> = {
   type: ActionType;
 } & AdditonalProperties;
 
 interface PlayerActionProperties {
   player: string;
-  traveling?: boolean;
 }
-type AddPlayerAction = Action<"AddPlayer", PlayerActionProperties>;
 
-type AnyAction = AddPlayerAction;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface NoAdditionalProperties {}
+
+interface ActionMap {
+  AddPlayer: PlayerActionProperties & { traveling?: boolean };
+  KickPlayer: PlayerActionProperties;
+  ChangePlayerRole: PlayerActionProperties & { role: Role };
+  DrawRole: PlayerActionProperties & { role: Role; roleNumber: number };
+  SeenRole: PlayerActionProperties;
+  FillRoleBag: { roles: Role[] };
+  SetNeighbor: PlayerActionProperties & { newRightNeighbor: string };
+  ExtractPlayerFromCircle: PlayerActionProperties;
+  PlacePlayerInCircle: PlayerActionProperties & { newRightNeighbor: string };
+  KillPlayer: PlayerActionProperties;
+  RevivePlayer: PlayerActionProperties;
+  UseDeadVote: PlayerActionProperties;
+  GiveBackDeadVote: PlayerActionProperties;
+  UpdateNote: PlayerActionProperties & { newNote: string };
+  OverrideAlignment: PlayerActionProperties & { newAlignment: Alignment };
+  AddPlayerStatus: PlayerActionProperties & { status: PlayerStatus };
+  RemovePlayerStatus: PlayerActionProperties & { statusId: string };
+  SetVotesToExecute: PlayerActionProperties & { votesToExecute: number };
+  // probably move this into something that starts the night
+  ClearVotesToExecute: NoAdditionalProperties;
+}
+
+type AnyAction = {
+  [K in keyof ActionMap]: Action<K, ActionMap[K]>;
+}[keyof ActionMap];
 
 // type GameType = ReturnType<typeof gameStore.getState>;
