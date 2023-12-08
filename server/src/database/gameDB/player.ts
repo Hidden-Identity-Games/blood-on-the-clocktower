@@ -129,18 +129,18 @@ async function removePlayer(gameId: string, player: string) {
     (p) => gameInstance.partialPlayerOrdering[p]?.rightNeighbor === player,
   );
 
-  if (!leftNeighbor) return;
+  if (leftNeighbor) {
+    const rightNeighbor =
+      gameInstance.partialPlayerOrdering[player]?.rightNeighbor ?? null;
 
-  const rightNeighbor =
-    gameInstance.partialPlayerOrdering[player]?.rightNeighbor ?? null;
-
-  game.update({
-    ...gameInstance,
-    partialPlayerOrdering: {
-      ...gameInstance.partialPlayerOrdering,
-      [leftNeighbor]: { rightNeighbor },
-    },
-  });
+    game.update({
+      ...gameInstance,
+      partialPlayerOrdering: {
+        ...gameInstance.partialPlayerOrdering,
+        [leftNeighbor]: { rightNeighbor },
+      },
+    });
+  }
 }
 
 async function insertPlayer(
@@ -151,10 +151,13 @@ async function insertPlayer(
   const game = await retrieveGame(gameId);
   const gameInstance = game.readOnce();
 
-  const leftNeighbor = Object.keys(gameInstance.partialPlayerOrdering).find(
-    (p) =>
-      gameInstance.partialPlayerOrdering[p]?.rightNeighbor === rightNeighbor,
-  );
+  const leftNeighbor = rightNeighbor
+    ? Object.keys(gameInstance.partialPlayerOrdering).find(
+        (p) =>
+          gameInstance.partialPlayerOrdering[p]?.rightNeighbor ===
+          rightNeighbor,
+      )
+    : null;
 
   if (leftNeighbor) {
     game.update({
