@@ -40,6 +40,7 @@ export function GameHeader() {
         <Callout.Root>
           <Callout.Text>
             <Link asChild>
+              {/* TODO: Fix this link. Use url.ts file to navigate. */}
               <ReactRouterLink to={`/${game.nextGameId}`}>
                 The storyteller has started a new game, click here to join.
               </ReactRouterLink>
