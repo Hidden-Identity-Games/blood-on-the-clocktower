@@ -11,7 +11,7 @@ import { UNASSIGNED } from "../database/gameDB/base.ts";
 // Needed so things can read the type of gameStore
 export type { EnhancedStore, StoreEnhancer, ThunkDispatch, UnknownAction };
 
-export const gameStore = configureStore<Partial<BaseUnifiedGame>, AnyAction>({
+export const gameStore = configureStore<BaseUnifiedGame, AnyAction>({
   reducer: {
     playersToRoles: (state = {}, action) => {
       switch (action.type) {
@@ -72,15 +72,45 @@ export const gameStore = configureStore<Partial<BaseUnifiedGame>, AnyAction>({
       }
     },
 
-    // gmSecretHash: () => "",
-    // gameStatus: () => "Finished",
-    // nextGameId: () => "",
-    // playerPlayerStatuses: () => ({}),
-    // playerNotes: () => ({}),
-    // deadVotes: () => ({}),
-    // onTheBlock: () => ({}),
-    // roleBag: () => ({}),
-    // playersSeenRoles: () => [],
+    gmSecretHash: (state) => state ?? "t",
+    gameStatus: (state = "Setup") => state,
+    nextGameId: (state = "") => state,
+    playerPlayerStatuses: (state = {}, action) => {
+      switch (action.type) {
+        case "AddPlayer":
+          return {
+            ...state,
+            [action.player]: [],
+          };
+        default:
+          return state;
+      }
+    },
+    playerNotes: (state = {}, action) => {
+      switch (action.type) {
+        case "AddPlayer":
+          return {
+            ...state,
+            [action.player]: "",
+          };
+        default:
+          return state;
+      }
+    },
+    deadVotes: (state = {}, action) => {
+      switch (action.type) {
+        case "AddPlayer":
+          return {
+            ...state,
+            [action.player]: false,
+          };
+        default:
+          return state;
+      }
+    },
+    onTheBlock: () => ({}),
+    roleBag: () => ({}),
+    playersSeenRoles: () => [],
   },
 });
 
