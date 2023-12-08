@@ -1,42 +1,43 @@
-import { type UnifiedGame } from "@hidden-identity/shared";
-import { createStore, combineReducers } from "redux";
+import { type BaseUnifiedGame } from "@hidden-identity/shared";
+import {
+  configureStore,
+  type EnhancedStore,
+  type StoreEnhancer,
+  type ThunkDispatch,
+  type UnknownAction,
+} from "@reduxjs/toolkit";
 import { UNASSIGNED } from "../database/gameDB/base.ts";
 
-function createReducer<Shape>(
-  fn: (state: Shape, action: AnyAction) => Shape,
-): (state: Shape, action: AnyAction) => Shape {
-  return fn;
-}
+// Needed so things can read the type of gameStore
+export type { EnhancedStore, StoreEnhancer, ThunkDispatch, UnknownAction };
 
-export const gameStore = createStore(
-  combineReducers({
-    playersToRoles: createReducer<UnifiedGame["playersToRoles"]>(
-      (state, action) => {
-        switch (action.type) {
-          case "AddPlayer":
-            return {
-              ...state,
-              [action.player]: UNASSIGNED,
-            };
-          default:
-            return state;
-        }
-      },
-    ),
-    partialPlayerOrdering: createReducer<UnifiedGame["partialPlayerOrdering"]>(
-      (state, action) => {
-        switch (action.type) {
-          case "AddPlayer":
-            return {
-              ...state,
-              [action.player]: { rightNeighbor: null },
-            };
-          default:
-            return state;
-        }
-      },
-    ),
-    deadPlayers: createReducer<UnifiedGame["deadPlayers"]>((state, action) => {
+export const gameStore = configureStore<Partial<BaseUnifiedGame>, AnyAction>({
+  reducer: {
+    playersToRoles: (state = {}, action) => {
+      switch (action.type) {
+        case "AddPlayer":
+          return {
+            ...state,
+            [action.player]: UNASSIGNED,
+          };
+        default:
+          return state;
+      }
+    },
+
+    partialPlayerOrdering: (state = {}, action) => {
+      switch (action.type) {
+        case "AddPlayer":
+          return {
+            ...state,
+            [action.player]: { rightNeighbor: null },
+          };
+        default:
+          return state;
+      }
+    },
+
+    deadPlayers: (state = {}, action) => {
       switch (action.type) {
         case "AddPlayer":
           return {
@@ -46,33 +47,31 @@ export const gameStore = createStore(
         default:
           return state;
       }
-    }),
-    travelers: createReducer<UnifiedGame["travelers"]>((state, action) => {
+    },
+    travelers: (state = {}, action) => {
       switch (action.type) {
         case "AddPlayer":
           return {
             ...state,
-            // Should make this automatic if game started.
             [action.player]: !!action.traveling,
           };
         default:
           return state;
       }
-    }),
-    alignmentsOverrides: createReducer<UnifiedGame["alignmentsOverrides"]>(
-      (state, action) => {
-        switch (action.type) {
-          case "AddPlayer":
-            return {
-              ...state,
-              // Should make this automatic if game started.
-              ...(action.traveling && { [action.player]: "Good" }),
-            };
-          default:
-            return state;
-        }
-      },
-    ),
+    },
+    alignmentsOverrides: (state = {}, action) => {
+      switch (action.type) {
+        case "AddPlayer":
+          return {
+            ...state,
+            // Should make this automatic if game started.
+            ...(action.traveling && { [action.player]: "Good" }),
+          };
+        default:
+          return state;
+      }
+    },
+
     // gmSecretHash: () => "",
     // gameStatus: () => "Finished",
     // nextGameId: () => "",
@@ -82,8 +81,8 @@ export const gameStore = createStore(
     // onTheBlock: () => ({}),
     // roleBag: () => ({}),
     // playersSeenRoles: () => [],
-  }),
-);
+  },
+});
 
 type ActionName = "AddPlayer";
 
