@@ -117,8 +117,21 @@ export async function setPlayerOrder(
   player: string,
   rightNeighbor: string | null,
 ): Promise<void> {
-  await removePlayer(gameId, player);
-  await insertPlayer(gameId, player, rightNeighbor);
+  const game = await retrieveGame(gameId);
+  const gameInstance = game.readOnce();
+
+  if (gameInstance.orderedPlayers.problems) {
+    game.update({
+      ...gameInstance,
+      partialPlayerOrdering: {
+        ...gameInstance.partialPlayerOrdering,
+        [player]: { rightNeighbor },
+      },
+    });
+  } else {
+    await removePlayer(gameId, player);
+    await insertPlayer(gameId, player, rightNeighbor);
+  }
 }
 
 async function removePlayer(gameId: string, player: string) {
