@@ -117,22 +117,46 @@ export async function setPlayerOrder(
   player: string,
   rightNeighbor: string | null,
 ): Promise<void> {
+  await removePlayer(gameId, player);
+  await insertPlayer(gameId, player, rightNeighbor);
+}
+
+async function removePlayer(gameId: string, player: string) {
   const game = await retrieveGame(gameId);
   const gameInstance = game.readOnce();
-  const gameStarted = gameInProgress(gameInstance);
 
-  if (gameStarted) {
-    const leftNeighbor = Object.keys(gameInstance.partialPlayerOrdering).find(
-      (p) =>
-        gameInstance.partialPlayerOrdering[p]?.rightNeighbor === rightNeighbor,
-    );
-    if (!leftNeighbor) {
-      throw new Error(
-        `Cannot find player on left for ${player}, ${rightNeighbor}, ${JSON.stringify(
-          gameInstance.partialPlayerOrdering,
-        )}`,
-      );
-    }
+  const leftNeighbor = Object.keys(gameInstance.partialPlayerOrdering).find(
+    (p) => gameInstance.partialPlayerOrdering[p]?.rightNeighbor === player,
+  );
+
+  if (!leftNeighbor) return;
+
+  const rightNeighbor =
+    gameInstance.partialPlayerOrdering[player]?.rightNeighbor ?? null;
+
+  game.update({
+    ...gameInstance,
+    partialPlayerOrdering: {
+      ...gameInstance.partialPlayerOrdering,
+      [leftNeighbor]: { rightNeighbor },
+    },
+  });
+}
+
+async function insertPlayer(
+  gameId: string,
+  player: string,
+  rightNeighbor: string | null,
+) {
+  const game = await retrieveGame(gameId);
+  const gameInstance = game.readOnce();
+
+  const leftNeighbor = Object.keys(gameInstance.partialPlayerOrdering).find(
+    (p) =>
+      gameInstance.partialPlayerOrdering[p]?.rightNeighbor === rightNeighbor,
+  );
+
+  if (leftNeighbor) {
     game.update({
       ...gameInstance,
       partialPlayerOrdering: {
