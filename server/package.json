@@ -17,7 +17,7 @@
   "scripts": {
     "build-client": "tsc",
     "start-prod": "SERVER_PORT=3000 ts-node --esm src/index.ts",
-    "dev": "NODE_OPTIONS=\"--loader=ts-node/esm\" concurrently \"pnpm run build-client --watch\" \"SERVER_PORT=6001 nodemon src/index.ts\" --watch ../shared/src",
+    "dev": "concurrently \"pnpm run build-client --watch\" \"SERVER_PORT=6001 nodemon --esm src/index.ts\" --watch ../shared/src",
     "lint": "eslint . --ext ts --report-unused-disable-directives ",
     "type-check": "tsc",
     "test": "pnpm run type-check && pnpm run lint"
