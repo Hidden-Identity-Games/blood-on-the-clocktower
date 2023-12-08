@@ -13,6 +13,7 @@ import { BsShare } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { Link as ReactRouterLink } from "react-router-dom";
 import QRCode from "qrcode.react";
+import { urlFromOrigin } from "../store/url";
 
 export function GameHeader() {
   const { gameId, game } = useGame();
@@ -40,8 +41,12 @@ export function GameHeader() {
         <Callout.Root>
           <Callout.Text>
             <Link asChild>
-              {/* TODO: Fix this link. Use url.ts file to navigate. */}
-              <ReactRouterLink to={`/${game.nextGameId}`}>
+              {/* TODO: Fix this link. Use url.ts file to navigate. 
+              IE: https://172.18.162.143:3000/HLSDQ ---> https://172.18.162.143:3000/game?gameId=HLSDQ */}
+              {/* <ReactRouterLink to={`/${game.nextGameId}`}> */}
+              <ReactRouterLink
+                to={urlFromOrigin("game", { gameId: game.nextGameId })}
+              >
                 The storyteller has started a new game, click here to join.
               </ReactRouterLink>
             </Link>
