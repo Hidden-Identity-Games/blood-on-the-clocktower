@@ -105,7 +105,6 @@ export class GameCreator {
 
     this.game.dispatch({
       type: "FillRoleBag",
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       roles: roleBagCharacters,
     });
     return this;
