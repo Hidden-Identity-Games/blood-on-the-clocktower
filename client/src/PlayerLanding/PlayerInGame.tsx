@@ -73,6 +73,9 @@ export function PlayerInGame() {
     return nightOrder;
   }, [script, game.playersToRoles]);
 
+  // TODO: Delete this
+  console.log(game);
+
   return (
     <Tabs.Root
       className="flex flex-1 flex-col overflow-hidden"
@@ -176,13 +179,7 @@ export function PlayerInGame() {
             className="flex-1 overflow-y-auto"
           >
             {filteredPlayers.map((player) => (
-              <Flex
-                key={player}
-                gap="1"
-                className={classNames(
-                  game.deadPlayers[player] && "line-through",
-                )}
-              >
+              <Flex key={player} gap="1" align="center">
                 <div className="w-5">
                   {(!game.deadPlayers[player] || !game.deadVotes[player]) && (
                     <MeaningfulIcon
@@ -195,18 +192,36 @@ export function PlayerInGame() {
                     </MeaningfulIcon>
                   )}
                 </div>
-
-                <Text
-                  color={game.travelers[player] ? "amber" : undefined}
-                  as="div"
-                  className="flex-1 capitalize"
+                <Flex
+                  justify="start"
+                  gap="3"
+                  className={classNames(
+                    "flex-1",
+                    game.deadPlayers[player] && "line-through",
+                  )}
                 >
-                  {player}
-                </Text>
-                {game.travelers[player] && (
-                  <ForPlayerPlayerRoleIcon player={player}>
-                    {getCharacter(game.playersToRoles[player]).ability}
-                  </ForPlayerPlayerRoleIcon>
+                  <Text
+                    color={game.travelers[player] ? "amber" : undefined}
+                    as="div"
+                    className="capitalize"
+                  >
+                    {player}
+                  </Text>
+                  {game.travelers[player] && (
+                    //TODO: Add Votes assigned to each player.
+                    <ForPlayerPlayerRoleIcon player={player}>
+                      {getCharacter(game.playersToRoles[player]).ability}
+                    </ForPlayerPlayerRoleIcon>
+                  )}
+                </Flex>
+                {game.onTheBlock[player] && (
+                  <Text
+                    color={game.travelers[player] ? "amber" : undefined}
+                    as="div"
+                    className="capitalize"
+                  >
+                    Votes: {game.onTheBlock[player]}
+                  </Text>
                 )}
                 <SetCountModal
                   title="Set votes to execute:"
