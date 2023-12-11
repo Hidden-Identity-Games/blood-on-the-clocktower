@@ -10,8 +10,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix"
   },
   "dependencies": {
+    "@hidden-identity/server": "workspace:*",
     "@hidden-identity/shared": "workspace:*",
     "@playwright/test": "^1.39.0",
+    "@trpc/client": "^10.38.3",
     "@types/node": "^20.5.9",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
@@ -30,6 +32,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint-plugin-playwright": "^0.18.0"
+    "eslint-plugin-playwright": "^0.18.0",
+    "node-fetch": "^3.3.2",
+    "random-words": "^2.0.0"
   }
 }

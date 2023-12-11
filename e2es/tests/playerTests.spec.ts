@@ -11,30 +11,31 @@ import {
 } from "./utils";
 
 import { urlFromBase } from "./productUrls";
+import { trpc } from "./api/client";
 
 test("join game", async ({ page }) => {
-  const gameId = await createNewGame(page, "Trouble Brewing");
+  const gameId = await createNewGame("Trouble Brewing");
   await page.goto(urlFromBase("", {}));
   await page.getByRole("button", { name: "Join" }).click();
   await page.getByRole("textbox", { name: "code" }).fill(gameId);
   await page.getByRole("button", { name: "Join" }).click();
-  await expect(page.url()).toContain(gameId);
+  await expect(page.url()).toMatch(new RegExp(gameId, "i"));
 });
 
-test("re-join game", async ({ page, context }) => {
-  const gameId = await createNewGame(page, "Trouble Brewing");
+test("re-join game", async ({ page }) => {
+  const gameId = await createNewGame("Trouble Brewing");
 
-  await addPlayerToGame(context, gameId, "Alex");
-  await addPlayerToGame(context, gameId, "Steve");
+  await trpc.addPlayer.mutate({ gameId, player: "alex" });
+  await trpc.addPlayer.mutate({ gameId, player: "steve" });
 
-  await rejoinGameAs(page, gameId, "Alex", "Alex2");
+  await rejoinGameAs(page, gameId, "alex", "alex2");
 
-  await expect(page.getByRole("button", { name: "Steve" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "steve" })).toBeVisible();
 });
 
 test("cannot start game with too few roles", async ({ page, context }) => {
   const players = Array.from({ length: 7 }, (_, i) => `player${i}`);
-  const gameId = await createNewGame(page, "Trouble Brewing");
+  const gameId = await createNewGame("Trouble Brewing");
   const pages = await populateGameWithPlayers(context, players, gameId);
   await assignSeats(pages);
   await page.getByRole("tab", { name: /menu/i }).click();
