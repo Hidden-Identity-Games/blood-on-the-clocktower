@@ -1,8 +1,5 @@
 import { fakerEN } from "@faker-js/faker";
-import { createGame } from "../database/gameDB/base.ts";
-import { _addPLayerToGame } from "../database/gameDB/player.ts";
 import {
-  type BaseUnifiedGame,
   DistributionsByPlayerCount,
   type Script,
   allTravelers,
@@ -13,75 +10,88 @@ import {
   pluck,
   type Role,
 } from "@hidden-identity/shared";
+import { GameMachine } from "../gameMachine/gameMachine.ts";
+import { drawRole } from "../gameMachine/gameActions.ts";
 
 export class GameCreator {
-  game: BaseUnifiedGame;
-  constructor(game?: BaseUnifiedGame) {
-    this.game = game ?? createGame();
-    this.game.gmSecretHash = "t";
+  game: GameMachine;
+  script: Script;
+  constructor(script: Script, game?: GameMachine) {
+    this.game = game ?? new GameMachine();
+    this.script = script;
   }
 
   addPlayers(playerCount: number) {
-    return this.update((game) => {
-      const players = Array.from({ length: playerCount }).map(() =>
-        fakerEN.person.firstName().toLocaleLowerCase(),
-      );
+    const players = Array.from({ length: playerCount }).map(() =>
+      fakerEN.person.firstName().toLocaleLowerCase(),
+    );
 
-      return players.reduce(
-        (currentGame, player) => _addPLayerToGame(currentGame, player, false),
-        game,
-      );
+    players.forEach((player) => {
+      this.game.dispatch({ type: "AddPlayer", player, traveling: false });
     });
+    return this;
   }
 
   addTraveler(role?: Role) {
-    return this.update((game) => {
-      const player = fakerEN.person.firstName();
-
-      return {
-        ..._addPLayerToGame(game, player, true),
-        playersToRoles: {
-          ...game.playersToRoles,
-          [player]: role ?? pluck(allTravelers()),
-        },
-        playersSeenRoles: [...game.playersSeenRoles, player],
-      };
+    const player = fakerEN.person.firstName();
+    this.game.dispatch({ type: "AddPlayer", player, traveling: true });
+    this.game.dispatch({
+      type: "ChangePlayerRole",
+      player,
+      role: role ?? pluck(allTravelers()),
     });
+    this.game.dispatch({ type: "SeenRole", player });
+
+    return this;
   }
 
   assignSeating() {
-    return this.update((game) => {
-      const players = Object.keys(game.playersToRoles);
-      return players.reduce(
-        (currentGame, player, index) => ({
-          ...currentGame,
-          partialPlayerOrdering: {
-            ...currentGame.partialPlayerOrdering,
-            [player]: { rightNeighbor: players[(index + 1) % players.length] },
-          },
-        }),
-        game,
-      );
+    const players = Object.keys(this.game.getGame().playersToRoles);
+    players.forEach((player, index) => {
+      this.game.dispatch({
+        type: "SetNeighbor",
+        player,
+        newRightNeighbor: players[(index + 1) % players.length],
+      });
     });
+    return this;
   }
 
-  assignRandomRolesToCharacters(script: Script) {
-    return this.update((game) => {
-      const filledScript = script
+  distributeRolesToPlayers() {
+    const game = this.game.getGame();
+
+    const nonTravelerPlayers = game.playerList.filter(
+      (player) => !game.travelers[player],
+    );
+
+    nonTravelerPlayers.forEach((player, index) => {
+      this.game.dispatch(drawRole({ player, roleNumber: index + 1 }));
+    });
+    return this;
+  }
+
+  assignRandomRolesToCharacters() {
+    this.fillRoleBag();
+    this.distributeRolesToPlayers();
+    this.assignAllTravelers();
+
+    return this;
+  }
+
+  fillRoleBag(roles?: Role[]) {
+    const playerCount = this.game
+      .getGame()
+      .playerList.filter(
+        (player) => !this.game.getGame().travelers[player],
+      ).length;
+
+    let roleBagCharacters = roles;
+    if (!roleBagCharacters) {
+      const filledScript = this.script
         .map(({ id }) => getCharacter(id))
         .filter((c) => !c.delusional);
-      const nonTravelers = Object.keys(game.playersToRoles).filter(
-        (player) => !game.travelers[player],
-      );
-      const travelers = Object.keys(game.playersToRoles).filter(
-        // could be in travelers but false
-        (player) => game.travelers[player],
-      );
-
-      const travelerCharacters = shuffleList(allTravelers());
-
-      const characters = shuffleList(
-        toEntries(DistributionsByPlayerCount[nonTravelers.length])
+      const generatedRoles = shuffleList(
+        toEntries(DistributionsByPlayerCount[playerCount])
           .map(([team, count]) => {
             return pick(
               count,
@@ -89,45 +99,49 @@ export class GameCreator {
             );
           })
           .flat(),
-      );
+      ).map((c) => c.id);
+      roleBagCharacters = generatedRoles;
+    }
 
-      const nonTravelersAndRoles = Object.fromEntries(
-        shuffleList(nonTravelers).map((player, idx) => [
-          player,
-          characters[idx].id,
-        ]),
-      );
-
-      const travelersAndRoles = Object.fromEntries(
-        shuffleList(travelers).map((player, idx) => [
-          player,
-          travelerCharacters[idx],
-        ]),
-      );
-      game.playersToRoles = {
-        ...nonTravelersAndRoles,
-        ...travelersAndRoles,
-      };
-
-      game.playersSeenRoles = [...nonTravelers, ...travelers];
-      game.gameStatus = "Setup";
-
-      return game;
+    this.game.dispatch({
+      type: "FillRoleBag",
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      roles: roleBagCharacters,
     });
+    return this;
+  }
+
+  assignAllTravelers() {
+    const game = this.game.getGame();
+    // fill travelers
+    const travelerPlayers = game.playerList.filter(
+      // could be in travelers but false
+      (player) => game.travelers[player],
+    );
+
+    const travelerCharacters = shuffleList(allTravelers());
+    travelerPlayers.forEach((player, index) => {
+      this.game.dispatch({
+        type: "ChangePlayerRole",
+        player,
+        role: travelerCharacters[index],
+      });
+    });
+
+    return this;
+  }
+
+  update(updater: (game: typeof this.game) => void) {
+    updater(this.game);
+    return this;
   }
 
   moveToSetup() {
-    return this.update((game) => ({
-      ...game,
-      gameStatus: "Setup",
-    }));
+    this.game.dispatch({ type: "ManuallysetStatus", status: "Setup" });
+    return this;
   }
 
-  update(updater: (game: BaseUnifiedGame) => BaseUnifiedGame) {
-    return new GameCreator(updater(this.game));
-  }
-
-  toGame() {
+  toGameMachine() {
     return this.game;
   }
 }
