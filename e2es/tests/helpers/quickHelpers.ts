@@ -1,5 +1,5 @@
-import { ScriptName, getScript } from "@hidden-identity/shared";
-import { asyncMap } from "./utils";
+import { Script, ScriptName, getScript } from "@hidden-identity/shared";
+import { asyncMap, getRandomCharactersForDistribution } from "./utils";
 import { trpc } from "../api/client";
 import { generate } from "random-words";
 
@@ -7,17 +7,17 @@ import { generate } from "random-words";
  * functions in this file help get games into states needed to start a test.  They do not test app funcionality, just help get things set up.
  * */
 export const QuickSetupHelpers = {
-  createNewGame: async function createNewGame(script: ScriptName) {
+  createNewGame: async function createNewGame(script: Script) {
     const gameId = generate(3).join("-").toUpperCase();
     const newGame = await trpc.createGame.mutate({
       gameId,
-      script: getScript(script),
+      script,
       testGameOptions: { isTestGame: true },
     });
     return { gameId, game: newGame };
   },
 
-  createStartableGame: async function createStartableGame(
+  createStartedGame: async function createStartableGame(
     script: ScriptName,
     players: string[],
   ) {
@@ -79,5 +79,15 @@ export const QuickSetupHelpers = {
       });
       await trpc.setPlayerSeenRole.mutate({ gameId, player });
     });
+  },
+  fillRoleBag: async function ({
+    script,
+    gameId,
+  }: {
+    script: Script;
+    gameId: string;
+  }) {
+    const roles = getRandomCharactersForDistribution(script).map((c) => c.id);
+    await trpc.assignRoles.mutate({ roles, gameId });
   },
 };

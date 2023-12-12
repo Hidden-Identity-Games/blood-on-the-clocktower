@@ -17,7 +17,10 @@ export function ScriptList({ className }: ScriptListProps) {
       script?.map(({ id }) => getCharacter(id)) ?? [];
     const travelerCharacters = Object.values(game.playersToRoles)
       .map((role) => getCharacter(role))
-      .filter((character) => character.team === "Traveler");
+      .filter(
+        (character) =>
+          character.team === "Traveler" && character.id !== "unassigned",
+      );
 
     const allCharacters = [...charactersFromScript, ...travelerCharacters];
 
