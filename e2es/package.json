@@ -9,7 +9,7 @@
     "build-client": "",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
     "check-types": "tsc --noEmit",
-    "check": "pnpm run lint && pnpm run check-types"
+    "test": "pnpm run lint && pnpm run check-types"
   },
   "dependencies": {
     "@hidden-identity/server": "workspace:*",
