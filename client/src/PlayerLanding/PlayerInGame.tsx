@@ -33,6 +33,7 @@ import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useFirstSeat } from "../store/url";
 import { SetCountModal } from "../shared/SetCount";
 import { useVotesToExecute } from "../store/actions/gmPlayerActions";
+import ExecutionInfo from "../shared/ExecutionInfo";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -75,28 +76,6 @@ export function PlayerInGame() {
 
   // TODO: Delete this
   console.log(game);
-  console.log("objectified", Object.entries(game.onTheBlock));
-  const players = usePlayerOrder("seat order", firstSeat);
-  const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
-  const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
-    player: string | null;
-    votes: number;
-  }>(
-    (max, current) => {
-      if (max.votes === current[1] ?? 0) {
-        return {
-          player: max.player ? null : current[0],
-          votes: max.player ? current[1] + 1 : current[1],
-        };
-      }
-      if (max.votes < current[1]) {
-        return { player: current[0], votes: current[1] };
-      }
-      return max;
-    },
-    { votes: Math.ceil(alivePlayers.length / 2), player: null },
-  );
-  console.log("on da block", playerOnBlock);
 
   return (
     <Tabs.Root
@@ -171,14 +150,7 @@ export function PlayerInGame() {
             className="border-b border-red-700 p-2"
           >
             <Flex justify="between" p="2" direction="column">
-              <Text className="capitalize">{`Executing: ${
-                playerOnBlock.player ?? "-"
-              }`}</Text>
-              <Text>
-                {`Votes ${playerOnBlock.player ? "to tie" : "to execute"}: ${
-                  playerOnBlock.votes
-                }`}
-              </Text>
+              <ExecutionInfo game={game} firstSeat={firstSeat} />
             </Flex>
 
             <PlayerListFilters
