@@ -33,7 +33,7 @@ import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useFirstSeat } from "../store/url";
 import { SetCountModal } from "../shared/SetCount";
 import { useVotesToExecute } from "../store/actions/gmPlayerActions";
-import ExecutionInfo from "../shared/ExecutionInfo";
+import { ExecutionInfo } from "../shared/ExecutionInfo";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -73,9 +73,6 @@ export function PlayerInGame() {
 
     return nightOrder;
   }, [script, game.playersToRoles]);
-
-  // TODO: Delete this
-  console.log(game);
 
   return (
     <Tabs.Root
@@ -150,7 +147,7 @@ export function PlayerInGame() {
             className="border-b border-red-700 p-2"
           >
             <Flex justify="between" p="2" direction="column">
-              <ExecutionInfo game={game} firstSeat={firstSeat} />
+              <ExecutionInfo />
             </Flex>
 
             <PlayerListFilters
@@ -218,9 +215,7 @@ export function PlayerInGame() {
                 <SetCountModal
                   title="Set votes to execute:"
                   onSet={(votes: number) => setVotesToExecute(player, votes)}
-                  defaultValue={
-                    game.onTheBlock[player] ? game.onTheBlock[player] : 0
-                  }
+                  defaultValue={game.onTheBlock[player] ?? 0}
                 >
                   <IconButton variant="soft" radius="large">
                     <GiAxeInStump />

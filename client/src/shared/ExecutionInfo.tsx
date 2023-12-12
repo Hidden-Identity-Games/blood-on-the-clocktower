@@ -1,15 +1,11 @@
-import { UnifiedGame } from "@hidden-identity/shared";
-import { usePlayerOrder } from "./PlayerListOrder";
 import { Text } from "@radix-ui/themes";
+import { useDefiniteGame } from "../store/GameContext";
 
-interface ExecutionInfoProps {
-  game: UnifiedGame;
-  firstSeat: string | null;
-}
-
-const ExecutionInfo = ({ game, firstSeat }: ExecutionInfoProps) => {
-  const players = usePlayerOrder("seat order", firstSeat);
-  const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
+export function ExecutionInfo() {
+  const { game } = useDefiniteGame();
+  // const players = usePlayerOrder("seat order", firstSeat);
+  // const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
+  const alivePlayers = game.playerList.filter((p) => !game.deadPlayers[p]);
   const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
     player: string | null;
     votes: number;
@@ -41,6 +37,4 @@ const ExecutionInfo = ({ game, firstSeat }: ExecutionInfoProps) => {
       </Text>
     </>
   );
-};
-
-export default ExecutionInfo;
+}

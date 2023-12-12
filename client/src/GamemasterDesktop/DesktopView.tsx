@@ -15,7 +15,7 @@ import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useVotesToExecute } from "../store/actions/gmPlayerActions";
 import { SetCountModal } from "../shared/SetCount";
-import ExecutionInfo from "../shared/ExecutionInfo";
+import { ExecutionInfo } from "../shared/ExecutionInfo";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -79,7 +79,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                 <Flex className="text-center" gap="0" direction="column">
                   <Text>Alive players: {alivePlayers.length}</Text>
                   <Flex justify="between" p="2" direction="column" gap="2">
-                    <ExecutionInfo game={game} firstSeat={firstSeat} />
+                    <ExecutionInfo />
                   </Flex>
                 </Flex>
               </>
@@ -107,9 +107,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                   <SetCountModal
                     title="Votes to Execute:"
                     onSet={(votes: number) => setVotesToExecute(player, votes)}
-                    defaultValue={
-                      game.onTheBlock[player] ? game.onTheBlock[player] : 0
-                    }
+                    defaultValue={game.onTheBlock[player] && 0}
                   >
                     <button className="h-full w-full">
                       <RoleToken
