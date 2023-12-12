@@ -55,10 +55,10 @@ export function GameHeader() {
 }
 
 interface QRCodeDialogProps {
-  gameId: string | null;
+  gameId: string;
 }
 function QRCodeDialog({ gameId }: QRCodeDialogProps) {
-  const url = `${document.location.origin}/game?gameId=${gameId}`;
+  const url = urlFromOrigin("game", { gameId: gameId });
 
   const handleShare = async () => {
     if (navigator.share) {
