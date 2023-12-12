@@ -83,11 +83,15 @@ export const QuickSetupHelpers = {
   fillRoleBag: async function ({
     script,
     gameId,
+    playerCount,
   }: {
     script: Script;
     gameId: string;
+    playerCount: number;
   }) {
-    const roles = getRandomCharactersForDistribution(script).map((c) => c.id);
+    const roles = getRandomCharactersForDistribution(script, playerCount).map(
+      (c) => c.id,
+    );
     await trpc.assignRoles.mutate({ roles, gameId });
   },
 };

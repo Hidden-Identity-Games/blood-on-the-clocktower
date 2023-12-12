@@ -54,7 +54,11 @@ test("can 15 players join", async ({ context }) => {
     await expect(myPage.url()).toContain(gameId);
   }
 
-  await QuickSetupHelpers.fillRoleBag({ script: getScript(script), gameId });
+  await QuickSetupHelpers.fillRoleBag({
+    script: getScript(script),
+    gameId,
+    playerCount: players.length,
+  });
 
   await ClickthroughModel.getAndAcknowledgeRoles(playerPages);
   for (const playerNumber in players) {

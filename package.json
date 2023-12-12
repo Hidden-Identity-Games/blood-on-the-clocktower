@@ -14,7 +14,7 @@
     "build-client": "pnpm run --stream -r build-client",
     "prepare": "husky install",
     "type-check": "pnpm run --stream -r type-check",
-    "test": "pnpm run -r test"
+    "test": "pnpm run --stream -r test"
   },
   "keywords": [],
   "author": "",

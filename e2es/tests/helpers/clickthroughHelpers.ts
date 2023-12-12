@@ -31,14 +31,17 @@ export const ClickthroughModel = {
 
     await gmPage.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
 
-    await ClickthroughModel.fillRoleBag(gmPage, { script: getScript(script) });
-
     const playerPages = await ClickthroughModel.populateGameWithPlayers(
       context,
       players,
       gameId,
     );
     await ClickthroughModel.assignSeats(playerPages);
+
+    await ClickthroughModel.fillRoleBag(gmPage, {
+      script: getScript(script),
+      playerCount: playerPages.length,
+    });
     return { playerPages, gameId, gmPage };
   },
 
@@ -106,8 +109,11 @@ export const ClickthroughModel = {
     });
   },
 
-  fillRoleBag: async function (page: Page, { script }: { script: Script }) {
-    const roles = getRandomCharactersForDistribution(script);
+  fillRoleBag: async function (
+    page: Page,
+    { script, playerCount }: { script: Script; playerCount: number },
+  ) {
+    const roles = getRandomCharactersForDistribution(script, playerCount);
     for (const role of roles) {
       await page.getByRole("checkbox", { name: role.name }).click();
     }

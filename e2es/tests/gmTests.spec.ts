@@ -37,7 +37,10 @@ test("can start game", async ({ page }) => {
 
   await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
 
-  await ClickthroughModel.fillRoleBag(page, { script: getScript(script) });
+  await ClickthroughModel.fillRoleBag(page, {
+    script: getScript(script),
+    playerCount: players.length,
+  });
 
   await QuickSetupHelpers.populateGameWithPlayers(players, gameId);
   await QuickSetupHelpers.assignSeats({ gameId, players });
