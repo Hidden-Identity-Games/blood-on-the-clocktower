@@ -66,6 +66,9 @@ export function IngamePlayerList({
               <SetCountModal
                 title="Set votes to execute:"
                 onSet={(votes: number) => setVotesToExecute(player, votes)}
+                defaultValue={
+                  game.onTheBlock[player] ? game.onTheBlock[player] : 0
+                }
               >
                 <IconButton variant="soft" radius="large">
                   <GiAxeInStump />

@@ -67,24 +67,6 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   }
 
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
-  // const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
-  //   player: string | null;
-  //   votes: number;
-  // }>(
-  //   (max, current) => {
-  //     if (max.votes === current[1] ?? 0) {
-  //       return {
-  //         player: max.player ? null : current[0],
-  //         votes: max.player ? current[1] + 1 : current[1],
-  //       };
-  //     }
-  //     if (max.votes < current[1]) {
-  //       return { player: current[0], votes: current[1] };
-  //     }
-  //     return max;
-  //   },
-  //   { votes: Math.ceil(alivePlayers.length / 2), player: null },
-  // );
 
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
@@ -96,12 +78,6 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                 <TeamDistributionBar />
                 <Flex className="text-center" gap="0" direction="column">
                   <Text>Alive players: {alivePlayers.length}</Text>
-                  {/* <div className="capitalize">{`Currently Executing: ${
-                    playerOnBlock.player ?? "-"
-                  }`}</div>
-                  <div>{`Votes ${
-                    playerOnBlock.player ? "to tie" : "to execute"
-                  }: ${playerOnBlock.votes}`}</div> */}
                   <Flex justify="between" p="2" direction="column" gap="2">
                     <ExecutionInfo game={game} firstSeat={firstSeat} />
                   </Flex>
@@ -131,6 +107,9 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                   <SetCountModal
                     title="Votes to Execute:"
                     onSet={(votes: number) => setVotesToExecute(player, votes)}
+                    defaultValue={
+                      game.onTheBlock[player] ? game.onTheBlock[player] : 0
+                    }
                   >
                     <button className="h-full w-full">
                       <RoleToken
