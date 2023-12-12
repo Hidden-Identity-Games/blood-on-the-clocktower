@@ -1,12 +1,11 @@
 // Functions in this file will perform a task manually, and so will add tesr coverage, but are very slow.
-import { ScriptName } from "@hidden-identity/shared";
+import { Script, ScriptName } from "@hidden-identity/shared";
 import { urlFromBase } from "../productUrls";
 import { BrowserContext, Page } from "@playwright/test";
-import { getAssignableCharactersNamesFromScript } from "./utils";
-import { asyncMap } from "./utils";
+import { asyncMap, getRandomCharactersForDistribution } from "./utils";
 
 export const ClickthroughModel = {
-  createNewGame: async function createNewGame(page: Page, script: string) {
+  createNewGame: async function createNewGame(page: Page, script: ScriptName) {
     await page.goto(urlFromBase("", {}));
     await page.getByRole("button", { name: "Create" }).click();
     await page
@@ -31,12 +30,8 @@ export const ClickthroughModel = {
     const gameId = await ClickthroughModel.createNewGame(gmPage, script);
 
     await gmPage.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
-    const TBRoles = getAssignableCharactersNamesFromScript(script).slice(
-      0,
-      players.length,
-    );
 
-    await ClickthroughModel.assignRoles(gmPage, { roles: TBRoles });
+    await ClickthroughModel.fillRoleBag(gmPage, { script });
 
     const playerPages = await ClickthroughModel.populateGameWithPlayers(
       context,
@@ -111,15 +106,20 @@ export const ClickthroughModel = {
     });
   },
 
-  assignRoles: async function (page: Page, { roles }: { roles: string[] }) {
+  fillRoleBag: async function (page: Page, { script }: { script: Script }) {
+    const roles = getRandomCharactersForDistribution(script);
     for (const role of roles) {
-      await page.getByRole("checkbox", { name: role }).click();
+      await page.getByRole("checkbox", { name: role.name }).click();
     }
   },
-  acknowledgeRoles: async function acknowledgeRoles(pages: PlayerPage[]) {
+  getAndAcknowledgeRoles: async function acknowledgeRoles(pages: PlayerPage[]) {
     await asyncMap(pages, async ({ page }, playerNumber) => {
+      await page.setViewportSize({ height: 1000, width: 500 });
       await page
-        .getByRole("button", { name: `Role number ${playerNumber + 1}` })
+        .getByRole("button", {
+          name: `Role number ${playerNumber + 1}`,
+          exact: true,
+        })
         .click();
 
       await page.getByRole("button", { name: /reveal role/i }).click();
