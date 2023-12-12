@@ -3,8 +3,6 @@ import { useDefiniteGame } from "../store/GameContext";
 
 export function ExecutionInfo() {
   const { game } = useDefiniteGame();
-  // const players = usePlayerOrder("seat order", firstSeat);
-  // const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
   const alivePlayers = game.playerList.filter((p) => !game.deadPlayers[p]);
   const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
     player: string | null;
