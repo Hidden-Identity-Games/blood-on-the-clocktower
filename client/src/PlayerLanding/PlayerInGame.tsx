@@ -75,6 +75,7 @@ export function PlayerInGame() {
 
   // TODO: Delete this
   console.log(game);
+  console.log("objectified", Object.entries(game.onTheBlock));
   const players = usePlayerOrder("seat order", firstSeat);
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
   const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
@@ -83,7 +84,10 @@ export function PlayerInGame() {
   }>(
     (max, current) => {
       if (max.votes === current[1] ?? 0) {
-        return { player: max.player ? null : current[0], votes: current[1] };
+        return {
+          player: max.player ? null : current[0],
+          votes: max.player ? current[1] + 1 : current[1],
+        };
       }
       if (max.votes < current[1]) {
         return { player: current[0], votes: current[1] };
@@ -175,16 +179,6 @@ export function PlayerInGame() {
                   playerOnBlock.votes
                 }`}
               </Text>
-              {/* TODO: Remove below and add Executing & votes to execute info
-              <Text className="capitalize">{me}</Text>
-              <Text className="capitalize">
-                {game.deadPlayers[me] ? "Dead" : "Alive"}
-              </Text>
-              <Text className="capitalize">
-                {!(game.deadPlayers[me] && game.deadVotes[me])
-                  ? "Vote available"
-                  : "Cannot vote"}
-              </Text> */}
             </Flex>
 
             <PlayerListFilters
