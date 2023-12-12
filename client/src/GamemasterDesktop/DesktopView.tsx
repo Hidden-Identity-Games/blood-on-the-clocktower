@@ -72,7 +72,10 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   }>(
     (max, current) => {
       if (max.votes === current[1] ?? 0) {
-        return { player: max.player ? null : current[0], votes: current[1] };
+        return {
+          player: max.player ? null : current[0],
+          votes: max.player ? current[1] + 1 : current[1],
+        };
       }
       if (max.votes < current[1]) {
         return { player: current[0], votes: current[1] };
@@ -92,8 +95,8 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                 <TeamDistributionBar />
                 <div className="text-center">
                   <div>Alive players: {alivePlayers.length}</div>
-                  <div className="capitalize">{`Currently executeing: ${
-                    playerOnBlock.player ?? "Nobody"
+                  <div className="capitalize">{`Currently Executing: ${
+                    playerOnBlock.player ?? "-"
                   }`}</div>
                   <div>{`Votes ${
                     playerOnBlock.player ? "to tie" : "to execute"
