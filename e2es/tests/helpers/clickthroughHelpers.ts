@@ -1,5 +1,5 @@
 // Functions in this file will perform a task manually, and so will add tesr coverage, but are very slow.
-import { Script, ScriptName } from "@hidden-identity/shared";
+import { Script, ScriptName, getScript } from "@hidden-identity/shared";
 import { urlFromBase } from "../productUrls";
 import { BrowserContext, Page } from "@playwright/test";
 import { asyncMap, getRandomCharactersForDistribution } from "./utils";
@@ -31,7 +31,7 @@ export const ClickthroughModel = {
 
     await gmPage.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
 
-    await ClickthroughModel.fillRoleBag(gmPage, { script });
+    await ClickthroughModel.fillRoleBag(gmPage, { script: getScript(script) });
 
     const playerPages = await ClickthroughModel.populateGameWithPlayers(
       context,
