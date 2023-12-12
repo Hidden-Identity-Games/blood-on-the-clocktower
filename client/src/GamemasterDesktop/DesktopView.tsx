@@ -98,7 +98,6 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                   <div>{`Votes ${
                     playerOnBlock.player ? "to tie" : "to execute"
                   }: ${playerOnBlock.votes}`}</div>
-                  {}
                 </div>
               </>
             )}

@@ -75,6 +75,24 @@ export function PlayerInGame() {
 
   // TODO: Delete this
   console.log(game);
+  const players = usePlayerOrder("seat order", firstSeat);
+  const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
+  const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
+    player: string | null;
+    votes: number;
+  }>(
+    (max, current) => {
+      if (max.votes === current[1] ?? 0) {
+        return { player: max.player ? null : current[0], votes: current[1] };
+      }
+      if (max.votes < current[1]) {
+        return { player: current[0], votes: current[1] };
+      }
+      return max;
+    },
+    { votes: Math.ceil(alivePlayers.length / 2), player: null },
+  );
+  console.log("on da block", playerOnBlock);
 
   return (
     <Tabs.Root
@@ -148,7 +166,16 @@ export function PlayerInGame() {
             gap="1"
             className="border-b border-red-700 p-2"
           >
-            <Flex justify="between" p="2">
+            <Flex justify="between" p="2" direction="column">
+              <Text className="capitalize">{`Executing: ${
+                playerOnBlock.player ?? "-"
+              }`}</Text>
+              <Text>
+                {`Votes ${playerOnBlock.player ? "to tie" : "to execute"}: ${
+                  playerOnBlock.votes
+                }`}
+              </Text>
+              {/* TODO: Remove below and add Executing & votes to execute info
               <Text className="capitalize">{me}</Text>
               <Text className="capitalize">
                 {game.deadPlayers[me] ? "Dead" : "Alive"}
@@ -157,7 +184,7 @@ export function PlayerInGame() {
                 {!(game.deadPlayers[me] && game.deadVotes[me])
                   ? "Vote available"
                   : "Cannot vote"}
-              </Text>
+              </Text> */}
             </Flex>
 
             <PlayerListFilters
@@ -208,7 +235,6 @@ export function PlayerInGame() {
                     {player}
                   </Text>
                   {game.travelers[player] && (
-                    //TODO: Add Votes assigned to each player.
                     <ForPlayerPlayerRoleIcon player={player}>
                       {getCharacter(game.playersToRoles[player]).ability}
                     </ForPlayerPlayerRoleIcon>

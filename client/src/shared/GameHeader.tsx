@@ -58,7 +58,6 @@ interface QRCodeDialogProps {
   gameId: string | null;
 }
 function QRCodeDialog({ gameId }: QRCodeDialogProps) {
-  // TODO: update to use url.ts
   const url = `${document.location.origin}/game?gameId=${gameId}`;
 
   const handleShare = async () => {
