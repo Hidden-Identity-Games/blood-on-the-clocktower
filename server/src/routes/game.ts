@@ -1,26 +1,5 @@
-import {
-  addGame,
-  getGame,
-  retrieveGame,
-  updateStatus,
-} from "../database/gameDB/base.ts";
-import { assignPlayerToRole } from "../database/gameDB/seating.ts";
-import {
-  addPlayerStatus,
-  addPlayer,
-  assignRoles,
-  clearPlayerStatus,
-  kickPlayer,
-  setPlayerFate,
-  setPlayerNote,
-  setPlayerOrder,
-  toggleDeadvote,
-  setAlignment,
-  setDrawRole,
-  setPlayerHasSeenRole,
-  setVotesToExecute,
-  clearVotesToExecute,
-} from "../database/gameDB/player.ts";
+import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
+
 import { setupTestGames } from "../testGames.ts";
 import {
   gmProcedure,
@@ -43,6 +22,7 @@ import {
   roleShape,
 } from "./baseApiShapes.ts";
 import { GameCreator } from "../testingUtils/gameCreator.ts";
+import { drawRole } from "../gameMachine/gameActions.ts";
 
 await setupTestGames();
 
@@ -76,7 +56,7 @@ export const gameRoutes = {
     )
     .mutation(
       async ({ input: { gameId, oldGameId, testGameOptions, script } }) => {
-        let gameCreator = new GameCreator();
+        let gameCreator = new GameCreator(script);
         if (testGameOptions?.isTestGame) {
           console.log(
             `generating test game: ${gameId}, ${JSON.stringify(
@@ -89,21 +69,18 @@ export const gameRoutes = {
               .addPlayers(testGameOptions.players)
               .assignSeating();
             if (testGameOptions.randomRoles) {
-              gameCreator.assignRandomRolesToCharacters(script);
+              gameCreator.assignRandomRolesToCharacters();
             }
           }
         }
 
-        await addGame(gameId, gameCreator.toGame(), script);
+        await addGame(gameId, gameCreator.toGameMachine().getGame(), script);
 
         if (oldGameId) {
           console.log(`recieved old gameID: ${oldGameId}, updating old game`);
 
           const oldGame = await retrieveGame(oldGameId);
-          oldGame.update({
-            ...oldGame.readOnce(),
-            nextGameId: gameId,
-          });
+          oldGame.dispatch({ type: "MakeNewGame", nextGameId: gameId });
         }
 
         return await getGame(gameId);
@@ -112,14 +89,14 @@ export const gameRoutes = {
   addPlayer: playerProcedure
     .input(playerAndGameIdShape)
     .mutation(async ({ input: { gameId, player } }) => {
-      await addPlayer(gameId, player);
-      return player;
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "AddPlayer", player });
     }),
   kickPlayer: gmProcedure
     .input(playerAndGameIdShape)
     .mutation(async ({ input: { gameId, player } }) => {
-      await kickPlayer(gameId, player);
-      return null;
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "KickPlayer", player });
     }),
   setPlayerOrder: playerProcedure
     .input(
@@ -129,20 +106,26 @@ export const gameRoutes = {
       ),
     )
     .mutation(async ({ input: { gameId, player, rightNeighbor } }) => {
-      await setPlayerOrder(gameId, player, rightNeighbor);
-      return null;
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: "SetNeighbor",
+        player,
+        newRightNeighbor: rightNeighbor,
+      });
     }),
   assignRoles: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ roles: z.array(roleShape) })))
     .mutation(async ({ input: { gameId, roles } }) => {
-      await assignRoles(gameId, roles);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "FillRoleBag", roles });
     }),
   decideFate: gmProcedure
     .input(
       z.intersection(playerAndGameIdShape, z.object({ dead: z.boolean() })),
     )
     .mutation(async ({ input: { gameId, player, dead } }) => {
-      await setPlayerFate(gameId, player, dead);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: dead ? "KillPlayer" : "RevivePlayer", player });
     }),
   addPlayerStatus: gmProcedure
     .input(
@@ -160,7 +143,8 @@ export const gameRoutes = {
       ),
     )
     .mutation(async ({ input: { gameId, player, playerStatus } }) => {
-      await addPlayerStatus(gameId, player, playerStatus);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "AddPlayerStatus", player, status: playerStatus });
     }),
   clearPlayerStatus: gmProcedure
     .input(
@@ -172,7 +156,12 @@ export const gameRoutes = {
       ),
     )
     .mutation(async ({ input: { gameId, player, playerStatusId } }) => {
-      await clearPlayerStatus(gameId, player, playerStatusId);
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: "RemovePlayerStatus",
+        player,
+        statusId: playerStatusId,
+      });
     }),
   setPlayerNote: gmProcedure
     .input(
@@ -184,36 +173,49 @@ export const gameRoutes = {
       ),
     )
     .mutation(async ({ input: { gameId, player, note } }) => {
-      await setPlayerNote(gameId, player, note);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "UpdateNote", newNote: note, player });
     }),
   setDeadVote: gmProcedure
     .input(
       z.intersection(playerAndGameIdShape, z.object({ voteUsed: z.boolean() })),
     )
     .mutation(async ({ input: { gameId, player, voteUsed } }) => {
-      await toggleDeadvote(gameId, player, voteUsed);
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: voteUsed ? "UseDeadVote" : "GiveBackDeadVote",
+        player,
+      });
     }),
   setVotesToExecute: gmProcedure
     .input(
       z.intersection(playerAndGameIdShape, z.object({ votes: z.number() })),
     )
     .mutation(async ({ input: { gameId, player, votes } }) => {
-      await setVotesToExecute(gameId, player, votes);
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: "SetVotesToExecute",
+        player,
+        votesToExecute: votes,
+      });
     }),
   clearVotesToExecute: gmProcedure
     .input(gameIdShape)
     .mutation(async ({ input: { gameId } }) => {
-      await clearVotesToExecute(gameId);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "ClearVotesToExecute" });
     }),
   setGameStatus: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ status: gameStatusShape })))
     .mutation(async ({ input: { gameId, status } }) => {
-      await updateStatus(gameId, status);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "ManuallysetStatus", status });
     }),
   assignRole: gmProcedure
     .input(z.intersection(playerAndGameIdShape, z.object({ role: roleShape })))
     .mutation(async ({ input: { gameId, player, role } }) => {
-      await assignPlayerToRole(gameId, player, role);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "ChangePlayerRole", player, role });
     }),
   setAlignment: gmProcedure
     .input(
@@ -223,7 +225,12 @@ export const gameRoutes = {
       ),
     )
     .mutation(async ({ input: { gameId, player, alignment } }) => {
-      await setAlignment(gameId, player, alignment);
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: "OverrideAlignment",
+        player,
+        newAlignment: alignment,
+      });
     }),
   takeRole: playerProcedure
     .input(
@@ -233,11 +240,21 @@ export const gameRoutes = {
       ),
     )
     .mutation(async ({ input: { gameId, player, numberDrawn } }) => {
-      return await setDrawRole(gameId, player, numberDrawn);
+      const game = await retrieveGame(gameId);
+      const gameInstance = game.getGame();
+      const role = gameInstance.roleBag[numberDrawn];
+
+      if (role && gameInstance.playersToRoles[player]) {
+        const action = drawRole({ roleNumber: numberDrawn, player });
+        game.dispatch(action);
+        return true;
+      }
+      return false;
     }),
   setPlayerSeenRole: playerProcedure
     .input(playerAndGameIdShape)
     .mutation(async ({ input: { gameId, player } }) => {
-      await setPlayerHasSeenRole(gameId, player);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "SeenRole", player });
     }),
 };

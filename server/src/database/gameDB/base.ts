@@ -1,34 +1,18 @@
-import { generate } from "random-words";
 import {
   type UnifiedGame,
   type BaseUnifiedGame,
-  type UnifiedGameComputed,
   type GameStatus,
   type Role,
   type Script,
 } from "@hidden-identity/shared";
-import { getOrderedPlayers } from "../gameDB/seating.ts";
 import { addScript, addTestScript } from "../scriptDB.ts";
-import { WatchableResource, type Computer } from "../watchableResource.ts";
 import { RemoteStorage, StoreFile } from "../remoteStorage.ts";
+import { GameMachine } from "../../gameMachine/gameMachine.ts";
+import { type GameCreator } from "../../testingUtils/gameCreator.ts";
 
 export const UNASSIGNED: Role = "unassigned" as Role;
 
-const gameComputer: Computer<BaseUnifiedGame, UnifiedGameComputed> = {
-  orderedPlayers: getOrderedPlayers,
-  playerList: (game) => Object.keys(game.playersToRoles).sort(),
-  rolesToPlayers: (game) => {
-    const rolesToPlayers: Record<Role, string[]> = {};
-    Object.entries(game.playersToRoles).forEach(([player, role]) => {
-      rolesToPlayers[role] = [...(rolesToPlayers[role] || []), player];
-    });
-    return rolesToPlayers;
-  },
-};
-
-type WatchableGame = WatchableResource<BaseUnifiedGame, UnifiedGameComputed>;
-
-const gameDB: Record<string, WatchableGame> = {};
+const gameDB: Record<string, GameMachine> = {};
 const storage = new StoreFile<BaseUnifiedGame>("game", new RemoteStorage());
 
 export function gameInProgress(game: UnifiedGame): boolean {
@@ -40,7 +24,7 @@ export async function gameExists(gameId: string): Promise<boolean> {
 
   const gameFromStorage = await storage.getFile(gameId);
   if (gameFromStorage) {
-    gameDB[gameId] = new WatchableResource(gameFromStorage, gameComputer);
+    gameDB[gameId] = new GameMachine(gameFromStorage);
     gameDB[gameId].subscribe((value) => {
       storage.putFile(gameId, value as BaseUnifiedGame).catch((e) => {
         console.error(e);
@@ -52,7 +36,7 @@ export async function gameExists(gameId: string): Promise<boolean> {
   return false;
 }
 
-export async function retrieveGame(gameId: string): Promise<WatchableGame> {
+export async function retrieveGame(gameId: string): Promise<GameMachine> {
   if (!(await gameExists(gameId))) {
     throw new Error(`${JSON.stringify(gameId)} not found`);
   }
@@ -61,7 +45,7 @@ export async function retrieveGame(gameId: string): Promise<WatchableGame> {
 }
 
 export async function getGame(gameId: string): Promise<UnifiedGame> {
-  return (await retrieveGame(gameId)).readOnce();
+  return (await retrieveGame(gameId)).getGame();
 }
 
 export async function addGame(
@@ -74,7 +58,7 @@ export async function addGame(
     throw new Error("Game already exists");
   }
 
-  gameDB[gameId] = new WatchableResource(game, gameComputer);
+  gameDB[gameId] = new GameMachine(game);
   await addScript(gameId, script);
 
   gameDB[gameId].subscribe((value) => {
@@ -86,29 +70,10 @@ export async function addGame(
 
 export async function addTestGame(
   gameId: string,
-  game: BaseUnifiedGame,
-  script: Script,
+  gameCreator: GameCreator,
 ): Promise<void> {
-  gameDB[gameId] = new WatchableResource(game, gameComputer);
-  await addTestScript(gameId.toUpperCase(), script);
-}
-
-export function createGame(): BaseUnifiedGame {
-  return {
-    gameStatus: "PlayersJoining",
-    gmSecretHash: generate(3).join("-"),
-    playersToRoles: {},
-    partialPlayerOrdering: {},
-    deadPlayers: {},
-    playerPlayerStatuses: {},
-    playerNotes: {},
-    deadVotes: {},
-    onTheBlock: {},
-    travelers: {},
-    alignmentsOverrides: {},
-    roleBag: {},
-    playersSeenRoles: [],
-  };
+  gameDB[gameId] = gameCreator.toGameMachine();
+  await addTestScript(gameId.toUpperCase(), gameCreator.script);
 }
 
 export async function subscribeToGame(
@@ -127,10 +92,5 @@ export async function updateStatus(
   status: GameStatus,
 ): Promise<void> {
   const game = await retrieveGame(gameId);
-  const gameInstance = game.readOnce();
-
-  game.update({
-    ...gameInstance,
-    gameStatus: status,
-  });
+  game.dispatch({ type: "ManuallysetStatus", status });
 }

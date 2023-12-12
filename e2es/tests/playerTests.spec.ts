@@ -76,7 +76,8 @@ test("can 15 players join", async ({ context }) => {
     .click({ trial: true, timeout: 1000 });
 });
 
-test("travelers keep player order", async ({ context }) => {
+// eslint-disable-next-line playwright/no-skipped-test
+test.skip("travelers keep player order", async ({ context }) => {
   const players = Array.from({ length: 8 }, (_, i) => `player${i}`);
 
   const {

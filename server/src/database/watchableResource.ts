@@ -3,6 +3,7 @@ export type Computer<ResourceShape, ComputedValues> = {
   [K in keyof ComputedValues]: (resource: ResourceShape) => ComputedValues[K];
 };
 
+// TODO: move script into game and get rid of this.
 export class WatchableResource<BaseResourceShape, ComputedValues> {
   private value!: BaseResourceShape & ComputedValues;
   private callbacks: Array<Callback<BaseResourceShape & ComputedValues>> = [];
