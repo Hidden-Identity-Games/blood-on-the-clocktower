@@ -5,7 +5,7 @@ import {
 } from "../shared/CircularLayout";
 import { useGame } from "../store/GameContext";
 import { LoadingExperience } from "../shared/LoadingExperience";
-import { Button, Flex } from "@radix-ui/themes";
+import { Button, Flex, Text } from "@radix-ui/themes";
 import { RoleToken } from "../shared/RoleToken";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
@@ -15,6 +15,7 @@ import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useVotesToExecute } from "../store/actions/gmPlayerActions";
 import { SetCountModal } from "../shared/SetCount";
+import { ExecutionInfo } from "../shared/ExecutionInfo";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -66,21 +67,6 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   }
 
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
-  const playerOnBlock = Object.entries(game.onTheBlock).reduce<{
-    player: string | null;
-    votes: number;
-  }>(
-    (max, current) => {
-      if (max.votes === current[1] ?? 0) {
-        return { player: max.player ? null : current[0], votes: current[1] };
-      }
-      if (max.votes < current[1]) {
-        return { player: current[0], votes: current[1] };
-      }
-      return max;
-    },
-    { votes: Math.ceil(alivePlayers.length / 2), player: null },
-  );
 
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
@@ -90,16 +76,12 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
             {isPlayerView && (
               <>
                 <TeamDistributionBar />
-                <div className="text-center">
-                  <div>Alive players: {alivePlayers.length}</div>
-                  <div className="capitalize">{`Currently executeing: ${
-                    playerOnBlock.player ?? "Nobody"
-                  }`}</div>
-                  <div>{`Votes ${
-                    playerOnBlock.player ? "to tie" : "to execute"
-                  }: ${playerOnBlock.votes}`}</div>
-                  {}
-                </div>
+                <Flex className="text-center" gap="0" direction="column">
+                  <Text>Alive players: {alivePlayers.length}</Text>
+                  <Flex justify="between" p="2" direction="column" gap="2">
+                    <ExecutionInfo />
+                  </Flex>
+                </Flex>
               </>
             )}
             {!isPlayerView && (
@@ -125,6 +107,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                   <SetCountModal
                     title="Votes to Execute:"
                     onSet={(votes: number) => setVotesToExecute(player, votes)}
+                    defaultValue={game.onTheBlock[player] && 0}
                   >
                     <button className="h-full w-full">
                       <RoleToken

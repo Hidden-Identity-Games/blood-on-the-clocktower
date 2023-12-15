@@ -33,6 +33,7 @@ import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useFirstSeat } from "../store/url";
 import { SetCountModal } from "../shared/SetCount";
 import { useVotesToExecute } from "../store/actions/gmPlayerActions";
+import { ExecutionInfo } from "../shared/ExecutionInfo";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -145,16 +146,8 @@ export function PlayerInGame() {
             gap="1"
             className="border-b border-red-700 p-2"
           >
-            <Flex justify="between" p="2">
-              <Text className="capitalize">{me}</Text>
-              <Text className="capitalize">
-                {game.deadPlayers[me] ? "Dead" : "Alive"}
-              </Text>
-              <Text className="capitalize">
-                {!(game.deadPlayers[me] && game.deadVotes[me])
-                  ? "Vote available"
-                  : "Cannot vote"}
-              </Text>
+            <Flex justify="between" p="2" direction="column">
+              <ExecutionInfo />
             </Flex>
 
             <PlayerListFilters
@@ -176,13 +169,7 @@ export function PlayerInGame() {
             className="flex-1 overflow-y-auto"
           >
             {filteredPlayers.map((player) => (
-              <Flex
-                key={player}
-                gap="1"
-                className={classNames(
-                  game.deadPlayers[player] && "line-through",
-                )}
-              >
+              <Flex key={player} gap="1" align="center">
                 <div className="w-5">
                   {(!game.deadPlayers[player] || !game.deadVotes[player]) && (
                     <MeaningfulIcon
@@ -195,22 +182,40 @@ export function PlayerInGame() {
                     </MeaningfulIcon>
                   )}
                 </div>
-
-                <Text
-                  color={game.travelers[player] ? "amber" : undefined}
-                  as="div"
-                  className="flex-1 capitalize"
+                <Flex
+                  justify="start"
+                  gap="3"
+                  className={classNames(
+                    "flex-1",
+                    game.deadPlayers[player] && "line-through",
+                  )}
                 >
-                  {player}
-                </Text>
-                {game.travelers[player] && (
-                  <ForPlayerPlayerRoleIcon player={player}>
-                    {getCharacter(game.playersToRoles[player]).ability}
-                  </ForPlayerPlayerRoleIcon>
+                  <Text
+                    color={game.travelers[player] ? "amber" : undefined}
+                    as="div"
+                    className="capitalize"
+                  >
+                    {player}
+                  </Text>
+                  {game.travelers[player] && (
+                    <ForPlayerPlayerRoleIcon player={player}>
+                      {getCharacter(game.playersToRoles[player]).ability}
+                    </ForPlayerPlayerRoleIcon>
+                  )}
+                </Flex>
+                {game.onTheBlock[player] && (
+                  <Text
+                    color={game.travelers[player] ? "amber" : undefined}
+                    as="div"
+                    className="capitalize"
+                  >
+                    Votes: {game.onTheBlock[player]}
+                  </Text>
                 )}
                 <SetCountModal
                   title="Set votes to execute:"
                   onSet={(votes: number) => setVotesToExecute(player, votes)}
+                  defaultValue={game.onTheBlock[player] ?? 0}
                 >
                   <IconButton variant="soft" radius="large">
                     <GiAxeInStump />
