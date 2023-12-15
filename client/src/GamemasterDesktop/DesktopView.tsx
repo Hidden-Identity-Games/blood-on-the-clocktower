@@ -15,6 +15,10 @@ import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useVotesToExecute } from "../store/actions/gmPlayerActions";
 import { SetCountModal } from "../shared/SetCount";
+import { CircleContainer } from "../shared/CircularLayout/CircleContainer";
+import { Slice } from "../shared/CircularLayout/Slice";
+import { Center } from "../shared/CircularLayout/Center";
+import { Pepperoni } from "../shared/CircularLayout/Pepperoni";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -50,9 +54,6 @@ function SideBar() {
   return game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />;
 }
 
-interface GrimoireProps {
-  isPlayerView?: boolean;
-}
 function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const { game } = useGame();
   const [firstSeat] = useFirstSeat();
@@ -83,9 +84,9 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   );
 
   return (
-    <Flex className="flex-1" align="center" justify="center" direction="column">
-      <CircularLayout className="w-full flex-1">
-        <PlaceInCenter>
+    // <Flex className="flex-1" align="center" justify="center" direction="column">
+    <CircleContainer totalSlices={players.length}>
+      {/* <PlaceInCenter>
           <Flex direction="column" gap="3">
             {isPlayerView && (
               <>
@@ -112,44 +113,55 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
               </Button>
             )}
           </Flex>
-        </PlaceInCenter>
-        <>
-          {players.map((player, idx) => (
-            <PlaceInCircle
-              key={player}
-              index={idx}
-              totalCountInCircle={players.length}
-            >
-              <div className="flex h-full w-full">
-                {hideInfo ? (
-                  <SetCountModal
-                    title="Votes to Execute:"
-                    onSet={(votes: number) => setVotesToExecute(player, votes)}
-                  >
-                    <button className="h-full w-full">
-                      <RoleToken
-                        isHiddenView={hideInfo}
-                        role={game.playersToRoles[player]}
-                        player={player}
-                      />
-                    </button>
-                  </SetCountModal>
-                ) : (
-                  <PlayerList.Actions player={player}>
-                    <button className="h-full w-full" disabled={hideInfo}>
-                      <RoleToken
-                        isHiddenView={hideInfo}
-                        role={game.playersToRoles[player]}
-                        player={player}
-                      />
-                    </button>
-                  </PlayerList.Actions>
-                )}
+        </PlaceInCenter> */}
+      <>
+        {players.map((player, idx) => (
+          <Slice key={player} index={idx}>
+            <Pepperoni>
+              <div className="h-full">
+                <div className="mt-[25%] aspect-square h-[50%] rounded-full bg-red-200 ">
+                  Hello
+                </div>
               </div>
-            </PlaceInCircle>
-          ))}
-        </>
-      </CircularLayout>
-    </Flex>
+            </Pepperoni>
+            <div className="flex">
+              {hideInfo ? (
+                <SetCountModal
+                  title="Votes to Execute:"
+                  onSet={(votes: number) => setVotesToExecute(player, votes)}
+                >
+                  <button className="aspect-square h-full">
+                    <RoleToken
+                      isHiddenView={hideInfo}
+                      role={game.playersToRoles[player]}
+                      player={player}
+                    />
+                  </button>
+                </SetCountModal>
+              ) : (
+                <PlayerList.Actions player={player}>
+                  <Pepperoni>
+                    <button
+                      className="aspect-square h-full"
+                      disabled={hideInfo}
+                    >
+                      {/* <div className="aspect-square h-full bg-red-200">
+                        Hello
+                      </div> */}
+                      <RoleToken
+                        isHiddenView={hideInfo}
+                        role={game.playersToRoles[player]}
+                        player={player}
+                      />
+                    </button>
+                  </Pepperoni>
+                </PlayerList.Actions>
+              )}
+            </div>
+          </Slice>
+        ))}
+      </>
+    </CircleContainer>
+    // </Flex>
   );
 }
