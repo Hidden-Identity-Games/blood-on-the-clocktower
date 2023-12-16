@@ -1,21 +1,16 @@
-import {
-  CircularLayout,
-  PlaceInCenter,
-  PlaceInCircle,
-} from "../shared/CircularLayout";
+import { CircularLayout, PlaceInCenter } from "../shared/PlayersInCircle";
 import { useGame } from "../store/GameContext";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { Button, Flex, Text } from "@radix-ui/themes";
-import { RoleToken } from "../shared/RoleToken";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
-import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
 import { useFirstSeat, useIsHiddenView, useSearchParams } from "../store/url";
 import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
-import { useVotesToExecute } from "../store/actions/gmPlayerActions";
-import { SetCountModal } from "../shared/SetCount";
 import { ExecutionInfo } from "../shared/ExecutionInfo";
+import { SpectatorTile } from "../shared/PlayersInCircle/SpectatorTile";
+import { GMTile } from "../shared/PlayersInCircle/GMTile";
+import React from "react";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -60,7 +55,6 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const [_isHiddenView, setIsHiddenView] = useIsHiddenView();
   const hideInfo = _isHiddenView || isPlayerView;
   const players = usePlayerOrder("seat order", firstSeat);
-  const [, , , setVotesToExecute] = useVotesToExecute();
 
   if (!game) {
     return <LoadingExperience>Loading</LoadingExperience>;
@@ -70,7 +64,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
 
   return (
     <Flex className="flex-1" align="center" justify="center" direction="column">
-      <CircularLayout className="w-full flex-1">
+      <CircularLayout className="w-full flex-1" totalItems={players.length}>
         <PlaceInCenter>
           <Flex direction="column" gap="3">
             {isPlayerView && (
@@ -97,39 +91,13 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
         </PlaceInCenter>
         <>
           {players.map((player, idx) => (
-            <PlaceInCircle
-              key={player}
-              index={idx}
-              totalCountInCircle={players.length}
-            >
-              <div className="flex h-full w-full">
-                {hideInfo ? (
-                  <SetCountModal
-                    title="Votes to Execute:"
-                    onSet={(votes: number) => setVotesToExecute(player, votes)}
-                    defaultValue={game.onTheBlock[player] && 0}
-                  >
-                    <button className="h-full w-full">
-                      <RoleToken
-                        isHiddenView={hideInfo}
-                        role={game.playersToRoles[player]}
-                        player={player}
-                      />
-                    </button>
-                  </SetCountModal>
-                ) : (
-                  <PlayerList.Actions player={player}>
-                    <button className="h-full w-full" disabled={hideInfo}>
-                      <RoleToken
-                        isHiddenView={hideInfo}
-                        role={game.playersToRoles[player]}
-                        player={player}
-                      />
-                    </button>
-                  </PlayerList.Actions>
-                )}
-              </div>
-            </PlaceInCircle>
+            <React.Fragment key={player}>
+              {hideInfo ? (
+                <SpectatorTile player={player} index={idx} />
+              ) : (
+                <GMTile player={player} index={idx} />
+              )}
+            </React.Fragment>
           ))}
         </>
       </CircularLayout>
