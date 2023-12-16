@@ -17,6 +17,7 @@ import { FaSkull } from "react-icons/fa6";
 import { PlayerName } from "./PlayerName";
 import React from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { DialogHeader } from "../../shared/DialogHeader";
 
 interface SetCountProps {
   count: number;
@@ -89,14 +90,14 @@ export function PlayerControls({
     <Dialog.Root onOpenChange={() => setVotes(game.onTheBlock[player] ?? 0)}>
       <Dialog.Trigger>{children}</Dialog.Trigger>
       <Dialog.Content className="m-2">
-        <Flex gap="2" direction="column" className="py-2 capitalize">
-          <Flex className="justify-center pb-2" align="center">
+        <DialogHeader>
+          <Flex className="flex-1 justify-center " align="center" gap="3">
             {game.deadPlayers[player] && <FaSkull />}
-            <Heading className="mx-3">
+            <Heading>
               <PlayerName player={player} />
             </Heading>
           </Flex>
-        </Flex>
+        </DialogHeader>
 
         <Flex direction="column" gap="2">
           {/* KILL OR REVIVE PLAYER*/}
