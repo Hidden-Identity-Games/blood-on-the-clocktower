@@ -5,6 +5,7 @@ import { PlayerRoleIcon } from "./PlayerRole";
 import { PlayerNoteInput } from "./PlayerNoteInput";
 import { PlayerMenuItem } from "./PlayerMenuItem";
 import { PlayerMessageFlow } from "./PlayerMessage";
+import { PlayerControls } from "./PlayerControls";
 
 export const PlayerList = {
   RoleIcon: PlayerRoleIcon,
@@ -14,4 +15,6 @@ export const PlayerList = {
   MenuItem: PlayerMenuItem,
   NoteInputModal: PlayerNoteInput,
   PlayerMessage: PlayerMessageFlow,
+  // TODO: Route PlayerControls through here. SpectatorControls to route elsewhere in another PR.
+  PlayerControls: PlayerControls,
 };
