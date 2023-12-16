@@ -2,7 +2,7 @@ import AddPlayer from "./AddPlayer";
 import { PlayerRole } from "./PlayerRole";
 import { usePlayer } from "../store/usePlayer";
 import { LoadingExperience } from "../shared/LoadingExperience";
-import { PlayerWaiting } from "./PlayerWaiting";
+import { PlayerChooseNeighbor } from "./PlayerChooseNeighbor";
 import { useGame } from "../store/GameContext";
 import { Callout } from "@radix-ui/themes";
 import { PlayerInGame } from "./PlayerInGame";
@@ -35,23 +35,30 @@ function PlayerLanding() {
     );
   }
 
-  if (
-    game.travelers[player] &&
-    !game.partialPlayerOrdering[player]?.rightNeighbor
-  ) {
-    return <PlayerWaiting />;
-  }
-
-  if (game.gameStatus === "PlayersJoining") {
-    return <PlayerWaiting />;
-  }
-
-  if (!game.playersSeenRoles.includes(player)) {
-    if (!role || role === "unassigned") {
-      return <PlayerRoleSelect />;
+  if (game.travelers[player]) {
+    if (game.gameStatus === "PlayersJoining") {
+      return <PlayerChooseNeighbor />;
     }
-    return <PlayerRole role={role} />;
-  }
 
-  return <PlayerInGame />;
+    if (!game.partialPlayerOrdering[player]?.rightNeighbor) {
+      return <PlayerChooseNeighbor />;
+    }
+
+    if (!game.playersToRoles[player]) {
+      return <div>Please see the storyteller for a role.</div>;
+    }
+
+    if (!game.playersSeenRoles.includes(player)) {
+      return <PlayerRole role={game.playersToRoles[player]} />;
+    }
+    return <PlayerInGame />;
+  } else {
+    if (!game.playersSeenRoles.includes(player)) {
+      if (!role || role === "unassigned") {
+        return <PlayerRoleSelect />;
+      }
+      return <PlayerRole role={role} />;
+    }
+    return <PlayerInGame />;
+  }
 }

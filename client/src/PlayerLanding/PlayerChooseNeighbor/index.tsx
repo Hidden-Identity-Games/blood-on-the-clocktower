@@ -11,7 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { BrokenOrderedPlayers } from "@hidden-identity/shared";
 import { useOrderPlayer } from "../../store/actions/playerActions";
 
-export function PlayerWaiting() {
+export function PlayerChooseNeighbor() {
   const myName = useMe();
   const { game } = useDefiniteGame();
   const [, , , handleOrderPlayer] = useOrderPlayer();
