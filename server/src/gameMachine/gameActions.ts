@@ -76,3 +76,57 @@ export function drawRole({
     return false;
   };
 }
+export function addPlayer({
+  player,
+  forceTraveling,
+}: {
+  player: string;
+  forceTraveling?: boolean;
+}): GameThunk<boolean> {
+  return (dispatch, getGame) => {
+    dispatch({
+      type: "AddPlayer",
+      player,
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      traveling: forceTraveling || getGame().gameStatus !== "PlayersJoining",
+    });
+    return true;
+  };
+}
+
+export function setPlayerNeighbor({
+  player,
+  newRightNeighbor,
+}: {
+  player: string;
+  newRightNeighbor: string | null;
+}): GameThunk<boolean> {
+  return (dispatch, getGame) => {
+    if (newRightNeighbor && !getGame().playersToRoles[newRightNeighbor]) {
+      throw new Error(`Neighbor ${newRightNeighbor} not found.`);
+    }
+    if (getGame().gameStatus === "PlayersJoining") {
+      dispatch({
+        type: "SetNeighbor",
+        player,
+        newRightNeighbor,
+      });
+    } else {
+      // Probably revisit this to make it the same action?
+      if (newRightNeighbor === null) {
+        dispatch({
+          type: "ExtractPlayerFromCircle",
+          player,
+        });
+      } else {
+        dispatch({
+          type: "PlacePlayerInCircle",
+          player,
+          newRightNeighbor,
+        });
+      }
+    }
+
+    return true;
+  };
+}

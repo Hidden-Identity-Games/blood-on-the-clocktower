@@ -118,6 +118,10 @@ export const ClickthroughModel = {
       await page.getByRole("checkbox", { name: role.name }).click();
     }
   },
+  acknowledgeRole: async function xzxacknowledgeRole(page: Page) {
+    await page.getByRole("button", { name: /reveal role/i }).click();
+    await page.getByRole("button", { name: /i know my role/i }).click();
+  },
   getAndAcknowledgeRoles: async function acknowledgeRoles(pages: PlayerPage[]) {
     await asyncMap(pages, async ({ page }, playerNumber) => {
       await page.setViewportSize({ height: 1000, width: 500 });
@@ -128,8 +132,7 @@ export const ClickthroughModel = {
         })
         .click();
 
-      await page.getByRole("button", { name: /reveal role/i }).click();
-      await page.getByRole("button", { name: /i know my role/i }).click();
+      await ClickthroughModel.acknowledgeRole(page);
       return null;
     });
   },

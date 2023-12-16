@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import { urlFromBase } from "./productUrls";
 import { trpc } from "./api/client";
 import { QuickSetupHelpers } from "./helpers/quickHelpers";
-import { getScript } from "@hidden-identity/shared";
+import { allTravelers, getScript } from "@hidden-identity/shared";
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
 
 test("join game", async ({ page }) => {
@@ -72,11 +72,9 @@ test("can 15 players join", async ({ context }) => {
 
 // currently broken
 test.skip("travelers keep player order", async ({ context }) => {
-  const players = Array.from({ length: 8 }, (_, i) => `player${i}`);
-
-  const { gameId } = await QuickSetupHelpers.createStartedGame(
+  const { gameId, game } = await QuickSetupHelpers.createStartedGame(
     "Trouble Brewing",
-    players,
+    8,
   );
 
   const { playerList: expectedOrderedValues } = await trpc.getGame.query({
@@ -92,10 +90,22 @@ test.skip("travelers keep player order", async ({ context }) => {
   );
   await travelerPage
     .getByRole("button", {
-      name: players[insertTravelerBefore],
+      name: game.playerList[insertTravelerBefore],
       exact: true,
     })
     .click();
+
+  await travelerPage
+    .getByText("Please see the storyteller for a role!")
+    .waitFor();
+
+  await trpc.assignRole.mutate({
+    gameId,
+    player: travelerName.toLocaleLowerCase(),
+    role: allTravelers()[0],
+  });
+
+  await ClickthroughModel.acknowledgeRole(travelerPage);
 
   const postTravelersOrderedValues = [
     ...expectedOrderedValues.slice(0, insertTravelerBefore),
@@ -103,6 +113,7 @@ test.skip("travelers keep player order", async ({ context }) => {
     ...expectedOrderedValues.slice(insertTravelerBefore),
   ];
 
+  // this isn't actually ordered players, so we need to fix this.
   const { playerList: actualPlayerOrder } = await trpc.getGame.query({
     gameId,
   });

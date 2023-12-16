@@ -15,14 +15,17 @@ export function PlayerRoot() {
 function PlayerLanding() {
   const [player] = usePlayer();
   const { game } = useGame();
-  const role = (player && game?.playersToRoles[player]) ?? null;
+  const hasRole =
+    player &&
+    game?.playersToRoles[player] &&
+    game?.playersToRoles[player] !== "unassigned";
 
   if (!game) return <LoadingExperience>Loading...</LoadingExperience>;
 
   if (!player || !game.playerList.includes(player)) {
     return (
       <>
-        {player && !role && (
+        {player && !game.playerList.includes(player) && (
           <Callout.Root>
             <Callout.Text>
               It looks like you were kicked from the game, consult the
@@ -34,18 +37,19 @@ function PlayerLanding() {
       </>
     );
   }
-
+  if (
+    game.gameStatus === "PlayersJoining" ||
+    !game.partialPlayerOrdering[player]?.rightNeighbor
+  ) {
+    return <PlayerChooseNeighbor />;
+  }
   if (game.travelers[player]) {
-    if (game.gameStatus === "PlayersJoining") {
-      return <PlayerChooseNeighbor />;
-    }
-
-    if (!game.partialPlayerOrdering[player]?.rightNeighbor) {
-      return <PlayerChooseNeighbor />;
-    }
-
-    if (!game.playersToRoles[player]) {
-      return <div>Please see the storyteller for a role.</div>;
+    if (!hasRole) {
+      return (
+        <Callout.Root className="m-auto">
+          <Callout.Text>Please see the storyteller for a role!</Callout.Text>
+        </Callout.Root>
+      );
     }
 
     if (!game.playersSeenRoles.includes(player)) {
@@ -54,10 +58,10 @@ function PlayerLanding() {
     return <PlayerInGame />;
   } else {
     if (!game.playersSeenRoles.includes(player)) {
-      if (!role || role === "unassigned") {
+      if (!hasRole) {
         return <PlayerRoleSelect />;
       }
-      return <PlayerRole role={role} />;
+      return <PlayerRole role={game.playersToRoles[player]} />;
     }
     return <PlayerInGame />;
   }

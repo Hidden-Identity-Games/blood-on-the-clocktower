@@ -3,10 +3,9 @@ import { QuickSetupHelpers } from "./helpers/quickHelpers";
 import { urlFromBase } from "./productUrls";
 
 test("can spectate a game", async ({ page }) => {
-  const players = Array.from({ length: 10 }, (_, i) => `player${i}`);
   const { gameId } = await QuickSetupHelpers.createStartedGame(
     "Bad Moon Rising",
-    players,
+    10,
   );
 
   page.goto(urlFromBase("", {}));

@@ -22,7 +22,11 @@ import {
   roleShape,
 } from "./baseApiShapes.ts";
 import { GameCreator } from "../testingUtils/gameCreator.ts";
-import { drawRole } from "../gameMachine/gameActions.ts";
+import {
+  addPlayer,
+  drawRole,
+  setPlayerNeighbor,
+} from "../gameMachine/gameActions.ts";
 
 await setupTestGames();
 
@@ -87,10 +91,15 @@ export const gameRoutes = {
       },
     ),
   addPlayer: playerProcedure
-    .input(playerAndGameIdShape)
-    .mutation(async ({ input: { gameId, player } }) => {
+    .input(
+      z.intersection(
+        playerAndGameIdShape,
+        z.object({ forceTraveling: z.oboolean() }),
+      ),
+    )
+    .mutation(async ({ input: { gameId, player, forceTraveling } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch({ type: "AddPlayer", player });
+      game.dispatch(addPlayer({ player, forceTraveling }));
     }),
   kickPlayer: gmProcedure
     .input(playerAndGameIdShape)
@@ -107,11 +116,9 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, rightNeighbor } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch({
-        type: "SetNeighbor",
-        player,
-        newRightNeighbor: rightNeighbor,
-      });
+      game.dispatch(
+        setPlayerNeighbor({ player, newRightNeighbor: rightNeighbor }),
+      );
     }),
   assignRoles: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ roles: z.array(roleShape) })))

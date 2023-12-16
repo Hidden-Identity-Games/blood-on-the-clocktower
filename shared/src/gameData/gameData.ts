@@ -73,7 +73,7 @@ export function getScriptNames(): ScriptName[] {
 }
 
 const travelers: Role[] = charactersList
-  .filter((role) => role.team === "Traveler")
+  .filter((role) => role.team === "Traveler" && role.id !== "unassigned")
   .map(({ id }) => id as Role);
 
 export function allTravelers() {

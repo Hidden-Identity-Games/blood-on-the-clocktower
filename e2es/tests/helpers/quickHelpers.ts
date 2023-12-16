@@ -19,13 +19,17 @@ export const QuickSetupHelpers = {
 
   createStartedGame: async function createStartableGame(
     script: ScriptName,
-    players: string[],
+    playerCount: number,
   ) {
     const gameId = generate(3).join("-").toUpperCase();
     const newGame = await trpc.createGame.mutate({
       gameId,
       script: getScript(script),
-      testGameOptions: { isTestGame: true, players: players.length },
+      testGameOptions: {
+        isTestGame: true,
+        players: playerCount,
+        randomRoles: true,
+      },
     });
     return { gameId, game: newGame };
   },
