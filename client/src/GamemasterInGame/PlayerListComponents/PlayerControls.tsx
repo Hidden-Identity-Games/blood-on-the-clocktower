@@ -23,7 +23,6 @@ export function PlayerControls({
   const { game } = useDefiniteGame();
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const [, deadVoteLoading, , setDeadVote] = useDeadVote();
-  // const [, playerStatusesLoading, , setPlayerStatus] = usePlayerStatuses();
   const [, , , setVotesToExecute] = useVotesToExecute();
 
   return (
@@ -66,7 +65,7 @@ export function PlayerControls({
             <LiaVoteYeaSolid />
           </PlayerList.MenuItem>
 
-          {/* KILL OR REVIVE */}
+          {/* KILL OR REVIVE PLAYER*/}
           <PlayerList.MenuItem
             onClick={() => handleDecideFate(player, !game.deadPlayers[player])}
             disabled={decideFateLoading}
