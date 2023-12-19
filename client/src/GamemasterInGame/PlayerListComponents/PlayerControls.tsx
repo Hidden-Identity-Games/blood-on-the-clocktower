@@ -1,12 +1,4 @@
-import {
-  Button,
-  Dialog,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
+import { Button, Dialog, Flex, Heading, Text } from "@radix-ui/themes";
 import { GiRaiseZombie } from "react-icons/gi";
 import { useDefiniteGame } from "../../store/GameContext";
 import { PiKnifeBold } from "react-icons/pi";
@@ -17,61 +9,8 @@ import { useDeadVote } from "../../store/actions/gmActions";
 import { FaSkull } from "react-icons/fa6";
 import { PlayerName } from "./PlayerName";
 import React from "react";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { DialogHeader } from "../../shared/DialogHeader";
-
-interface SetCountProps {
-  count: number;
-  setCount: React.Dispatch<React.SetStateAction<number>>;
-  min?: number;
-  max?: number;
-  autoFocus?: boolean;
-}
-export function SetCount({
-  count,
-  setCount,
-  min = 0,
-  max = 100,
-  autoFocus = false,
-}: SetCountProps) {
-  return (
-    <>
-      <IconButton
-        variant="soft"
-        radius="full"
-        size="3"
-        onClick={() => setCount((curr) => Math.max(curr - 1, min))}
-      >
-        <AiOutlineMinus />
-      </IconButton>
-      <TextField.Input
-        className="w-6"
-        size="3"
-        type="number"
-        value={count}
-        onChange={(e) =>
-          setCount(
-            Number.parseInt(
-              e.currentTarget.value ? e.currentTarget.value : "0",
-            ),
-          )
-        }
-        min={min}
-        max={max}
-        autoFocus={autoFocus}
-        onFocus={(e) => e.currentTarget.select()}
-      />
-      <IconButton
-        variant="soft"
-        radius="full"
-        size="3"
-        onClick={() => setCount((curr) => Math.min(curr + 1, max))}
-      >
-        <AiOutlinePlus />
-      </IconButton>
-    </>
-  );
-}
+import { SetCount } from "../../shared/SetCount";
 
 export function PlayerControls({
   player,
@@ -95,7 +34,9 @@ export function PlayerControls({
       <Dialog.Content className="m-2">
         <DialogHeader>
           <Flex className="flex-1 justify-center " align="center" gap="3">
-            {game.deadPlayers[player] && <FaSkull />}
+            <FaSkull
+              className={game.deadPlayers[player] ? "opacity-100" : "opacity-0"}
+            />
             <Heading>
               <PlayerName player={player} />
             </Heading>
