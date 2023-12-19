@@ -7,10 +7,10 @@ import { PlayerList } from ".";
 import { useDecideFate } from "../../store/actions/gmPlayerActions";
 import { useDeadVote } from "../../store/actions/gmActions";
 import { FaSkull } from "react-icons/fa6";
-import { PlayerName } from "./PlayerName";
 import React from "react";
 import { DialogHeader } from "../../shared/DialogHeader";
 import { SetCount } from "../../shared/SetCount";
+import classNames from "classnames";
 
 export function PlayerControls({
   player,
@@ -38,7 +38,14 @@ export function PlayerControls({
               className={game.deadPlayers[player] ? "opacity-100" : "opacity-0"}
             />
             <Heading>
-              <PlayerName player={player} />
+              <Text
+                className={classNames(
+                  "flex-1 capitalize",
+                  game.deadPlayers[player] && "line-through",
+                )}
+              >
+                {player}
+              </Text>
             </Heading>
           </Flex>
         </DialogHeader>
@@ -70,15 +77,15 @@ export function PlayerControls({
             </PlayerList.MenuItem>
           </div>
           {/* VOTE TO EXECUTE */}
-          <Flex direction="column" gap="3">
-            <Text className="text-xl">Set Votes to Execute:</Text>
+          <Flex direction="column" gap="4" className="mt-2">
+            <Text className="text-center text-xl">Votes to Execute</Text>
             <Text size="8">
               <Flex justify="center" align="center" gap="7">
                 <SetCount count={votes} setCount={setVotes} autoFocus />
               </Flex>
             </Text>
             <Dialog.Close>
-              <Button size="3" onClick={() => onSet(votes)}>
+              <Button size="3" className="mt-1" onClick={() => onSet(votes)}>
                 Confirm
               </Button>
             </Dialog.Close>
