@@ -34,6 +34,7 @@ import { useFirstSeat } from "../store/url";
 import { ExecutionInfo } from "../shared/ExecutionInfo";
 import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { useVotesToExecute } from "../store/actions/gmPlayerActions";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -47,6 +48,7 @@ export function PlayerInGame() {
   const [selectedFilter, setSelectedFilter] = useState<PlayerFilter>("all");
   const filteredPlayers = allFilters[selectedFilter];
   const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
+  const [, , , setVotesToExecute] = useVotesToExecute();
 
   const nightOrder = React.useMemo(() => {
     const charactersFromScript =
@@ -211,7 +213,10 @@ export function PlayerInGame() {
                     Votes: {game.onTheBlock[player]}
                   </Text>
                 )}
-                <PlayerList.PlayerControls player={player}>
+                <PlayerList.PlayerControls
+                  player={player}
+                  onSet={(votes: number) => setVotesToExecute(player, votes)}
+                >
                   <IconButton id={`${player}-menu-btn`} variant="ghost">
                     <RxHamburgerMenu />
                   </IconButton>

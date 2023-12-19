@@ -1,4 +1,5 @@
 import {
+  Button,
   Dialog,
   Flex,
   Heading,
@@ -75,9 +76,11 @@ export function SetCount({
 export function PlayerControls({
   player,
   children,
+  onSet,
 }: {
   player: string;
   children: React.ReactNode;
+  onSet: (num: number) => void;
 }) {
   const { game } = useDefiniteGame();
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
@@ -111,30 +114,21 @@ export function PlayerControls({
           </PlayerList.MenuItem>
 
           {/* TOGGLE DEAD VOTE */}
-          <PlayerList.MenuItem
-            id={`${player}-toggle-dead-vote`}
-            label={
-              game.deadVotes[player] ? "Return Dead Vote" : "Use Dead Vote"
-            }
-            onClick={() => setDeadVote(player, !game.deadVotes[player])}
-            disabled={deadVoteLoading}
-          >
-            <LiaVoteYeaSolid />
-          </PlayerList.MenuItem>
-
-          {/* VOTE TO EXECUTE */}
-          {/* <SetCountModal
-            title="Set Votes to Execute:"
-            onSet={(votes: number) => setVotesToExecute(player, votes)}
-            defaultValue={game.onTheBlock[player] ?? 0}
+          <div
+            className={game.deadPlayers[player] ? "opacity-100" : "opacity-0"}
           >
             <PlayerList.MenuItem
-              id={`${player}-vote-execute`}
-              label="Set Votes to Execute"
+              id={`${player}-toggle-dead-vote`}
+              label={
+                game.deadVotes[player] ? "Return Dead Vote" : "Use Dead Vote"
+              }
+              onClick={() => setDeadVote(player, !game.deadVotes[player])}
+              disabled={deadVoteLoading || !game.deadPlayers[player]}
             >
-              <GiAxeInStump />
-            </PlayerList.MenuItem> 
-          </SetCountModal>*/}
+              <LiaVoteYeaSolid />
+            </PlayerList.MenuItem>
+          </div>
+          {/* VOTE TO EXECUTE */}
           <Flex direction="column" gap="3">
             <Text className="text-xl">Set Votes to Execute:</Text>
             <Text size="8">
@@ -142,6 +136,11 @@ export function PlayerControls({
                 <SetCount count={votes} setCount={setVotes} autoFocus />
               </Flex>
             </Text>
+            <Dialog.Close>
+              <Button size="3" onClick={() => onSet(votes)}>
+                Confirm
+              </Button>
+            </Dialog.Close>
           </Flex>
         </Flex>
       </Dialog.Content>
