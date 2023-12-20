@@ -1,6 +1,12 @@
+import { Button } from "@radix-ui/themes";
 import { alignmentColorMap } from "../../shared/CharacterTypes";
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
-import { RoleIcon, RoleName } from "../../shared/RoleIcon";
+import {
+  PlayerNameWithRoleIcon,
+  RoleIcon,
+  RoleName,
+} from "../../shared/RoleIcon";
+import { Sheet } from "../../shared/Sheet";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useGetPlayerAlignment } from "../../store/useStore";
 
@@ -13,20 +19,28 @@ export function PlayerRoleIcon({ children, player }: PlayerRoleIconProps) {
   const getPlayerAlignment = useGetPlayerAlignment();
   const role = game.playersToRoles[player];
   return (
-    <MeaningfulIcon
-      className="aspect-square p-1 text-xl"
-      size="1"
-      color={alignmentColorMap[getPlayerAlignment(player)]}
-      header={
-        <div className="flex items-center justify-center gap-1">
+    <Sheet.Root>
+      <Sheet.Trigger>
+        <Button
+          variant="surface"
+          className="aspect-square p-1 text-xl"
+          color={alignmentColorMap[getPlayerAlignment(player)]}
+          radius="full"
+        >
           <RoleIcon role={role} />
-          {RoleName(role)}
-        </div>
-      }
-      explanation={children}
-    >
-      <RoleIcon role={role} />
-    </MeaningfulIcon>
+        </Button>
+      </Sheet.Trigger>
+      <Sheet.Content
+        title={
+          <div className="flex h-full items-center gap-1">
+            <PlayerNameWithRoleIcon player={player} className="grow-0" />(
+            {RoleName(role)})
+          </div>
+        }
+      >
+        {children}
+      </Sheet.Content>
+    </Sheet.Root>
   );
 }
 

@@ -3,7 +3,8 @@ import {
   PlayerMessageScreenMessage,
   Reveal,
 } from "../../../types/PlayerMessageScreen";
-import { Button, Dialog } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
+import { SheetCollapse } from "../../../shared/Sheet/SheetBody";
 
 export interface PlayerMessageLinkProps extends ComponentProps<typeof Button> {
   note: PlayerMessageScreenMessage;
@@ -15,13 +16,13 @@ export function PlayerMessageLink({
   ...buttonProps
 }: PlayerMessageLinkProps) {
   return (
-    <Dialog.Close>
+    <SheetCollapse>
       <Button
         {...buttonProps}
         onClick={() => onOpenNote(note.message, note.reveal)}
       >
         Go to note
       </Button>
-    </Dialog.Close>
+    </SheetCollapse>
   );
 }

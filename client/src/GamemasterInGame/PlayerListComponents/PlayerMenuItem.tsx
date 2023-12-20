@@ -1,5 +1,4 @@
 import { Flex, IconButton } from "@radix-ui/themes";
-import { SheetClose } from "../../shared/Sheet/Sheet";
 
 interface PlayerMenuItemProps {
   id: string;
@@ -16,14 +15,19 @@ export function PlayerMenuItem({
   ...props
 }: PlayerMenuItemProps) {
   return (
-    <label
-      htmlFor={id}
-      className="flex cursor-pointer items-center gap-2 p-1 text-xl"
-    >
-      <IconButton id={id} variant="soft" size="2" {...props} className="p-2">
+    <Flex className="text-xl" gap="3">
+      <IconButton
+        id={id}
+        variant="soft"
+        size="4"
+        {...props}
+        className="p-[14px]"
+      >
         {children}
       </IconButton>
-      {label}
-    </label>
+      <label htmlFor={id} className="flex-1 cursor-pointer p-1">
+        {label}
+      </label>
+    </Flex>
   );
 }

@@ -4,7 +4,7 @@ import { LoadingExperience } from "../shared/LoadingExperience";
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
-import { useFirstSeat, useIsHiddenView, useSearchParams } from "../store/url";
+import { useFirstSeat, useIsHiddenView } from "../store/url";
 import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { ExecutionInfo } from "../shared/ExecutionInfo";
@@ -38,7 +38,7 @@ function SideBar() {
 
   return (
     <div
-      className="relative flex h-full"
+      className="relative flex h-full w-full"
       ref={(ref) => ref && ref.append(sheetPortalElement)}
     >
       {game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />}

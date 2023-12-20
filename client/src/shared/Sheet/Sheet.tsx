@@ -1,28 +1,6 @@
-import { useCallback, useContext, useId, useMemo, useState } from "react";
-import { GlobalSheetContext, SheetContext, useSheetOpen } from "./SheetContext";
-import { sheetPortalElement } from ".";
-import ReactDOM from "react-dom";
+import { useCallback, useContext, useId } from "react";
+import { GlobalSheetContext, SheetContext } from "./SheetContext";
 import React from "react";
-import { SheetBody, SheetContent, SheetHeader } from "./SheetBody";
-
-export interface SheetProps {
-  children: React.ReactNode;
-  title: React.ReactNode;
-}
-
-export function Sheet({ children, title }: SheetProps) {
-  const sheetId = useContext(SheetContext);
-  const { activeSheet, sheetExpanded } = useContext(GlobalSheetContext);
-  return sheetId === activeSheet
-    ? ReactDOM.createPortal(
-        <SheetBody>
-          <SheetHeader>{title}</SheetHeader>
-          {sheetExpanded && <SheetContent>{children}</SheetContent>}
-        </SheetBody>,
-        sheetPortalElement,
-      )
-    : null;
-}
 
 export interface SheetTriggerProps {
   children: React.ReactNode;
@@ -34,11 +12,14 @@ export function SheetTrigger({ children }: SheetTriggerProps) {
   const onClick = useCallback(() => {
     setActiveSheet(sheetId);
   }, [setActiveSheet, sheetId]);
-  return React.Children.map(
-    children,
-    (Child) =>
-      React.isValidElement(Child) && React.cloneElement(Child, { onClick }),
-  );
+  const child = React.Children.only(children) as React.ReactElement;
+  return React.cloneElement(child, {
+    onClick: (e: unknown) => {
+      onClick();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (child as any).props.onClick(e);
+    },
+  });
 }
 
 export interface SheetRootProps {
@@ -58,10 +39,11 @@ export function SheetClose({ children }: SheetCloseProps) {
   const onClick = useCallback(() => {
     setActiveSheet("");
   }, [setActiveSheet]);
-  const child = React.Children.only(children);
+  const child = React.Children.only(children) as React.ReactElement;
   return React.cloneElement(child, {
-    onClick: (e) => {
+    onClick: (e: unknown) => {
       onClick();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (child as any).props.onClick(e);
     },
   });
