@@ -7,6 +7,12 @@ body {
   -webkit-touch-callout: none !important;
 }
 
+body,
+html {
+  /* touch-action: none; */
+  overscroll-behavior: none;
+}
+
 * {
   overscroll-behavior: contain;
 }

@@ -17,7 +17,7 @@ export function SheetTrigger({ children }: SheetTriggerProps) {
     onClick: (e: unknown) => {
       onClick();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (child as any).props.onClick(e);
+      (child as any).props.onClick?.(e);
     },
   });
 }
@@ -44,7 +44,7 @@ export function SheetClose({ children }: SheetCloseProps) {
     onClick: (e: unknown) => {
       onClick();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (child as any).props.onClick(e);
+      (child as any).props.onClick?.(e);
     },
   });
 }
