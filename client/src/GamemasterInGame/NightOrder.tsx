@@ -8,12 +8,11 @@ import { useSetGameStatus } from "../store/actions/gmActions";
 import { BsFillMoonStarsFill } from "react-icons/bs";
 import { GiNotebook, GiOpenBook } from "react-icons/gi";
 import { AiOutlineMenu } from "react-icons/ai";
-import { PlayerMessage } from "../PlayerMessagePage";
+import { PlayerMessageDisplay } from "./PlayerListComponents/PlayerMessage/PlayerMessageDisplay";
 import classNames from "classnames";
 import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 import { ScriptList } from "../shared/ScriptList";
 import { PlayerOrder } from "../shared/PlayerListOrder";
-import { Reveal } from "../types/PlayerMessageScreen";
 import { useClearVotesToExecute } from "../store/actions/gmPlayerActions";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
@@ -27,11 +26,6 @@ export function NightOrder() {
   const [selectedOrder, setSelectedOrder] =
     React.useState<PlayerOrder>("alphabetical");
 
-  const [playerMessage, setPlayerMessage] = React.useState("");
-  const [playerReveal, setPlayerReveal] = React.useState<
-    Record<string, Reveal[]>
-  >({});
-
   const [, , , clearVotesToExecute] = useClearVotesToExecute();
 
   const firstNight = game.gameStatus === "Setup";
@@ -42,16 +36,6 @@ export function NightOrder() {
     }
     setSelectedTab("grimoire");
     clearVotesToExecute();
-  };
-
-  const handleOpenPlayerMessage = (
-    message: string,
-    reveal: Record<string, Reveal[]>,
-  ) => {
-    setPlayerMessage(message);
-    setPlayerReveal(reveal ?? null);
-    setSelectedTab("message");
-    setInterfaceLocked(true);
   };
 
   return (
@@ -114,7 +98,6 @@ export function NightOrder() {
           <NightPlayerList
             firstNight={firstNight}
             endNightCallback={startDay}
-            onOpenNote={handleOpenPlayerMessage}
           />
         </Flex>
       </Tabs.Content>
@@ -126,7 +109,6 @@ export function NightOrder() {
               variant="soft"
               disabled={interfaceLocked}
               onClick={() => {
-                handleOpenPlayerMessage("", {});
                 setInterfaceLocked(false);
               }}
             >
@@ -144,11 +126,7 @@ export function NightOrder() {
               </Flex>
             </label>
           </Flex>
-          <PlayerMessage
-            message={playerMessage}
-            reveal={playerReveal ?? {}}
-            onMessageChange={handleOpenPlayerMessage}
-          />
+          <PlayerMessageDisplay messageId={""} />
         </Flex>
       </Tabs.Content>
 

@@ -262,7 +262,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The Dreamer points to a player. Show 1 good and 1 evil character token; one of these is correct.",
       order: 42,
       playerMessage: {
-        type: "reveal-player",
+        type: "reveal-character",
         count: 2,
       },
     },
@@ -271,7 +271,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The Dreamer points to a player. Show 1 good and 1 evil character token; one of these is correct.",
       order: 56,
       playerMessage: {
-        type: "reveal-player",
+        type: "reveal-character",
         count: 2,
       },
     },
@@ -978,7 +978,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         "If the Ravenkeeper died tonight: The Ravenkeeper points to a player. Show that player’s character token.",
       order: 52,
       playerMessage: {
-        type: "reveal-player",
+        type: "reveal-character",
         count: 1,
       },
     },
@@ -1293,7 +1293,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         "If a player was executed today: Show that player’s character token.",
       order: 55,
       playerMessage: {
-        type: "reveal-player",
+        type: "reveal-character",
         count: 1,
       },
     },

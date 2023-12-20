@@ -1,10 +1,4 @@
-import {
-  Alignment,
-  Character,
-  CharacterType,
-  KnownCharacterType,
-  Role,
-} from "../shapes/Role.ts";
+import { Alignment, Character, CharacterType, Role } from "../shapes/Role.ts";
 import { Script } from "../shapes/Script.ts";
 import { SCRIPTS, ScriptDefinition, ScriptName } from "./scripts.ts";
 import { CHARACTERS as charactersList } from "./characterData.ts";
@@ -23,7 +17,7 @@ export const defaultAlignments: Record<CharacterType, Alignment> = {
 
 export const DistributionsByPlayerCount: Record<
   number,
-  Record<KnownCharacterType, number>
+  Record<CharacterType, number>
 > = {
   5: { Townsfolk: 3, Outsider: 0, Minion: 1, Demon: 1, Traveler: 0 },
   6: { Townsfolk: 3, Outsider: 1, Minion: 1, Demon: 1, Traveler: 0 },

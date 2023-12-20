@@ -13,12 +13,9 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import React from "react";
 import { useDefiniteGame } from "../../store/GameContext";
 import { PlayerList } from "../PlayerListComponents";
-import { DemonMessage } from "../PlayerListComponents/PlayerMessage/DemonMessage";
+import { DemonMessage } from "../PlayerListComponents/PlayerMessage/MessageCreators/DemonMessage";
 import { DialogHeader } from "../../shared/DialogHeader";
 import { DestructiveButton } from "../DestructiveButton";
-import { Role } from "@hidden-identity/shared";
-import { usePlayerNotes } from "../../store/actions/gmPlayerActions";
-import { Reveal } from "../../types/PlayerMessageScreen";
 import { useIsHiddenView } from "../../store/url";
 import { PlayerNotes } from "../PlayerListComponents/PlayerNotes";
 
@@ -45,15 +42,12 @@ const gameActionsByNight = {
 interface NightPlayerListProps {
   firstNight: boolean;
   endNightCallback?: () => void;
-  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 export function NightPlayerList({
   firstNight,
   endNightCallback = () => {},
-  onOpenNote,
 }: NightPlayerListProps) {
   const { game } = useDefiniteGame();
-  const [, , , setPlayerNote] = usePlayerNotes();
   const [_, setIsHiddenView] = useIsHiddenView();
 
   const nightKey = firstNight ? "firstNight" : "otherNight";
@@ -132,10 +126,7 @@ export function NightPlayerList({
               {action.type === "character" && (
                 <>
                   <PlayerList.RoleIcon player={action.player}>
-                    <PlayerList.NightReminder
-                      player={action.player}
-                      onOpenNote={onOpenNote}
-                    />
+                    <PlayerList.NightReminder player={action.player} />
                   </PlayerList.RoleIcon>
                   <PlayerList.NoteInputModal player={action.player}>
                     <button className="flex-1 text-left">
@@ -164,27 +155,34 @@ export function NightPlayerList({
                       <>
                         <DialogHeader>Demon</DialogHeader>
                         <DemonMessage
-                          onOpenNote={(
-                            message: string,
-                            reveal: Record<string, Reveal[]>,
-                          ) => {
-                            const player = Object.entries(
-                              game.playersToRoles,
-                            ).find(
-                              ([, role]) => getCharacter(role).team === "Demon",
-                            ) ?? [""];
-                            const bluffs = `Bluffs:\n${reveal["bluffs"]
-                              .map(
-                                ({ character }) =>
-                                  getCharacter(
-                                    character ?? ("unassigned" as Role),
-                                  ).name,
-                              )
-                              .join("\n")}`;
+                          // TODO: support multiple demons
+                          player={
+                            game.playerList.find(
+                              (player) =>
+                                getCharacter(game.playersToRoles[player])
+                                  .team === "Demon",
+                            )!
+                          }
+                          // TODO: add back auto-note functionality
+                          //   message: string,
+                          //   reveal: Record<string, Reveal[]>,
+                          // ) => {
+                          //   const player = Object.entries(
+                          //     game.playersToRoles,
+                          //   ).find(
+                          //     ([, role]) => getCharacter(role).team === "Demon",
+                          //   ) ?? [""];
+                          //   const bluffs = `Bluffs:\n${reveal["bluffs"]
+                          //     .map(
+                          //       ({ character }) =>
+                          //         getCharacter(
+                          //           character ?? ("unassigned" as Role),
+                          //         ).name,
+                          //     )
+                          //     .join("\n")}`;
 
-                            onOpenNote(message, reveal);
-                            setPlayerNote(player[0], bluffs);
-                          }}
+                          //   setPlayerNote(player[0], bluffs);
+                          // }}
                         />
                       </>
                     )}

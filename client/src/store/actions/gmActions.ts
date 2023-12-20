@@ -1,7 +1,7 @@
 import { TRPCClientError } from "@trpc/client";
 import { trpc } from "../../shared/trpcClient";
 import { useAction, useGame } from "../GameContext";
-import { GameStatus, Role } from "@hidden-identity/shared";
+import { GameStatus, PlayerMessageEntry, Role } from "@hidden-identity/shared";
 
 export function useDeadVote() {
   const { gameId } = useGame();
@@ -60,5 +60,16 @@ export function useSetGameStatus() {
     }
 
     await trpc.setGameStatus.mutate({ gameId, status });
+  });
+}
+
+export function useCreateMessage() {
+  const { gameId } = useGame();
+  return useAction(async (player: string, messages: PlayerMessageEntry[]) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    return await trpc.createMessage.mutate({ gameId, player, messages });
   });
 }

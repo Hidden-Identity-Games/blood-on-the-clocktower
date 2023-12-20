@@ -8,13 +8,14 @@ export const CharacterTypes = [
   "Demon",
   "Traveler",
 ] as const;
+export const CharacterTypeShape = z.enum(CharacterTypes);
 
 export const alignmentShape = z.enum(["Good", "Evil"]);
 export type Alignment = z.TypeOf<typeof alignmentShape>;
+export const roleShape = z.string().refine<Role>((_arg): _arg is Role => true);
 
 // TODO: Rename TEAM
-export type CharacterType = (typeof CharacterTypes)[number];
-export type KnownCharacterType = (typeof CharacterTypes)[number];
+export type CharacterType = z.TypeOf<typeof CharacterTypeShape>;
 
 export type Role = string & {
   __is_char_id: true;
@@ -23,7 +24,7 @@ export type Role = string & {
 export interface CharacterNightData {
   order: number;
   reminder: string;
-  playerMessage?: PlayerMessage;
+  playerMessage?: PlayerMessageCreator;
   status?: PlayerStatusType[];
 }
 
@@ -48,7 +49,7 @@ export interface Restriction {
   alignment?: Alignment;
 }
 
-export interface PlayerMessageMap {
+export interface PlayerMessageCreatorMap {
   "demon-first-night": {
     type: "demon-first-night";
   };
@@ -66,8 +67,8 @@ export interface PlayerMessageMap {
     restriction?: Restriction;
     count: number;
   };
-  "reveal-player": {
-    type: "reveal-player";
+  "reveal-character": {
+    type: "reveal-character";
     restriction?: Restriction;
     count: number;
   };
@@ -88,4 +89,5 @@ export interface PlayerMessageMap {
   };
 }
 
-export type PlayerMessage = PlayerMessageMap[keyof PlayerMessageMap];
+export type PlayerMessageCreator =
+  PlayerMessageCreatorMap[keyof PlayerMessageCreatorMap];

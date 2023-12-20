@@ -1,20 +1,19 @@
 import { Role } from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../../store/GameContext";
-import { PlayerMessageLink } from "./PlayerMessageLink";
+import { useDefiniteGame } from "../../../../store/GameContext";
 
-import { PlayerSelectList, RoleSelectList } from "../Selectors";
-import { useDynamicList } from "../Selectors/useDynamicList";
+import { PlayerSelectList, RoleSelectList } from "../../Selectors";
+import { useDynamicList } from "../../Selectors/useDynamicList";
 import {
   useCharacterRestriction,
   usePlayerRestrictions,
-} from "../Selectors/Restrictions";
-import { Reveal } from "../../../types/PlayerMessageScreen";
+} from "../../Selectors/Restrictions";
+import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface DemonMessageProps {
-  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
+  player: string;
 }
-export function DemonMessage({ onOpenNote }: DemonMessageProps) {
+export function DemonMessage({ player }: DemonMessageProps) {
   const { game, script } = useDefiniteGame();
   const rolesList = script.map(({ id }) => id);
 
@@ -26,6 +25,10 @@ export function DemonMessage({ onOpenNote }: DemonMessageProps) {
     recommended: rolesList.filter(bluffsFilter),
     defaultCount: 3,
   });
+  const bluffMessages = bluffsState.value.map((bluff) => ({
+    character: bluff,
+    group: "Your bluffs",
+  }));
 
   const minionFilter = usePlayerRestrictions({ team: ["Minion"] });
   const minions = game.playerList.filter(minionFilter);
@@ -33,22 +36,13 @@ export function DemonMessage({ onOpenNote }: DemonMessageProps) {
     recommended: minions,
     defaultCount: minions.length,
   });
+  const minionMessages = minionsState.value.map((minion) => ({
+    player: minion,
+    group: "Your minions",
+  }));
 
   return (
     <Flex direction="column" gap="2">
-      <PlayerMessageLink
-        className="mt-2"
-        note={{
-          reveal: {
-            minions: minionsState.value.map((minion) => ({ player: minion })),
-            bluffs: bluffsState.value.map((bluff) => ({
-              character: bluff,
-            })),
-          },
-          message: "",
-        }}
-        onOpenNote={onOpenNote}
-      />
       <Heading>Minions:</Heading>
       <PlayerSelectList
         players={minionsState.value}
@@ -60,6 +54,10 @@ export function DemonMessage({ onOpenNote }: DemonMessageProps) {
         roles={bluffsState.value}
         addRole={bluffsState.add}
         replaceRole={bluffsState.replace}
+      />
+      <SubmitMessage
+        player={player}
+        message={[...bluffMessages, ...minionMessages]}
       />
     </Flex>
   );

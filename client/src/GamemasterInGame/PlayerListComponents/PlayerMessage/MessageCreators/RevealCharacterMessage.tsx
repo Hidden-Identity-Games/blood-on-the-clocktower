@@ -1,28 +1,25 @@
-import { PlayerMessageMap, Role } from "@hidden-identity/shared";
-import { useDefiniteGame } from "../../../store/GameContext";
-import { PlayerMessageLink } from "./PlayerMessageLink";
+import { PlayerMessageCreatorMap, Role } from "@hidden-identity/shared";
+import { useDefiniteGame } from "../../../../store/GameContext";
 import { Flex, Heading } from "@radix-ui/themes";
 import { useMemo } from "react";
-import { Restrictions } from "./Restrictions";
-import { PlayerSelectList, RoleSelectList } from "../Selectors";
-import { useDynamicList } from "../Selectors/useDynamicList";
+import { Restrictions } from "../messageShared/Restrictions";
+import { PlayerSelectList, RoleSelectList } from "../../Selectors";
+import { useDynamicList } from "../../Selectors/useDynamicList";
 import {
   useCharacterRestriction,
   usePlayerRestrictions,
-} from "../Selectors/Restrictions";
-import { Reveal } from "../../../types/PlayerMessageScreen";
+} from "../../Selectors/Restrictions";
+import { SubmitMessage } from "../messageShared/SubmitMessage";
 
-interface RevealPlayerMessageProps {
-  message: PlayerMessageMap["reveal-player"];
+interface RevealCharacterMessageProps {
+  message: PlayerMessageCreatorMap["reveal-character"];
   player: string;
-  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 
-export function RevealPlayerMessage({
+export function RevealCharacterMessage({
   message,
   player,
-  onOpenNote,
-}: RevealPlayerMessageProps) {
+}: RevealCharacterMessageProps) {
   const { restriction } = message;
 
   const filter = useCharacterRestriction(restriction);
@@ -62,18 +59,13 @@ export function RevealPlayerMessage({
         addRole={roleState.add}
         replaceRole={roleState.replace}
       />
-      <PlayerMessageLink
-        className="mt-2"
-        note={{
-          reveal: {
-            Reveal: roleState.value.map((potentialRole) => ({
-              character: potentialRole,
-              player: playersState.value[0],
-            })),
-          },
-          message: "",
-        }}
-        onOpenNote={onOpenNote}
+      <SubmitMessage
+        player={player}
+        message={roleState.value.map((potentialRole) => ({
+          character: potentialRole,
+          player: playersState.value[0],
+          group: "",
+        }))}
       />
     </Flex>
   );

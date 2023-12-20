@@ -15,12 +15,11 @@ import {
   characterAbilityStatusShape,
   deadStatusShape,
   alignmentShape,
-} from "@hidden-identity/shared";
-import {
-  gameIdShape,
-  playerAndGameIdShape,
   roleShape,
-} from "./baseApiShapes.ts";
+  generateThreeWordId,
+  playerMessageEntryShape,
+} from "@hidden-identity/shared";
+import { gameIdShape, playerAndGameIdShape } from "./baseApiShapes.ts";
 import { GameCreator } from "../testingUtils/gameCreator.ts";
 import { drawRole } from "../gameMachine/gameActions.ts";
 
@@ -256,5 +255,38 @@ export const gameRoutes = {
     .mutation(async ({ input: { gameId, player } }) => {
       const game = await retrieveGame(gameId);
       game.dispatch({ type: "SeenRole", player });
+    }),
+  createMessage: gmProcedure
+    .input(
+      z.intersection(
+        playerAndGameIdShape,
+        z.object({ messages: z.array(playerMessageEntryShape) }),
+      ),
+    )
+    .mutation(async ({ input: { gameId, player, messages } }) => {
+      const game = await retrieveGame(gameId);
+      const id = generateThreeWordId();
+      game.dispatch({
+        type: "CreateMessage",
+        message: {
+          player,
+          id,
+          messages,
+        },
+        player,
+      });
+
+      return id;
+    }),
+  deleteMessage: gmProcedure
+    .input(
+      z.intersection(playerAndGameIdShape, z.object({ messageId: z.string() })),
+    )
+    .mutation(async ({ input: { gameId, messageId } }) => {
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: "DeleteMessage",
+        messageId,
+      });
     }),
 };

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { type Alignment, type Role } from "./Role.ts";
+import { PlayerMessage } from "./PlayerMessages.ts";
 
 export const gameStatusShape = z.enum([
   "PlayersJoining",
@@ -70,6 +71,7 @@ export interface BaseUnifiedGame {
   alignmentsOverrides: Record<string, Alignment>;
   roleBag: Record<number, Role | null>;
   playersSeenRoles: string[];
+  messages: PlayerMessage[];
 }
 
 export interface WellOrderedPlayers {
