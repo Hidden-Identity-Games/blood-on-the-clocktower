@@ -11,28 +11,21 @@ import { ExecutionInfo } from "../shared/ExecutionInfo";
 import { SpectatorTile } from "../shared/PlayersInCircle/SpectatorTile";
 import { GMTile } from "../shared/PlayersInCircle/GMTile";
 import React from "react";
+import { sheetPortalElement } from "../shared/Sheet";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
 }
 export function DesktopView({ isPlayerView = true }: DesktopViewProps) {
-  const [{ hiddenView }] = useSearchParams();
-
   return (
-    <Flex
-      className="min-h-0 flex-1 overflow-hidden p-1"
-      justify="between"
-      gap="4"
-    >
+    <div className=" relative flex min-h-0 flex-1 justify-between gap-4 overflow-hidden">
       <Flex className="hidden lg:flex lg:flex-1">
         <Grimoire isPlayerView={isPlayerView} />
       </Flex>
-      {!isPlayerView && (
-        <Flex className="h-full w-1/4 min-w-[400px] shrink grow overflow-hidden md:grow-0">
-          {!hiddenView && <SideBar />}
-        </Flex>
-      )}
-    </Flex>
+      <div className="flex h-full w-1/4 min-w-[400px] shrink grow overflow-hidden empty:hidden md:grow-0">
+        <SideBar />
+      </div>
+    </div>
   );
 }
 
@@ -43,7 +36,14 @@ function SideBar() {
     return <LoadingExperience>Loading</LoadingExperience>;
   }
 
-  return game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />;
+  return (
+    <div
+      className="relative flex h-full"
+      ref={(ref) => ref && ref.append(sheetPortalElement)}
+    >
+      {game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />}
+    </div>
+  );
 }
 
 interface GrimoireProps {

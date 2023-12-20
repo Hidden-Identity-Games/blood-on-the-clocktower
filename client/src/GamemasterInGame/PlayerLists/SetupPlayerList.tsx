@@ -5,6 +5,7 @@ import { PlayerList } from "../PlayerListComponents";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GiBootKick } from "react-icons/gi";
 import { RoleName } from "../../shared/RoleIcon";
+import { Sheet } from "../../shared/Sheet";
 
 export function SetupPlayerList() {
   const { game } = useDefiniteGame();
@@ -45,27 +46,25 @@ export function SetupPlayerList() {
               </div>
             )}
 
-            <Dialog.Root>
-              <Dialog.Trigger>
+            <Sheet.Root>
+              <Sheet.Trigger>
                 <IconButton variant="ghost">
                   <RxHamburgerMenu />
                 </IconButton>
-              </Dialog.Trigger>
-              <Dialog.Content className="m-2">
-                <Flex direction="column" gap="2">
-                  <Dialog.Close>
-                    <PlayerList.MenuItem
-                      id="kick-player"
-                      label="Kick Player"
-                      onClick={() => handleKickPlayer(player)}
-                      disabled={kickPlayerLoading}
-                    >
-                      <GiBootKick />
-                    </PlayerList.MenuItem>
-                  </Dialog.Close>
-                </Flex>
-              </Dialog.Content>
-            </Dialog.Root>
+              </Sheet.Trigger>
+              <Sheet.Content title="">
+                <Sheet.Close>
+                  <PlayerList.MenuItem
+                    id="kick-player"
+                    label="Kick Player"
+                    onClick={() => handleKickPlayer(player)}
+                    disabled={kickPlayerLoading}
+                  >
+                    <GiBootKick />
+                  </PlayerList.MenuItem>
+                </Sheet.Close>
+              </Sheet.Content>
+            </Sheet.Root>
           </Text>
         </Flex>
       ))}
