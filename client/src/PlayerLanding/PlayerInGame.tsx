@@ -13,7 +13,7 @@ import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
 import { useMe } from "../store/usePlayer";
 import { BsFillMoonStarsFill, BsPeopleFill } from "react-icons/bs";
-import { GiAxeInStump, GiScrollQuill } from "react-icons/gi";
+import { GiScrollQuill } from "react-icons/gi";
 import React, { useState } from "react";
 import { getCharacter } from "@hidden-identity/shared";
 import {
@@ -31,9 +31,10 @@ import {
 } from "../shared/PlayerListOrder";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { useFirstSeat } from "../store/url";
-import { SetCountModal } from "../shared/SetCount";
-import { useVotesToExecute } from "../store/actions/gmPlayerActions";
 import { ExecutionInfo } from "../shared/ExecutionInfo";
+import { PlayerList } from "../GamemasterInGame/PlayerListComponents";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { useVotesToExecute } from "../store/actions/gmPlayerActions";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();
@@ -212,15 +213,14 @@ export function PlayerInGame() {
                     Votes: {game.onTheBlock[player]}
                   </Text>
                 )}
-                <SetCountModal
-                  title="Set votes to execute:"
+                <PlayerList.PlayerControls
+                  player={player}
                   onSet={(votes: number) => setVotesToExecute(player, votes)}
-                  defaultValue={game.onTheBlock[player] ?? 0}
                 >
-                  <IconButton variant="soft" radius="large">
-                    <GiAxeInStump />
+                  <IconButton id={`${player}-menu-btn`} variant="ghost">
+                    <RxHamburgerMenu />
                   </IconButton>
-                </SetCountModal>
+                </PlayerList.PlayerControls>
               </Flex>
             ))}
           </Flex>
