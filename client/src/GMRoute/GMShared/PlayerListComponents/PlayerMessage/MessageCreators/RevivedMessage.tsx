@@ -1,4 +1,4 @@
-import { PlayerMessageCreatorMap } from "@hidden-identity/shared";
+import { type PlayerMessageCreatorMap } from "@hidden-identity/shared";
 import { Flex } from "@radix-ui/themes";
 
 import { SubmitMessage } from "../messageShared/SubmitMessage";

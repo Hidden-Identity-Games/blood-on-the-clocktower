@@ -1,4 +1,4 @@
-import { getScript, Script } from "@hidden-identity/shared";
+import { getScript, type Script } from "@hidden-identity/shared";
 import {
   Button,
   Callout,
@@ -8,7 +8,7 @@ import {
   Switch,
   TextFieldInput,
 } from "@radix-ui/themes";
-import { ComponentProps, useState } from "react";
+import { type ComponentProps, useState } from "react";
 
 import { ScriptSelect } from "../GMRoute/GMSetup/ScriptSelect";
 import { DialogHeader } from "../shared/DialogHeader";
@@ -39,7 +39,7 @@ export function NewGameButton({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              newGame({
+              void newGame({
                 oldGameId: gameId ?? undefined,
                 script: script!,
                 testGameOptions: isTestGame

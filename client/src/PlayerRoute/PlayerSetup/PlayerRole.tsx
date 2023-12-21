@@ -1,7 +1,7 @@
 import "./PlayerRole.css";
 
 import { getCharacter } from "@hidden-identity/shared";
-import { Role } from "@hidden-identity/shared";
+import { type Role } from "@hidden-identity/shared";
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { useState } from "react";
 
@@ -49,7 +49,7 @@ export function PlayerRole({ role }: PlayerRoleProps) {
         <Button
           className="mx-3 mb-[65px]"
           disabled={!hasSeenRole}
-          onClick={() => setPlayerRoleSeen(player!)}
+          onClick={() => void setPlayerRoleSeen(player!)}
         >
           I Know My Role
         </Button>

@@ -1,4 +1,7 @@
-import { UnifiedGame, WellOrderedPlayers } from "@hidden-identity/shared";
+import {
+  type UnifiedGame,
+  type WellOrderedPlayers,
+} from "@hidden-identity/shared";
 import { ArrowLeftIcon, ClipboardCopyIcon } from "@radix-ui/react-icons";
 import {
   Button,
@@ -126,7 +129,7 @@ function ExportButtonContent() {
         </IconButton>
         <IconButton
           onClick={() => {
-            navigator.clipboard.writeText(content);
+            void navigator.clipboard.writeText(content);
             setShowSnackbar(true);
           }}
         >

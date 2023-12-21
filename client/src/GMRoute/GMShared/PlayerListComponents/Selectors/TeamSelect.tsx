@@ -1,7 +1,7 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 
 import { colorMap } from "../../../../shared/CharacterTypes";
-import { CharacterType, CharacterTypes } from "../../../../types/script";
+import { type CharacterType, CharacterTypes } from "../../../../types/script";
 
 type Team = CharacterType;
 const teams = CharacterTypes;

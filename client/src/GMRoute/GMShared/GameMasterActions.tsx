@@ -1,4 +1,4 @@
-import { Role } from "@hidden-identity/shared";
+import { type Role } from "@hidden-identity/shared";
 import { Button, Dialog, DialogClose, Flex, Text } from "@radix-ui/themes";
 import { BsShare } from "react-icons/bs";
 
@@ -65,7 +65,7 @@ export function GameMasterActions({
                     <DialogClose>
                       <Button
                         onClick={() => {
-                          distributeRoles(availableRolesList);
+                          void distributeRoles(availableRolesList);
                         }}
                       >
                         Start Game
@@ -105,7 +105,7 @@ export function GameMasterActions({
           <ExportButton />
         ) : (
           <DestructiveButton
-            onClick={() => setGameStatus("Setup")}
+            onClick={() => void setGameStatus("Setup")}
             confirmationText="All notes and statuses will be kept."
           >
             Back to First Day

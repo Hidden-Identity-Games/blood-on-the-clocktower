@@ -1,4 +1,7 @@
-import { PlayerMessageCreatorMap, Role } from "@hidden-identity/shared";
+import {
+  type PlayerMessageCreatorMap,
+  type Role,
+} from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";
 
 import { useDefiniteGame } from "../../../../../store/GameContext";

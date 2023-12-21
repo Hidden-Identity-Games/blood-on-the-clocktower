@@ -5,7 +5,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { BsFillMoonStarsFill } from "react-icons/bs";
 import { GiNotebook, GiOpenBook } from "react-icons/gi";
 
-import { PlayerOrder } from "../../shared/PlayerListOrder";
+import { type PlayerOrder } from "../../shared/PlayerListOrder";
 import { ScriptList } from "../../shared/ScriptList";
 import { useSetGameStatus } from "../../store/actions/gmActions";
 import { useClearVotesToExecute } from "../../store/actions/gmPlayerActions";
@@ -31,10 +31,10 @@ export function NightOrder() {
 
   const startDay = () => {
     if (game.gameStatus === "Setup") {
-      setGameStatus("Started");
+      void setGameStatus("Started");
     }
     setSelectedTab("grimoire");
-    clearVotesToExecute();
+    void clearVotesToExecute();
   };
 
   return (

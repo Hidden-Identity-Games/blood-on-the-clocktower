@@ -1,7 +1,7 @@
 import {
-  Alignment,
-  PlayerMessageCreatorMap,
-  Role,
+  type Alignment,
+  type PlayerMessageCreatorMap,
+  type Role,
 } from "@hidden-identity/shared";
 import { getDefaultAlignment } from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";

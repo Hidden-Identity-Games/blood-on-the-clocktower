@@ -2,7 +2,7 @@ import {
   getScript,
   getScriptImg,
   getScriptNames,
-  ScriptName,
+  type ScriptName,
 } from "@hidden-identity/shared";
 import {
   Button,
@@ -14,11 +14,11 @@ import {
   TextArea,
 } from "@radix-ui/themes";
 import classNames from "classnames";
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
 import scriptIcon from "../../assets/icon/feather.svg";
 import { DialogHeader } from "../../shared/DialogHeader";
-import { Script, ScriptItem } from "../../types/script";
+import { type Script, type ScriptItem } from "../../types/script";
 
 interface ScriptSelectProps {
   onScriptChange: (script: ScriptItem[]) => void;
@@ -202,5 +202,5 @@ function ValidateCustomScript(script: string): Script {
     );
   }
   const parsedWithoutMeta = parsed.filter((char) => char.id[0] !== "_");
-  return parsedWithoutMeta;
+  return parsedWithoutMeta as Script;
 }

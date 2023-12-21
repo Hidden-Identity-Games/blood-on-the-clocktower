@@ -58,7 +58,7 @@ export function SetupPlayerList() {
                     <PlayerList.MenuItem
                       id="kick-player"
                       label="Kick Player"
-                      onClick={() => handleKickPlayer(player)}
+                      onClick={() => void handleKickPlayer(player)}
                       disabled={kickPlayerLoading}
                     >
                       <GiBootKick />

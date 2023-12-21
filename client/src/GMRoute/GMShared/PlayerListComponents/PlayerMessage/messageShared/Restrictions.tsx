@@ -1,4 +1,4 @@
-import { Restriction } from "@hidden-identity/shared";
+import { type Restriction } from "@hidden-identity/shared";
 
 interface RestrictionsProps {
   restrictions?: Restriction;

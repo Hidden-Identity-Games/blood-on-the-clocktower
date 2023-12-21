@@ -1,4 +1,8 @@
-import { Character, CharacterType, Role } from "@hidden-identity/shared";
+import {
+  type Character,
+  type CharacterType,
+  type Role,
+} from "@hidden-identity/shared";
 import { getCharacter } from "@hidden-identity/shared";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import React from "react";
@@ -74,11 +78,7 @@ export function ScriptItem({ role }: ScriptItemProps) {
   return (
     <Flex gap="2">
       <Flex direction="column">
-        <Heading
-          size="2"
-          className="flex-1"
-          color={colorMap[char.team as CharacterType]}
-        >
+        <Heading size="2" className="flex-1" color={colorMap[char.team]}>
           <CharacterName role={char.id} />
         </Heading>
         <Text size="1" weight="light" className="pl-5">

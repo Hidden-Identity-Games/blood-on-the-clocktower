@@ -1,4 +1,7 @@
-import { PlayerStatus, PlayerStatusType } from "@hidden-identity/shared";
+import {
+  type PlayerStatus,
+  type PlayerStatusType,
+} from "@hidden-identity/shared";
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import { v4 } from "uuid";
@@ -69,9 +72,9 @@ function PlayerActionSelect({ status }: PlayerActionSelect) {
           onClick={() => {
             const currentStatus = playerHasStatus(player);
             if (currentStatus) {
-              setPlayerStatus(player, "remove", currentStatus);
+              void setPlayerStatus(player, "remove", currentStatus);
             } else {
-              setPlayerStatus(player, "add", {
+              void setPlayerStatus(player, "add", {
                 ...status,
                 id: v4(),
               } as PlayerStatus);

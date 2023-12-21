@@ -1,4 +1,4 @@
-import { UnifiedGame } from "@hidden-identity/shared";
+import { type UnifiedGame } from "@hidden-identity/shared";
 import { getCharacter } from "@hidden-identity/shared";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 

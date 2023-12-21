@@ -18,13 +18,13 @@ import { ForPlayerPlayerRoleIcon } from "../../GMRoute/GMShared/PlayerListCompon
 import { ExecutionInfo } from "../../shared/ExecutionInfo";
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import {
-  PlayerFilter,
+  type PlayerFilter,
   PlayerListFilters,
   usePlayerFilters,
 } from "../../shared/PlayerListFilters";
 import {
   PlayerListOrder,
-  PlayerOrder,
+  type PlayerOrder,
   usePlayerOrder,
 } from "../../shared/PlayerListOrder";
 import { CharacterName } from "../../shared/RoleIcon";
@@ -215,7 +215,9 @@ export function PlayerInGame() {
                 )}
                 <SetCountModal
                   title="Set votes to execute:"
-                  onSet={(votes: number) => setVotesToExecute(player, votes)}
+                  onSet={(votes: number) =>
+                    void setVotesToExecute(player, votes)
+                  }
                   defaultValue={game.onTheBlock[player] ?? 0}
                 >
                   <IconButton variant="soft" radius="large">

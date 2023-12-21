@@ -5,13 +5,13 @@ import { GiAxeInStump } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 import {
-  PlayerFilter,
+  type PlayerFilter,
   PlayerListFilters,
   usePlayerFilters,
 } from "../../shared/PlayerListFilters";
 import {
   PlayerListOrder,
-  PlayerOrder,
+  type PlayerOrder,
   usePlayerOrder,
 } from "../../shared/PlayerListOrder";
 import { SetCountModal } from "../../shared/SetCount";
@@ -66,7 +66,7 @@ export function IngamePlayerList({
               <DeadVoteIcon player={player} />
               <SetCountModal
                 title="Set votes to execute:"
-                onSet={(votes: number) => setVotesToExecute(player, votes)}
+                onSet={(votes: number) => void setVotesToExecute(player, votes)}
                 defaultValue={game.onTheBlock[player] ?? 0}
               >
                 <IconButton variant="soft" radius="large">

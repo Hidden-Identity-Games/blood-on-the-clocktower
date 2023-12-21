@@ -1,4 +1,4 @@
-import { Alignment } from "@hidden-identity/shared";
+import { type Alignment } from "@hidden-identity/shared";
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 
 import { alignmentColorMap } from "../../../../shared/CharacterTypes";

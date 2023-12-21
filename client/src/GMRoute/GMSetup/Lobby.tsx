@@ -1,4 +1,4 @@
-import { Role } from "@hidden-identity/shared";
+import { type Role } from "@hidden-identity/shared";
 import { Flex, Tabs, Text } from "@radix-ui/themes";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";

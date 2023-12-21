@@ -1,5 +1,5 @@
 import { Theme } from "@radix-ui/themes";
-import { CSSProperties } from "react";
+import { type CSSProperties } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { GMRoute } from "./GMRoute";

@@ -69,7 +69,7 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
         console.error("Failed to share.");
       }
     } else {
-      navigator.clipboard.writeText(url);
+      return navigator.clipboard.writeText(url);
     }
   };
 
@@ -101,7 +101,11 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
           <div className="bg-white p-1">
             <QRCode value={url} size={256} fgColor="darkred" />
           </div>
-          <Button className="w-full" onClick={handleShare} size="4">
+          <Button
+            className="w-full"
+            onClick={() => void handleShare()}
+            size="4"
+          >
             <BsShare className="inline" />
             Or share the link!
           </Button>

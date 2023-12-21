@@ -1,4 +1,7 @@
-import { CharacterNightData, PlayerStatusMap } from "@hidden-identity/shared";
+import {
+  type CharacterNightData,
+  type PlayerStatusMap,
+} from "@hidden-identity/shared";
 
 import { KillAction } from "./KillAction";
 import {

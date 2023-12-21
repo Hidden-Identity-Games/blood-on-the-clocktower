@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogClose, Flex, TextField } from "@radix-ui/themes";
 import {
-  ComponentProps,
+  type ComponentProps,
   createContext,
   forwardRef,
   useContext,

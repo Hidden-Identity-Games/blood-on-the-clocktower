@@ -22,7 +22,7 @@ export function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
       onOpenChange={(open) => {
         setNewNote(game.playerNotes[player]);
         if (open) {
-          inputRef.current?.focus;
+          inputRef.current?.focus?.();
         }
       }}
     >
@@ -54,7 +54,7 @@ export function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
             <form
               onSubmit={(event) => {
                 event.preventDefault();
-                setPlayerNote(player, newNote);
+                void setPlayerNote(player, newNote);
               }}
             >
               <TextArea

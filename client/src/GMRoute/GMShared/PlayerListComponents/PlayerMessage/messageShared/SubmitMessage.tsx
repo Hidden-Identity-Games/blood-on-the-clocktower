@@ -1,4 +1,4 @@
-import { PlayerMessageEntry } from "@hidden-identity/shared";
+import { type PlayerMessageEntry } from "@hidden-identity/shared";
 import { Button } from "@radix-ui/themes";
 
 import { ErrorCallout } from "../../../../../shared/ErrorCallout";
@@ -20,11 +20,12 @@ export function SubmitMessage({ message, player }: SubmitMessageProps) {
       {!messageId && (
         <Button
           disabled={createMessageisLoading && message.length === 0}
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async () => {
             const messageId = await createMessage(player, message);
             if (messageId) {
               // make sure the request didn't fail
-              setSheetView({
+              void setSheetView({
                 type: "message",
                 id: messageId,
                 isOpen: "open",

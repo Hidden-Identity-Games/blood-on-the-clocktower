@@ -1,6 +1,6 @@
-import { PlayerStatus } from "@hidden-identity/shared";
+import { type PlayerStatus } from "@hidden-identity/shared";
 import { Flex, IconButton } from "@radix-ui/themes";
-import { IconBaseProps } from "react-icons";
+import { type IconBaseProps } from "react-icons";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsFillGearFill, BsShieldShaded } from "react-icons/bs";
 import { FaVial } from "react-icons/fa6";
@@ -11,7 +11,7 @@ import { MeaningfulStatusIcon } from "../../shared/MeaningfulIcon";
 import { useDeadVote } from "../../store/actions/gmActions";
 import { usePlayerStatuses } from "../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../store/GameContext";
-import { ExtnesionProps } from "../../types/radixTypes";
+import { type ExtnesionProps } from "../../types/radixTypes";
 
 const StatusIconMap: Record<
   PlayerStatus["type"],
@@ -60,7 +60,7 @@ export function PlayerStatusIconList({
           key={status.id}
           {...buttonProps}
           onClick={() => {
-            updatePlayerStatus(player, "remove", status);
+            void updatePlayerStatus(player, "remove", status);
           }}
         >
           <PlayerStatusIcon statusType={status.type} className={className} />
@@ -119,7 +119,7 @@ export function DeadVoteIcon({ player }: { player: string }) {
           variant="surface"
           onClick={() => {
             if (game.deadPlayers[player]) {
-              clearDeadVote(player, true);
+              void clearDeadVote(player, true);
             }
           }}
         >

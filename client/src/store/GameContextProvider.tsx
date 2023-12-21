@@ -1,11 +1,11 @@
-import { Script } from "@hidden-identity/shared";
+import { type Script } from "@hidden-identity/shared";
 import { Callout } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { ReadyState } from "react-use-websocket";
 
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { trpc } from "../shared/trpcClient";
-import { UnifiedGame } from "./Game";
+import { type UnifiedGame } from "./Game";
 import { UnifiedGameContext } from "./GameContext";
 import { useGameId } from "./url";
 

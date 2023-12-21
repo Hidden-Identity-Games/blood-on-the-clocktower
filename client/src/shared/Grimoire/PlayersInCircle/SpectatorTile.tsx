@@ -20,7 +20,7 @@ export function SpectatorTile({ player, index }: SpectatorTile) {
     <PlaceInCircle key={player} index={index} stepsIn={1}>
       <SetCountModal
         title="Votes to Execute:"
-        onSet={(votes: number) => setVotesToExecute(player, votes)}
+        onSet={(votes: number) => void setVotesToExecute(player, votes)}
         defaultValue={game.onTheBlock[player] && 0}
       >
         <div className="h-full w-full p-2">

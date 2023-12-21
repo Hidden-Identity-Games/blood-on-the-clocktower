@@ -1,4 +1,4 @@
-import { groupBy, PlayerMessage } from "@hidden-identity/shared";
+import { groupBy, type PlayerMessage } from "@hidden-identity/shared";
 import { Button, Heading, Text, TextArea } from "@radix-ui/themes";
 import { CgMail, CgSpinner } from "react-icons/cg";
 
@@ -94,7 +94,7 @@ function Body({ message }: MessageSheetPiecesProps) {
       <ErrorCallout error={errorDeletingMessage} />
       <DestructiveButton
         confirmationText="Are you sure?  This cannot be undone."
-        onClick={() => deleteMessage(message.id)}
+        onClick={() => void deleteMessage(message.id)}
       >
         {deleteMessageIsLoading && (
           <LoadingExperience>

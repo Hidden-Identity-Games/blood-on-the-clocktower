@@ -32,7 +32,7 @@ export function mapObject<OgValue, OutValue>(
 ): Record<string, OutValue> {
   return Object.fromEntries(
     Object.entries(input)
-      .map(([key, value]) => cb(key, value as OgValue))
+      .map(([key, value]) => cb(key, value))
       .filter((v): v is [string, OutValue] => !!v),
   ) as Record<string, OutValue>;
 }
@@ -42,7 +42,7 @@ export function filterObject<OgValue extends Record<string, unknown>>(
   filter: (arg: [key: keyof OgValue, value: OgValue[keyof OgValue]]) => boolean,
 ): Partial<OgValue> {
   return Object.fromEntries(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
     Object.entries(input).filter(filter as any),
   ) as Partial<OgValue>;
 }

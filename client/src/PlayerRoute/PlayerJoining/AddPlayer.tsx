@@ -50,7 +50,7 @@ function AddPlayer() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit();
+            void handleSubmit();
           }}
         >
           <label htmlFor="name-input">NAME:</label>
@@ -95,7 +95,7 @@ function AddPlayer() {
           </div>
         )}
 
-        <Button mt="2" onClick={handleSubmit}>
+        <Button mt="2" onClick={() => void handleSubmit()}>
           Join
         </Button>
       </Flex>

@@ -1,4 +1,4 @@
-import { Role } from "@hidden-identity/shared";
+import { type Role } from "@hidden-identity/shared";
 import { Dialog, Flex, Heading } from "@radix-ui/themes";
 
 import { useDefiniteGame } from "../../../../../store/GameContext";

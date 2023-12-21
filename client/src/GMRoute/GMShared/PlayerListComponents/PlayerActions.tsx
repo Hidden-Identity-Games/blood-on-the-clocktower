@@ -1,4 +1,4 @@
-import { UnifiedGame } from "@hidden-identity/shared";
+import { type UnifiedGame } from "@hidden-identity/shared";
 import { Dialog, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
 import { FaFeather, FaSkull } from "react-icons/fa6";
 import { GiRaiseZombie } from "react-icons/gi";
@@ -67,7 +67,9 @@ export function PlayerActions({
 
         <Flex direction="column" gap="2">
           <PlayerList.MenuItem
-            onClick={() => handleDecideFate(player, !game.deadPlayers[player])}
+            onClick={() =>
+              void handleDecideFate(player, !game.deadPlayers[player])
+            }
             disabled={decideFateLoading}
             id={`${player}-toggle-dead`}
             label={game.deadPlayers[player] ? "Revive" : "Kill"}
@@ -78,7 +80,7 @@ export function PlayerActions({
             id={`${player}-set-poison`}
             label="Poisoned"
             onClick={() =>
-              setPlayerStatus(player, "add", {
+              void setPlayerStatus(player, "add", {
                 type: "poison",
                 id: v4(),
               })
@@ -91,7 +93,7 @@ export function PlayerActions({
             id={`${player}-set-drunk`}
             label="Drunk"
             onClick={() =>
-              setPlayerStatus(player, "add", {
+              void setPlayerStatus(player, "add", {
                 type: "drunk",
                 id: v4(),
               })
@@ -104,7 +106,7 @@ export function PlayerActions({
             id={`${player}-set-protected`}
             label="Protected"
             onClick={() =>
-              setPlayerStatus(player, "add", {
+              void setPlayerStatus(player, "add", {
                 type: "protected",
                 id: v4(),
               })
@@ -117,7 +119,7 @@ export function PlayerActions({
             id={`${player}-set-other`}
             label="Other"
             onClick={() =>
-              setPlayerStatus(player, "add", {
+              void setPlayerStatus(player, "add", {
                 type: "characterAbility",
                 id: v4(),
               })
@@ -131,7 +133,7 @@ export function PlayerActions({
             label={
               game.deadVotes[player] ? "Return Dead Vote" : "Use Dead Vote"
             }
-            onClick={() => setDeadVote(player, !game.deadVotes[player])}
+            onClick={() => void setDeadVote(player, !game.deadVotes[player])}
             disabled={deadVoteLoading}
           >
             <LiaVoteYeaSolid />
@@ -176,7 +178,7 @@ function RoleChangeMenuItem({
     <RoleSelect
       traveler={game.travelers[player]}
       currentRole={game.playersToRoles[player]}
-      onSelect={(next) => next && setPlayerRole(player, next)}
+      onSelect={(next) => next && void setPlayerRole(player, next)}
     >
       <CharacterName role={game.playersToRoles[player]} size="3" />
     </RoleSelect>
@@ -189,7 +191,7 @@ function AlignmentChangeMenuItem({ player }: { player: string }) {
   return (
     <AlignmentSelect
       currentAlignment={getPlayerAlignment(player)}
-      onSelect={(next) => next && setPlayerAlignment(player, next)}
+      onSelect={(next) => next && void setPlayerAlignment(player, next)}
     />
   );
 }

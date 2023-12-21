@@ -1,4 +1,4 @@
-import { CharacterType, Role } from "@hidden-identity/shared";
+import { type CharacterType, type Role } from "@hidden-identity/shared";
 import {
   DistributionsByPlayerCount,
   getCharacter,

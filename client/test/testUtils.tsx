@@ -1,7 +1,7 @@
-import { act, render, RenderOptions } from "@testing-library/react";
-import React, { ReactElement, useContext } from "react";
+import { act, render, type RenderOptions } from "@testing-library/react";
+import React, { type ReactElement, useContext } from "react";
 
-import { GameContext, UnifiedGameContext } from "../src/store/GameContext";
+import { type GameContext, UnifiedGameContext } from "../src/store/GameContext";
 
 const RenderWithProviders = ({
   children,

@@ -47,7 +47,7 @@ export function PlayerRoleSelect() {
             className={classNames(!role && "opacity-40")}
             disabled={!role}
             onClick={() => {
-              takeRole(player!, parseInt(roleNum));
+              void takeRole(player!, parseInt(roleNum));
             }}
             aria-label={`Role number ${roleNum}`}
           >

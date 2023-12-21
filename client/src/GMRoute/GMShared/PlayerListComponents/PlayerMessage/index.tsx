@@ -1,8 +1,8 @@
 import {
-  PlayerMessageCreator,
-  PlayerMessageCreatorMap,
+  type PlayerMessageCreator,
+  type PlayerMessageCreatorMap,
 } from "@hidden-identity/shared";
-import { ComponentType } from "react";
+import { type ComponentType } from "react";
 
 import { AlignmentChangeMessage } from "./MessageCreators/AlignmentChangeMessage";
 import { CharacterSelectedYouMessage } from "./MessageCreators/CharacterSelectedYouMessage";

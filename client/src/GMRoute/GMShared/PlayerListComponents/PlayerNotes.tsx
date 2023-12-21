@@ -1,5 +1,5 @@
 import { Flex, Text } from "@radix-ui/themes";
-import { HTMLAttributes } from "react";
+import { type HTMLAttributes } from "react";
 import { FaFeather } from "react-icons/fa6";
 
 import { useDefiniteGame } from "../../../store/GameContext";

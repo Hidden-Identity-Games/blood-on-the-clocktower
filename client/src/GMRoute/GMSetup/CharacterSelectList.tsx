@@ -1,7 +1,7 @@
-import { Character, Role } from "@hidden-identity/shared";
+import { type Character, type Role } from "@hidden-identity/shared";
 import {
   CHARACTERS,
-  CharacterType,
+  type CharacterType,
   getCharacter,
 } from "@hidden-identity/shared";
 import {
@@ -142,6 +142,7 @@ export function CharacterSelectList({
                   <RoleCount role={role} characterSelectState={state} />
                   <DestructiveButton
                     variant="ghost"
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     onClick={async () => {
                       await setScript(
                         script.filter((char) => char.id !== role),
@@ -218,9 +219,10 @@ function AddRole({ characterSelectState }: AddRoleProps) {
           {results.map((role) => (
             <Dialog.Close key={role.id}>
               <button
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onClick={async () => {
                   if (!script.find((r) => r.id === role.id)) {
-                    await setScript([...script, { id: role.id as Role }]);
+                    await setScript([...script, { id: role.id }]);
                   }
                   if (!characterSelectState.selectedRoles.value[role.id]) {
                     characterSelectState.selectedRoles.set((selectedRoles) => ({

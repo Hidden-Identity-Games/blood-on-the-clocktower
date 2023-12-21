@@ -1,4 +1,7 @@
-import { Alignment, PlayerMessageCreatorMap } from "@hidden-identity/shared";
+import {
+  type Alignment,
+  type PlayerMessageCreatorMap,
+} from "@hidden-identity/shared";
 import { oppositeAlignment } from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";
 import { useState } from "react";

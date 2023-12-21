@@ -1,9 +1,9 @@
-import { Script } from "@hidden-identity/shared";
+import { type Script } from "@hidden-identity/shared";
 import { getDefaultAlignment } from "@hidden-identity/shared";
 import { useCallback, useMemo } from "react";
 
 import { trpc } from "../shared/trpcClient";
-import { UnifiedGame } from "./Game";
+import { type UnifiedGame } from "./Game";
 import { useAction, useDefiniteGame, useGame } from "./GameContext";
 import { useSafeNavigate } from "./url";
 

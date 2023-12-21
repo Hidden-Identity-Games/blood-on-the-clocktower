@@ -1,6 +1,6 @@
 import {
-  CharacterType,
-  PlayerMessageCreatorMap,
+  type CharacterType,
+  type PlayerMessageCreatorMap,
 } from "@hidden-identity/shared";
 import { getCharacter } from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";

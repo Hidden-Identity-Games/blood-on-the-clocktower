@@ -1,4 +1,4 @@
-import { BrokenOrderedPlayers } from "@hidden-identity/shared";
+import { type BrokenOrderedPlayers } from "@hidden-identity/shared";
 import { Callout, Flex, IconButton, Text } from "@radix-ui/themes";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgArrowsExchangeAlt } from "react-icons/cg";
@@ -87,7 +87,7 @@ export function PlayerWaiting() {
                     radius="full"
                     variant="outline"
                     color={hasSeatingProblem ? undefined : "grass"}
-                    onClick={() => handleOrderPlayer(myName, null)}
+                    onClick={() => void handleOrderPlayer(myName, null)}
                   >
                     <CgArrowsExchangeAlt />
                   </IconButton>
@@ -168,7 +168,7 @@ export function PlayerWaiting() {
                     className="w-full"
                     key={player}
                     onClick={() => {
-                      handleOrderPlayer(myName, player);
+                      void handleOrderPlayer(myName, player);
                     }}
                   >
                     {player}

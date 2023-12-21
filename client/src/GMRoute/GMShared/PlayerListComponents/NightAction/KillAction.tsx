@@ -47,7 +47,7 @@ function PlayerActionSelect(_props: PlayerActionSelect) {
           color="violet"
           variant={playerIsDead(player) ? "soft" : "outline"}
           onClick={() => {
-            setPlayerFate(player, !playerIsDead(player));
+            void setPlayerFate(player, !playerIsDead(player));
           }}
         >
           <PlayerNameWithRoleIcon player={player} />

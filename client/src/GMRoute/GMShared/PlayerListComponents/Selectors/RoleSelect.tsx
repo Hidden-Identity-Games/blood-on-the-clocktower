@@ -1,4 +1,4 @@
-import { Role } from "@hidden-identity/shared";
+import { type Role } from "@hidden-identity/shared";
 import {
   allTravelers,
   getCharacter,
