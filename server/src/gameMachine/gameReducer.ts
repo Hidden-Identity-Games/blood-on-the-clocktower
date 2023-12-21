@@ -192,6 +192,8 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
 
       gameStatus: (state = "PlayersJoining", action) => {
         switch (action.type) {
+          case "StartNight":
+            return "Started";
           case "ManuallysetStatus":
             return action.status;
           case "FillRoleBag":

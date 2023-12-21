@@ -82,3 +82,13 @@ export function drawRole({
     return false;
   };
 }
+
+export function progressTime(): GameThunk<void> {
+  return (dispatch, getGame) => {
+    if (getGame().time.time === "day") {
+      dispatch({ type: "StartNight" });
+    } else {
+      dispatch({ type: "StartDay" });
+    }
+  };
+}

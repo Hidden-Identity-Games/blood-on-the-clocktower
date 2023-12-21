@@ -15,6 +15,18 @@ import { Link as ReactRouterLink } from "react-router-dom";
 
 import { useGame } from "../store/GameContext";
 import { urlFromOrigin } from "../store/url";
+import { LoadingExperience } from "./LoadingExperience";
+
+export function GameStatus() {
+  const { game } = useGame();
+  if (!game) {
+    return <LoadingExperience>Loading</LoadingExperience>;
+  }
+  if (game.gameStatus !== "Started") {
+    return `Status: ${game.gameStatus}`;
+  }
+  return `${game.time.time}: ${game.time.count}`;
+}
 
 export function GameHeader() {
   const { gameId, game } = useGame();
@@ -35,7 +47,7 @@ export function GameHeader() {
           <QRCodeDialog gameId={gameId} />
         </Flex>
         <Heading size="2" className="max-w-[50%] shrink truncate capitalize">
-          Status: {game?.gameStatus}
+          <GameStatus />
         </Heading>
       </Flex>
       {game?.nextGameId && (

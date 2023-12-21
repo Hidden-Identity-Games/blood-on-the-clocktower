@@ -7,35 +7,17 @@ import { GiNotebook, GiOpenBook } from "react-icons/gi";
 
 import { type PlayerOrder } from "../../shared/PlayerListOrder";
 import { ScriptList } from "../../shared/ScriptList";
-import { useSetGameStatus } from "../../store/actions/gmActions";
-import { useClearVotesToExecute } from "../../store/actions/gmPlayerActions";
-import { useDefiniteGame } from "../../store/GameContext";
 import { GameMasterActions } from "../GMShared/GameMasterActions";
-import { IngamePlayerList } from "./GMPlayerList";
-import { NightPlayerList } from "./NightPlayerList";
-import { PlayerMessagesTab } from "./PlayerMessagesTab";
+import { ActionsTab } from "./Tabs/ActionsTab";
+import { GrimoireTab } from "./Tabs/GrimoireTab";
+import { PlayerMessagesTab } from "./Tabs/PlayerMessagesTab";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
-export function NightOrder() {
-  const { game } = useDefiniteGame();
-
-  const [, , , setGameStatus] = useSetGameStatus();
+export function GMInGame() {
   const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoire");
 
   const [selectedOrder, setSelectedOrder] =
     React.useState<PlayerOrder>("alphabetical");
-
-  const [, , , clearVotesToExecute] = useClearVotesToExecute();
-
-  const firstNight = game.gameStatus === "Setup";
-
-  const startDay = () => {
-    if (game.gameStatus === "Setup") {
-      void setGameStatus("Started");
-    }
-    setSelectedTab("grimoire");
-    void clearVotesToExecute();
-  };
 
   return (
     <Tabs.Root
@@ -51,11 +33,7 @@ export function NightOrder() {
         >
           <GiOpenBook />
         </TabTrigger>
-        <TabTrigger
-          value="night"
-          heading={firstNight ? "First Night" : "Night"}
-          selectedTab={selectedTab}
-        >
+        <TabTrigger value="night" heading="Actions" selectedTab={selectedTab}>
           <BsFillMoonStarsFill />
         </TabTrigger>
         <TabTrigger value="message" heading="Message" selectedTab={selectedTab}>
@@ -67,7 +45,7 @@ export function NightOrder() {
       </Tabs.List>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="grimoire">
-        <IngamePlayerList
+        <GrimoireTab
           selectedOrder={selectedOrder}
           setSelectedOrder={setSelectedOrder}
         />
@@ -82,10 +60,7 @@ export function NightOrder() {
         value="night"
       >
         <Flex direction="column" mt="2">
-          <NightPlayerList
-            firstNight={firstNight}
-            endNightCallback={startDay}
-          />
+          <ActionsTab />
         </Flex>
       </Tabs.Content>
 

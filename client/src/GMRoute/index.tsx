@@ -4,7 +4,7 @@ import { Grimoire } from "../shared/Grimoire/GrimoireView";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { ControlledSheet } from "../shared/Sheet";
 import { useGame } from "../store/GameContext";
-import { NightOrder } from "./GMInGame";
+import { GMInGame } from "./GMInGame";
 import { GMProtectedRoute } from "./GMProtectedRoute";
 import { Lobby } from "./GMSetup/Lobby";
 
@@ -17,7 +17,7 @@ function SideBar() {
 
   return (
     <div className="relative flex h-full w-full">
-      {game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />}
+      {game.gameStatus === "PlayersJoining" ? <Lobby /> : <GMInGame />}
       <ControlledSheet />
     </div>
   );

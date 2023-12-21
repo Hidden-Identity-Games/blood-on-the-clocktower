@@ -89,3 +89,15 @@ export function useDeleteMessage() {
     return await trpc.deleteMessage.mutate({ gameId, messageId });
   });
 }
+
+export function useProgressTime() {
+  const { gameId } = useGame();
+  return useAction(async () => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.progressTime.mutate({ gameId });
+    return;
+  });
+}

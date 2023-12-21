@@ -13,7 +13,7 @@ import {
 import { z } from "zod";
 
 import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
-import { drawRole } from "../gameMachine/gameActions.ts";
+import { drawRole, progressTime } from "../gameMachine/gameActions.ts";
 import { setupTestGames } from "../testGames.ts";
 import { GameCreator } from "../testingUtils/gameCreator.ts";
 import {
@@ -288,5 +288,11 @@ export const gameRoutes = {
         type: "DeleteMessage",
         messageId,
       });
+    }),
+  progressTime: gmProcedure
+    .input(gameIdShape)
+    .mutation(async ({ input: { gameId } }) => {
+      const game = await retrieveGame(gameId);
+      game.dispatch(progressTime());
     }),
 };

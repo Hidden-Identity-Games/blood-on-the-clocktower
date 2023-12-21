@@ -11,14 +11,13 @@ import {
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import { DestructiveButton } from "../../shared/DestructiveButton";
-import { DialogHeader } from "../../shared/DialogHeader";
-import { PlayerNameWithRoleIcon } from "../../shared/RoleIcon";
-import { useDefiniteGame } from "../../store/GameContext";
-import { useIsHiddenView } from "../../store/url";
-import { PlayerList } from "../GMShared/PlayerListComponents";
-import { DemonMessage } from "../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/DemonMessage";
-import { PlayerNotes } from "../GMShared/PlayerListComponents/PlayerNotes";
+import { DialogHeader } from "../../../../shared/DialogHeader";
+import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
+import { useDefiniteGame } from "../../../../store/GameContext";
+import { PlayerList } from "../../../GMShared/PlayerListComponents";
+import { DemonMessage } from "../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/DemonMessage";
+import { PlayerNotes } from "../../../GMShared/PlayerListComponents/PlayerNotes";
+import { ProgressTimeButton } from "./ProgressTimeButton";
 
 type Action =
   | {
@@ -40,17 +39,11 @@ const gameActionsByNight = {
   otherNight: [] as Action[],
 };
 
-interface NightPlayerListProps {
-  firstNight: boolean;
-  endNightCallback?: () => void;
-}
-export function NightPlayerList({
-  firstNight,
-  endNightCallback = () => {},
-}: NightPlayerListProps) {
+interface NightActionsProps {}
+export function NightActions(_props: NightActionsProps) {
   const { game } = useDefiniteGame();
-  const [_, setIsHiddenView] = useIsHiddenView();
 
+  const firstNight = game.gameStatus === "Setup";
   const nightKey = firstNight ? "firstNight" : "otherNight";
 
   const [nightActions, leftoverPlayers] = React.useMemo(() => {
@@ -92,21 +85,6 @@ export function NightPlayerList({
   >(() =>
     Object.fromEntries(leftoverPlayers.map((player) => [player.name, true])),
   );
-
-  const endNight = () => {
-    endNightCallback();
-    setIsHiddenView(false);
-    setCheckedActions(
-      Object.fromEntries(
-        nightActions.map((action) => {
-          if (action.type === "character" && game.deadPlayers[action.player]) {
-            return [action.name, true];
-          }
-          return [];
-        }),
-      ),
-    );
-  };
 
   return (
     <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
@@ -235,20 +213,16 @@ export function NightPlayerList({
           )}
         </React.Fragment>
       ))}
-      {Object.values(checkedActions).filter(Boolean).length ===
-      nightActions.length ? (
-        <Button m="3" onClick={endNight}>
-          End Night
-        </Button>
-      ) : (
-        <DestructiveButton
-          m="3"
-          confirmationText="There are night actions not yet marked completed."
-          onClick={endNight}
-        >
-          End Night
-        </DestructiveButton>
-      )}
+      <ProgressTimeButton
+        confirmationText={
+          Object.values(checkedActions).filter(Boolean).length ===
+          nightActions.length
+            ? "All actions marked complete, end the night?"
+            : "There are still actions not yet marked completed.  Are you sure you want to end the night?"
+        }
+      >
+        End night
+      </ProgressTimeButton>
     </Flex>
   );
 }

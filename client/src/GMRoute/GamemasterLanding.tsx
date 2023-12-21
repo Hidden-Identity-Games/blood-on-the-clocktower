@@ -4,7 +4,7 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { useGame } from "../store/useStore";
-import { NightOrder } from "./GMInGame";
+import { GMInGame } from "./GMInGame";
 import { Lobby } from "./GMSetup/Lobby";
 
 function GamemasterLanding() {
@@ -36,7 +36,7 @@ function GamemasterLanding() {
       )}
       {(game.gameStatus === "Setup" ||
         game.gameStatus === "Started" ||
-        game.gameStatus === "Finished") && <NightOrder />}
+        game.gameStatus === "Finished") && <GMInGame />}
     </>
   );
 }

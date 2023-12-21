@@ -8,28 +8,28 @@ import {
   type PlayerFilter,
   PlayerListFilters,
   usePlayerFilters,
-} from "../../shared/PlayerListFilters";
+} from "../../../../shared/PlayerListFilters";
 import {
   PlayerListOrder,
   type PlayerOrder,
   usePlayerOrder,
-} from "../../shared/PlayerListOrder";
-import { SetCountModal } from "../../shared/SetCount";
-import { useVotesToExecute } from "../../store/actions/gmPlayerActions";
-import { useDefiniteGame } from "../../store/GameContext";
-import { useFirstSeat } from "../../store/url";
-import { PlayerList } from "../GMShared/PlayerListComponents";
-import { PlayerNotes } from "../GMShared/PlayerListComponents/PlayerNotes";
-import { DeadVoteIcon } from "./NotesIcons";
+} from "../../../../shared/PlayerListOrder";
+import { SetCountModal } from "../../../../shared/SetCount";
+import { useVotesToExecute } from "../../../../store/actions/gmPlayerActions";
+import { useDefiniteGame } from "../../../../store/GameContext";
+import { useFirstSeat } from "../../../../store/url";
+import { PlayerList } from "../../../GMShared/PlayerListComponents";
+import { PlayerNotes } from "../../../GMShared/PlayerListComponents/PlayerNotes";
+import { DeadVoteIcon } from "../../NotesIcons";
 
-interface IngamePlayerListProps {
+interface GrimoireTabProps {
   selectedOrder: PlayerOrder;
   setSelectedOrder: (order: PlayerOrder) => void;
 }
-export function IngamePlayerList({
+export function GrimoireTab({
   selectedOrder,
   setSelectedOrder,
-}: IngamePlayerListProps) {
+}: GrimoireTabProps) {
   const { game } = useDefiniteGame();
   const [firstSeat] = useFirstSeat();
   const orderedPlayers = usePlayerOrder(selectedOrder, firstSeat);
