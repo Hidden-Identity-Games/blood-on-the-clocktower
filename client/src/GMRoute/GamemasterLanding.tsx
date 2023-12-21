@@ -4,7 +4,7 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import { GameHeader } from "../shared/GameHeader";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { useGame } from "../store/useStore";
-import { NightOrder } from "./GMInGame/NightOrder";
+import { NightOrder } from "./GMInGame";
 import { Lobby } from "./GMSetup/Lobby";
 
 function GamemasterLanding() {

@@ -4,7 +4,7 @@ import { Grimoire } from "../shared/Grimoire/GrimoireView";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { ControlledSheet } from "../shared/Sheet";
 import { useGame } from "../store/GameContext";
-import { NightOrder } from "./GMInGame/NightOrder";
+import { NightOrder } from "./GMInGame";
 import { GMProtectedRoute } from "./GMProtectedRoute";
 import { Lobby } from "./GMSetup/Lobby";
 
