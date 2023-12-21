@@ -9,11 +9,11 @@ import {
   SheetContent,
   SheetHeader,
 } from "../SheetBody";
-import { PlayerName } from "../../../GamemasterInGame/PlayerListComponents/PlayerName";
+import { PlayerName } from "../../../GMRoute/GMShared/PlayerListComponents/PlayerName";
 import { CgMail, CgSpinner } from "react-icons/cg";
 import { useIsHiddenView } from "../../../store/url";
 import { useDeleteMessage } from "../../../store/actions/gmActions";
-import { DestructiveButton } from "../../../GamemasterInGame/DestructiveButton";
+import { DestructiveButton } from "../../DestructiveButton";
 import { LoadingExperience } from "../../LoadingExperience";
 import { ErrorCallout } from "../../ErrorCallout";
 

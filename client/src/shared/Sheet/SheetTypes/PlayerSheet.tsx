@@ -1,4 +1,4 @@
-import { PlayerList } from "../../../GamemasterInGame/PlayerListComponents";
+import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerNameWithRoleIcon, RoleName } from "../../RoleIcon";
 import { SheetBody, SheetContent, SheetHeader } from "../SheetBody";

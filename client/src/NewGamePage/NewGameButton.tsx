@@ -8,7 +8,7 @@ import {
   Switch,
 } from "@radix-ui/themes";
 import { DialogHeader } from "../shared/DialogHeader";
-import { ScriptSelect } from "../GamemasterInGame/ScriptSelect";
+import { ScriptSelect } from "../GMRoute/GMSetup/ScriptSelect";
 import { ComponentProps, useState } from "react";
 import { Script, getScript } from "@hidden-identity/shared";
 import { useCreateGame, useGame } from "../store/useStore";

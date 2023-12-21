@@ -1,9 +1,9 @@
 import { Flex, Heading } from "@radix-ui/themes";
-import { DesktopView } from "../GamemasterDesktop/DesktopView";
 import { GameSelect } from "../shared/GameSelect";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { useGame } from "../store/GameContext";
 import { useSearchParams } from "../store/url";
+import { Grimoire } from "../shared/Grimoire/GrimoireView";
 
 function ChooseGameToJoin() {
   const [_, setSearchParams] = useSearchParams();
@@ -32,5 +32,5 @@ export function SpectatorRoute() {
     return <LoadingExperience>Loading...</LoadingExperience>;
   }
 
-  return <DesktopView />;
+  return <Grimoire isPlayerView />;
 }
