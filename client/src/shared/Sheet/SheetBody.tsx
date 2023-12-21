@@ -1,33 +1,8 @@
 import { CgChevronDown, CgChevronUp } from "react-icons/cg";
 import { useCallback, useContext } from "react";
 import React from "react";
-import { GlobalSheetContext, SheetContext } from "./SheetContext";
+import { GlobalSheetContext } from "./SheetContext";
 import classNames from "classnames";
-import { sheetPortalElement } from ".";
-import ReactDOM from "react-dom";
-
-export interface SheetContentProps {
-  children: React.ReactNode;
-  title: React.ReactNode;
-}
-
-export function SheetContent({ children, title }: SheetContentProps) {
-  const sheetId = useContext(SheetContext);
-  const { activeSheet, sheetExpanded } = useContext(GlobalSheetContext);
-  return sheetId === activeSheet
-    ? ReactDOM.createPortal(
-        <SheetBody>
-          <SheetHeader>{title}</SheetHeader>
-          {sheetExpanded && (
-            <div className="pointer-events-auto w-full flex-1 overflow-y-auto bg-[--color-background] px-2">
-              {children}
-            </div>
-          )}
-        </SheetBody>,
-        sheetPortalElement,
-      )
-    : null;
-}
 
 export interface SheetBodyProps {
   children: React.ReactNode;
@@ -35,7 +10,7 @@ export interface SheetBodyProps {
 
 export function SheetBody(props: SheetBodyProps) {
   return (
-    <div className="pointer-events-none absolute inset-0 flex flex-col justify-end">
+    <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-red-500 empty:hidden">
       {props.children}
     </div>
   );

@@ -1,27 +1,25 @@
 import { useMemo, useState } from "react";
 import { GlobalSheetContext } from "./SheetContext";
+import { ParsedSheetView, useSheetView } from "../../store/url";
 
 export interface SheetProviderProps {
   children: React.ReactNode;
 }
 
-export const sheetPortalElement = document.createElement("div");
-sheetPortalElement.setAttribute("class", "empty:hidden");
-
 export function GlobalSheetProvider({ children }: React.PropsWithChildren) {
-  const [activeSheet, setActiveSheet] = useState("");
+  const [activeSheet, setActiveSheet] = useSheetView();
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const contextValue = useMemo(
     () => ({
       sheetExpanded,
       setSheetExpanded,
       activeSheet,
-      setActiveSheet: (sheet: string) => {
+      setActiveSheet: (sheet: ParsedSheetView) => {
         setSheetExpanded(true);
         setActiveSheet(sheet);
       },
     }),
-    [activeSheet, sheetExpanded],
+    [activeSheet, setActiveSheet, sheetExpanded],
   );
   return (
     <GlobalSheetContext.Provider value={contextValue}>

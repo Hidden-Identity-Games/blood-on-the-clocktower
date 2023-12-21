@@ -7,6 +7,7 @@ import { SpectatorRoute } from "./SpectatorRoute";
 import { PlayerRoute } from "./PlayerRoute";
 import { GameHeader } from "./shared/GameHeader";
 import { GameProvider } from "./store/GameContextProvider";
+import { GlobalSheetProvider } from "./shared/Sheet";
 
 function MainRouter() {
   return (
@@ -26,13 +27,15 @@ function MainRouter() {
     >
       <BrowserRouter>
         <GameProvider>
-          <GameHeader />
-          <Routes>
-            <Route path="/gm/*" Component={GMRoute} />
-            <Route path="/spectator/*" Component={SpectatorRoute} />
-            <Route path="/game/*" Component={PlayerRoute} />
-            <Route path="/" Component={NewGameLanding} />
-          </Routes>
+          <GlobalSheetProvider>
+            <GameHeader />
+            <Routes>
+              <Route path="/gm/*" Component={GMRoute} />
+              <Route path="/spectator/*" Component={SpectatorRoute} />
+              <Route path="/game/*" Component={PlayerRoute} />
+              <Route path="/" Component={NewGameLanding} />
+            </Routes>
+          </GlobalSheetProvider>
         </GameProvider>
       </BrowserRouter>
     </Theme>

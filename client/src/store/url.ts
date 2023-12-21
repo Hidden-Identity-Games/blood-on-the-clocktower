@@ -6,6 +6,30 @@ import {
 
 import { filterObject } from "@hidden-identity/shared";
 
+const TopLevelSheets = ["action", "message"] as const;
+type TopLevelSheetKey = (typeof TopLevelSheets)[number];
+export type SheetView = `${TopLevelSheetKey}/${string}`;
+export type ParsedSheetView = {
+  type: TopLevelSheetKey;
+  id: string;
+};
+function isTopLevelSheetKey(str: string): str is TopLevelSheetKey {
+  return (TopLevelSheets as readonly string[]).includes(str);
+}
+function parseSheetView(unparsed: string | undefined): ParsedSheetView | null {
+  if (!unparsed) {
+    return null;
+  }
+
+  const split = unparsed.split("/");
+  if (split.length !== 2) {
+    return null;
+  }
+  const [type, id] = split;
+  if (!isTopLevelSheetKey(type)) return null;
+  return { type, id };
+}
+
 const routeMap = {
   [""]: [],
   game: [],
@@ -27,6 +51,7 @@ export const searchParamKeys = [
   "firstSeat",
   "hiddenView",
   "testPlayerKey",
+  "sheetView",
 ] as const;
 export type SearchParamKey = (typeof searchParamKeys)[number];
 export type SearchParams = Partial<Record<SearchParamKey, string>>;
@@ -55,6 +80,22 @@ export function useFirstSeat(): [string | null, (next: string) => void] {
     [setSearchParams],
   );
   return [firstSeat ?? null, setFirstPlayer];
+}
+
+export function useSheetView(): [
+  ParsedSheetView | null,
+  (next: ParsedSheetView) => void,
+] {
+  const [{ sheetView }, setSearchParams] = useSearchParams();
+  const setSheetView = useCallback(
+    (sheetView: ParsedSheetView) => {
+      setSearchParams({ sheetView: `${sheetView.type}/${sheetView.id}` });
+    },
+    [setSearchParams],
+  );
+  const parsedSheet = useMemo(() => parseSheetView(sheetView), [sheetView]);
+
+  return [parsedSheet, setSheetView];
 }
 
 export function useTestPlayerKey(): string | null {

@@ -1,21 +1,24 @@
-import { createContext, useContext } from "react";
-
-export const SheetContext = createContext("unset_id");
+import { createContext, useCallback, useContext } from "react";
+import { ParsedSheetView } from "../../store/url";
 
 export const GlobalSheetContext = createContext<{
   sheetExpanded: boolean;
   setSheetExpanded: (expanded: boolean) => void;
-  activeSheet: string;
-  setActiveSheet: (active: string) => void;
+  activeSheet: ParsedSheetView | null;
+  setActiveSheet: (active: ParsedSheetView) => void;
 }>({
-  activeSheet: "",
+  activeSheet: null,
   setActiveSheet: () => {},
   sheetExpanded: false,
   setSheetExpanded: () => {},
 });
 
-export function useSheetOpen() {
-  const sheetId = useContext(SheetContext);
-  const { activeSheet } = useContext(GlobalSheetContext);
-  return sheetId === activeSheet;
+export function useTriggerSheet() {
+  const { setActiveSheet } = useContext(GlobalSheetContext);
+  return useCallback(
+    (sheet: ParsedSheetView) => {
+      setActiveSheet(sheet);
+    },
+    [setActiveSheet],
+  );
 }

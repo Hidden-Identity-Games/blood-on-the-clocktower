@@ -11,7 +11,7 @@ import { ExecutionInfo } from "../shared/ExecutionInfo";
 import { SpectatorTile } from "../shared/PlayersInCircle/SpectatorTile";
 import { GMTile } from "../shared/PlayersInCircle/GMTile";
 import React from "react";
-import { sheetPortalElement } from "../shared/Sheet";
+import { ControlledSheet } from "../shared/Sheet/ControlledSheet";
 
 interface DesktopViewProps {
   isPlayerView?: boolean;
@@ -37,10 +37,8 @@ function SideBar() {
   }
 
   return (
-    <div
-      className="relative flex h-full w-full"
-      ref={(ref) => ref && ref.append(sheetPortalElement)}
-    >
+    <div className="relative flex h-full w-full">
+      <ControlledSheet />
       {game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />}
     </div>
   );
