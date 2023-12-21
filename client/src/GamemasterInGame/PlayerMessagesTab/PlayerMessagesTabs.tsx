@@ -1,10 +1,12 @@
 import { toKeys } from "@hidden-identity/shared";
 import { useDefiniteGame } from "../../store/GameContext";
+import { useSheetView } from "../../store/url";
 
 export interface PlayerMessagesTabProps {}
 
 export function PlayerMessagesTab(_props: PlayerMessagesTabProps) {
   const { game } = useDefiniteGame();
+  const [_, setSheetView] = useSheetView();
 
   return (
     <div className="w-full divide-y">
@@ -12,7 +14,16 @@ export function PlayerMessagesTab(_props: PlayerMessagesTabProps) {
         <>
           <div className="w-full">Day {night}</div>
           {game.messagesByNight[night].map((message) => (
-            <button className="w-full">
+            <button
+              className="w-full"
+              onClick={() =>
+                setSheetView({
+                  type: "message",
+                  id: message.id,
+                  isOpen: "open",
+                })
+              }
+            >
               <div>{message.player}</div>
               <div>
                 {Object.keys(message.messages).map((m) => (

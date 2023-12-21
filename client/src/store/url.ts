@@ -6,15 +6,26 @@ import {
 
 import { filterObject } from "@hidden-identity/shared";
 
-const TopLevelSheets = ["action", "message"] as const;
+const TopLevelSheets = ["action", "message", "none"] as const;
+const OpenClosed = ["open", "closed"] as const;
 type TopLevelSheetKey = (typeof TopLevelSheets)[number];
+type OpenClosedKey = (typeof OpenClosed)[number];
 export type SheetView = `${TopLevelSheetKey}/${string}`;
 export type ParsedSheetView = {
   type: TopLevelSheetKey;
   id: string;
+  isOpen: "open" | "closed";
+};
+export const SHEET_CLOSED: ParsedSheetView = {
+  type: "none",
+  id: "",
+  isOpen: "closed",
 };
 function isTopLevelSheetKey(str: string): str is TopLevelSheetKey {
   return (TopLevelSheets as readonly string[]).includes(str);
+}
+function isOpenClosed(str: string): str is OpenClosedKey {
+  return (OpenClosed as readonly string[]).includes(str);
 }
 function parseSheetView(unparsed: string | undefined): ParsedSheetView | null {
   if (!unparsed) {
@@ -22,12 +33,13 @@ function parseSheetView(unparsed: string | undefined): ParsedSheetView | null {
   }
 
   const split = unparsed.split("/");
-  if (split.length !== 2) {
+  if (split.length !== 3) {
     return null;
   }
-  const [type, id] = split;
+  const [type, id, isOpen] = split;
   if (!isTopLevelSheetKey(type)) return null;
-  return { type, id };
+  if (!isOpenClosed(isOpen)) return null;
+  return { type, id, isOpen };
 }
 
 const routeMap = {
@@ -83,19 +95,40 @@ export function useFirstSeat(): [string | null, (next: string) => void] {
 }
 
 export function useSheetView(): [
-  ParsedSheetView | null,
+  ParsedSheetView,
   (next: ParsedSheetView) => void,
 ] {
   const [{ sheetView }, setSearchParams] = useSearchParams();
   const setSheetView = useCallback(
     (sheetView: ParsedSheetView) => {
-      setSearchParams({ sheetView: `${sheetView.type}/${sheetView.id}` });
+      if (sheetView.type === "none") {
+        setSearchParams({
+          sheetView: undefined,
+        });
+      } else {
+        setSearchParams({
+          sheetView: `${sheetView.type}/${sheetView.id}/${sheetView.isOpen}`,
+        });
+      }
     },
     [setSearchParams],
   );
   const parsedSheet = useMemo(() => parseSheetView(sheetView), [sheetView]);
 
-  return [parsedSheet, setSheetView];
+  return [parsedSheet ?? SHEET_CLOSED, setSheetView];
+}
+export function useSheetExpanded() {
+  const [sheetView, setSheetView] = useSheetView();
+  const setSheetExpanded = useCallback(
+    (isOpen: boolean) => {
+      setSheetView({
+        ...sheetView,
+        isOpen: isOpen ? "open" : "closed",
+      });
+    },
+    [sheetView, setSheetView],
+  );
+  return [sheetView.isOpen === "open", setSheetExpanded] as const;
 }
 
 export function useTestPlayerKey(): string | null {

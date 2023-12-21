@@ -1,6 +1,7 @@
 import { useSheetView } from "../../store/url";
 import { PlayerSheet } from "./SheetTypes/PlayerSheet";
 import { MessageSheet } from "./SheetTypes/MessageSheet";
+import { exhaustiveCheck } from "@hidden-identity/shared";
 
 export function ControlledSheet() {
   const [sheetView] = useSheetView();
@@ -13,7 +14,9 @@ export function ControlledSheet() {
       return <PlayerSheet player={sheetView.id} />;
     case "message":
       return <MessageSheet messageId={sheetView.id} />;
+    case "none":
+      return null;
     default:
-      throw new Error(`unexpected sheet view ${sheetView.type}`);
+      exhaustiveCheck(sheetView.type);
   }
 }

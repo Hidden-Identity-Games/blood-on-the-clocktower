@@ -1,10 +1,7 @@
-import classNames from "classnames";
 import { PlayerList } from "../../../GamemasterInGame/PlayerListComponents";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerNameWithRoleIcon, RoleName } from "../../RoleIcon";
-import { SheetBody } from "../SheetBody";
-import { GlobalSheetContext } from "../SheetContext";
-import { useContext } from "react";
+import { SheetBody, SheetContent, SheetHeader } from "../SheetBody";
 
 export interface PlayerSheetProps {
   player: string;
@@ -26,7 +23,6 @@ function Body({ player }: PlayerSheetProps) {
 
 export function PlayerSheet({ player }: PlayerSheetProps) {
   const { game } = useDefiniteGame();
-  const { sheetExpanded } = useContext(GlobalSheetContext);
 
   if (!Reflect.has(game.playersToRoles, player)) {
     console.error(`player not found ${player}`);
@@ -34,16 +30,12 @@ export function PlayerSheet({ player }: PlayerSheetProps) {
   }
   return (
     <SheetBody>
-      <div
-        className={classNames(
-          "pointer-events-auto w-full flex-1 overflow-y-auto bg-[--color-background] px-2",
-          // eslint-disable-next-line prettier/prettier
-          { "hidden": !sheetExpanded },
-        )}
-      >
+      <SheetContent>
         <Body player={player} />
-      </div>
-      <Header player={player} />
+      </SheetContent>
+      <SheetHeader>
+        <Header player={player} />
+      </SheetHeader>
     </SheetBody>
   );
 }

@@ -3,17 +3,19 @@ import { Heading, Text, TextArea } from "@radix-ui/themes";
 import { CharacterName } from "../../RoleIcon";
 import { alignmentColorMap, colorMap } from "../../CharacterTypes";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { SheetBody } from "../SheetBody";
-import classNames from "classnames";
-import { GlobalSheetContext } from "../SheetContext";
-import { useContext } from "react";
+import { SheetBody, SheetContent, SheetHeader } from "../SheetBody";
+import { PlayerName } from "../../../GamemasterInGame/PlayerListComponents/PlayerName";
 
 interface MessageSheetPiecesProps {
   message: PlayerMessage;
 }
 
 function Header({ message }: MessageSheetPiecesProps) {
-  return <Heading>Message for {message.player}</Heading>;
+  return (
+    <Heading>
+      Message for <PlayerName player={message.player} />
+    </Heading>
+  );
 }
 function Body({ message }: MessageSheetPiecesProps) {
   const messagesByGroup = groupBy(message.messages, "group");
@@ -78,7 +80,6 @@ export interface MessageSheetProps {
 
 export function MessageSheet({ messageId }: MessageSheetProps) {
   const { game } = useDefiniteGame();
-  const { sheetExpanded } = useContext(GlobalSheetContext);
 
   const message = game.messages.find(({ id }) => id === messageId);
   if (!message) {
@@ -87,16 +88,12 @@ export function MessageSheet({ messageId }: MessageSheetProps) {
   }
   return (
     <SheetBody>
-      <Header message={message} />
-      <div
-        className={classNames(
-          "pointer-events-auto w-full flex-1 overflow-y-auto bg-[--color-background] px-2",
-          // eslint-disable-next-line prettier/prettier
-          { "hidden": !sheetExpanded },
-        )}
-      >
+      <SheetContent>
         <Body message={message} />
-      </div>
+      </SheetContent>
+      <SheetHeader>
+        <Header message={message} />
+      </SheetHeader>
     </SheetBody>
   );
 }

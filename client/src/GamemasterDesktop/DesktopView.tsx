@@ -38,8 +38,8 @@ function SideBar() {
 
   return (
     <div className="relative flex h-full w-full">
-      <ControlledSheet />
       {game.gameStatus === "PlayersJoining" ? <Lobby /> : <NightOrder />}
+      <ControlledSheet />
     </div>
   );
 }

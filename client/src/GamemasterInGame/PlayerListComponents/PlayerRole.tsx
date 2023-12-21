@@ -4,7 +4,7 @@ import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { RoleIcon, RoleName } from "../../shared/RoleIcon";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useGetPlayerAlignment } from "../../store/useStore";
-import { useTriggerSheet } from "../../shared/Sheet/SheetContext";
+import { useSheetView } from "../../store/url";
 
 interface PlayerRoleIconProps {
   children: React.ReactNode;
@@ -14,10 +14,12 @@ export function PlayerRoleIcon({ player }: PlayerRoleIconProps) {
   const { game } = useDefiniteGame();
   const getPlayerAlignment = useGetPlayerAlignment();
   const role = game.playersToRoles[player];
-  const triggerSheet = useTriggerSheet();
+  const [_, triggerSheet] = useSheetView();
   return (
     <Button
-      onClick={() => triggerSheet({ id: player, type: "action" })}
+      onClick={() =>
+        triggerSheet({ id: player, type: "action", isOpen: "open" })
+      }
       variant="surface"
       className="aspect-square p-1 text-xl"
       color={alignmentColorMap[getPlayerAlignment(player)]}

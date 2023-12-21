@@ -105,15 +105,7 @@ export function NightOrder() {
       <Tabs.Content className="flex-1 overflow-y-auto" value="message">
         <Flex className="h-5/6" direction="column" gap="1" my="3">
           <Flex justify="between" align="center" mx="2">
-            <Button
-              variant="soft"
-              disabled={interfaceLocked}
-              onClick={() => {
-                setInterfaceLocked(false);
-              }}
-            >
-              Clear
-            </Button>
+            <Button variant="soft">Clear</Button>
             <label>
               <Flex align="center" gap="2">
                 {interfaceLocked ? <BiSolidLock /> : <BiSolidLockOpen />}
