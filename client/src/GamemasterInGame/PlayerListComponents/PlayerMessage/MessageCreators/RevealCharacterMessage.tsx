@@ -64,7 +64,7 @@ export function RevealCharacterMessage({
         message={roleState.value.map((potentialRole) => ({
           character: potentialRole,
           player: playersState.value[0],
-          group: "",
+          group: "Reveal",
         }))}
       />
     </Flex>

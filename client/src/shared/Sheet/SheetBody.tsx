@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from "react";
 import React from "react";
 import classNames from "classnames";
 import { motion } from "framer-motion";
-import { useSheetExpanded } from "../../store/url";
+import { useIsHiddenView, useSheetExpanded } from "../../store/url";
 
 export interface SheetBodyProps {
   children: React.ReactNode;
@@ -23,6 +23,7 @@ export interface SheetHeaderProps {
 
 export function SheetHeader({ children }: SheetHeaderProps) {
   const [sheetExpanded] = useSheetExpanded();
+  const [isHiddenView] = useIsHiddenView();
   return (
     <div
       className={classNames(
@@ -31,12 +32,16 @@ export function SheetHeader({ children }: SheetHeaderProps) {
         "z-10",
       )}
     >
-      <div className="min-w-0 flex-1 overflow-hidden">{children}</div>
-      <SheetCollapse>
-        <button className="ml-1 flex aspect-square h-full items-center justify-around">
-          {sheetExpanded ? <CgChevronDown /> : <CgChevronUp />}
-        </button>
-      </SheetCollapse>
+      <div className="min-w-0 flex-1 overflow-hidden whitespace-nowrap">
+        {children}
+      </div>
+      {!isHiddenView && (
+        <SheetCollapse>
+          <button className="ml-1 flex aspect-square h-full items-center justify-around">
+            {sheetExpanded ? <CgChevronDown /> : <CgChevronUp />}
+          </button>
+        </SheetCollapse>
+      )}
     </div>
   );
 }
