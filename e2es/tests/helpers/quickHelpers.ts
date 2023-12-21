@@ -1,7 +1,12 @@
-import { Script, ScriptName, getScript } from "@hidden-identity/shared";
-import { asyncMap, getRandomCharactersForDistribution } from "./utils";
-import { trpc } from "../api/client";
+import {
+  getScript,
+  type Script,
+  type ScriptName,
+} from "@hidden-identity/shared";
 import { generate } from "random-words";
+
+import { trpc } from "../api/client";
+import { asyncMap, getRandomCharactersForDistribution } from "./utils";
 
 /**
  * functions in this file help get games into states needed to start a test.  They do not test app funcionality, just help get things set up.

@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { type PlayerStatusType } from "./UnifiedGame.ts";
 
 export const CharacterTypes = [

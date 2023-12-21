@@ -1,6 +1,7 @@
 import { Dialog, IconButton, Text } from "@radix-ui/themes";
+
+import { type ExtnesionProps } from "../types/radixTypes";
 import { DialogHeader } from "./DialogHeader";
-import { ExtnesionProps } from "../types/radixTypes";
 
 interface MeaningfulIconProps extends React.HTMLAttributes<HTMLButtonElement> {
   explanation: React.ReactNode;

@@ -1,4 +1,9 @@
-import { Button, IconButton, Text, ThemeOptions } from "@radix-ui/themes";
+import {
+  type Button,
+  type IconButton,
+  type Text,
+  type ThemeOptions,
+} from "@radix-ui/themes";
 
 export type RadixColor = ThemeOptions["accentColor"];
 

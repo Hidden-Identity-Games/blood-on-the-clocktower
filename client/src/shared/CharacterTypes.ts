@@ -1,5 +1,6 @@
-import { Alignment, CharacterType } from "@hidden-identity/shared";
-import { RadixColor } from "../types/radixTypes";
+import { type Alignment, type CharacterType } from "@hidden-identity/shared";
+
+import { type RadixColor } from "../types/radixTypes";
 
 export const colorMap: Record<CharacterType, RadixColor> = {
   Townsfolk: "blue",

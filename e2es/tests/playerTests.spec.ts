@@ -1,10 +1,10 @@
-import { test, expect } from "@playwright/test";
-
-import { urlFromBase } from "./productUrls";
-import { trpc } from "./api/client";
-import { QuickSetupHelpers } from "./helpers/quickHelpers";
 import { getScript } from "@hidden-identity/shared";
+import { expect, test } from "@playwright/test";
+
+import { trpc } from "./api/client";
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
+import { QuickSetupHelpers } from "./helpers/quickHelpers";
+import { urlFromBase } from "./productUrls";
 
 test("join game", async ({ page }) => {
   const { gameId } = await QuickSetupHelpers.createNewGame(
@@ -14,7 +14,7 @@ test("join game", async ({ page }) => {
   await page.getByRole("button", { name: "Join" }).click();
   await page.getByRole("textbox", { name: "code" }).fill(gameId);
   await page.getByRole("button", { name: "Join" }).click();
-  await expect(page.url()).toMatch(new RegExp(gameId, "i"));
+  expect(page.url()).toMatch(new RegExp(gameId, "i"));
 });
 
 test("re-join game", async ({ page }) => {
@@ -45,13 +45,14 @@ test("can 15 players join", async ({ context }) => {
 
   // We do these all sequentially because they bug out if you go too fast in CI.
 
+  // eslint-disable-next-line @typescript-eslint/no-for-in-array
   for (const playerNumber in players) {
     const { page: myPage } = playerPages[playerNumber];
     const name = `player${playerNumber}`;
     await myPage.getByText(`Hello ${name}`).waitFor({ timeout: 4000 });
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await myPage.waitForTimeout(100);
-    await expect(myPage.url()).toContain(gameId);
+    expect(myPage.url()).toContain(gameId);
   }
 
   await QuickSetupHelpers.fillRoleBag({
@@ -61,8 +62,8 @@ test("can 15 players join", async ({ context }) => {
   });
 
   await ClickthroughModel.getAndAcknowledgeRoles(playerPages);
-  for (const playerNumber in players) {
-    const { page: myPage } = playerPages[playerNumber];
+
+  for (const { page: myPage } of playerPages) {
     await expect(myPage.getByRole("tab", { name: /script/i })).toBeEnabled();
   }
 

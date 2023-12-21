@@ -1,5 +1,5 @@
-import { PlayerRoot } from "../PlayerLanding";
+import { PlayerLanding } from "./PlayerLanding";
 
 export function PlayerRoute() {
-  return <PlayerRoot />;
+  return <PlayerLanding />;
 }

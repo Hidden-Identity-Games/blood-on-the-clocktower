@@ -1,8 +1,9 @@
 import { roleShape } from "@hidden-identity/shared";
+import { z } from "zod";
+
 import { setScript } from "../database/scriptDB.ts";
 import { gmProcedure } from "../trpcServerInternals/trpc.ts";
 import { gameIdShape } from "./baseApiShapes.ts";
-import { z } from "zod";
 
 export const scriptRoutes = {
   setScript: gmProcedure

@@ -1,16 +1,17 @@
+import { getScript, type Script } from "@hidden-identity/shared";
 import {
   Button,
   Callout,
   Checkbox,
   Dialog,
   Flex,
-  TextFieldInput,
   Switch,
+  TextFieldInput,
 } from "@radix-ui/themes";
+import { type ComponentProps, useState } from "react";
+
+import { ScriptSelect } from "../GMRoute/GMSetup/ScriptSelect";
 import { DialogHeader } from "../shared/DialogHeader";
-import { ScriptSelect } from "../GamemasterInGame/ScriptSelect";
-import { ComponentProps, useState } from "react";
-import { Script, getScript } from "@hidden-identity/shared";
 import { useCreateGame, useGame } from "../store/useStore";
 
 export interface NewGameButtonProps extends ComponentProps<typeof Button> {}
@@ -38,7 +39,7 @@ export function NewGameButton({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              newGame({
+              void newGame({
                 oldGameId: gameId ?? undefined,
                 script: script!,
                 testGameOptions: isTestGame

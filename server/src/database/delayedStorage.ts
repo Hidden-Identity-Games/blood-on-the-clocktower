@@ -53,7 +53,9 @@ export class DelayedStorage<T> {
 
   private saveLater(): void {
     if (!this.timeoutId) {
-      this.timeoutId = setTimeout(this.saveNow, this.timeout);
+      this.timeoutId = setTimeout(() => {
+        this.saveNow();
+      }, this.timeout);
     }
   }
 

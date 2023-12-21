@@ -1,11 +1,12 @@
-import { CgChevronDown, CgChevronUp } from "react-icons/cg";
-import { useCallback, useRef, useState } from "react";
-import React from "react";
+import { LockOpen1Icon } from "@radix-ui/react-icons";
+import { IconButton } from "@radix-ui/themes";
 import classNames from "classnames";
 import { motion } from "framer-motion";
+import { useCallback, useRef, useState } from "react";
+import React from "react";
+import { CgChevronDown, CgChevronUp } from "react-icons/cg";
+
 import { useIsHiddenView, useSheetExpanded } from "../../store/url";
-import { IconButton } from "@radix-ui/themes";
-import { LockOpen1Icon } from "@radix-ui/react-icons";
 
 export interface SheetBodyProps {
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 import { useGame } from "./GameContext";
-import { useLocalStorage } from "./useLocalStorage";
 import { useTestPlayerKey } from "./url";
+import { useLocalStorage } from "./useLocalStorage";
 
 export function usePlayer(): [string | null, (key: string | null) => void] {
   const { gameId } = useGame();

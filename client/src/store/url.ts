@@ -1,10 +1,9 @@
+import { filterObject } from "@hidden-identity/shared";
 import { useCallback, useMemo } from "react";
 import {
   useNavigate,
   useSearchParams as useRouterSearchParams,
 } from "react-router-dom";
-
-import { filterObject } from "@hidden-identity/shared";
 
 const TopLevelSheets = ["action", "message", "none"] as const;
 const OpenClosed = ["open", "closed"] as const;

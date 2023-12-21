@@ -1,8 +1,8 @@
 import {
-  type UnifiedGame,
   type BaseUnifiedGame,
   type BrokenOrderedPlayers,
   type Problem,
+  type UnifiedGame,
   type WellOrderedPlayers,
 } from "@hidden-identity/shared";
 

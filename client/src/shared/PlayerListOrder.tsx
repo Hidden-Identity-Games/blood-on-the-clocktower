@@ -1,8 +1,9 @@
+import { exhaustiveCheck } from "@hidden-identity/shared";
 import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
-import { useGame } from "../store/GameContext";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { MdSort } from "react-icons/md";
-import { exhaustiveCheck } from "@hidden-identity/shared";
+
+import { useGame } from "../store/GameContext";
 import { useFirstSeat } from "../store/url";
 
 const orders = ["alphabetical", "seat order"] as const;

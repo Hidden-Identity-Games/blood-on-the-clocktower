@@ -1,10 +1,11 @@
 import {
-  type Role,
   type Alignment,
-  type PlayerStatus,
   type GameStatus,
   type PlayerMessage,
+  type PlayerStatus,
+  type Role,
 } from "@hidden-identity/shared";
+
 import { type GameThunk } from "./gameReducer.ts";
 
 type Action<ActionType extends string, AdditonalProperties> = {

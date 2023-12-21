@@ -1,12 +1,13 @@
 import { Button, Dialog, DialogClose, Flex, TextField } from "@radix-ui/themes";
 import {
-  ComponentProps,
+  type ComponentProps,
   createContext,
   forwardRef,
   useContext,
   useMemo,
   useState,
 } from "react";
+
 import { DialogHeader } from "./DialogHeader";
 
 type StringContextState = {

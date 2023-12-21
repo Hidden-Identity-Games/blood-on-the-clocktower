@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { UnifiedGame } from "./Game";
-import { UnifiedGameContext } from "./GameContext";
+import { type Script } from "@hidden-identity/shared";
 import { Callout } from "@radix-ui/themes";
+import { useEffect, useMemo, useState } from "react";
 import { ReadyState } from "react-use-websocket";
+
 import { LoadingExperience } from "../shared/LoadingExperience";
-import { Script } from "@hidden-identity/shared";
 import { trpc } from "../shared/trpcClient";
+import { type UnifiedGame } from "./Game";
+import { UnifiedGameContext } from "./GameContext";
 import { useGameId } from "./url";
 
 export function GameProvider({ children }: { children: React.ReactNode }) {

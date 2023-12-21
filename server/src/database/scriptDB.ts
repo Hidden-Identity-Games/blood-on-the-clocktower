@@ -1,4 +1,5 @@
 import { type Script } from "@hidden-identity/shared";
+
 import { RemoteStorage, StoreFile } from "./remoteStorage.ts";
 import { WatchableResource } from "./watchableResource.ts";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -54,10 +55,7 @@ export async function addScript(gameId: string, script: Script): Promise<void> {
   });
 }
 
-export async function addTestScript(
-  gameId: string,
-  script: Script,
-): Promise<void> {
+export function addTestScript(gameId: string, script: Script): void {
   scriptDB[gameId] = new WatchableResource(script, {});
 }
 

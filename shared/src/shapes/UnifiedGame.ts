@@ -1,6 +1,10 @@
 import { z } from "zod";
+
+import {
+  type PlayerMessage,
+  type PlayerMessageEntry,
+} from "./PlayerMessages.ts";
 import { type Alignment, type Role } from "./Role.ts";
-import { PlayerMessage, PlayerMessageEntry } from "./PlayerMessages.ts";
 
 export const gameStatusShape = z.enum([
   "PlayersJoining",

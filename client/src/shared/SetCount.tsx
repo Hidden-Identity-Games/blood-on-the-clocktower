@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import React from "react";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 interface SetCountProps {

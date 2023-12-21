@@ -1,29 +1,29 @@
-import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
+import {
+  alignmentShape,
+  characterAbilityStatusShape,
+  deadStatusShape,
+  drunkStatusShape,
+  gameStatusShape,
+  generateThreeWordId,
+  playerMessageEntryShape,
+  poisonStatusShape,
+  protectedStatusShape,
+  roleShape,
+} from "@hidden-identity/shared";
+import { z } from "zod";
 
+import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
+import { drawRole } from "../gameMachine/gameActions.ts";
 import { setupTestGames } from "../testGames.ts";
+import { GameCreator } from "../testingUtils/gameCreator.ts";
 import {
   gmProcedure,
   playerProcedure,
   publicProcedure,
 } from "../trpcServerInternals/trpc.ts";
-import { z } from "zod";
-import {
-  poisonStatusShape,
-  drunkStatusShape,
-  gameStatusShape,
-  protectedStatusShape,
-  characterAbilityStatusShape,
-  deadStatusShape,
-  alignmentShape,
-  roleShape,
-  generateThreeWordId,
-  playerMessageEntryShape,
-} from "@hidden-identity/shared";
 import { gameIdShape, playerAndGameIdShape } from "./baseApiShapes.ts";
-import { GameCreator } from "../testingUtils/gameCreator.ts";
-import { drawRole } from "../gameMachine/gameActions.ts";
 
-await setupTestGames();
+setupTestGames();
 
 const testGameOptions = z.object({
   isTestGame: z.boolean(),

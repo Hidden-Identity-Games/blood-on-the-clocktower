@@ -1,9 +1,9 @@
 import type {
-  Script,
-  Character,
-  ScriptItem,
-  CharacterType,
   Alignment,
+  Character,
+  CharacterType,
+  Script,
+  ScriptItem,
 } from "@hidden-identity/shared";
 
 // Can't share actual code with the server right now, only types
@@ -17,4 +17,4 @@ export const CharacterTypes = [
 
 export const ALIGNMENTS: readonly Alignment[] = ["Good", "Evil"] as const;
 
-export { Script, Character, ScriptItem, CharacterType };
+export { Character, CharacterType, Script, ScriptItem };

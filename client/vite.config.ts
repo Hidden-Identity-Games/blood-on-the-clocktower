@@ -1,7 +1,6 @@
-import { defineConfig } from "vitest/config";
-
-import react from "@vitejs/plugin-react";
 import basicSsl from "@vitejs/plugin-basic-ssl";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vitest/config";
 const TEST_MODE: boolean = !!process.env.TEST_MODE;
 const SERVER_PORT: number = Number(process.env.SERVER_PORT);
 const CLIENT_PORT: number = Number(process.env.CLIENT_PORT ?? 3000);
