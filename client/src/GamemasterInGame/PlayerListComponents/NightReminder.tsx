@@ -5,7 +5,6 @@ import { useDefiniteGame } from "../../store/GameContext";
 import { PlayerList } from ".";
 import { NightAction } from "./NightAction";
 import { PlayerStatusIcon } from "../NotesIcons";
-import { Reveal } from "../../types/PlayerMessageScreen";
 
 type AbilityKey = "firstNight" | "otherNight";
 
@@ -15,12 +14,8 @@ function getAbilityKey(game: UnifiedGame): AbilityKey {
 
 interface PlayerNightReminderProps {
   player: string;
-  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
-export function PlayerNightReminder({
-  player,
-  onOpenNote,
-}: PlayerNightReminderProps) {
+export function PlayerNightReminder({ player }: PlayerNightReminderProps) {
   const { game } = useDefiniteGame();
   const character = getCharacter(game.playersToRoles[player]);
   const abilityKey = getAbilityKey(game);
@@ -52,7 +47,6 @@ export function PlayerNightReminder({
             <PlayerList.PlayerMessage
               message={nightAbility.playerMessage}
               player={player}
-              onOpenNote={onOpenNote}
             />
           )}
         </Flex>

@@ -1,31 +1,31 @@
-import { PlayerMessage, PlayerMessageMap } from "@hidden-identity/shared";
-import { RevealRoleMessage } from "./RevealRoleMessage";
-import { DemonMessage } from "./DemonMessage";
-import { RevealPlayerMessage } from "./RevealPlayerMessage";
-import { RevealTeamMessage } from "./RevealTeamMessage";
-import { MadnessMessage } from "./MadnessMessage";
-import { RevivedMessage } from "./RevivedMessage";
-import { RoleChangeMessage } from "./RoleChangeMessage";
-import { AlignmentChangeMessage } from "./AlignmentChangeMessage";
-import { CharacterSelectedYouMessage } from "./CharacterSelectedYouMessage";
+import {
+  PlayerMessageCreator,
+  PlayerMessageCreatorMap,
+} from "@hidden-identity/shared";
+import { RevealRoleMessage } from "./MessageCreators/RevealRoleMessage";
+import { DemonMessage } from "./MessageCreators/DemonMessage";
+import { RevealCharacterMessage } from "./MessageCreators/RevealCharacterMessage";
+import { RevealTeamMessage } from "./MessageCreators/RevealTeamMessage";
+import { MadnessMessage } from "./MessageCreators/MadnessMessage";
+import { RevivedMessage } from "./MessageCreators/RevivedMessage";
+import { RoleChangeMessage } from "./MessageCreators/RoleChangeMessage";
+import { AlignmentChangeMessage } from "./MessageCreators/AlignmentChangeMessage";
+import { CharacterSelectedYouMessage } from "./MessageCreators/CharacterSelectedYouMessage";
 import { ComponentType } from "react";
-import { Reveal } from "../../../types/PlayerMessageScreen";
 
 interface PlayerMessageFlowProps {
-  message: PlayerMessage;
+  message: PlayerMessageCreator;
   player: string;
-  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
 const ComponentMap: {
-  [K in PlayerMessage["type"]]: ComponentType<{
+  [K in PlayerMessageCreator["type"]]: ComponentType<{
     player: string;
-    message: PlayerMessageMap[K];
-    onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
+    message: PlayerMessageCreatorMap[K];
   }>;
 } = {
-  "demon-first-night": DemonMessage,
   "reveal-role": RevealRoleMessage,
-  "reveal-player": RevealPlayerMessage,
+  "demon-first-night": DemonMessage,
+  "reveal-character": RevealCharacterMessage,
   "reveal-team": RevealTeamMessage,
   "character-selected-you": CharacterSelectedYouMessage,
   madness: MadnessMessage,
@@ -34,17 +34,10 @@ const ComponentMap: {
   "alignment-change": AlignmentChangeMessage,
 };
 
-export function PlayerMessageFlow({
-  message,
-  player,
-  onOpenNote,
-}: PlayerMessageFlowProps) {
+export function PlayerMessageFlow({ message, player }: PlayerMessageFlowProps) {
   const Component = ComponentMap[message.type] as React.ComponentType<{
     player: string;
-    message: PlayerMessageMap[typeof message.type];
-    onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
+    message: PlayerMessageCreatorMap[typeof message.type];
   }>;
-  return (
-    <Component player={player} message={message} onOpenNote={onOpenNote} />
-  );
+  return <Component player={player} message={message} />;
 }

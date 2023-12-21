@@ -32,26 +32,26 @@ export function useAction<Args extends Array<unknown>, T>(
 ): [
   error: string | null,
   isLoading: boolean,
-  succeeded: boolean,
+  value: T | null,
   action: (...args: Args) => Promise<T | undefined>,
   clear: () => void,
 ] {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
-  const [succeeded, setSucceeded] = useState<boolean>(false);
+  const [value, setValue] = useState<T | null>(null);
 
   return [
     error,
     isLoading,
-    succeeded,
+    value,
     async (...args: Args) => {
       setIsLoading(true);
       setError(null);
-      setSucceeded(false);
+      setValue(null);
       try {
         if (args !== null) {
           const res = await action(...args);
-          setSucceeded(true);
+          setValue(res as T);
           return res;
         }
       } catch (e) {

@@ -3,6 +3,7 @@ import {
   type Alignment,
   type PlayerStatus,
   type GameStatus,
+  type PlayerMessage,
 } from "@hidden-identity/shared";
 import { type GameThunk } from "./gameReducer.ts";
 
@@ -45,6 +46,8 @@ export interface ActionMap {
   MakeIntoTestGame: NoAdditionalProperties;
   ManuallysetStatus: { status: GameStatus };
   MakeNewGame: { nextGameId: string };
+  CreateMessage: PlayerActionProperties & { message: PlayerMessage };
+  DeleteMessage: { messageId: string };
 }
 
 export type AnyAction = {

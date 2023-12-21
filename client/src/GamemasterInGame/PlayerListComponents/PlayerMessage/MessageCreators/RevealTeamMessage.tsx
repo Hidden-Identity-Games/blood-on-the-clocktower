@@ -1,25 +1,23 @@
-import { CharacterType, PlayerMessageMap } from "@hidden-identity/shared";
-import { useDynamicList } from "../Selectors/useDynamicList";
-import { useDefiniteGame } from "../../../store/GameContext";
+import {
+  CharacterType,
+  PlayerMessageCreatorMap,
+} from "@hidden-identity/shared";
+import { useDynamicList } from "../../Selectors/useDynamicList";
+import { useDefiniteGame } from "../../../../store/GameContext";
 import { useState } from "react";
-import { PlayerSelectList } from "../Selectors";
-import { Restrictions } from "./Restrictions";
+import { PlayerSelectList } from "../../Selectors";
+import { Restrictions } from "../messageShared/Restrictions";
 import { Flex, Heading } from "@radix-ui/themes";
-import { PlayerMessageLink } from "./PlayerMessageLink";
-import { TeamSelect } from "../Selectors/TeamSelect";
+import { TeamSelect } from "../../Selectors/TeamSelect";
 import { getCharacter } from "@hidden-identity/shared";
-import { usePlayerRestrictions } from "../Selectors/Restrictions";
-import { Reveal } from "../../../types/PlayerMessageScreen";
+import { usePlayerRestrictions } from "../../Selectors/Restrictions";
+import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface RevealTeamMessageProps {
-  message: PlayerMessageMap["reveal-team"];
+  message: PlayerMessageCreatorMap["reveal-team"];
   player: string;
-  onOpenNote: (message: string, reveal: Record<string, Reveal[]>) => void;
 }
-export function RevealTeamMessage({
-  message,
-  onOpenNote,
-}: RevealTeamMessageProps) {
+export function RevealTeamMessage({ message, player }: RevealTeamMessageProps) {
   const { game } = useDefiniteGame();
   const [team, setTeam] = useState<CharacterType>("Demon");
   const playerFilter = usePlayerRestrictions({
@@ -32,14 +30,6 @@ export function RevealTeamMessage({
       .filter(playerFilter),
     defaultCount: message.count,
   });
-
-  const text = "";
-  const reveal = {
-    Reveal: playersState.value.map((p) => ({
-      team,
-      player: p,
-    })),
-  };
 
   return (
     <Flex direction="column" gap="2">
@@ -55,13 +45,13 @@ export function RevealTeamMessage({
         addPlayer={playersState.add}
         replacePlayer={playersState.replace}
       />
-      <PlayerMessageLink
-        className="mt-2"
-        note={{
-          reveal: reveal,
-          message: text,
-        }}
-        onOpenNote={onOpenNote}
+      <SubmitMessage
+        player={player}
+        message={playersState.value.map((p) => ({
+          team,
+          player: p,
+          group: "reveal",
+        }))}
       />
     </Flex>
   );

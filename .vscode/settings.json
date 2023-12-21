@@ -33,5 +33,6 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "cSpell.words": ["Gamemaster", "grimoire", "ostring"]
 }

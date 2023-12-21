@@ -301,6 +301,16 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state;
         }
       },
+      messages: (state = [], action) => {
+        switch (action.type) {
+          case "CreateMessage":
+            return [...state, action.message];
+          case "DeleteMessage":
+            return state.filter((message) => message.id !== action.messageId);
+          default:
+            return state;
+        }
+      },
     },
   });
 }

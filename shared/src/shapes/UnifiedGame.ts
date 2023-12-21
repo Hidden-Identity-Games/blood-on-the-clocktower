@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { type Alignment, type Role } from "./Role.ts";
+import { PlayerMessage, PlayerMessageEntry } from "./PlayerMessages.ts";
 
 export const gameStatusShape = z.enum([
   "PlayersJoining",
@@ -47,12 +48,17 @@ export type PlayerStatusMap = {
   [K in keyof typeof allStatusShapes]: z.TypeOf<(typeof allStatusShapes)[K]>;
 };
 
+export type CalculatedPlayerMessage = Omit<PlayerMessage, "messages"> & {
+  messages: Record<string, PlayerMessageEntry[]>;
+};
+
 export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {}
 
 export interface UnifiedGameComputed {
   orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers;
   playerList: string[];
   rolesToPlayers: Record<Role, string[]>;
+  messagesByNight: Record<number, CalculatedPlayerMessage[]>;
 }
 
 export interface BaseUnifiedGame {
@@ -70,6 +76,7 @@ export interface BaseUnifiedGame {
   alignmentsOverrides: Record<string, Alignment>;
   roleBag: Record<number, Role | null>;
   playersSeenRoles: string[];
+  messages: PlayerMessage[];
 }
 
 export interface WellOrderedPlayers {
