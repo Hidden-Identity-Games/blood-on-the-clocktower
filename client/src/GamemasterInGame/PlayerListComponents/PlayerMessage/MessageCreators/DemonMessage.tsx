@@ -1,5 +1,5 @@
 import { Role } from "@hidden-identity/shared";
-import { Flex, Heading } from "@radix-ui/themes";
+import { Dialog, Flex, Heading } from "@radix-ui/themes";
 import { useDefiniteGame } from "../../../../store/GameContext";
 
 import { PlayerSelectList, RoleSelectList } from "../../Selectors";
@@ -55,10 +55,13 @@ export function DemonMessage({ player }: DemonMessageProps) {
         addRole={bluffsState.add}
         replaceRole={bluffsState.replace}
       />
-      <SubmitMessage
-        player={player}
-        message={[...bluffMessages, ...minionMessages]}
-      />
+      {/* We're still in a dialog :-/ this is a hack */}
+      <Dialog.Close>
+        <SubmitMessage
+          player={player}
+          message={[...bluffMessages, ...minionMessages]}
+        />
+      </Dialog.Close>
     </Flex>
   );
 }
