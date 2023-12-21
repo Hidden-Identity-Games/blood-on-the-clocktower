@@ -56,7 +56,23 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state;
         }
       },
-
+      time: (state = { time: "day", count: 0 }, action) => {
+        switch (action.type) {
+          case "StartDay":
+            return {
+              time: "day",
+              count: state.count + 1,
+            };
+          case "StartNight": {
+            return {
+              time: "night",
+              count: state.count,
+            };
+          }
+          default:
+            return state;
+        }
+      },
       partialPlayerOrdering: (state = {}, action) => {
         switch (action.type) {
           case "AddPlayer":

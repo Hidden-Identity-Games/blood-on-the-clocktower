@@ -49,6 +49,8 @@ export interface ActionMap {
   MakeNewGame: { nextGameId: string };
   CreateMessage: PlayerActionProperties & { message: PlayerMessage };
   DeleteMessage: { messageId: string };
+  StartDay: NoAdditionalProperties;
+  StartNight: NoAdditionalProperties;
 }
 
 export type AnyAction = {
