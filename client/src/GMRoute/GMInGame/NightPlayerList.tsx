@@ -1,3 +1,4 @@
+import { getCharacter } from "@hidden-identity/shared";
 import {
   Button,
   Checkbox,
@@ -7,16 +8,16 @@ import {
   IconButton,
   Text,
 } from "@radix-ui/themes";
-import { PlayerNameWithRoleIcon } from "../../shared/RoleIcon";
-import { getCharacter } from "@hidden-identity/shared";
-import { RxHamburgerMenu } from "react-icons/rx";
 import React from "react";
+import { RxHamburgerMenu } from "react-icons/rx";
+
+import { DestructiveButton } from "../../shared/DestructiveButton";
+import { DialogHeader } from "../../shared/DialogHeader";
+import { PlayerNameWithRoleIcon } from "../../shared/RoleIcon";
 import { useDefiniteGame } from "../../store/GameContext";
+import { useIsHiddenView } from "../../store/url";
 import { PlayerList } from "../GMShared/PlayerListComponents";
 import { DemonMessage } from "../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/DemonMessage";
-import { DialogHeader } from "../../shared/DialogHeader";
-import { DestructiveButton } from "../../shared/DestructiveButton";
-import { useIsHiddenView } from "../../store/url";
 import { PlayerNotes } from "../GMShared/PlayerListComponents/PlayerNotes";
 
 type Action =

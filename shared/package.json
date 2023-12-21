@@ -14,7 +14,8 @@
     "test": "",
     "dev": "tsup --watch",
     "build-client": "tsup",
-    "updateJson": "node ./src/gameData/modifyJson.cjs"
+    "updateJson": "node ./src/gameData/modifyJson.cjs",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "random-words": "^2.0.0",
     "zod": "^3.22.2"
   }

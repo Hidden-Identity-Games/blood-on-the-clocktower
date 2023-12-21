@@ -1,17 +1,18 @@
 import { fakerEN } from "@faker-js/faker";
 import {
-  DistributionsByPlayerCount,
-  type Script,
   allTravelers,
+  DistributionsByPlayerCount,
   getCharacter,
   pick,
-  shuffleList,
-  toEntries,
   pluck,
   type Role,
+  type Script,
+  shuffleList,
+  toEntries,
 } from "@hidden-identity/shared";
-import { GameMachine } from "../gameMachine/gameMachine.ts";
+
 import { drawRole } from "../gameMachine/gameActions.ts";
+import { GameMachine } from "../gameMachine/gameMachine.ts";
 
 export class GameCreator {
   game: GameMachine;

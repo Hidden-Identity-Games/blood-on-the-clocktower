@@ -1,15 +1,16 @@
+import { BrokenOrderedPlayers } from "@hidden-identity/shared";
 import { Callout, Flex, IconButton, Text } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../store/GameContext";
-import { useMe } from "../../store/usePlayer";
-import { ImArrowLeft, ImArrowRight } from "react-icons/im";
-import { FaPersonCircleQuestion } from "react-icons/fa6";
+import { AnimatePresence, motion } from "framer-motion";
 import { CgArrowsExchangeAlt } from "react-icons/cg";
-import { SeatingProblem } from "./SeatingProblem";
+import { FaPersonCircleQuestion } from "react-icons/fa6";
+import { ImArrowLeft, ImArrowRight } from "react-icons/im";
+
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { PlayerNameButton } from "../../shared/PlayerNameButton";
-import { AnimatePresence, motion } from "framer-motion";
-import { BrokenOrderedPlayers } from "@hidden-identity/shared";
 import { useOrderPlayer } from "../../store/actions/playerActions";
+import { useDefiniteGame } from "../../store/GameContext";
+import { useMe } from "../../store/usePlayer";
+import { SeatingProblem } from "./SeatingProblem";
 
 export function PlayerWaiting() {
   const myName = useMe();

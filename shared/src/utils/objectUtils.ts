@@ -55,7 +55,6 @@ export function groupBy<
   KeyBy extends string | number,
   Values extends { [K in KeyBy]: string | number },
 >(baseList: Array<Values>, keyBy: KeyBy): Record<Values[KeyBy], Values[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return baseList.reduce<Record<Values[KeyBy], Values[]>>(
     (next, value) => {
       const keyOfNext = value[keyBy];

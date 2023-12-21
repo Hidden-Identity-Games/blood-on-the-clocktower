@@ -1,11 +1,12 @@
 import { CharacterNightData, PlayerStatusMap } from "@hidden-identity/shared";
+
+import { KillAction } from "./KillAction";
 import {
   CharacterAbilityActon,
   DrunkActon,
   PoisonActon,
   ProtectedActon,
 } from "./StatusNightAction";
-import { KillAction } from "./KillAction";
 
 type PlayeractionMap = PlayerStatusMap;
 type NightActionPossibility = PlayeractionMap[keyof PlayeractionMap]["type"];

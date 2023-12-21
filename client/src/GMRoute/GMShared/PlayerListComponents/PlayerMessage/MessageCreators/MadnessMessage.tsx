@@ -1,6 +1,7 @@
 import { PlayerMessageCreatorMap, Role } from "@hidden-identity/shared";
-import { useDefiniteGame } from "../../../../../store/GameContext";
 import { Flex } from "@radix-ui/themes";
+
+import { useDefiniteGame } from "../../../../../store/GameContext";
 import { RoleSelectList } from "../../Selectors";
 import { useDynamicList } from "../../Selectors/useDynamicList";
 import { SubmitMessage } from "../messageShared/SubmitMessage";

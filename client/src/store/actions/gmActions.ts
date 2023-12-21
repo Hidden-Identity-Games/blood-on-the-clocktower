@@ -1,7 +1,12 @@
+import {
+  type GameStatus,
+  type PlayerMessageEntry,
+  type Role,
+} from "@hidden-identity/shared";
 import { TRPCClientError } from "@trpc/client";
+
 import { trpc } from "../../shared/trpcClient";
 import { useAction, useGame } from "../GameContext";
-import { GameStatus, PlayerMessageEntry, Role } from "@hidden-identity/shared";
 
 export function useDeadVote() {
   const { gameId } = useGame();

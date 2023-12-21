@@ -1,6 +1,11 @@
-import { Alignment, PlayerStatus, Role } from "@hidden-identity/shared";
-import { useAction, useGame } from "../GameContext";
+import {
+  type Alignment,
+  type PlayerStatus,
+  type Role,
+} from "@hidden-identity/shared";
+
 import { trpc } from "../../shared/trpcClient";
+import { useAction, useGame } from "../GameContext";
 
 export function useAssignRole() {
   const { gameId } = useGame();

@@ -1,7 +1,8 @@
-import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { ALIGNMENTS } from "../../../../types/script";
-import { alignmentColorMap } from "../../../../shared/CharacterTypes";
 import { Alignment } from "@hidden-identity/shared";
+import { Button, Dialog, Flex } from "@radix-ui/themes";
+
+import { alignmentColorMap } from "../../../../shared/CharacterTypes";
+import { ALIGNMENTS } from "../../../../types/script";
 
 interface AlignmentSelectProps {
   currentAlignment: Alignment;

@@ -1,3 +1,5 @@
+import { UnifiedGame, WellOrderedPlayers } from "@hidden-identity/shared";
+import { ArrowLeftIcon, ClipboardCopyIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
@@ -7,13 +9,12 @@ import {
   Text,
   TextArea,
 } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../store/GameContext";
-import { DialogHeader } from "../../shared/DialogHeader";
-import { UnifiedGame, WellOrderedPlayers } from "@hidden-identity/shared";
-import { useState } from "react";
-import { PlayerNameButton } from "../../shared/PlayerNameButton";
 import classNames from "classnames";
-import { ArrowLeftIcon, ClipboardCopyIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
+
+import { DialogHeader } from "../../shared/DialogHeader";
+import { PlayerNameButton } from "../../shared/PlayerNameButton";
+import { useDefiniteGame } from "../../store/GameContext";
 
 interface ExportButtonProps {
   disabled?: boolean;

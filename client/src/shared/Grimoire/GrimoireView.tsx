@@ -1,18 +1,19 @@
-import { CircularLayout, PlaceInCenter } from "./PlayersInCircle";
-import { useGame } from "../../store/GameContext";
-import { LoadingExperience } from "../LoadingExperience";
 import { Button, Flex, Text } from "@radix-ui/themes";
-import { usePlayerOrder } from "../PlayerListOrder";
+import React from "react";
+
+import { useGame } from "../../store/GameContext";
 import {
   useFirstSeat,
   useIsHiddenView,
   useSearchParams,
 } from "../../store/url";
-import { TeamDistributionBar } from "../TeamDistributionBar";
 import { ExecutionInfo } from "../ExecutionInfo";
-import { SpectatorTile } from "./PlayersInCircle/SpectatorTile";
+import { LoadingExperience } from "../LoadingExperience";
+import { usePlayerOrder } from "../PlayerListOrder";
+import { TeamDistributionBar } from "../TeamDistributionBar";
+import { CircularLayout, PlaceInCenter } from "./PlayersInCircle";
 import { GMTile } from "./PlayersInCircle/GMTile";
-import React from "react";
+import { SpectatorTile } from "./PlayersInCircle/SpectatorTile";
 
 function HideShowButton() {
   const [_, setSearchParams] = useSearchParams();

@@ -1,11 +1,12 @@
-import React from "react";
-import { Flex, Heading, Text } from "@radix-ui/themes";
-import { colorMap } from "./CharacterTypes";
 import { Character, CharacterType, Role } from "@hidden-identity/shared";
-import { BsFillMoonFill } from "react-icons/bs";
-import { CharacterName } from "./RoleIcon";
-import { useDefiniteGame } from "../store/GameContext";
 import { getCharacter } from "@hidden-identity/shared";
+import { Flex, Heading, Text } from "@radix-ui/themes";
+import React from "react";
+import { BsFillMoonFill } from "react-icons/bs";
+
+import { useDefiniteGame } from "../store/GameContext";
+import { colorMap } from "./CharacterTypes";
+import { CharacterName } from "./RoleIcon";
 
 interface ScriptListProps {
   className?: string;

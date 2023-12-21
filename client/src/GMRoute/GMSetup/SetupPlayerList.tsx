@@ -1,10 +1,11 @@
 import { Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../store/GameContext";
-import { useKickPlayer } from "../../store/actions/playerActions";
-import { PlayerList } from "../GMShared/PlayerListComponents";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { GiBootKick } from "react-icons/gi";
+import { RxHamburgerMenu } from "react-icons/rx";
+
 import { RoleName } from "../../shared/RoleIcon";
+import { useKickPlayer } from "../../store/actions/playerActions";
+import { useDefiniteGame } from "../../store/GameContext";
+import { PlayerList } from "../GMShared/PlayerListComponents";
 
 export function SetupPlayerList() {
   const { game } = useDefiniteGame();

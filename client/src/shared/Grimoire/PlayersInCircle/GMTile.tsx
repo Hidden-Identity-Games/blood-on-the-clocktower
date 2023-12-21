@@ -1,13 +1,14 @@
+import { getCharacter } from "@hidden-identity/shared";
 import classNames from "classnames";
-import { PlaceInCircle } from ".";
+import { FaEllipsis } from "react-icons/fa6";
+import useResizeObserver from "use-resize-observer";
+
+import { PlayerStatusIcon } from "../../../GMRoute/GMInGame/NotesIcons";
 import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { PlayerStatusIcon } from "../../../GMRoute/GMInGame/NotesIcons";
-import { RoleText, getRoleIcon } from "../../RoleIcon";
-import { getCharacter } from "@hidden-identity/shared";
+import { getRoleIcon, RoleText } from "../../RoleIcon";
+import { PlaceInCircle } from ".";
 import { useScalingTextClassName } from "./ScalingText";
-import useResizeObserver from "use-resize-observer";
-import { FaEllipsis } from "react-icons/fa6";
 
 export interface SpectatorTile {
   player: string;

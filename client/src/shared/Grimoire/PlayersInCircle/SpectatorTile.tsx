@@ -1,10 +1,11 @@
-import { PlaceInCircle } from ".";
-import { useVotesToExecute } from "../../../store/actions/gmPlayerActions";
-import { SetCountModal } from "../../SetCount";
-import { useDefiniteGame } from "../../../store/GameContext";
 import classNames from "classnames";
-import { useScalingTextClassName } from "./ScalingText";
 import useResizeObserver from "use-resize-observer";
+
+import { useVotesToExecute } from "../../../store/actions/gmPlayerActions";
+import { useDefiniteGame } from "../../../store/GameContext";
+import { SetCountModal } from "../../SetCount";
+import { PlaceInCircle } from ".";
+import { useScalingTextClassName } from "./ScalingText";
 
 export interface SpectatorTile {
   player: string;

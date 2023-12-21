@@ -1,15 +1,16 @@
-import { useMemo } from "react";
 import { Role } from "@hidden-identity/shared";
-import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../../../store/GameContext";
-import { CharacterName } from "../../../../shared/RoleIcon";
-import { PlusIcon } from "@radix-ui/react-icons";
 import {
   allTravelers,
   getCharacter,
   getDefaultAlignment,
 } from "@hidden-identity/shared";
+import { PlusIcon } from "@radix-ui/react-icons";
+import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
+import { useMemo } from "react";
+
 import { colorMap } from "../../../../shared/CharacterTypes";
+import { CharacterName } from "../../../../shared/RoleIcon";
+import { useDefiniteGame } from "../../../../store/GameContext";
 
 interface RoleSelectProps {
   traveler?: boolean;

@@ -1,32 +1,32 @@
+import { Character, Role } from "@hidden-identity/shared";
 import {
+  CHARACTERS,
+  CharacterType,
+  getCharacter,
+} from "@hidden-identity/shared";
+import {
+  Button,
   Checkbox,
+  Dialog,
   Flex,
+  Heading,
   IconButton,
+  Separator,
   Text,
   TextField,
-  Heading,
-  Dialog,
-  Separator,
-  Button,
 } from "@radix-ui/themes";
+import Fuse from "fuse.js";
 import React from "react";
+import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 import { FaQuestion } from "react-icons/fa6";
 
 import { colorMap } from "../../shared/CharacterTypes";
-import { RoleIcon, RoleName } from "../../shared/RoleIcon";
-import { Character, Role } from "@hidden-identity/shared";
-import {
-  getCharacter,
-  CHARACTERS,
-  CharacterType,
-} from "@hidden-identity/shared";
-import { useSetScript } from "../../store/useStore";
-import { useDefiniteGame } from "../../store/GameContext";
 import { DestructiveButton } from "../../shared/DestructiveButton";
-import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
-import Fuse from "fuse.js";
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
+import { RoleIcon, RoleName } from "../../shared/RoleIcon";
 import { SetCount } from "../../shared/SetCount";
+import { useDefiniteGame } from "../../store/GameContext";
+import { useSetScript } from "../../store/useStore";
 
 interface StateContainer<T> {
   value: T;
@@ -40,7 +40,6 @@ export interface CharacterSelectState {
 
 // doing some wonky shit because we cannot elave the tab mounted when we switch.
 // so if we don't hoist state we lose data when switching tabs.
-// eslint-disable-next-line react-refresh/only-export-components
 export function useCharacterSelectState(
   availableRoles?: Role[],
 ): CharacterSelectState {

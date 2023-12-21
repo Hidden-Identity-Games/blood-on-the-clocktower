@@ -1,9 +1,10 @@
-import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../../../store/GameContext";
-import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
 import { PlusIcon } from "@radix-ui/react-icons";
-import { useGetPlayerAlignment } from "../../../../store/useStore";
+import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
+
 import { alignmentColorMap } from "../../../../shared/CharacterTypes";
+import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
+import { useDefiniteGame } from "../../../../store/GameContext";
+import { useGetPlayerAlignment } from "../../../../store/useStore";
 
 interface PlayerSelectProps {
   currentPlayer: string;

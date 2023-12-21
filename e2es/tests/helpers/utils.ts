@@ -1,9 +1,9 @@
 import {
-  Character,
+  type Character,
   DistributionsByPlayerCount,
-  Script,
   getCharacter,
   pick,
+  type Script,
   toKeys,
 } from "@hidden-identity/shared";
 

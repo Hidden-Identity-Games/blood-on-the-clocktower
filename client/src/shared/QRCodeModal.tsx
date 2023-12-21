@@ -1,7 +1,8 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { DialogHeader } from "./DialogHeader";
-import { BsShare } from "react-icons/bs";
 import QRCode from "qrcode.react";
+import { BsShare } from "react-icons/bs";
+
+import { DialogHeader } from "./DialogHeader";
 
 export function QRCodeModal({
   message,

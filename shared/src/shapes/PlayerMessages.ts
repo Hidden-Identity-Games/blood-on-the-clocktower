@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { CharacterTypes, alignmentShape, roleShape } from "./Role.ts";
+
+import { alignmentShape, CharacterTypes, roleShape } from "./Role.ts";
 
 export const playerMessageEntryShape = z.object({
   character: roleShape.optional(),

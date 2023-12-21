@@ -1,6 +1,7 @@
+import { type Script } from "@hidden-identity/shared";
 import { createContext, useContext, useState } from "react";
-import { UnifiedGame } from "./Game";
-import { Script } from "@hidden-identity/shared";
+
+import { type UnifiedGame } from "./Game";
 
 type NonNullableValues<T> = { [K in keyof T]: NonNullable<T[K]> };
 export interface GameContext {

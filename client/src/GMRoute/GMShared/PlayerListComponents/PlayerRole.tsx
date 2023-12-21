@@ -1,10 +1,11 @@
 import { Button } from "@radix-ui/themes";
+
 import { alignmentColorMap } from "../../../shared/CharacterTypes";
 import { MeaningfulIcon } from "../../../shared/MeaningfulIcon";
 import { RoleIcon, RoleName } from "../../../shared/RoleIcon";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { useGetPlayerAlignment } from "../../../store/useStore";
 import { useSheetView } from "../../../store/url";
+import { useGetPlayerAlignment } from "../../../store/useStore";
 
 interface PlayerRoleIconProps {
   children: React.ReactNode;

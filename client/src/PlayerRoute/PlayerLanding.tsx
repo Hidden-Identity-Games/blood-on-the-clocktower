@@ -1,11 +1,12 @@
-import AddPlayer from "./PlayerJoining/AddPlayer";
-import { PlayerRole } from "./PlayerSetup/PlayerRole";
-import { usePlayer } from "../store/usePlayer";
-import { LoadingExperience } from "../shared/LoadingExperience";
-import { PlayerWaiting } from "./PlayerSetup";
-import { useGame } from "../store/GameContext";
 import { Callout } from "@radix-ui/themes";
+
+import { LoadingExperience } from "../shared/LoadingExperience";
+import { useGame } from "../store/GameContext";
+import { usePlayer } from "../store/usePlayer";
 import { PlayerInGame } from "./PlayerInGame/PlayerInGame";
+import AddPlayer from "./PlayerJoining/AddPlayer";
+import { PlayerWaiting } from "./PlayerSetup";
+import { PlayerRole } from "./PlayerSetup/PlayerRole";
 import { PlayerRoleSelect } from "./PlayerSetup/PlayerRoleSelect";
 
 export function PlayerLanding() {

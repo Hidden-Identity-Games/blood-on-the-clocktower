@@ -1,7 +1,8 @@
-import { Restriction, Role } from "@hidden-identity/shared";
-import { useGetPlayerAlignment } from "../../../../store/useStore";
-import { useDefiniteGame } from "../../../../store/GameContext";
+import { type Restriction, type Role } from "@hidden-identity/shared";
 import { getCharacter } from "@hidden-identity/shared";
+
+import { useDefiniteGame } from "../../../../store/GameContext";
+import { useGetPlayerAlignment } from "../../../../store/useStore";
 
 function usePlayerOnlyRestriction(
   restriction?: Restriction,

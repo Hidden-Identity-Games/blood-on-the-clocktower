@@ -2,16 +2,17 @@ import {
   PlayerMessageCreator,
   PlayerMessageCreatorMap,
 } from "@hidden-identity/shared";
-import { RevealRoleMessage } from "./MessageCreators/RevealRoleMessage";
-import { DemonMessage } from "./MessageCreators/DemonMessage";
-import { RevealCharacterMessage } from "./MessageCreators/RevealCharacterMessage";
-import { RevealTeamMessage } from "./MessageCreators/RevealTeamMessage";
-import { MadnessMessage } from "./MessageCreators/MadnessMessage";
-import { RevivedMessage } from "./MessageCreators/RevivedMessage";
-import { RoleChangeMessage } from "./MessageCreators/RoleChangeMessage";
+import { ComponentType } from "react";
+
 import { AlignmentChangeMessage } from "./MessageCreators/AlignmentChangeMessage";
 import { CharacterSelectedYouMessage } from "./MessageCreators/CharacterSelectedYouMessage";
-import { ComponentType } from "react";
+import { DemonMessage } from "./MessageCreators/DemonMessage";
+import { MadnessMessage } from "./MessageCreators/MadnessMessage";
+import { RevealCharacterMessage } from "./MessageCreators/RevealCharacterMessage";
+import { RevealRoleMessage } from "./MessageCreators/RevealRoleMessage";
+import { RevealTeamMessage } from "./MessageCreators/RevealTeamMessage";
+import { RevivedMessage } from "./MessageCreators/RevivedMessage";
+import { RoleChangeMessage } from "./MessageCreators/RoleChangeMessage";
 
 interface PlayerMessageFlowProps {
   message: PlayerMessageCreator;

@@ -1,13 +1,12 @@
 import { observable } from "@trpc/server/observable";
+import { z } from "zod";
 
-import { router, t } from "./trpcServerInternals/trpc.ts";
-
+import { subscribeToGame } from "./database/gameDB/base.ts";
+import { subscribeToScript } from "./database/scriptDB.ts";
 import { gameRoutes } from "./routes/game.ts";
 import { scriptRoutes } from "./routes/script.ts";
-import { z } from "zod";
-import { subscribeToGame } from "./database/gameDB/base.ts";
+import { router, t } from "./trpcServerInternals/trpc.ts";
 import { type MessageFromServer } from "./types/messageShapes.ts";
-import { subscribeToScript } from "./database/scriptDB.ts";
 
 export const appRouter = router({
   ...gameRoutes,

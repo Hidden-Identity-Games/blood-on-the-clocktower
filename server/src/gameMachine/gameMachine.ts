@@ -1,15 +1,16 @@
 import {
-  type UnifiedGame,
   type BaseUnifiedGame,
-  type UnifiedGameComputed,
-  type Role,
-  groupBy,
   type CalculatedPlayerMessage,
+  groupBy,
+  type Role,
+  type UnifiedGame,
+  type UnifiedGameComputed,
 } from "@hidden-identity/shared";
-import { type GameReducer, createGameReducer } from "./gameReducer.ts";
 import { createSelector } from "@reduxjs/toolkit";
-import { getOrderedPlayers } from "./gameSelectors.ts";
+
 import { type Dispatchable } from "./gameActions.ts";
+import { createGameReducer, type GameReducer } from "./gameReducer.ts";
+import { getOrderedPlayers } from "./gameSelectors.ts";
 type Callback<ResourceShape> = (value: ResourceShape | null) => void;
 
 export class GameMachine {

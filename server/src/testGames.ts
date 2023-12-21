@@ -1,5 +1,6 @@
+import { getScript, type Role } from "@hidden-identity/shared";
+
 import { addTestGame } from "./database/gameDB/base.ts";
-import { type Role, getScript } from "@hidden-identity/shared";
 import { GameCreator } from "./testingUtils/gameCreator.ts";
 
 export async function setupTestGames(): Promise<void> {

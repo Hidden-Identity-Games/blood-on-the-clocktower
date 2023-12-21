@@ -1,9 +1,10 @@
-import { applyWSSHandler } from "@trpc/server/adapters/ws";
-import { WebSocketServer } from "ws";
-import { appRouter } from "../appRouter.ts";
 import { createHTTPHandler } from "@trpc/server/adapters/standalone";
+import { applyWSSHandler } from "@trpc/server/adapters/ws";
 import cors from "cors";
 import http from "http";
+import { WebSocketServer } from "ws";
+
+import { appRouter } from "../appRouter.ts";
 
 export function createServer() {
   const handler = createHTTPHandler({

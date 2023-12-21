@@ -1,5 +1,6 @@
-import React from "react";
 import { Button, Dialog, Flex, TextArea } from "@radix-ui/themes";
+import React from "react";
+
 import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
 import { usePlayerNotes } from "../../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../../store/GameContext";

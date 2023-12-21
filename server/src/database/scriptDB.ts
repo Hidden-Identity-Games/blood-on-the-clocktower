@@ -1,4 +1,5 @@
 import { type Script } from "@hidden-identity/shared";
+
 import { RemoteStorage, StoreFile } from "./remoteStorage.ts";
 import { WatchableResource } from "./watchableResource.ts";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

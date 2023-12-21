@@ -1,9 +1,10 @@
 import { Alignment, PlayerMessageCreatorMap } from "@hidden-identity/shared";
-import { AlignmentSelect } from "../../Selectors";
-import { useState } from "react";
 import { oppositeAlignment } from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";
+import { useState } from "react";
+
 import { useGetPlayerAlignment } from "../../../../../store/useStore";
+import { AlignmentSelect } from "../../Selectors";
 import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface AlignmentChangeMessageProps {

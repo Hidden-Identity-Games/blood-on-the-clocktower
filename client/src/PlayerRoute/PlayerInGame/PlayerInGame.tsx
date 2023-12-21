@@ -1,3 +1,4 @@
+import { getCharacter } from "@hidden-identity/shared";
 import {
   Button,
   Flex,
@@ -7,33 +8,33 @@ import {
   Tabs,
   Text,
 } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../store/GameContext";
-import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
-import { LiaVoteYeaSolid } from "react-icons/lia";
 import classNames from "classnames";
-import { useMe } from "../../store/usePlayer";
+import React, { useState } from "react";
 import { BsFillMoonStarsFill, BsPeopleFill } from "react-icons/bs";
 import { GiAxeInStump, GiScrollQuill } from "react-icons/gi";
-import React, { useState } from "react";
-import { getCharacter } from "@hidden-identity/shared";
+import { LiaVoteYeaSolid } from "react-icons/lia";
+
+import { ForPlayerPlayerRoleIcon } from "../../GMRoute/GMShared/PlayerListComponents/PlayerRole";
+import { ExecutionInfo } from "../../shared/ExecutionInfo";
+import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import {
   PlayerFilter,
   PlayerListFilters,
   usePlayerFilters,
 } from "../../shared/PlayerListFilters";
-import { CharacterName } from "../../shared/RoleIcon";
-import { ForPlayerPlayerRoleIcon } from "../../GMRoute/GMShared/PlayerListComponents/PlayerRole";
-import { ScriptList } from "../../shared/ScriptList";
 import {
   PlayerListOrder,
   PlayerOrder,
   usePlayerOrder,
 } from "../../shared/PlayerListOrder";
-import { TeamDistributionBar } from "../../shared/TeamDistributionBar";
-import { useFirstSeat } from "../../store/url";
+import { CharacterName } from "../../shared/RoleIcon";
+import { ScriptList } from "../../shared/ScriptList";
 import { SetCountModal } from "../../shared/SetCount";
+import { TeamDistributionBar } from "../../shared/TeamDistributionBar";
 import { useVotesToExecute } from "../../store/actions/gmPlayerActions";
-import { ExecutionInfo } from "../../shared/ExecutionInfo";
+import { useDefiniteGame } from "../../store/GameContext";
+import { useFirstSeat } from "../../store/url";
+import { useMe } from "../../store/usePlayer";
 
 export function PlayerInGame() {
   const { game, script } = useDefiniteGame();

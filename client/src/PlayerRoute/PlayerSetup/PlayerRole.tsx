@@ -1,14 +1,16 @@
-import { Button, Flex, Text } from "@radix-ui/themes";
 import "./PlayerRole.css";
-import tokenBack from "../../assets/token_logo.png";
-import tokenBlank from "../../assets/token_blank.png";
-import fingerprintImage from "../../assets/fingerprint.png";
+
 import { getCharacter } from "@hidden-identity/shared";
 import { Role } from "@hidden-identity/shared";
+import { Button, Flex, Text } from "@radix-ui/themes";
 import { useState } from "react";
+
+import fingerprintImage from "../../assets/fingerprint.png";
+import tokenBlank from "../../assets/token_blank.png";
+import tokenBack from "../../assets/token_logo.png";
 import { AlignmentText, getRoleIcon } from "../../shared/RoleIcon";
-import { usePlayer } from "../../store/usePlayer";
 import { useSetPlayerSeenRole } from "../../store/actions/playerActions";
+import { usePlayer } from "../../store/usePlayer";
 
 interface PlayerRoleProps {
   role: Role;

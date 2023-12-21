@@ -1,17 +1,18 @@
+import { Role } from "@hidden-identity/shared";
 import { Button, Dialog, DialogClose, Flex, Text } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../store/GameContext";
+import { BsShare } from "react-icons/bs";
+
+import { NewGameButton } from "../../NewGamePage/NewGameButton";
+import { DestructiveButton } from "../../shared/DestructiveButton";
 import { DialogHeader } from "../../shared/DialogHeader";
-import { ExportButton } from "./ExportButton";
+import { QRCodeModal } from "../../shared/QRCodeModal";
 import {
   useDistributeRoles,
   useSetGameStatus,
 } from "../../store/actions/gmActions";
-import { DestructiveButton } from "../../shared/DestructiveButton";
-import { Role } from "@hidden-identity/shared";
-import { NewGameButton } from "../../NewGamePage/NewGameButton";
-import { QRCodeModal } from "../../shared/QRCodeModal";
-import { BsShare } from "react-icons/bs";
+import { useDefiniteGame } from "../../store/GameContext";
 import { urlFromOrigin, useSearchParams } from "../../store/url";
+import { ExportButton } from "./ExportButton";
 
 interface GameMasterActionsProps {
   gameStartable: boolean;

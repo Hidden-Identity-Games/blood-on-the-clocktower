@@ -1,14 +1,15 @@
 import {
-  type UnifiedGame,
   type BaseUnifiedGame,
   type GameStatus,
   type Role,
   type Script,
+  type UnifiedGame,
 } from "@hidden-identity/shared";
-import { addScript, addTestScript } from "../scriptDB.ts";
-import { RemoteStorage, StoreFile } from "../remoteStorage.ts";
+
 import { GameMachine } from "../../gameMachine/gameMachine.ts";
 import { type GameCreator } from "../../testingUtils/gameCreator.ts";
+import { RemoteStorage, StoreFile } from "../remoteStorage.ts";
+import { addScript, addTestScript } from "../scriptDB.ts";
 
 export const UNASSIGNED: Role = "unassigned" as Role;
 

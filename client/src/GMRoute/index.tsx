@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import { GMProtectedRoute } from "./GMProtectedRoute";
-import { ControlledSheet } from "../shared/Sheet";
-import { Lobby } from "./GMSetup/Lobby";
-import { NightOrder } from "./GMInGame/NightOrder";
-import { LoadingExperience } from "../shared/LoadingExperience";
-import { useGame } from "../store/GameContext";
+
 import { Grimoire } from "../shared/Grimoire/GrimoireView";
+import { LoadingExperience } from "../shared/LoadingExperience";
+import { ControlledSheet } from "../shared/Sheet";
+import { useGame } from "../store/GameContext";
+import { NightOrder } from "./GMInGame/NightOrder";
+import { GMProtectedRoute } from "./GMProtectedRoute";
+import { Lobby } from "./GMSetup/Lobby";
 
 function SideBar() {
   const { game } = useGame();

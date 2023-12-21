@@ -1,16 +1,17 @@
+import { getScript, Script } from "@hidden-identity/shared";
 import {
   Button,
   Callout,
   Checkbox,
   Dialog,
   Flex,
-  TextFieldInput,
   Switch,
+  TextFieldInput,
 } from "@radix-ui/themes";
-import { DialogHeader } from "../shared/DialogHeader";
-import { ScriptSelect } from "../GMRoute/GMSetup/ScriptSelect";
 import { ComponentProps, useState } from "react";
-import { Script, getScript } from "@hidden-identity/shared";
+
+import { ScriptSelect } from "../GMRoute/GMSetup/ScriptSelect";
+import { DialogHeader } from "../shared/DialogHeader";
 import { useCreateGame, useGame } from "../store/useStore";
 
 export interface NewGameButtonProps extends ComponentProps<typeof Button> {}

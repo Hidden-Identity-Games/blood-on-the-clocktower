@@ -1,5 +1,6 @@
 import { PlayerMessageCreatorMap } from "@hidden-identity/shared";
 import { Flex } from "@radix-ui/themes";
+
 import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface RevivedMessageProps {

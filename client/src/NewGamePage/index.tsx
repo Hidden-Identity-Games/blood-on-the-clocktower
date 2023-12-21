@@ -1,10 +1,11 @@
 import { Button, Flex } from "@radix-ui/themes";
 import { useCallback } from "react";
-import title from "../assets/title_banner.png";
+
 import backgroundImg from "../assets/hidden_identity_cover.png";
-import { NewGameButton } from "./NewGameButton";
-import { useSafeNavigate } from "../store/url";
+import title from "../assets/title_banner.png";
 import { GameSelectModal } from "../shared/GameSelect";
+import { useSafeNavigate } from "../store/url";
+import { NewGameButton } from "./NewGameButton";
 
 export function NewGameLanding() {
   const navigate = useSafeNavigate();

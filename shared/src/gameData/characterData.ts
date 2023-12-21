@@ -1,4 +1,4 @@
-import { Character } from "../shapes/index.ts";
+import { type Character } from "../shapes/index.ts";
 
 type CharacterDefinition = Omit<Character, "id"> & {
   id: string;

@@ -8,11 +8,12 @@ import {
   Link,
   Text,
 } from "@radix-ui/themes";
-import { useGame } from "../store/GameContext";
-import { BsShare } from "react-icons/bs";
-import { AiOutlineClose } from "react-icons/ai";
-import { Link as ReactRouterLink } from "react-router-dom";
 import QRCode from "qrcode.react";
+import { AiOutlineClose } from "react-icons/ai";
+import { BsShare } from "react-icons/bs";
+import { Link as ReactRouterLink } from "react-router-dom";
+
+import { useGame } from "../store/GameContext";
 import { urlFromOrigin } from "../store/url";
 
 export function GameHeader() {

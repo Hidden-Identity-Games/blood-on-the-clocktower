@@ -1,11 +1,12 @@
-import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { PlayerStatus, PlayerStatusType } from "@hidden-identity/shared";
-import { useDefiniteGame } from "../../../../store/GameContext";
+import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import { v4 } from "uuid";
+
 import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
-import { PlayerStatusIcon } from "../../../GMInGame/NotesIcons";
 import { usePlayerStatuses } from "../../../../store/actions/gmPlayerActions";
+import { useDefiniteGame } from "../../../../store/GameContext";
+import { PlayerStatusIcon } from "../../../GMInGame/NotesIcons";
 
 export function PoisonActon() {
   return <StatusAction status={{ type: "poison" }} />;

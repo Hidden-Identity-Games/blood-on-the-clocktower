@@ -1,8 +1,9 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../../../store/GameContext";
-import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
-import { useGetPlayerAlignment } from "../../../../store/useStore";
+
 import { alignmentColorMap } from "../../../../shared/CharacterTypes";
+import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
+import { useDefiniteGame } from "../../../../store/GameContext";
+import { useGetPlayerAlignment } from "../../../../store/useStore";
 
 function startListAtIndex<T>(list: T[], _index: number): T[] {
   const index = (_index + list.length) % list.length;

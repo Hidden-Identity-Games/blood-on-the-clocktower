@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { screen, render } from "./testUtils.tsx";
+
 import { useGame } from "../src/store/GameContext.ts";
+import { render, screen } from "./testUtils.tsx";
 
 function ExampleComponent(_props: { k: string }) {
   const { gameId } = useGame();

@@ -1,10 +1,10 @@
-import { PlayerActions } from "./PlayerActions";
-import { PlayerName } from "./PlayerName";
 import { PlayerNightReminder } from "./NightReminder";
-import { PlayerRoleIcon } from "./PlayerRole";
-import { PlayerNoteInput } from "./PlayerNoteInput";
+import { PlayerActions } from "./PlayerActions";
 import { PlayerMenuItem } from "./PlayerMenuItem";
 import { PlayerMessageFlow } from "./PlayerMessage";
+import { PlayerName } from "./PlayerName";
+import { PlayerNoteInput } from "./PlayerNoteInput";
+import { PlayerRoleIcon } from "./PlayerRole";
 
 export const PlayerList = {
   RoleIcon: PlayerRoleIcon,

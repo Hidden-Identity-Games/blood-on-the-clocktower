@@ -7,9 +7,10 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import React, { useState } from "react";
+
+import { useAddPlayer } from "../../store/actions/playerActions";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useLastUsedName, usePlayer } from "../../store/usePlayer";
-import { useAddPlayer } from "../../store/actions/playerActions";
 
 function AddPlayer() {
   const { game } = useDefiniteGame();

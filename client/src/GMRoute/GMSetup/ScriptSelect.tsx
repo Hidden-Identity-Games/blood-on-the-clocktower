@@ -1,23 +1,24 @@
 import {
-  Flex,
-  Button,
-  Heading,
-  TextArea,
-  Callout,
-  Dialog,
-  DialogClose,
-} from "@radix-ui/themes";
-import React, { ReactNode } from "react";
-import { Script, ScriptItem } from "../../types/script";
-import scriptIcon from "../../assets/icon/feather.svg";
-import {
-  ScriptName,
   getScript,
   getScriptImg,
   getScriptNames,
+  ScriptName,
 } from "@hidden-identity/shared";
-import { DialogHeader } from "../../shared/DialogHeader";
+import {
+  Button,
+  Callout,
+  Dialog,
+  DialogClose,
+  Flex,
+  Heading,
+  TextArea,
+} from "@radix-ui/themes";
 import classNames from "classnames";
+import React, { ReactNode } from "react";
+
+import scriptIcon from "../../assets/icon/feather.svg";
+import { DialogHeader } from "../../shared/DialogHeader";
+import { Script, ScriptItem } from "../../types/script";
 
 interface ScriptSelectProps {
   onScriptChange: (script: ScriptItem[]) => void;

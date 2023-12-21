@@ -1,18 +1,19 @@
+import { Role } from "@hidden-identity/shared";
 import { Flex, Tabs, Text } from "@radix-ui/themes";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { AiOutlineMenu } from "react-icons/ai";
+import { BsPeopleFill } from "react-icons/bs";
+import { FaMasksTheater } from "react-icons/fa6";
+
+import { TeamDistributionBar } from "../../shared/TeamDistributionBar";
+import { useDefiniteGame } from "../../store/GameContext";
+import { GameMasterActions } from "../GMShared/GameMasterActions";
 import {
   CharacterSelectList,
   useCharacterSelectState,
 } from "./CharacterSelectList";
-import { useDefiniteGame } from "../../store/GameContext";
-import { TeamDistributionBar } from "../../shared/TeamDistributionBar";
-import { Role } from "@hidden-identity/shared";
-import { GameMasterActions } from "../GMShared/GameMasterActions";
-import { BsPeopleFill } from "react-icons/bs";
-import { FaMasksTheater } from "react-icons/fa6";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
 import { SetupPlayerList } from "./SetupPlayerList";
-import { AiOutlineMenu } from "react-icons/ai";
 
 export interface LobbyProps {
   rolesList: Role[];

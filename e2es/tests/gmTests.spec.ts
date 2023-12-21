@@ -1,7 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { getScript } from "@hidden-identity/shared";
+import { expect, test } from "@playwright/test";
+
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
 import { QuickSetupHelpers } from "./helpers/quickHelpers";
-import { getScript } from "@hidden-identity/shared";
 import { urlFromBase } from "./productUrls";
 
 test("can create game", async ({ page }) => {

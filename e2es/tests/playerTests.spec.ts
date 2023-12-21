@@ -1,10 +1,10 @@
-import { test, expect } from "@playwright/test";
-
-import { urlFromBase } from "./productUrls";
-import { trpc } from "./api/client";
-import { QuickSetupHelpers } from "./helpers/quickHelpers";
 import { getScript } from "@hidden-identity/shared";
+import { expect, test } from "@playwright/test";
+
+import { trpc } from "./api/client";
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
+import { QuickSetupHelpers } from "./helpers/quickHelpers";
+import { urlFromBase } from "./productUrls";
 
 test("join game", async ({ page }) => {
   const { gameId } = await QuickSetupHelpers.createNewGame(

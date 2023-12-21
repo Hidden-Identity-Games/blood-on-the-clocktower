@@ -4,7 +4,7 @@ module.exports = {
     node: true,
   },
   extends: ["standard-with-typescript", "plugin:prettier/recommended"],
-  plugins: ["prettier"],
+  plugins: ["prettier", "simple-import-sort"],
   ignorePatterns: ["dist", ".eslintrc.cjs", "declarations"],
   overrides: [
     {
@@ -22,6 +22,9 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
+    "@typescript-eslint/consistent-type-imports": ["error", {fixStyle: 'inline-type-imports'}],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/comma-dangle": ["error", "always-multiline"],

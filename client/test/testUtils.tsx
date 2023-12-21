@@ -1,7 +1,7 @@
-/* eslint-disable react-refresh/only-export-components */
-import React, { ReactElement, useContext } from "react";
 import { act, render, RenderOptions } from "@testing-library/react";
-import { UnifiedGameContext, GameContext } from "../src/store/GameContext";
+import React, { ReactElement, useContext } from "react";
+
+import { GameContext, UnifiedGameContext } from "../src/store/GameContext";
 
 const RenderWithProviders = ({
   children,

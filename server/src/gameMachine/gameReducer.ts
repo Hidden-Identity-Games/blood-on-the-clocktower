@@ -1,21 +1,22 @@
 import {
-  removeKey,
   type BaseUnifiedGame,
-  toEntries,
+  removeKey,
   type Role,
   shuffleList,
+  toEntries,
 } from "@hidden-identity/shared";
 import {
   configureStore,
-  type ThunkAction,
   type EnhancedStore,
   type StoreEnhancer,
+  type ThunkAction,
   type ThunkDispatch,
   type UnknownAction,
 } from "@reduxjs/toolkit";
+import { generate } from "random-words";
+
 import { UNASSIGNED } from "../database/gameDB/base.ts";
 import { type ActionMap, type AnyAction } from "./gameActions.ts";
-import { generate } from "random-words";
 
 // Needed so things can read the type of gameStore
 export type { EnhancedStore, StoreEnhancer, ThunkDispatch, UnknownAction };

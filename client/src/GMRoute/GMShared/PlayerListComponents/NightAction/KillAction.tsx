@@ -1,9 +1,10 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../../../store/GameContext";
 import { useMemo } from "react";
+import { GiChewedSkull } from "react-icons/gi";
+
 import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
 import { useDecideFate } from "../../../../store/actions/gmPlayerActions";
-import { GiChewedSkull } from "react-icons/gi";
+import { useDefiniteGame } from "../../../../store/GameContext";
 import { PlayerStatusIcon } from "../../../GMInGame/NotesIcons";
 
 export function KillAction() {

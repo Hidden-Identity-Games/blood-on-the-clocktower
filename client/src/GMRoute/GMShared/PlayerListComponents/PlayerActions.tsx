@@ -1,24 +1,28 @@
-import { Dialog, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
-import { GiRaiseZombie } from "react-icons/gi";
-import { useDefiniteGame } from "../../../store/GameContext";
-import { PiKnifeBold } from "react-icons/pi";
-import { LiaVoteYeaSolid } from "react-icons/lia";
-import { PlayerList } from ".";
-import { AlignmentSelect, RoleSelect } from "./Selectors";
 import { UnifiedGame } from "@hidden-identity/shared";
+import { Dialog, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
+import { FaFeather, FaSkull } from "react-icons/fa6";
+import { GiRaiseZombie } from "react-icons/gi";
+import { LiaVoteYeaSolid } from "react-icons/lia";
+import { PiKnifeBold } from "react-icons/pi";
 import { v4 } from "uuid";
-import { PlayerStatusIcon, PlayerStatusIconList } from "../../GMInGame/NotesIcons";
+
+import { CharacterName } from "../../../shared/RoleIcon";
+import { useDeadVote } from "../../../store/actions/gmActions";
 import {
   useAssignPlayerAlignment,
   useAssignRole,
   useDecideFate,
   usePlayerStatuses,
 } from "../../../store/actions/gmPlayerActions";
-import { useDeadVote } from "../../../store/actions/gmActions";
+import { useDefiniteGame } from "../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../store/useStore";
-import { FaFeather, FaSkull } from "react-icons/fa6";
-import { CharacterName } from "../../../shared/RoleIcon";
+import {
+  PlayerStatusIcon,
+  PlayerStatusIconList,
+} from "../../GMInGame/NotesIcons";
+import { PlayerList } from ".";
 import { PlayerName } from "./PlayerName";
+import { AlignmentSelect, RoleSelect } from "./Selectors";
 
 export function PlayerActions({
   player,

@@ -1,11 +1,12 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { NewGameLanding } from "./NewGamePage";
 import { Theme } from "@radix-ui/themes";
 import { CSSProperties } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import { GMRoute } from "./GMRoute";
-import { SpectatorRoute } from "./SpectatorRoute";
+import { NewGameLanding } from "./NewGamePage";
 import { PlayerRoute } from "./PlayerRoute";
 import { GameHeader } from "./shared/GameHeader";
+import { SpectatorRoute } from "./SpectatorRoute";
 import { GameProvider } from "./store/GameContextProvider";
 
 function MainRouter() {

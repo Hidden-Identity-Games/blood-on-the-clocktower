@@ -1,5 +1,5 @@
-import { useGame } from "../store/GameContext";
 import { LoadingExperience } from "../shared/LoadingExperience";
+import { useGame } from "../store/GameContext";
 import { useGMSecretHash } from "../store/url";
 
 export interface GMProtectedRouteProps {

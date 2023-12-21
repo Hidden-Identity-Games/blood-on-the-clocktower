@@ -1,6 +1,7 @@
 import { PlayerMessageEntry } from "@hidden-identity/shared";
-import { ErrorCallout } from "../../../../../shared/ErrorCallout";
 import { Button } from "@radix-ui/themes";
+
+import { ErrorCallout } from "../../../../../shared/ErrorCallout";
 import { useCreateMessage } from "../../../../../store/actions/gmActions";
 import { useSheetView } from "../../../../../store/url";
 

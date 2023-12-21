@@ -1,21 +1,22 @@
-import { PlayerMessage, groupBy } from "@hidden-identity/shared";
+import { groupBy, PlayerMessage } from "@hidden-identity/shared";
 import { Button, Heading, Text, TextArea } from "@radix-ui/themes";
-import { CharacterName } from "../../RoleIcon";
-import { alignmentColorMap, colorMap } from "../../CharacterTypes";
+import { CgMail, CgSpinner } from "react-icons/cg";
+
+import { PlayerName } from "../../../GMRoute/GMShared/PlayerListComponents/PlayerName";
+import { useDeleteMessage } from "../../../store/actions/gmActions";
 import { useDefiniteGame } from "../../../store/GameContext";
+import { useIsHiddenView } from "../../../store/url";
+import { alignmentColorMap, colorMap } from "../../CharacterTypes";
+import { DestructiveButton } from "../../DestructiveButton";
+import { ErrorCallout } from "../../ErrorCallout";
+import { LoadingExperience } from "../../LoadingExperience";
+import { CharacterName } from "../../RoleIcon";
 import {
   LockedSheetHeader,
   SheetBody,
   SheetContent,
   SheetHeader,
 } from "../SheetBody";
-import { PlayerName } from "../../../GMRoute/GMShared/PlayerListComponents/PlayerName";
-import { CgMail, CgSpinner } from "react-icons/cg";
-import { useIsHiddenView } from "../../../store/url";
-import { useDeleteMessage } from "../../../store/actions/gmActions";
-import { DestructiveButton } from "../../DestructiveButton";
-import { LoadingExperience } from "../../LoadingExperience";
-import { ErrorCallout } from "../../ErrorCallout";
 
 interface MessageSheetPiecesProps {
   message: PlayerMessage;

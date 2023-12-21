@@ -1,4 +1,9 @@
+import { getCharacter } from "@hidden-identity/shared";
+import { Flex, IconButton, Separator, Text } from "@radix-ui/themes";
 import React from "react";
+import { GiAxeInStump } from "react-icons/gi";
+import { RxHamburgerMenu } from "react-icons/rx";
+
 import {
   PlayerFilter,
   PlayerListFilters,
@@ -9,17 +14,13 @@ import {
   PlayerOrder,
   usePlayerOrder,
 } from "../../shared/PlayerListOrder";
+import { SetCountModal } from "../../shared/SetCount";
+import { useVotesToExecute } from "../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useFirstSeat } from "../../store/url";
-import { useVotesToExecute } from "../../store/actions/gmPlayerActions";
-import { Flex, IconButton, Separator, Text } from "@radix-ui/themes";
 import { PlayerList } from "../GMShared/PlayerListComponents";
-import { getCharacter } from "@hidden-identity/shared";
-import { DeadVoteIcon } from "./NotesIcons";
-import { SetCountModal } from "../../shared/SetCount";
-import { GiAxeInStump } from "react-icons/gi";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { PlayerNotes } from "../GMShared/PlayerListComponents/PlayerNotes";
+import { DeadVoteIcon } from "./NotesIcons";
 
 interface IngamePlayerListProps {
   selectedOrder: PlayerOrder;

@@ -1,12 +1,13 @@
 import { Character, getCharacter } from "@hidden-identity/shared";
-import DefaultRoleImageSrc from "../assets/default_role.svg";
-import { alignmentColorMap, colorMap } from "./CharacterTypes";
-import { Flex, Text } from "@radix-ui/themes";
 import { Role } from "@hidden-identity/shared";
+import { Flex, Text } from "@radix-ui/themes";
 import classNames from "classnames";
+
+import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { useDefiniteGame } from "../store/GameContext";
 import { useGetPlayerAlignment } from "../store/useStore";
 import { ExtnesionProps, RadixTextProps } from "../types/radixTypes";
+import { alignmentColorMap, colorMap } from "./CharacterTypes";
 
 export const getRoleIcon = (character: Character) =>
   character.imageSrc

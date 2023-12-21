@@ -1,10 +1,11 @@
 import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
-import tokenBack from "../../assets/token_logo.png";
-import { usePlayer } from "../../store/usePlayer";
-import { useTakeRole } from "../../store/actions/playerActions";
 import classNames from "classnames";
-import { useDefiniteGame } from "../../store/GameContext";
 import React from "react";
+
+import tokenBack from "../../assets/token_logo.png";
+import { useTakeRole } from "../../store/actions/playerActions";
+import { useDefiniteGame } from "../../store/GameContext";
+import { usePlayer } from "../../store/usePlayer";
 
 export function PlayerRoleSelect() {
   const { game } = useDefiniteGame();

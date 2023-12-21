@@ -1,9 +1,10 @@
-import { HTMLAttributes } from "react";
-import { useDefiniteGame } from "../../../store/GameContext";
 import { Flex, Text } from "@radix-ui/themes";
+import { HTMLAttributes } from "react";
+import { FaFeather } from "react-icons/fa6";
+
+import { useDefiniteGame } from "../../../store/GameContext";
 import { PlayerStatusIcons } from "../../GMInGame/NotesIcons";
 import { PlayerList } from ".";
-import { FaFeather } from "react-icons/fa6";
 
 interface PlayerNotesProps extends HTMLAttributes<HTMLDivElement> {
   player: string;

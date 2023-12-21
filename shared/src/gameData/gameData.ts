@@ -1,7 +1,12 @@
-import { Alignment, Character, CharacterType, Role } from "../shapes/Role.ts";
-import { Script } from "../shapes/Script.ts";
-import { SCRIPTS, ScriptDefinition, ScriptName } from "./scripts.ts";
+import {
+  type Alignment,
+  type Character,
+  type CharacterType,
+  type Role,
+} from "../shapes/Role.ts";
+import { type Script } from "../shapes/Script.ts";
 import { CHARACTERS as charactersList } from "./characterData.ts";
+import { type ScriptDefinition, type ScriptName, SCRIPTS } from "./scripts.ts";
 
 const characters = Object.fromEntries(
   charactersList.map((character) => [character.id, character]),

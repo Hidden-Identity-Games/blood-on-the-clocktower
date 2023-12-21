@@ -2,15 +2,16 @@ import {
   CharacterType,
   PlayerMessageCreatorMap,
 } from "@hidden-identity/shared";
-import { useDynamicList } from "../../Selectors/useDynamicList";
-import { useDefiniteGame } from "../../../../../store/GameContext";
-import { useState } from "react";
-import { PlayerSelectList } from "../../Selectors";
-import { Restrictions } from "../messageShared/Restrictions";
-import { Flex, Heading } from "@radix-ui/themes";
-import { TeamSelect } from "../../Selectors/TeamSelect";
 import { getCharacter } from "@hidden-identity/shared";
+import { Flex, Heading } from "@radix-ui/themes";
+import { useState } from "react";
+
+import { useDefiniteGame } from "../../../../../store/GameContext";
+import { PlayerSelectList } from "../../Selectors";
 import { usePlayerRestrictions } from "../../Selectors/Restrictions";
+import { TeamSelect } from "../../Selectors/TeamSelect";
+import { useDynamicList } from "../../Selectors/useDynamicList";
+import { Restrictions } from "../messageShared/Restrictions";
 import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface RevealTeamMessageProps {

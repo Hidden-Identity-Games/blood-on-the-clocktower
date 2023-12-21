@@ -1,10 +1,10 @@
 import type { AppRouter } from "@hidden-identity/server";
 import {
   createTRPCProxyClient,
-  httpBatchLink,
   createWSClient,
-  wsLink,
+  httpBatchLink,
   splitLink,
+  wsLink,
 } from "@trpc/client";
 
 const wsClient = createWSClient({

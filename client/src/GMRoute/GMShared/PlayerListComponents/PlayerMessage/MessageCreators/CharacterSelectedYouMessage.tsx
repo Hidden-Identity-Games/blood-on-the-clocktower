@@ -1,10 +1,11 @@
 import { PlayerMessageCreatorMap, Role } from "@hidden-identity/shared";
-import { RoleSelectList } from "../../Selectors";
-import { Restrictions } from "../messageShared/Restrictions";
 import { Flex, Heading } from "@radix-ui/themes";
+
 import { useDefiniteGame } from "../../../../../store/GameContext";
+import { RoleSelectList } from "../../Selectors";
 import { useCharacterRestriction } from "../../Selectors/Restrictions";
 import { useDynamicList } from "../../Selectors/useDynamicList";
+import { Restrictions } from "../messageShared/Restrictions";
 import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 interface CharacterSelectedYouMessageProps {

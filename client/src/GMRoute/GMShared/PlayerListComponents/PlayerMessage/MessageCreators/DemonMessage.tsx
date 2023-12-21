@@ -1,13 +1,13 @@
 import { Role } from "@hidden-identity/shared";
 import { Dialog, Flex, Heading } from "@radix-ui/themes";
-import { useDefiniteGame } from "../../../../../store/GameContext";
 
+import { useDefiniteGame } from "../../../../../store/GameContext";
 import { PlayerSelectList, RoleSelectList } from "../../Selectors";
-import { useDynamicList } from "../../Selectors/useDynamicList";
 import {
   useCharacterRestriction,
   usePlayerRestrictions,
 } from "../../Selectors/Restrictions";
+import { useDynamicList } from "../../Selectors/useDynamicList";
 import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface DemonMessageProps {

@@ -3,14 +3,15 @@ import {
   PlayerMessageCreatorMap,
   Role,
 } from "@hidden-identity/shared";
-import { useDefiniteGame } from "../../../../../store/GameContext";
-import { useState } from "react";
-import { Flex, Heading } from "@radix-ui/themes";
-import { Restrictions } from "../messageShared/Restrictions";
-import { AlignmentSelect, RoleSelectList } from "../../Selectors";
 import { getDefaultAlignment } from "@hidden-identity/shared";
+import { Flex, Heading } from "@radix-ui/themes";
+import { useState } from "react";
+
+import { useDefiniteGame } from "../../../../../store/GameContext";
+import { AlignmentSelect, RoleSelectList } from "../../Selectors";
 import { useCharacterRestriction } from "../../Selectors/Restrictions";
 import { useDynamicList } from "../../Selectors/useDynamicList";
+import { Restrictions } from "../messageShared/Restrictions";
 import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface RoleChangeMessageProps {

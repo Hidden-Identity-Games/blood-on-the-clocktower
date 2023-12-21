@@ -1,7 +1,12 @@
 // Functions in this file will perform a task manually, and so will add tesr coverage, but are very slow.
-import { Script, ScriptName, getScript } from "@hidden-identity/shared";
+import {
+  getScript,
+  type Script,
+  type ScriptName,
+} from "@hidden-identity/shared";
+import { type BrowserContext, type Page } from "@playwright/test";
+
 import { urlFromBase } from "../productUrls";
-import { BrowserContext, Page } from "@playwright/test";
 import { asyncMap, getRandomCharactersForDistribution } from "./utils";
 
 export const ClickthroughModel = {

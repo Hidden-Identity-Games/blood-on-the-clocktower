@@ -1,16 +1,17 @@
-import { IoIosBeer } from "react-icons/io";
-import { FaVial } from "react-icons/fa6";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { LiaVoteYeaSolid } from "react-icons/lia";
-import { MeaningfulStatusIcon } from "../../shared/MeaningfulIcon";
-import { useDefiniteGame } from "../../store/GameContext";
-import { Flex, IconButton } from "@radix-ui/themes";
 import { PlayerStatus } from "@hidden-identity/shared";
-import { ExtnesionProps } from "../../types/radixTypes";
+import { Flex, IconButton } from "@radix-ui/themes";
 import { IconBaseProps } from "react-icons";
-import { usePlayerStatuses } from "../../store/actions/gmPlayerActions";
-import { useDeadVote } from "../../store/actions/gmActions";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsFillGearFill, BsShieldShaded } from "react-icons/bs";
+import { FaVial } from "react-icons/fa6";
+import { IoIosBeer } from "react-icons/io";
+import { LiaVoteYeaSolid } from "react-icons/lia";
+
+import { MeaningfulStatusIcon } from "../../shared/MeaningfulIcon";
+import { useDeadVote } from "../../store/actions/gmActions";
+import { usePlayerStatuses } from "../../store/actions/gmPlayerActions";
+import { useDefiniteGame } from "../../store/GameContext";
+import { ExtnesionProps } from "../../types/radixTypes";
 
 const StatusIconMap: Record<
   PlayerStatus["type"],

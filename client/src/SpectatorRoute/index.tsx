@@ -1,9 +1,10 @@
 import { Flex, Heading } from "@radix-ui/themes";
+
 import { GameSelect } from "../shared/GameSelect";
+import { Grimoire } from "../shared/Grimoire/GrimoireView";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { useGame } from "../store/GameContext";
 import { useSearchParams } from "../store/url";
-import { Grimoire } from "../shared/Grimoire/GrimoireView";
 
 function ChooseGameToJoin() {
   const [_, setSearchParams] = useSearchParams();
