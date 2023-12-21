@@ -1,7 +1,7 @@
 import React from "react";
 import { IngamePlayerList } from "./PlayerLists/GMPlayerList";
 import { NightPlayerList } from "./PlayerLists/NightPlayerList";
-import { Button, Flex, Switch, Tabs } from "@radix-ui/themes";
+import { Flex, Tabs } from "@radix-ui/themes";
 import { useDefiniteGame } from "../store/GameContext";
 import { GameMasterActions } from "./GameMasterActions";
 import { useSetGameStatus } from "../store/actions/gmActions";
@@ -9,7 +9,6 @@ import { BsFillMoonStarsFill } from "react-icons/bs";
 import { GiNotebook, GiOpenBook } from "react-icons/gi";
 import { AiOutlineMenu } from "react-icons/ai";
 import classNames from "classnames";
-import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 import { ScriptList } from "../shared/ScriptList";
 import { PlayerOrder } from "../shared/PlayerListOrder";
 import { useClearVotesToExecute } from "../store/actions/gmPlayerActions";
@@ -21,7 +20,6 @@ export function NightOrder() {
 
   const [, , , setGameStatus] = useSetGameStatus();
   const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoire");
-  const [interfaceLocked, setInterfaceLocked] = React.useState(false);
 
   const [selectedOrder, setSelectedOrder] =
     React.useState<PlayerOrder>("alphabetical");
@@ -45,38 +43,26 @@ export function NightOrder() {
       onValueChange={(tab) => setSelectedTab(tab as Tabs)}
     >
       <Tabs.List>
-        <LockableTabTrigger
+        <TabTrigger
           value="grimoire"
           heading="Grimoire"
           selectedTab={selectedTab}
-          isLocked={interfaceLocked}
         >
           <GiOpenBook />
-        </LockableTabTrigger>
-        <LockableTabTrigger
+        </TabTrigger>
+        <TabTrigger
           value="night"
           heading={firstNight ? "First Night" : "Night"}
           selectedTab={selectedTab}
-          isLocked={interfaceLocked}
         >
           <BsFillMoonStarsFill />
-        </LockableTabTrigger>
-        <LockableTabTrigger
-          value="message"
-          heading="Message"
-          selectedTab={selectedTab}
-          isLocked={interfaceLocked}
-        >
+        </TabTrigger>
+        <TabTrigger value="message" heading="Message" selectedTab={selectedTab}>
           <GiNotebook />
-        </LockableTabTrigger>
-        <LockableTabTrigger
-          value="menu"
-          heading="Menu"
-          selectedTab={selectedTab}
-          isLocked={interfaceLocked}
-        >
+        </TabTrigger>
+        <TabTrigger value="menu" heading="Menu" selectedTab={selectedTab}>
           <AiOutlineMenu />
-        </LockableTabTrigger>
+        </TabTrigger>
       </Tabs.List>
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="grimoire">
@@ -104,20 +90,6 @@ export function NightOrder() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="message">
         <Flex className="h-5/6" direction="column" gap="1" my="3">
-          <Flex justify="between" align="center" mx="2">
-            <Button variant="soft">Clear</Button>
-            <label>
-              <Flex align="center" gap="2">
-                {interfaceLocked ? <BiSolidLock /> : <BiSolidLockOpen />}
-                Lock Interface
-                <Switch
-                  checked={interfaceLocked}
-                  onClick={() => setInterfaceLocked((prev) => !prev)}
-                  radius="full"
-                />
-              </Flex>
-            </label>
-          </Flex>
           <PlayerMessagesTab />
         </Flex>
       </Tabs.Content>
@@ -132,29 +104,22 @@ export function NightOrder() {
   );
 }
 
-interface LockableTabTriggerProps {
+interface TabTriggerProps {
   value: string;
   heading: string;
   selectedTab: Tabs;
-  isLocked: boolean;
   children: React.ReactNode;
 }
-function LockableTabTrigger({
+function TabTrigger({
   value,
   heading,
   selectedTab,
-  isLocked,
   children,
-}: LockableTabTriggerProps) {
+}: TabTriggerProps) {
   return (
-    <Tabs.Trigger
-      className="flex-1"
-      disabled={isLocked}
-      value={value}
-      aria-label={value}
-    >
+    <Tabs.Trigger className="flex-1" value={value} aria-label={value}>
       <Flex align="center" gap="1">
-        {isLocked && selectedTab !== value ? <BiSolidLock /> : children}
+        {children}
         {selectedTab === value && heading}
       </Flex>
     </Tabs.Trigger>

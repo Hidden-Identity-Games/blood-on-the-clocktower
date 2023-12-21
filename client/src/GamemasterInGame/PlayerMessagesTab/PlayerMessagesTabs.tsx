@@ -10,9 +10,13 @@ export function PlayerMessagesTab(_props: PlayerMessagesTabProps) {
 
   return (
     <div className="w-full divide-y">
+      {Object.keys(game.messagesByNight).length === 0 && (
+        <div>No messages yet</div>
+      )}
       {toKeys(game.messagesByNight).map((night) => (
         <>
           <div className="w-full">Day {night}</div>
+
           {game.messagesByNight[night].map((message) => (
             <button
               className="w-full"

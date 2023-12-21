@@ -24,11 +24,8 @@ function Body({ message }: MessageSheetPiecesProps) {
       {Object.keys(messagesByGroup).map((section) => (
         <div className="flex flex-col gap-1" key={section}>
           <Heading className="uppercase">{section}</Heading>
-          {messagesByGroup[section].map((revealItem) => (
-            <div
-              className="flex gap-1"
-              key={`${revealItem.character}/${revealItem.player}`}
-            >
+          {messagesByGroup[section].map((revealItem, UNSAFE_INDEX_KEY) => (
+            <div className="flex gap-1" key={UNSAFE_INDEX_KEY}>
               {revealItem.message && (
                 <TextArea
                   // TODO: support changing the message
