@@ -10,7 +10,7 @@ test("can spectate a game", async ({ page }) => {
     players,
   );
 
-  page.goto(urlFromBase("", {}));
+  await page.goto(urlFromBase("", {}));
   await page.getByRole("button", { name: /spectate/i }).click();
   await page.getByRole("textbox").fill(gameId);
   await page.getByRole("button", { name: /join/i }).click();

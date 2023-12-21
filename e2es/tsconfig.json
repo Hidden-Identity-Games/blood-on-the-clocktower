@@ -21,5 +21,8 @@
     "noFallthroughCasesInSwitch": true,
     "composite": true
   },
+  "paths": {
+    "@trpc/client/*": ["../../../node_modules/@trpc/server/*"]
+  },
   "include": ["tests", "./*.ts"]
 }

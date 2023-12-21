@@ -7,7 +7,8 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
     'plugin:tailwindcss/recommended',
-    "plugin:playwright/recommended"
+    "plugin:playwright/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked"
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
