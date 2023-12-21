@@ -8,7 +8,7 @@ export function toEntries<Key extends string, Value>(
   return Object.entries(object) as TypedTuple<Record<Key, Value>>[];
 }
 
-export function toKeys<Key extends string>(
+export function toKeys<Key extends string | number>(
   object: Record<Key, unknown>,
 ): Key[] {
   return Object.keys(object) as Key[];
@@ -49,4 +49,22 @@ export function filterObject<OgValue extends Record<string, unknown>>(
 
 export function filterFalsy<T>(arg: T | null | undefined): arg is T {
   return !!arg;
+}
+
+export function groupBy<
+  KeyBy extends string | number,
+  Values extends { [K in KeyBy]: string | number },
+>(baseList: Array<Values>, keyBy: KeyBy): Record<Values[KeyBy], Values[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return baseList.reduce<Record<Values[KeyBy], Values[]>>(
+    (next, value) => {
+      const keyOfNext = value[keyBy];
+      if (!next[keyOfNext]) {
+        next[keyOfNext] = [];
+      }
+      next[keyOfNext].push(value);
+      return next;
+    },
+    {} as Record<Values[KeyBy], Values[]>,
+  );
 }

@@ -271,6 +271,8 @@ export const gameRoutes = {
         message: {
           player,
           id,
+          nightNumber: 0,
+          showState: "needs to be shown",
           messages,
         },
         player,

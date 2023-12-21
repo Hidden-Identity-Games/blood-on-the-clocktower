@@ -3,6 +3,8 @@ import {
   type BaseUnifiedGame,
   type UnifiedGameComputed,
   type Role,
+  groupBy,
+  type CalculatedPlayerMessage,
 } from "@hidden-identity/shared";
 import { type GameReducer, createGameReducer } from "./gameReducer.ts";
 import { createSelector } from "@reduxjs/toolkit";
@@ -49,12 +51,14 @@ const gameSelector = createSelector(
   (game: BaseUnifiedGame) => computedGameSelectors.orderedPlayers(game),
   (game: BaseUnifiedGame) => computedGameSelectors.playerList(game),
   (game: BaseUnifiedGame) => computedGameSelectors.rolesToPlayers(game),
-  (game, orderedPlayers, playerList, rolesToPlayers) =>
+  (game: BaseUnifiedGame) => computedGameSelectors.messagesByNight(game),
+  (game, orderedPlayers, playerList, rolesToPlayers, messagesByNight) =>
     ({
       ...game,
       orderedPlayers,
       playerList,
       rolesToPlayers,
+      messagesByNight,
     }) satisfies UnifiedGame,
 );
 
@@ -75,6 +79,23 @@ const computedGameSelectors = {
         rolesToPlayers[role] = [...(rolesToPlayers[role] || []), player];
       });
       return rolesToPlayers;
+    },
+  ),
+  messagesByNight: createSelector(
+    (game: BaseUnifiedGame) => game.messages,
+    (messages) => {
+      const messagesAsGroups = messages.map(
+        (message) => ({
+          ...message,
+          messages: groupBy(message.messages, "group"),
+        }),
+        {},
+      );
+      const messagesByNight = groupBy(messagesAsGroups, "nightNumber");
+      return messagesByNight satisfies Record<
+        number,
+        CalculatedPlayerMessage[]
+      >;
     },
   ),
 } satisfies Record<keyof UnifiedGameComputed, any>;

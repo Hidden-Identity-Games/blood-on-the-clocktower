@@ -8,12 +8,12 @@ import { useSetGameStatus } from "../store/actions/gmActions";
 import { BsFillMoonStarsFill } from "react-icons/bs";
 import { GiNotebook, GiOpenBook } from "react-icons/gi";
 import { AiOutlineMenu } from "react-icons/ai";
-import { PlayerMessageDisplay } from "./PlayerListComponents/PlayerMessage/PlayerMessageDisplay";
 import classNames from "classnames";
 import { BiSolidLock, BiSolidLockOpen } from "react-icons/bi";
 import { ScriptList } from "../shared/ScriptList";
 import { PlayerOrder } from "../shared/PlayerListOrder";
 import { useClearVotesToExecute } from "../store/actions/gmPlayerActions";
+import { PlayerMessagesTab } from "./PlayerMessagesTab";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
 export function NightOrder() {
@@ -126,7 +126,7 @@ export function NightOrder() {
               </Flex>
             </label>
           </Flex>
-          <PlayerMessageDisplay messageId={""} />
+          <PlayerMessagesTab />
         </Flex>
       </Tabs.Content>
 
