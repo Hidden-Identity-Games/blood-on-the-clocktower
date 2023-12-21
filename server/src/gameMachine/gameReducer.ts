@@ -6,13 +6,15 @@ import {
   toEntries,
 } from "@hidden-identity/shared";
 import {
-  configureStore,
   type EnhancedStore,
+  type Middleware,
   type StoreEnhancer,
   type ThunkAction,
   type ThunkDispatch,
+  type Tuple,
   type UnknownAction,
 } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { generate } from "random-words";
 
 import { UNASSIGNED } from "../database/gameDB/base.ts";
@@ -34,7 +36,22 @@ export type GameThunk<ReturnType> = ThunkAction<
 >;
 
 export function createGameReducer(initialState?: BaseUnifiedGame) {
-  return configureStore<BaseUnifiedGame, AnyAction>({
+  return configureStore<
+    BaseUnifiedGame,
+    AnyAction,
+    // Redux thunk types just ignore everything :-/ Need to do it manually
+    Tuple<
+      [
+        Middleware<
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          ThunkDispatch<BaseUnifiedGame, {}, AnyAction>,
+          BaseUnifiedGame,
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          ThunkDispatch<BaseUnifiedGame, {}, AnyAction>
+        >,
+      ]
+    >
+  >({
     preloadedState: initialState,
     reducer: {
       playersToRoles: (state = {}, action) => {

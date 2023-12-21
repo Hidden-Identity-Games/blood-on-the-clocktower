@@ -40,7 +40,7 @@ export function GrimoireTab({
   const [, , , setVotesToExecute] = useVotesToExecute();
 
   return (
-    <Flex className="h-full overflow-y-auto" direction="column" p="2" gap="2">
+    <>
       <PlayerListFilters
         allFilters={allFilters}
         selectedFilter={selectedFilter}
@@ -84,6 +84,6 @@ export function GrimoireTab({
           <PlayerNotes className="px-[3em] py-1" player={player} />
         </Flex>
       ))}
-    </Flex>
+    </>
   );
 }

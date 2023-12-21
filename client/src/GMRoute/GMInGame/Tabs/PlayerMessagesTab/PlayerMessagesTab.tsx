@@ -10,7 +10,7 @@ export function PlayerMessagesTab(_props: PlayerMessagesTabProps) {
   const [_, setSheetView] = useSheetView();
 
   return (
-    <div className="w-full divide-y">
+    <>
       {Object.keys(game.messagesByNight).length === 0 && (
         <div>No messages yet</div>
       )}
@@ -41,6 +41,6 @@ export function PlayerMessagesTab(_props: PlayerMessagesTabProps) {
           ))}
         </>
       ))}
-    </div>
+    </>
   );
 }

@@ -4,7 +4,6 @@ import {
   deadStatusShape,
   drunkStatusShape,
   gameStatusShape,
-  generateThreeWordId,
   playerMessageEntryShape,
   poisonStatusShape,
   protectedStatusShape,
@@ -13,7 +12,11 @@ import {
 import { z } from "zod";
 
 import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
-import { drawRole, progressTime } from "../gameMachine/gameActions.ts";
+import {
+  createMessageAction,
+  drawRoleAction,
+  progressTimeAction,
+} from "../gameMachine/gameActions.ts";
 import { setupTestGames } from "../testGames.ts";
 import { GameCreator } from "../testingUtils/gameCreator.ts";
 import {
@@ -244,7 +247,7 @@ export const gameRoutes = {
       const role = gameInstance.roleBag[numberDrawn];
 
       if (role && gameInstance.playersToRoles[player]) {
-        const action = drawRole({ roleNumber: numberDrawn, player });
+        const action = drawRoleAction({ roleNumber: numberDrawn, player });
         game.dispatch(action);
         return true;
       }
@@ -265,20 +268,7 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, messages } }) => {
       const game = await retrieveGame(gameId);
-      const id = generateThreeWordId();
-      game.dispatch({
-        type: "CreateMessage",
-        message: {
-          player,
-          id,
-          nightNumber: 0,
-          showState: "needs to be shown",
-          messages,
-        },
-        player,
-      });
-
-      return id;
+      return game.dispatch(createMessageAction({ player, messages }));
     }),
   deleteMessage: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ messageId: z.string() })))
@@ -293,6 +283,6 @@ export const gameRoutes = {
     .input(gameIdShape)
     .mutation(async ({ input: { gameId } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch(progressTime());
+      game.dispatch(progressTimeAction());
     }),
 };

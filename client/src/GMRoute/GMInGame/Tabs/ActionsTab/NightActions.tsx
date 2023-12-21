@@ -87,7 +87,7 @@ export function NightActions(_props: NightActionsProps) {
   );
 
   return (
-    <Flex className="overflow-y-auto" direction="column" py="3" gap="2">
+    <>
       {[...nightActions, ...leftoverPlayers].map((action) => (
         <React.Fragment key={action.name}>
           <Text size="4" asChild>
@@ -223,6 +223,6 @@ export function NightActions(_props: NightActionsProps) {
       >
         End night
       </ProgressTimeButton>
-    </Flex>
+    </>
   );
 }

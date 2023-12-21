@@ -1,7 +1,9 @@
 import {
   type Alignment,
   type GameStatus,
+  generateThreeWordId,
   type PlayerMessage,
+  type PlayerMessageEntry,
   type PlayerStatus,
   type Role,
 } from "@hidden-identity/shared";
@@ -59,7 +61,7 @@ export type AnyAction = {
 
 export type Dispatchable = AnyAction | GameThunk<any>;
 
-export function drawRole({
+export function drawRoleAction({
   roleNumber,
   player,
 }: {
@@ -83,12 +85,38 @@ export function drawRole({
   };
 }
 
-export function progressTime(): GameThunk<void> {
+export function progressTimeAction(): GameThunk<void> {
   return (dispatch, getGame) => {
     if (getGame().time.time === "day") {
       dispatch({ type: "StartNight" });
     } else {
       dispatch({ type: "StartDay" });
     }
+  };
+}
+
+export function createMessageAction({
+  player,
+  messages,
+}: {
+  player: string;
+  messages: PlayerMessageEntry[];
+}): GameThunk<string> {
+  return (dispatch, getGame) => {
+    const id = generateThreeWordId();
+
+    dispatch({
+      type: "CreateMessage",
+      message: {
+        player,
+        id,
+        nightNumber: getGame().time.count,
+        showState: "needs to be shown",
+        messages,
+      },
+      player,
+    });
+
+    return id;
   };
 }
