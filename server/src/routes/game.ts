@@ -281,9 +281,7 @@ export const gameRoutes = {
       return id;
     }),
   deleteMessage: gmProcedure
-    .input(
-      z.intersection(playerAndGameIdShape, z.object({ messageId: z.string() })),
-    )
+    .input(z.intersection(gameIdShape, z.object({ messageId: z.string() })))
     .mutation(async ({ input: { gameId, messageId } }) => {
       const game = await retrieveGame(gameId);
       game.dispatch({

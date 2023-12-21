@@ -4,6 +4,8 @@ import React from "react";
 import classNames from "classnames";
 import { motion } from "framer-motion";
 import { useIsHiddenView, useSheetExpanded } from "../../store/url";
+import { IconButton } from "@radix-ui/themes";
+import { LockOpen1Icon } from "@radix-ui/react-icons";
 
 export interface SheetBodyProps {
   children: React.ReactNode;
@@ -27,14 +29,12 @@ export function SheetHeader({ children }: SheetHeaderProps) {
   return (
     <div
       className={classNames(
-        "box-content flex h-6 w-full min-w-0 border-y border-gray-400 bg-[--color-background] pointer-events-auto shrink-0",
+        "box-content flex h-[64px] w-full min-w-0 border-y border-gray-400 bg-[--color-background] pointer-events-auto shrink-0",
         // helps the drag animation for the sheet
         "z-10",
       )}
     >
-      <div className="min-w-0 flex-1 overflow-hidden whitespace-nowrap">
-        {children}
-      </div>
+      <div className="flex-1 overflow-hidden whitespace-nowrap">{children}</div>
       {!isHiddenView && (
         <SheetCollapse>
           <button className="ml-1 flex aspect-square h-full items-center justify-around">
@@ -107,5 +107,22 @@ export function SheetCollapse({ children }: SheetCollapseProps) {
   return React.Children.map(children, (Child) =>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     React.cloneElement(Child as any, { onClick }),
+  );
+}
+
+export function LockedSheetHeader() {
+  const [_, setIsHiddenView] = useIsHiddenView();
+
+  return (
+    <div className="flex h-full w-full items-center justify-between">
+      <div className="text-base font-bold">Only unlock if Storyteller</div>
+      <IconButton
+        variant="surface"
+        onClick={() => setIsHiddenView(false)}
+        size="1"
+      >
+        <LockOpen1Icon />
+      </IconButton>
+    </div>
   );
 }

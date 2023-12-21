@@ -73,3 +73,14 @@ export function useCreateMessage() {
     return await trpc.createMessage.mutate({ gameId, player, messages });
   });
 }
+
+export function useDeleteMessage() {
+  const { gameId } = useGame();
+  return useAction(async (messageId: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    return await trpc.deleteMessage.mutate({ gameId, messageId });
+  });
+}

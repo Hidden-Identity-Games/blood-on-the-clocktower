@@ -1,60 +1,49 @@
 import { PlayerMessage, groupBy } from "@hidden-identity/shared";
-import { Heading, IconButton, Text, TextArea } from "@radix-ui/themes";
+import { Button, Heading, Text, TextArea } from "@radix-ui/themes";
 import { CharacterName } from "../../RoleIcon";
 import { alignmentColorMap, colorMap } from "../../CharacterTypes";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { SheetBody, SheetContent, SheetHeader } from "../SheetBody";
+import {
+  LockedSheetHeader,
+  SheetBody,
+  SheetContent,
+  SheetHeader,
+} from "../SheetBody";
 import { PlayerName } from "../../../GamemasterInGame/PlayerListComponents/PlayerName";
-import { CgMail } from "react-icons/cg";
+import { CgMail, CgSpinner } from "react-icons/cg";
 import { useIsHiddenView } from "../../../store/url";
-import { LockOpen1Icon } from "@radix-ui/react-icons";
+import { useDeleteMessage } from "../../../store/actions/gmActions";
+import { DestructiveButton } from "../../../GamemasterInGame/DestructiveButton";
+import { LoadingExperience } from "../../LoadingExperience";
+import { ErrorCallout } from "../../ErrorCallout";
 
 interface MessageSheetPiecesProps {
   message: PlayerMessage;
 }
 
 function Header({ message }: MessageSheetPiecesProps) {
-  const [hiddenView, setIsHiddenView] = useIsHiddenView();
+  const [hiddenView] = useIsHiddenView();
 
-  return (
+  return hiddenView ? (
+    <LockedSheetHeader />
+  ) : (
     <Heading className="flex h-full items-center justify-between px-2">
-      {hiddenView ? (
-        <>
-          <div className="text-base font-bold">Only unlock if Storyteller</div>
-          <IconButton
-            variant="surface"
-            onClick={() => setIsHiddenView(false)}
-            size="1"
-          >
-            <LockOpen1Icon />
-          </IconButton>
-        </>
-      ) : (
-        <>
-          <CgMail className="inline-block pr-1" size="1em" />
-          <PlayerName player={message.player} />
-        </>
-      )}
+      <CgMail className="inline-block pr-1" size="1em" />
+      <PlayerName player={message.player} />
     </Heading>
   );
 }
 function Body({ message }: MessageSheetPiecesProps) {
   const messagesByGroup = groupBy(message.messages, "group");
   const [hiddenView, setIsHiddenView] = useIsHiddenView();
+  const [errorDeletingMessage, deleteMessageIsLoading, , deleteMessage] =
+    useDeleteMessage();
   return (
     <div className="flex h-full flex-col gap-2 p-2">
-      <div className="flex w-full">
-        <Heading className="flex-1 p-1 capitalize">{message.player}</Heading>
-        {!hiddenView && (
-          <IconButton
-            variant="surface"
-            onClick={() => setIsHiddenView(true)}
-            size="1"
-          >
-            <LockOpen1Icon />
-          </IconButton>
-        )}
-      </div>
+      {!hiddenView && message.showState === "needs to be shown" && (
+        <Button onClick={() => setIsHiddenView(true)}>Show to player</Button>
+      )}
+      <Heading className="capitalize">{message.player}</Heading>
 
       {Object.keys(messagesByGroup).map((section) => (
         <div className="flex flex-col gap-1 px-2" key={section}>
@@ -101,6 +90,18 @@ function Body({ message }: MessageSheetPiecesProps) {
           ))}
         </div>
       ))}
+      <ErrorCallout error={errorDeletingMessage} />
+      <DestructiveButton
+        confirmationText="Are you sure?  This cannot be undone."
+        onClick={() => deleteMessage(message.id)}
+      >
+        {deleteMessageIsLoading && (
+          <LoadingExperience>
+            <CgSpinner />
+          </LoadingExperience>
+        )}
+        DeleteMessage
+      </DestructiveButton>
     </div>
   );
 }

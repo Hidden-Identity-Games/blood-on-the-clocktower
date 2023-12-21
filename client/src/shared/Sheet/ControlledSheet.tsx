@@ -2,6 +2,7 @@ import { useSheetView } from "../../store/url";
 import { PlayerSheet } from "./SheetTypes/PlayerSheet";
 import { MessageSheet } from "./SheetTypes/MessageSheet";
 import { exhaustiveCheck } from "@hidden-identity/shared";
+import { BlankSheet } from "./SheetTypes/BlankSheet";
 
 export function ControlledSheet() {
   const [sheetView] = useSheetView();
@@ -15,7 +16,7 @@ export function ControlledSheet() {
     case "message":
       return <MessageSheet messageId={sheetView.id} />;
     case "none":
-      return null;
+      return <BlankSheet />;
     default:
       exhaustiveCheck(sheetView.type);
   }

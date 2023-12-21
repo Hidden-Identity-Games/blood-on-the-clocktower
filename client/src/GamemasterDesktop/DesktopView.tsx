@@ -4,7 +4,7 @@ import { LoadingExperience } from "../shared/LoadingExperience";
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { usePlayerOrder } from "../shared/PlayerListOrder";
 import { NightOrder } from "../GamemasterInGame/NightOrder";
-import { useFirstSeat, useIsHiddenView } from "../store/url";
+import { useFirstSeat, useIsHiddenView, useSearchParams } from "../store/url";
 import { Lobby } from "../GamemasterInGame/Lobby";
 import { TeamDistributionBar } from "../shared/TeamDistributionBar";
 import { ExecutionInfo } from "../shared/ExecutionInfo";
@@ -13,16 +13,39 @@ import { GMTile } from "../shared/PlayersInCircle/GMTile";
 import React from "react";
 import { ControlledSheet } from "../shared/Sheet/ControlledSheet";
 
+function HideShowButton() {
+  const [_, setSearchParams] = useSearchParams();
+  const [isHiddenView, setIsHiddenView] = useIsHiddenView();
+  return isHiddenView ? (
+    <Button
+      onClick={() => {
+        // uggh https://github.com/remix-run/react-router/issues/9757
+        setSearchParams({ hiddenView: undefined, sheetView: undefined });
+      }}
+    >
+      Show
+    </Button>
+  ) : (
+    <Button
+      onClick={() => {
+        setIsHiddenView(true);
+      }}
+    >
+      Hide
+    </Button>
+  );
+}
+
 interface DesktopViewProps {
   isPlayerView?: boolean;
 }
 export function DesktopView({ isPlayerView = true }: DesktopViewProps) {
   return (
     <div className=" relative flex min-h-0 flex-1 justify-between gap-4 overflow-hidden">
-      <Flex className="hidden lg:flex lg:flex-1">
+      <Flex className="hidden flex-1 lg:flex">
         <Grimoire isPlayerView={isPlayerView} />
       </Flex>
-      <div className="flex h-full w-1/4 min-w-[400px] shrink grow overflow-hidden empty:hidden md:grow-0">
+      <div className="flex h-full w-full min-w-[400px] shrink grow overflow-hidden empty:hidden md:grow-0 lg:w-1/4">
         <SideBar />
       </div>
     </div>
@@ -50,7 +73,7 @@ interface GrimoireProps {
 function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const { game } = useGame();
   const [firstSeat] = useFirstSeat();
-  const [_isHiddenView, setIsHiddenView] = useIsHiddenView();
+  const [_isHiddenView] = useIsHiddenView();
   const hideInfo = _isHiddenView || isPlayerView;
   const players = usePlayerOrder("seat order", firstSeat);
 
@@ -76,15 +99,7 @@ function Grimoire({ isPlayerView = true }: GrimoireProps) {
                 </Flex>
               </>
             )}
-            {!isPlayerView && (
-              <Button
-                onClick={() => {
-                  setIsHiddenView(!hideInfo);
-                }}
-              >
-                Switch to {hideInfo ? "Night" : "Day"}
-              </Button>
-            )}
+            {!isPlayerView && <HideShowButton />}
           </Flex>
         </PlaceInCenter>
         <>

@@ -11,6 +11,11 @@ body {
   overscroll-behavior: contain;
 }
 
+.flex-1 {
+  /* this makes flex behave more intuitively */
+  min-width: 0;
+}
+
 html {
   height: -webkit-fill-available;
 }
