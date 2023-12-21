@@ -3,15 +3,15 @@ import { getScript, type Role } from "@hidden-identity/shared";
 import { addTestGame } from "./database/gameDB/base.ts";
 import { GameCreator } from "./testingUtils/gameCreator.ts";
 
-export async function setupTestGames(): Promise<void> {
-  await addTestGame(
+export function setupTestGames() {
+  addTestGame(
     "test-game",
     new GameCreator(getScript("Trouble Brewing"))
       .addPlayers(15)
       .assignSeating(),
   );
 
-  await addTestGame(
+  addTestGame(
     "tg-f-night",
     new GameCreator(getScript("Trouble Brewing"))
       .addPlayers(15)
@@ -33,7 +33,7 @@ export async function setupTestGames(): Promise<void> {
       }),
   );
 
-  await addTestGame(
+  addTestGame(
     "tg-bmr",
     new GameCreator(getScript("Bad Moon Rising"))
       .addPlayers(15)
@@ -56,7 +56,7 @@ export async function setupTestGames(): Promise<void> {
       }),
   );
 
-  await addTestGame(
+  addTestGame(
     "tg-travelers",
     new GameCreator(getScript("Bad Moon Rising"))
       .addPlayers(15)
@@ -65,7 +65,7 @@ export async function setupTestGames(): Promise<void> {
       .moveToSetup()
       .addTraveler(),
   );
-  await addTestGame(
+  addTestGame(
     "tg-legion",
     new GameCreator(getScript("🌶️ TB"))
       .addPlayers(15)

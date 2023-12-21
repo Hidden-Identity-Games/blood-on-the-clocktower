@@ -69,12 +69,9 @@ export async function addGame(
   });
 }
 
-export async function addTestGame(
-  gameId: string,
-  gameCreator: GameCreator,
-): Promise<void> {
+export function addTestGame(gameId: string, gameCreator: GameCreator): void {
   gameDB[gameId] = gameCreator.toGameMachine();
-  await addTestScript(gameId.toUpperCase(), gameCreator.script);
+  addTestScript(gameId.toUpperCase(), gameCreator.script);
 }
 
 export async function subscribeToGame(

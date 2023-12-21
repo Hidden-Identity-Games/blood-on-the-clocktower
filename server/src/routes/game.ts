@@ -23,7 +23,7 @@ import {
 } from "../trpcServerInternals/trpc.ts";
 import { gameIdShape, playerAndGameIdShape } from "./baseApiShapes.ts";
 
-await setupTestGames();
+setupTestGames();
 
 const testGameOptions = z.object({
   isTestGame: z.boolean(),

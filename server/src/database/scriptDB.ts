@@ -55,10 +55,7 @@ export async function addScript(gameId: string, script: Script): Promise<void> {
   });
 }
 
-export async function addTestScript(
-  gameId: string,
-  script: Script,
-): Promise<void> {
+export function addTestScript(gameId: string, script: Script): void {
   scriptDB[gameId] = new WatchableResource(script, {});
 }
 
