@@ -72,6 +72,8 @@ export function NewGameButton({
                   onChange={(e) => setPlayerCount(e.target.value)}
                   // stop the wheel from changing this input
                   onWheel={(e) => e.currentTarget.blur()}
+                  defaultValue={15}
+                  autoFocus
                 />
                 <Flex asChild gap="2" align="center">
                   <label>

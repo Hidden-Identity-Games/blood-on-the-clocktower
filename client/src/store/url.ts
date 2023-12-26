@@ -67,6 +67,15 @@ export const searchParamKeys = [
 export type SearchParamKey = (typeof searchParamKeys)[number];
 export type SearchParams = Partial<Record<SearchParamKey, string>>;
 
+export const RESET_SEARCH_PARAMS: Record<SearchParamKey, undefined> = {
+  firstSeat: undefined,
+  gameId: undefined,
+  gmSecretHash: undefined,
+  hiddenView: undefined,
+  sheetView: undefined,
+  testPlayerKey: undefined,
+};
+
 export function searchParamsString(searchParams: SearchParams): string {
   return new URLSearchParams(
     filterObject({ ...searchParams }, ([_, v]) => !!v),
