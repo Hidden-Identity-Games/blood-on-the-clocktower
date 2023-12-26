@@ -1,21 +1,11 @@
 import { getCharacter } from "@hidden-identity/shared";
-import {
-  Button,
-  Checkbox,
-  Dialog,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-} from "@radix-ui/themes";
+import { Button, Checkbox, Flex, IconButton, Text } from "@radix-ui/themes";
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import { DialogHeader } from "../../../../shared/DialogHeader";
-import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
 import { useDefiniteGame } from "../../../../store/GameContext";
+import { useSheetView } from "../../../../store/url";
 import { PlayerList } from "../../../GMShared/PlayerListComponents";
-import { DemonMessage } from "../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/DemonMessage";
 import { PlayerNotes } from "../../../GMShared/PlayerListComponents/PlayerNotes";
 import { ProgressTimeButton } from "./ProgressTimeButton";
 
@@ -33,8 +23,8 @@ type Action =
     };
 const gameActionsByNight = {
   firstNight: [
-    { type: "game-action", name: "minions", order: 7 },
-    { type: "game-action", name: "demon", order: 8 },
+    { type: "game-action", name: "MINIONS", order: 7 },
+    { type: "game-action", name: "DEMON", order: 8 },
   ] as Action[],
   otherNight: [] as Action[],
 };
@@ -42,8 +32,9 @@ const gameActionsByNight = {
 interface NightActionsProps {}
 export function NightActions(_props: NightActionsProps) {
   const { game } = useDefiniteGame();
+  const [_, triggerSheet] = useSheetView();
 
-  const firstNight = game.gameStatus === "Setup";
+  const firstNight = game.time.count === 1;
   const nightKey = firstNight ? "firstNight" : "otherNight";
 
   const [nightActions, leftoverPlayers] = React.useMemo(() => {
@@ -123,84 +114,19 @@ export function NightActions(_props: NightActionsProps) {
                 </>
               )}
               {action.type === "game-action" && (
-                <Dialog.Root>
-                  <Dialog.Trigger>
-                    <Button variant="soft" className="flex-1 capitalize">
-                      {action.name}
-                    </Button>
-                  </Dialog.Trigger>
-                  <Dialog.Content>
-                    {action.name === "demon" && (
-                      <>
-                        <DialogHeader>Demon</DialogHeader>
-                        <DemonMessage
-                          // TODO: support multiple demons
-                          player={
-                            game.playerList.find(
-                              (player) =>
-                                getCharacter(game.playersToRoles[player])
-                                  .team === "Demon",
-                            )!
-                          }
-                          // TODO: add back auto-note functionality
-                          //   message: string,
-                          //   reveal: Record<string, Reveal[]>,
-                          // ) => {
-                          //   const player = Object.entries(
-                          //     game.playersToRoles,
-                          //   ).find(
-                          //     ([, role]) => getCharacter(role).team === "Demon",
-                          //   ) ?? [""];
-                          //   const bluffs = `Bluffs:\n${reveal["bluffs"]
-                          //     .map(
-                          //       ({ character }) =>
-                          //         getCharacter(
-                          //           character ?? ("unassigned" as Role),
-                          //         ).name,
-                          //     )
-                          //     .join("\n")}`;
-
-                          //   setPlayerNote(player[0], bluffs);
-                          // }}
-                        />
-                      </>
-                    )}
-                    {action.name === "minions" && (
-                      <>
-                        <DialogHeader>Minions</DialogHeader>
-                        <Text>
-                          Wake up the minions, and show them who their demon is.
-                        </Text>
-                        <Heading>Minions:</Heading>
-                        <ul className="pl-2">
-                          {Object.entries(game.playersToRoles)
-                            .filter(
-                              ([_, role]) =>
-                                getCharacter(role).team === "Minion",
-                            )
-                            .map(([player]) => (
-                              <li key={player}>
-                                <PlayerNameWithRoleIcon player={player} />
-                              </li>
-                            ))}
-                        </ul>
-                        <Heading>Demon:</Heading>
-                        <ul className="pl-2">
-                          {Object.entries(game.playersToRoles)
-                            .filter(
-                              ([_, role]) =>
-                                getCharacter(role).team === "Demon",
-                            )
-                            .map(([player]) => (
-                              <li key={player}>
-                                <PlayerNameWithRoleIcon player={player} />
-                              </li>
-                            ))}
-                        </ul>
-                      </>
-                    )}
-                  </Dialog.Content>
-                </Dialog.Root>
+                <Button
+                  variant="soft"
+                  className="flex-1 capitalize"
+                  onClick={() =>
+                    triggerSheet({
+                      type: "action",
+                      id: action.name,
+                      isOpen: "open",
+                    })
+                  }
+                >
+                  {action.name}
+                </Button>
               )}
             </Flex>
           </Text>

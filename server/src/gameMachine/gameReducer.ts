@@ -78,12 +78,12 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
           case "StartDay":
             return {
               time: "day",
-              count: state.count + 1,
+              count: state.count,
             };
           case "StartNight": {
             return {
               time: "night",
-              count: state.count,
+              count: state.count + 1,
             };
           }
           default:

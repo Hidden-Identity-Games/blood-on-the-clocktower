@@ -6,7 +6,6 @@ import { type ComponentType } from "react";
 
 import { AlignmentChangeMessage } from "./MessageCreators/AlignmentChangeMessage";
 import { CharacterSelectedYouMessage } from "./MessageCreators/CharacterSelectedYouMessage";
-import { DemonMessage } from "./MessageCreators/DemonMessage";
 import { MadnessMessage } from "./MessageCreators/MadnessMessage";
 import { RevealCharacterMessage } from "./MessageCreators/RevealCharacterMessage";
 import { RevealRoleMessage } from "./MessageCreators/RevealRoleMessage";
@@ -25,7 +24,6 @@ const ComponentMap: {
   }>;
 } = {
   "reveal-role": RevealRoleMessage,
-  "demon-first-night": DemonMessage,
   "reveal-character": RevealCharacterMessage,
   "reveal-team": RevealTeamMessage,
   "character-selected-you": CharacterSelectedYouMessage,

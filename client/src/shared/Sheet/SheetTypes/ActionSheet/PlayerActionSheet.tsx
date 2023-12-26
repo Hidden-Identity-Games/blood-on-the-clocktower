@@ -1,7 +1,7 @@
-import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
-import { useDefiniteGame } from "../../../store/GameContext";
-import { PlayerNameWithRoleIcon, RoleName } from "../../RoleIcon";
-import { SheetBody, SheetContent, SheetHeader } from "../SheetBody";
+import { PlayerList } from "../../../../GMRoute/GMShared/PlayerListComponents";
+import { useDefiniteGame } from "../../../../store/GameContext";
+import { PlayerNameWithRoleIcon, RoleName } from "../../../RoleIcon";
+import { SheetBody, SheetContent, SheetHeader } from "../../SheetBody";
 
 export interface PlayerSheetProps {
   player: string;
@@ -21,7 +21,7 @@ function Body({ player }: PlayerSheetProps) {
   return <PlayerList.NightReminder player={player} />;
 }
 
-export function PlayerSheet({ player }: PlayerSheetProps) {
+export function PlayerActionSheet({ player }: PlayerSheetProps) {
   const { game } = useDefiniteGame();
 
   if (!Reflect.has(game.playersToRoles, player)) {
