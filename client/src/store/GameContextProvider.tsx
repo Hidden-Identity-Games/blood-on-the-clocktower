@@ -1,5 +1,5 @@
 import { type Script } from "@hidden-identity/shared";
-import { Callout } from "@radix-ui/themes";
+import { Callout, CalloutIcon } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { ReadyState } from "react-use-websocket";
 
@@ -7,10 +7,12 @@ import { LoadingExperience } from "../shared/LoadingExperience";
 import { trpc } from "../shared/trpcClient";
 import { type UnifiedGame } from "./Game";
 import { UnifiedGameContext } from "./GameContext";
-import { useGameId } from "./url";
+import { RESET_SEARCH_PARAMS, useGameId, useSafeNavigate } from "./url";
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const gameId = useGameId();
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useSafeNavigate();
   const [game, setGame] = useState<UnifiedGame | null>(null);
   const [script, setScript] = useState<Script | null>([
     { id: "baron" },
@@ -49,6 +51,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   );
 
   useEffect(() => {
+    setError(null);
     if (!gameId) {
       return;
     }
@@ -64,7 +67,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             setScript(data.nextObj);
           }
         },
-        onError: () => {},
+        onError: () => {
+          setError("Cannot find game");
+        },
         onStarted: () => {
           setReady(ReadyState.OPEN);
         },
@@ -80,6 +85,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <UnifiedGameContext.Provider value={contextValue}>
+      {error && (
+        <Callout.Root onClick={() => navigate("", RESET_SEARCH_PARAMS)}>
+          <CalloutIcon />
+          <Callout.Text>
+            Game not found. Click here to head back to the homepage.
+          </Callout.Text>
+        </Callout.Root>
+      )}
       {gameId && readyState !== ReadyState.OPEN && (
         <LoadingExperience>
           <Callout.Root>
