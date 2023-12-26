@@ -21,8 +21,7 @@ function HideShowButton() {
   return isHiddenView ? (
     <Button
       onClick={() => {
-        // uggh https://github.com/remix-run/react-router/issues/9757
-        setSearchParams({ hiddenView: undefined, sheetView: undefined });
+        setIsHiddenView(false);
       }}
     >
       Show
@@ -30,7 +29,8 @@ function HideShowButton() {
   ) : (
     <Button
       onClick={() => {
-        setIsHiddenView(true);
+        // uggh https://github.com/remix-run/react-router/issues/9757
+        setSearchParams({ hiddenView: "true", sheetView: undefined });
       }}
     >
       Hide

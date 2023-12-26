@@ -8,8 +8,12 @@ import {
 } from "@hidden-identity/shared";
 import { createSelector } from "@reduxjs/toolkit";
 
-import { type Dispatchable } from "./gameActions.ts";
-import { createGameReducer, type GameReducer } from "./gameReducer.ts";
+import { type AnyAction } from "./gameActions.ts";
+import {
+  createGameReducer,
+  type GameReducer,
+  type GameThunk,
+} from "./gameReducer.ts";
 import { getOrderedPlayers } from "./gameSelectors.ts";
 type Callback<ResourceShape> = (value: ResourceShape | null) => void;
 
@@ -27,10 +31,11 @@ export class GameMachine {
       initialStateMinusComputedKeys as BaseUnifiedGame,
     );
   }
+  dispatch<ReturnType>(action: GameThunk<ReturnType>): ReturnType;
+  dispatch<Action extends AnyAction>(action: Action): Action;
 
-  dispatch(action: Dispatchable) {
-    // TODO: fix these types
-    this.store.dispatch(action as any);
+  dispatch<ReturnType>(action: AnyAction | GameThunk<ReturnType>) {
+    return this.store.dispatch(action);
   }
 
   subscribe(callback: Callback<UnifiedGame>): () => void {

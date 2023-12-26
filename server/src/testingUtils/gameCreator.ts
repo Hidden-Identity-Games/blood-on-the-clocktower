@@ -11,7 +11,7 @@ import {
   toEntries,
 } from "@hidden-identity/shared";
 
-import { drawRole } from "../gameMachine/gameActions.ts";
+import { drawRoleAction } from "../gameMachine/gameActions.ts";
 import { GameMachine } from "../gameMachine/gameMachine.ts";
 
 export class GameCreator {
@@ -66,7 +66,7 @@ export class GameCreator {
     );
 
     nonTravelerPlayers.forEach((player, index) => {
-      this.game.dispatch(drawRole({ player, roleNumber: index + 1 }));
+      this.game.dispatch(drawRoleAction({ player, roleNumber: index + 1 }));
     });
     return this;
   }

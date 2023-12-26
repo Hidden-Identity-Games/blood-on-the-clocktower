@@ -46,10 +46,6 @@ export function PlaceInCircle({
   children,
   stepsIn,
 }: PlaceInCircleProps) {
-  // radius: 195
-  // 6 players -> theta 2pi / 6
-  //
-
   const { radius, totalItems } = React.useContext(CircularLayoutContext);
   const distanceToStartOfStep = (1 - stepsIn / 5) * radius;
   const sliceAngle = (2 * Math.PI) / totalItems;

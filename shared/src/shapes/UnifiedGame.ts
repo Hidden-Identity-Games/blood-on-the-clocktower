@@ -36,6 +36,13 @@ export const characterAbilityStatusShape = z.object({
   type: z.enum(["characterAbility"]),
   id: z.string(),
 });
+export const dayNightShape = z.enum(["day", "night"]);
+export const timeRecordShape = z.object({
+  time: dayNightShape,
+  count: z.number(),
+});
+export type TimeRecord = z.TypeOf<typeof timeRecordShape>;
+
 export const deadStatusShape = z.object({
   type: z.enum(["dead"]),
   id: z.string(),
@@ -81,6 +88,7 @@ export interface BaseUnifiedGame {
   roleBag: Record<number, Role | null>;
   playersSeenRoles: string[];
   messages: PlayerMessage[];
+  time: TimeRecord;
 }
 
 export interface WellOrderedPlayers {

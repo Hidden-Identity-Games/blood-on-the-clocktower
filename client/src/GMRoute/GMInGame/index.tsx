@@ -7,35 +7,17 @@ import { GiNotebook, GiOpenBook } from "react-icons/gi";
 
 import { type PlayerOrder } from "../../shared/PlayerListOrder";
 import { ScriptList } from "../../shared/ScriptList";
-import { useSetGameStatus } from "../../store/actions/gmActions";
-import { useClearVotesToExecute } from "../../store/actions/gmPlayerActions";
-import { useDefiniteGame } from "../../store/GameContext";
 import { GameMasterActions } from "../GMShared/GameMasterActions";
-import { IngamePlayerList } from "./GMPlayerList";
-import { NightPlayerList } from "./NightPlayerList";
-import { PlayerMessagesTab } from "./PlayerMessagesTab";
+import { ActionsTab } from "./Tabs/ActionsTab";
+import { GrimoireTab } from "./Tabs/GrimoireTab";
+import { PlayerMessagesTab } from "./Tabs/PlayerMessagesTab";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
-export function NightOrder() {
-  const { game } = useDefiniteGame();
-
-  const [, , , setGameStatus] = useSetGameStatus();
+export function GMInGame() {
   const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoire");
 
   const [selectedOrder, setSelectedOrder] =
     React.useState<PlayerOrder>("alphabetical");
-
-  const [, , , clearVotesToExecute] = useClearVotesToExecute();
-
-  const firstNight = game.gameStatus === "Setup";
-
-  const startDay = () => {
-    if (game.gameStatus === "Setup") {
-      void setGameStatus("Started");
-    }
-    setSelectedTab("grimoire");
-    void clearVotesToExecute();
-  };
 
   return (
     <Tabs.Root
@@ -51,11 +33,7 @@ export function NightOrder() {
         >
           <GiOpenBook />
         </TabTrigger>
-        <TabTrigger
-          value="night"
-          heading={firstNight ? "First Night" : "Night"}
-          selectedTab={selectedTab}
-        >
+        <TabTrigger value="night" heading="Actions" selectedTab={selectedTab}>
           <BsFillMoonStarsFill />
         </TabTrigger>
         <TabTrigger value="message" heading="Message" selectedTab={selectedTab}>
@@ -66,8 +44,14 @@ export function NightOrder() {
         </TabTrigger>
       </Tabs.List>
 
-      <Tabs.Content className="flex-1 overflow-y-auto" value="grimoire">
-        <IngamePlayerList
+      <Tabs.Content
+        className={classNames(
+          "flex flex-1 flex-col gap-2 overflow-y-auto pb-[80px] p-3",
+          selectedTab !== "grimoire" && "hidden",
+        )}
+        value="grimoire"
+      >
+        <GrimoireTab
           selectedOrder={selectedOrder}
           setSelectedOrder={setSelectedOrder}
         />
@@ -76,30 +60,33 @@ export function NightOrder() {
       <Tabs.Content
         forceMount
         className={classNames(
-          "flex-1 overflow-y-auto",
+          "flex-1 overflow-y-auto flex flex-col gap-2 p-3 pb-[80px]",
           selectedTab !== "night" && "hidden",
         )}
         value="night"
       >
-        <Flex direction="column" mt="2">
-          <NightPlayerList
-            firstNight={firstNight}
-            endNightCallback={startDay}
-          />
-        </Flex>
+        <ActionsTab />
       </Tabs.Content>
 
-      <Tabs.Content className="flex-1 overflow-y-auto" value="message">
-        <Flex className="h-5/6" direction="column" gap="1" my="3">
-          <PlayerMessagesTab />
-        </Flex>
+      <Tabs.Content
+        className={classNames(
+          "flex flex-1 flex-col overflow-y-auto pb-[80px] p-3 divide-y",
+          selectedTab !== "message" && "hidden",
+        )}
+        value="message"
+      >
+        <PlayerMessagesTab />
       </Tabs.Content>
 
-      <Tabs.Content className="flex-1 overflow-y-auto" value="menu">
-        <Flex className="h-full" direction="column" gap="2" m="3">
-          <GameMasterActions gameStartable={false} availableRolesList={[]} />
-          <ScriptList className="my-5" />
-        </Flex>
+      <Tabs.Content
+        className={classNames(
+          "flex flex-1 flex-col gap-2 overflow-y-auto pb-[80px] p-3",
+          selectedTab !== "menu" && "hidden",
+        )}
+        value="menu"
+      >
+        <GameMasterActions gameStartable={false} availableRolesList={[]} />
+        <ScriptList className="my-5" />
       </Tabs.Content>
     </Tabs.Root>
   );
