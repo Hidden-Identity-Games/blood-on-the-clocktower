@@ -2,7 +2,8 @@ import {
   type PlayerMessageCreatorMap,
   type Role,
 } from "@hidden-identity/shared";
-import { Flex, Heading } from "@radix-ui/themes";
+import { Flex, Heading, TextFieldInput } from "@radix-ui/themes";
+import { useState } from "react";
 
 import { useDefiniteGame } from "../../../../../store/GameContext";
 import { RoleSelectList } from "../../Selectors";
@@ -21,6 +22,7 @@ export function CharacterSelectedYouMessage({
   player,
 }: CharacterSelectedYouMessageProps) {
   const { script } = useDefiniteGame();
+  const [groupName, setGroupName] = useState("In play");
   const rolesList = script.map(({ id }) => id);
 
   const filter = useCharacterRestriction(message.restriction);
@@ -33,6 +35,10 @@ export function CharacterSelectedYouMessage({
     <Flex direction="column" gap="2">
       <Heading>Role</Heading>
       <Restrictions restrictions={message.restriction} />
+      <TextFieldInput
+        onChange={(e) => setGroupName(e.target.value)}
+        value={groupName}
+      />
       <RoleSelectList
         roles={rolesState.value}
         addRole={rolesState.add}
@@ -42,7 +48,7 @@ export function CharacterSelectedYouMessage({
         player={player}
         message={rolesState.value.map((k) => ({
           character: k,
-          group: "In play",
+          group: groupName,
         }))}
       />
     </Flex>
