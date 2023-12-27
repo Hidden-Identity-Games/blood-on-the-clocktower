@@ -62,58 +62,6 @@ export function PlayerActions({
           >
             {game.deadPlayers[player] ? <GiRaiseZombie /> : <PiKnifeBold />}
           </PlayerList.MenuItem>
-          {/* <PlayerList.MenuItem
-            id={`${player}-set-poison`}
-            label="Poisoned"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "poison",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="poison" />
-          </PlayerList.MenuItem> */}
-          {/* <PlayerList.MenuItem
-            id={`${player}-set-drunk`}
-            label="Drunk"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "drunk",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="drunk" />
-          </PlayerList.MenuItem> */}
-          {/* <PlayerList.MenuItem
-            id={`${player}-set-protected`}
-            label="Protected"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "protected",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="protected" />
-          </PlayerList.MenuItem> */}
-          {/* <PlayerList.MenuItem
-            id={`${player}-set-other`}
-            label="Other"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "characterAbility",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="characterAbility" />
-          </PlayerList.MenuItem> */}
           <PlayerList.MenuItem
             id={`${player}-toggle-dead-vote`}
             label={

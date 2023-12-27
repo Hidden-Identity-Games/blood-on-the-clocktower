@@ -1,4 +1,8 @@
-import { type Alignment, type Role } from "@hidden-identity/shared";
+import {
+  type Alignment,
+  type PlayerReminder,
+  type Role,
+} from "@hidden-identity/shared";
 
 import { trpc } from "../../shared/trpcClient";
 import { useAction, useGame } from "../GameContext";
@@ -72,5 +76,36 @@ export function useClearVotesToExecute() {
     }
 
     await trpc.clearVotesToExecute.mutate({ gameId });
+  });
+}
+
+export function usePlayerReminder() {
+  const { gameId } = useGame();
+
+  return useAction(async (reminder: PlayerReminder) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.addPlayerReminder.mutate({
+      gameId,
+      reminderText: reminder.reminderText,
+      fromPlayer: reminder.fromPlayer,
+      toPlayer: reminder.toPlayer,
+      startNight: reminder.startNight,
+      archetype: reminder.archetype,
+    });
+  });
+}
+
+export function useClearPlayerReminder() {
+  const { gameId } = useGame();
+
+  return useAction(async (reminderId: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.clearPlayerReminder.mutate({ gameId, reminderId });
   });
 }

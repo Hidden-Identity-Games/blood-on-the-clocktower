@@ -127,7 +127,7 @@ export const gameRoutes = {
       game.dispatch({ type: dead ? "KillPlayer" : "RevivePlayer", player });
     }),
   addPlayerReminder: gmProcedure
-    .input(z.intersection(playerAndGameIdShape, playerReminderShape))
+    .input(z.intersection(gameIdShape, playerReminderShape))
     .mutation(
       async ({
         input: {

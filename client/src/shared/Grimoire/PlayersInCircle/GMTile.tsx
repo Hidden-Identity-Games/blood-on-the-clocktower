@@ -6,7 +6,7 @@ import useResizeObserver from "use-resize-observer";
 // import { PlayerStatusIcon } from "../../../GMRoute/GMInGame/NotesIcons";
 import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { AddPlayerReminder } from "../../PlayerReminder";
+import { AddPlayerReminder } from "../../AddPlayerReminder";
 import { getRoleIcon, RoleText } from "../../RoleIcon";
 import { PlaceInCircle } from ".";
 import { useScalingTextClassName } from "./ScalingText";
