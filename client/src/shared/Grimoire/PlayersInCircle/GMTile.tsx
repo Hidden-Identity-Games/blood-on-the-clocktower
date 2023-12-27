@@ -23,38 +23,38 @@ export function GMTile({ player, index }: SpectatorTile) {
   const scalingTextclass = useScalingTextClassName(width);
   const [, isClearReminderLoading, , clearReminder] = useClearPlayerReminder();
   const role = game.playersToRoles[player];
-  const baseStatuses = game.reminders
+  const baseReminders = game.reminders
     .filter(({ active, toPlayer }) => active && toPlayer === player)
     .slice(0, 2);
-  const overflowStatuses = game.reminders
+  const overflowReminders = game.reminders
     .filter(({ active, toPlayer }) => active && toPlayer === player)
     .slice(2);
-  const showOverflowStates = overflowStatuses.length > 1;
-  const statusesToRender = showOverflowStates
-    ? baseStatuses
-    : [...baseStatuses, ...overflowStatuses];
+  const showOverflowReminders = overflowReminders.length > 1;
+  const remindersToRender = showOverflowReminders
+    ? baseReminders
+    : [...baseReminders, ...overflowReminders];
 
   return (
     <>
-      {statusesToRender.map((status, idx) => (
-        <PlaceInCircle index={index} stepsIn={2 + idx / 2} key={status.id}>
+      {remindersToRender.map((reminder, idx) => (
+        <PlaceInCircle index={index} stepsIn={2 + idx / 2} key={reminder.id}>
           {/* We need to add pointer events manually to prevent the div from overlapping us, because corners bullshit */}
           <button
             className="pointer-events-auto rounded-full bg-green-600 p-1 text-sm"
-            onClick={() => void clearReminder(status.id)}
+            onClick={() => void clearReminder(reminder.id)}
             disabled={isClearReminderLoading}
           >
             <Flex direction="column">
-              {status.fromPlayer && (
-                <RoleIcon role={game.playersToRoles[status.fromPlayer]} />
+              {reminder.fromPlayer && (
+                <RoleIcon role={game.playersToRoles[reminder.fromPlayer]} />
               )}
-              {status.reminderText}
+              {reminder.reminderText}
             </Flex>
           </button>
         </PlaceInCircle>
       ))}
-      {showOverflowStates && (
-        <PlaceInCircle index={index} stepsIn={2 + baseStatuses.length / 2}>
+      {showOverflowReminders && (
+        <PlaceInCircle index={index} stepsIn={2 + baseReminders.length / 2}>
           <PlayerList.Actions player={player}>
             <button className="pointer-events-auto rounded-full bg-purple-600 p-1">
               <FaEllipsis size="24" color="white" />
@@ -62,7 +62,7 @@ export function GMTile({ player, index }: SpectatorTile) {
           </PlayerList.Actions>
         </PlaceInCircle>
       )}
-      <PlaceInCircle index={index} stepsIn={2 + baseStatuses.length / 2 + 1}>
+      <PlaceInCircle index={index} stepsIn={2 + baseReminders.length / 2 + 1}>
         <AddPlayerReminder player={player}>
           <IconButton
             radius="full"
