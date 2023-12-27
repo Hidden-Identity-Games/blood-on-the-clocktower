@@ -5,7 +5,6 @@ import { GiChewedSkull } from "react-icons/gi";
 import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
 import { useDecideFate } from "../../../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../../../store/GameContext";
-import { PlayerStatusIcon } from "../../../GMInGame/NotesIcons";
 
 export function KillAction() {
   return (
@@ -52,9 +51,6 @@ function PlayerActionSelect(_props: PlayerActionSelect) {
         >
           <PlayerNameWithRoleIcon player={player} />
           {playerIsDead(player) && <GiChewedSkull />}
-          {game.playerPlayerStatuses[player]?.find(
-            (s) => s.type === "protected",
-          ) && <PlayerStatusIcon statusType="protected" />}
         </Button>
       ))}
     </Flex>

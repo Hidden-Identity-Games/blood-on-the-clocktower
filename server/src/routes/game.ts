@@ -1,12 +1,9 @@
 import {
   alignmentShape,
-  characterAbilityStatusShape,
-  deadStatusShape,
-  drunkStatusShape,
   gameStatusShape,
+  generateThreeWordId,
   playerMessageEntryShape,
-  poisonStatusShape,
-  protectedStatusShape,
+  playerReminderShape,
   roleShape,
 } from "@hidden-identity/shared";
 import { z } from "zod";
@@ -129,40 +126,49 @@ export const gameRoutes = {
       const game = await retrieveGame(gameId);
       game.dispatch({ type: dead ? "KillPlayer" : "RevivePlayer", player });
     }),
-  addPlayerStatus: gmProcedure
+  addPlayerReminder: gmProcedure
+    .input(z.intersection(playerAndGameIdShape, playerReminderShape))
+    .mutation(
+      async ({
+        input: {
+          gameId,
+          reminderText,
+          fromPlayer,
+          toPlayer,
+          startNight,
+          archetype,
+        },
+      }) => {
+        const game = await retrieveGame(gameId);
+        const id = generateThreeWordId();
+        game.dispatch({
+          type: "AddPlayerReminder",
+          reminder: {
+            id,
+            active: true,
+            reminderText,
+            fromPlayer,
+            toPlayer,
+            startNight,
+            archetype,
+          },
+        });
+      },
+    ),
+  clearPlayerReminder: gmProcedure
     .input(
       z.intersection(
-        playerAndGameIdShape,
+        gameIdShape,
         z.object({
-          playerStatus: z.union([
-            poisonStatusShape,
-            drunkStatusShape,
-            protectedStatusShape,
-            characterAbilityStatusShape,
-            deadStatusShape,
-          ]),
+          reminderId: z.string(),
         }),
       ),
     )
-    .mutation(async ({ input: { gameId, player, playerStatus } }) => {
-      const game = await retrieveGame(gameId);
-      game.dispatch({ type: "AddPlayerStatus", player, status: playerStatus });
-    }),
-  clearPlayerStatus: gmProcedure
-    .input(
-      z.intersection(
-        playerAndGameIdShape,
-        z.object({
-          playerStatusId: z.string(),
-        }),
-      ),
-    )
-    .mutation(async ({ input: { gameId, player, playerStatusId } }) => {
+    .mutation(async ({ input: { gameId, reminderId } }) => {
       const game = await retrieveGame(gameId);
       game.dispatch({
-        type: "RemovePlayerStatus",
-        player,
-        statusId: playerStatusId,
+        type: "ClearPlayerReminder",
+        reminderId,
       });
     }),
   setPlayerNote: gmProcedure
@@ -268,7 +274,7 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, messages } }) => {
       const game = await retrieveGame(gameId);
-      return game.dispatch(createMessageAction({ player, messages }));
+      game.dispatch(createMessageAction({ player, messages }));
     }),
   deleteMessage: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ messageId: z.string() })))

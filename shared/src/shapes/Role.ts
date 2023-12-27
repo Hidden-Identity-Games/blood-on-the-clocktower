@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { type PlayerStatusType } from "./UnifiedGame.ts";
-
 export const CharacterTypes = [
   "Townsfolk",
   "Outsider",
@@ -37,6 +35,7 @@ export interface Character {
   otherNight: CharacterNightData | null;
   setup: boolean;
   ability: string;
+  reminders: string[];
   imageSrc: string;
   team: CharacterType;
   delusional?: boolean;

@@ -3,7 +3,6 @@ import { getCharacter } from "@hidden-identity/shared";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 
 import { useDefiniteGame } from "../../../store/GameContext";
-import { PlayerStatusIcon } from "../../GMInGame/NotesIcons";
 import { PlayerList } from ".";
 import { NightAction } from "./NightAction";
 
@@ -24,26 +23,10 @@ export function PlayerNightReminder({ player }: PlayerNightReminderProps) {
 
   return (
     <Flex direction="column" gap="2">
-      <Text size="3" asChild>
-        <Flex gap="1">
-          {game.playerPlayerStatuses[player] && (
-            <>
-              Status:
-              {game.playerPlayerStatuses[player]?.map((status) => (
-                <PlayerStatusIcon
-                  key={status.id}
-                  statusType={status.type}
-                  className="mt-.5"
-                />
-              ))}
-            </>
-          )}
-        </Flex>
-      </Text>
       {nightAbility ? (
         <Flex direction="column" gap="4">
           <Text as="div">{nightAbility.reminder}</Text>
-          <NightAction nightData={nightAbility} />
+          <NightAction />
           {nightAbility.playerMessage && (
             <PlayerList.PlayerMessage
               message={nightAbility.playerMessage}

@@ -1,8 +1,4 @@
-import {
-  type Alignment,
-  type PlayerStatus,
-  type Role,
-} from "@hidden-identity/shared";
+import { type Alignment, type Role } from "@hidden-identity/shared";
 
 import { trpc } from "../../shared/trpcClient";
 import { useAction, useGame } from "../GameContext";
@@ -29,32 +25,6 @@ export function useAssignPlayerAlignment() {
 
     await trpc.setAlignment.mutate({ alignment, player, gameId });
   });
-}
-
-export function usePlayerStatuses() {
-  const { gameId } = useGame();
-
-  return useAction(
-    async (
-      player: string,
-      action: "add" | "remove",
-      playerStatus: PlayerStatus,
-    ) => {
-      if (!gameId) {
-        throw new Error("GameId not ready");
-      }
-
-      if (action === "add") {
-        await trpc.addPlayerStatus.mutate({ gameId, player, playerStatus });
-      } else {
-        await trpc.clearPlayerStatus.mutate({
-          gameId,
-          player,
-          playerStatusId: playerStatus.id,
-        });
-      }
-    },
-  );
 }
 
 export function usePlayerNotes() {

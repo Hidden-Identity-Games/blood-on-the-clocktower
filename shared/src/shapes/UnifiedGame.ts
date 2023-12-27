@@ -4,6 +4,7 @@ import {
   type PlayerMessage,
   type PlayerMessageEntry,
 } from "./PlayerMessages.ts";
+import { type AppliedPlayerReminder } from "./PlayerReminder.ts";
 import { type Alignment, type Role } from "./Role.ts";
 
 export const gameStatusShape = z.enum([
@@ -13,51 +14,12 @@ export const gameStatusShape = z.enum([
   "Finished",
 ]);
 export type GameStatus = z.TypeOf<typeof gameStatusShape>;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type PlayerStatusType = PlayerStatus extends any
-  ? Omit<PlayerStatus, "id">
-  : never;
-export type PlayerStatus = PlayerStatusMap[keyof PlayerStatusMap];
-
-export const poisonStatusShape = z.object({
-  type: z.enum(["poison"]),
-  id: z.string(),
-});
-export const drunkStatusShape = z.object({
-  type: z.enum(["drunk"]),
-  id: z.string(),
-});
-export const protectedStatusShape = z.object({
-  type: z.enum(["protected"]),
-  id: z.string(),
-});
-export const characterAbilityStatusShape = z.object({
-  type: z.enum(["characterAbility"]),
-  id: z.string(),
-});
 export const dayNightShape = z.enum(["day", "night"]);
 export const timeRecordShape = z.object({
   time: dayNightShape,
   count: z.number(),
 });
 export type TimeRecord = z.TypeOf<typeof timeRecordShape>;
-
-export const deadStatusShape = z.object({
-  type: z.enum(["dead"]),
-  id: z.string(),
-});
-const allStatusShapes = {
-  poison: poisonStatusShape,
-  drunk: drunkStatusShape,
-  protected: protectedStatusShape,
-  characterAbility: characterAbilityStatusShape,
-  dead: deadStatusShape,
-};
-
-export type PlayerStatusMap = {
-  [K in keyof typeof allStatusShapes]: z.TypeOf<(typeof allStatusShapes)[K]>;
-};
 
 export type CalculatedPlayerMessage = Omit<PlayerMessage, "messages"> & {
   messages: Record<string, PlayerMessageEntry[]>;
@@ -79,7 +41,6 @@ export interface BaseUnifiedGame {
   gameStatus: GameStatus;
   nextGameId?: string;
   deadPlayers: Record<string, boolean>;
-  playerPlayerStatuses: Record<string, PlayerStatus[]>;
   playerNotes: Record<string, string>;
   deadVotes: Record<string, boolean>;
   onTheBlock: Record<string, number>;
@@ -88,6 +49,7 @@ export interface BaseUnifiedGame {
   roleBag: Record<number, Role | null>;
   playersSeenRoles: string[];
   messages: PlayerMessage[];
+  reminders: AppliedPlayerReminder[];
   time: TimeRecord;
 }
 

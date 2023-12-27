@@ -17,20 +17,20 @@ export function setupTestGames() {
       .addPlayers(15)
       .assignSeating()
       .assignRandomRolesToCharacters()
-      .moveToSetup()
-      .update((game) => {
-        const randomPlayer = Object.keys(game.getGame().playersToRoles)[0];
-        game.dispatch({
-          type: "AddPlayerStatus",
-          status: { id: "poison", type: "poison" },
-          player: randomPlayer,
-        });
-        game.dispatch({
-          type: "AddPlayerStatus",
-          status: { id: "drunk", type: "drunk" },
-          player: randomPlayer,
-        });
-      }),
+      .moveToSetup(),
+    // .update((game) => {
+    //   const randomPlayer = Object.keys(game.getGame().playersToRoles)[0];
+    //   game.dispatch({
+    //     type: "AddPlayerStatus",
+    //     status: { id: "poison", type: "poison" },
+    //     player: randomPlayer,
+    //   });
+    //   game.dispatch({
+    //     type: "AddPlayerStatus",
+    //     status: { id: "drunk", type: "drunk" },
+    //     player: randomPlayer,
+    //   });
+    // }),
   );
 
   addTestGame(
@@ -39,21 +39,21 @@ export function setupTestGames() {
       .addPlayers(15)
       .assignSeating()
       .assignRandomRolesToCharacters()
-      .moveToSetup()
-      .update((game) => {
-        const randomPlayer = Object.keys(game.getGame().playersToRoles)[0];
+      .moveToSetup(),
+    // .update((game) => {
+    //   const randomPlayer = Object.keys(game.getGame().playersToRoles)[0];
 
-        game.dispatch({
-          type: "AddPlayerStatus",
-          status: { id: "poison", type: "poison" },
-          player: randomPlayer,
-        });
-        game.dispatch({
-          type: "AddPlayerStatus",
-          status: { id: "drunk", type: "drunk" },
-          player: randomPlayer,
-        });
-      }),
+    //   game.dispatch({
+    //     type: "AddPlayerStatus",
+    //     status: { id: "poison", type: "poison" },
+    //     player: randomPlayer,
+    //   });
+    //   game.dispatch({
+    //     type: "AddPlayerStatus",
+    //     status: { id: "drunk", type: "drunk" },
+    //     player: randomPlayer,
+    //   });
+    // }),
   );
 
   addTestGame(
