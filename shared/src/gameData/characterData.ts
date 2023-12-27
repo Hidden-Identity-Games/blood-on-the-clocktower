@@ -25,6 +25,11 @@ type CharacterDefinition = Omit<Character, "id"> & {
     | [];
 };
 
+const ABILITY_SPENT = {
+  name: "ability spent",
+  type: "drunk",
+};
+
 export const CHARACTERS: CharacterDefinition[] = [
   {
     id: "unassigned",
@@ -58,7 +63,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Assassin",
     edition: "bmr",
     team: "Minion",
-    reminders: ["Dead", "No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -125,7 +130,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     reminders: [
       {
         name: "master",
-        duraton: 1,
+        type: "info",
+        duration: 1,
       },
     ],
     setup: false,
@@ -464,7 +470,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fortune Teller",
     edition: "tb",
     team: "Townsfolk",
-    reminders: [{ name: "red herring", type }],
+    reminders: [{ name: "red herring", type: "info" }],
     setup: false,
     delusional: false,
     ability:
@@ -535,7 +541,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Goon",
     edition: "bmr",
     team: "Outsider",
-    reminders: ["Drunk"],
+    reminders: [{ name: "gooned", type: "drunk", duration: 1 }],
     setup: false,
     delusional: false,
     ability:
@@ -974,7 +980,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Professor",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Alive", "No ability"],
+    reminders: ["Alive", ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1151,7 +1157,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Seamstress",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1195,7 +1201,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Slayer",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1375,7 +1381,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Virgin",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1661,7 +1667,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Engineer",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1712,7 +1718,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fisherman",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1748,7 +1754,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Huntsman",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: true,
     delusional: false,
     ability:
@@ -1854,7 +1860,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Nightwatchman",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -2247,7 +2253,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Mezepheles",
     edition: "",
     team: "Minion",
-    reminders: ["Turns evil", "No ability"],
+    reminders: ["Turns evil", ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -2468,7 +2474,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Judge",
     edition: "bmr",
     team: "Traveler",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -2563,7 +2569,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Bone Collector",
     edition: "snv",
     team: "Traveler",
-    reminders: ["No ability", "Has ability"],
+    reminders: [ABILITY_SPENT, "Has ability"],
     setup: false,
     delusional: false,
     ability:
