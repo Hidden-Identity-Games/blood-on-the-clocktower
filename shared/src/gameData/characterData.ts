@@ -1,10 +1,28 @@
 import { type Character } from "../shapes/index.ts";
 
+export type ReminderType =
+  | "info"
+  | "mad"
+  | "drunk"
+  | "poison"
+  | "dead"
+  | "protected"
+  | "reveal-role";
 type CharacterDefinition = Omit<Character, "id"> & {
   id: string;
   edition: unknown;
-  reminders?: string[];
-  remindersGlobal?: string[];
+  reminders:
+    | [
+        {
+          name: string;
+          type: ReminderType;
+          dayTrigger?: boolean;
+          duration?: number;
+          persistOnDeath?: boolean;
+          causedByDeath?: boolean;
+        },
+      ]
+    | [];
 };
 
 export const CHARACTERS: CharacterDefinition[] = [
@@ -26,7 +44,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Artist",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [{ name: "lost ability", type: "drunk", dayTrigger: true }],
     setup: false,
     delusional: false,
     ability:
@@ -59,7 +77,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Barber",
     edition: "snv",
     team: "Outsider",
-    reminders: ["Haircuts tonight"],
+    reminders: [
+      {
+        name: "haircuts tonight",
+        type: "info",
+        duration: 1,
+        causedByDeath: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -70,6 +95,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Barber died today: Wake the Demon. Show the 'This character selected you' card, then Barber token. The Demon either shows a 'no' head signal, or points to 2 players. If they chose players: Swap the character tokens. Wake each player. Show 'You are', then their new character token.",
       order: 40,
+      setReminders: ["haircuts tonight"],
       playerMessage: {
         type: "character-selected-you",
         restriction: {
@@ -96,7 +122,12 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Butler",
     edition: "tb",
     team: "Outsider",
-    reminders: ["Master"],
+    reminders: [
+      {
+        name: "master",
+        duraton: 1,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -116,7 +147,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Cerenovus",
     edition: "snv",
     team: "Minion",
-    reminders: ["Mad"],
+    reminders: [
+      {
+        name: "gone mad",
+        type: "mad",
+        duration: 1,
+        causedByDeath: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -203,7 +241,13 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Courtier",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Drunk 3", "Drunk 2", "Drunk 1", "No ability"],
+    reminders: [
+      {
+        name: "entertain",
+        type: "drunk",
+        duration: 3,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -227,7 +271,13 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Devil's Advocate",
     edition: "bmr",
     team: "Minion",
-    reminders: ["Survives execution"],
+    reminders: [
+      {
+        name: "Zombie",
+        type: "death",
+        persistsDeath: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -317,16 +367,23 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Evil Twin",
     edition: "snv",
     team: "Minion",
-    reminders: ["Twin"],
+    reminders: [
+      {
+        name: "twinsies",
+        type: "reveal-role",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "You & an opposing player know each other. If the good player is executed, evil wins. Good can't win if you both live.",
     imageSrc: "eviltwin.png",
+
     firstNight: {
       reminder:
         "Wake the Evil Twin and their twin. Confirm that they have acknowledged each other. Point to the Evil Twin. Show their Evil Twin token to the twin player. Point to the twin. Show their character token to the Evil Twin player.",
       order: 23,
+      status: ["twinsies"],
     },
     otherNight: null,
   },
@@ -335,7 +392,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Exorcist",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Chosen"],
+    reminders: [{ name: "exorcise", duration: 1, type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability:
@@ -346,13 +403,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Exorcist points to a player, different from the previous night. If that player is the Demon: Wake the Demon. Show the Exorcist token. Point to the Exorcist. The Demon does not act tonight.",
       order: 21,
-      playerMessage: {
-        type: "reveal-role",
-        count: 1,
-        restriction: {
-          role: ["exorcist"],
-        },
-      },
+      setReminders: ["exorcse"],
     },
   },
   {
@@ -383,7 +434,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Flowergirl",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["Demon voted", "Demon not voted"],
+    reminders: [{ name: "demon voted", duration: 1, dayTrigger: true }],
     setup: false,
     delusional: false,
     ability: "Each night*, you learn if a Demon voted today.",
@@ -400,7 +451,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fool",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [{ name: "saved", type: "drunk" }],
     setup: false,
     delusional: false,
     ability: "The first time you die, you don't.",
@@ -413,7 +464,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fortune Teller",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["Red herring"],
+    reminders: [{ name: "red herring", type }],
     setup: false,
     delusional: false,
     ability:
@@ -423,6 +474,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Fortune Teller points to two players. Give the head signal (nod yes, shake no) for whether one of those players is the Demon. ",
       order: 38,
+      setReminders: ["red herring"],
     },
     otherNight: {
       reminder:
@@ -435,7 +487,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Gambler",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Dead"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -446,6 +498,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Gambler points to a player, and a character on their sheet. If incorrect, the Gambler dies.",
       order: 10,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -453,7 +506,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Godfather",
     edition: "bmr",
     team: "Minion",
-    reminders: ["Died today", "Dead"],
+    reminders: [],
     setup: true,
     delusional: false,
     ability:
@@ -1419,7 +1472,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Townsfolk",
     reminders: [],
-    remindersGlobal: ["Is the Alchemist"],
     setup: false,
     delusional: false,
     ability: "You have a not-in-play Minion ability.",
@@ -2157,7 +2209,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "bmr",
     team: "Outsider",
     reminders: [],
-    remindersGlobal: [],
     setup: true,
     delusional: true,
     ability:
@@ -2172,7 +2223,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Minion",
     reminders: [],
-    remindersGlobal: ["Is the Marionette"],
     setup: true,
     delusional: true,
     ability:
@@ -2275,7 +2325,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Demon",
     reminders: ["Poisoned"],
-    remindersGlobal: ["Knows"],
     setup: false,
     delusional: false,
     ability:
@@ -2560,7 +2609,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Demon",
     reminders: [],
-    remindersGlobal: ["Is the Demon", "Dead"],
     setup: true,
     ability:
       "Each night, Minions choose who babysits Lil' Monsta's token & \"is the Demon\". A player dies each night*. [+1 Minion]",
