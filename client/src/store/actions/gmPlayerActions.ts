@@ -89,11 +89,7 @@ export function usePlayerReminder() {
 
     await trpc.addPlayerReminder.mutate({
       gameId,
-      reminder: {
-        name: reminder.name,
-        fromPlayer: reminder.fromPlayer,
-        toPlayer: reminder.toPlayer,
-      },
+      reminder,
     });
   });
 }
