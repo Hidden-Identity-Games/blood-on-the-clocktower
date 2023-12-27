@@ -18,8 +18,6 @@ export function AddPlayerReminder({
   const availableReminders = useAvailableReminders();
   const [, isReminderLoading, , setReminder] = usePlayerReminder();
 
-  console.log(game.reminders);
-
   return (
     <Dialog.Root>
       <Dialog.Trigger>{children}</Dialog.Trigger>
@@ -34,7 +32,7 @@ export function AddPlayerReminder({
                 void setReminder({
                   ...reminder,
                   toPlayer: player,
-                  startNight: 1,
+                  startNight: game.time.count,
                 })
               }
             >
