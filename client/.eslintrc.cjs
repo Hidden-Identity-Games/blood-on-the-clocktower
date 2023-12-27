@@ -22,6 +22,7 @@ module.exports = {
     "@typescript-eslint/no-unsafe-argument": "off", // too verbose
     "@typescript-eslint/consistent-type-imports": ["error", {fixStyle: 'inline-type-imports'}],
     "simple-import-sort/imports": "error",
+    "@typescript-eslint/no-confusing-void-expression": "off",
     "simple-import-sort/exports": "error",
     "@typescript-eslint/no-unused-vars": [
       "error",

@@ -35,6 +35,7 @@ module.exports = {
       { fixStyle: "inline-type-imports" },
     ],
     "simple-import-sort/imports": "error",
+    "@typescript-eslint/no-confusing-void-expression": "off",
     "simple-import-sort/exports": "error",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
