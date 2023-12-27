@@ -30,8 +30,8 @@ export function SubmitMessage({ message, player, action }: SubmitMessageProps) {
           disabled={createMessageisLoading && message.length === 0}
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async () => {
-            await completeAction(action.id);
             const messageId = await createMessage(player, message);
+            await completeAction(action.id);
             if (messageId) {
               // make sure the request didn't fail
               void setSheetView({

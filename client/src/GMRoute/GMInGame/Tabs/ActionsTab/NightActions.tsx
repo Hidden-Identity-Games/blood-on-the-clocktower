@@ -1,5 +1,6 @@
 import { MoonIcon } from "@radix-ui/react-icons";
 import { Button, Heading, IconButton } from "@radix-ui/themes";
+import classNames from "classnames";
 import { useState } from "react";
 import { BiHide, BiShow } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
@@ -28,13 +29,17 @@ export function NightActions(_props: NightActionsProps) {
       {computedActionQueue
         .filter((current) => showAll || !current.skipped)
         .map((queueItem) => {
+          const disabled = queueItem.skipped;
           return (
             <Button
               key={queueItem.id}
               variant="ghost"
-              className="flex w-full justify-around gap-1"
-              disabled={queueItem.skipped}
+              className={classNames("flex w-full justify-around gap-1", {
+                "grayscale cursor-pointer": disabled,
+              })}
               onClick={() =>
+                // Radix Button applies a filter:none on disabled for some reason
+                !disabled &&
                 triggerSheet({
                   isOpen: "open",
                   id: queueItem.id,
@@ -58,7 +63,7 @@ export function NightActions(_props: NightActionsProps) {
                     <MoonIcon />
                   </span>
                   <span className="flex-1">{queueItem.actionType}</span>
-                  {<BsArrowRight />}
+                  {!queueItem.skipped && <BsArrowRight />}
                 </>
               )}
             </Button>

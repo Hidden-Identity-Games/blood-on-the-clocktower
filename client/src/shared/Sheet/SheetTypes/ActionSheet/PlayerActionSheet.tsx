@@ -1,6 +1,11 @@
-import { type CharacterActionQueueItem } from "@hidden-identity/shared";
+import {
+  type CharacterActionQueueItem,
+  getAbility,
+  getCharacter,
+} from "@hidden-identity/shared";
 
-import { PlayerList } from "../../../../GMRoute/GMShared/PlayerListComponents";
+import { PlayerMessageFlow } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage";
+import { SubmitMessage } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage/messageShared/SubmitMessage";
 import { useDefiniteGame } from "../../../../store/GameContext";
 import { PlayerNameWithRoleIcon, RoleName } from "../../../RoleIcon";
 import { SheetBody, SheetContent, SheetHeader } from "../../SheetBody";
@@ -20,7 +25,22 @@ function Header({ action }: PlayerSheetProps) {
 }
 
 function Body({ action }: PlayerSheetProps) {
-  return <PlayerList.NightReminder player={action.player} />;
+  const { game } = useDefiniteGame();
+  const { role } = action;
+  const ability = getAbility(role, game.time);
+
+  return (
+    <div className="flex">
+      {ability?.playerMessage ? (
+        <PlayerMessageFlow action={action} message={ability.playerMessage} />
+      ) : (
+        <div>
+          {getCharacter(role).ability}{" "}
+          <SubmitMessage action={action} message={[]} player={action.player} />
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function PlayerActionSheet({ action }: PlayerSheetProps) {
