@@ -1,11 +1,36 @@
 import { type Character } from "../shapes/index.ts";
 
+export type ReminderType =
+  | "info"
+  | "mad"
+  | "drunk"
+  | "poison"
+  | "dead"
+  | "protected"
+  | "triggerOnDeath"
+  | "reveal-role"
+  | "counter";
+export type TargetType = "self" | "other";
 type CharacterDefinition = Omit<Character, "id"> & {
   id: string;
   edition: unknown;
-  reminders?: string[];
-  remindersGlobal?: string[];
+  reminders: {
+    name: string;
+    type: ReminderType;
+    dayTrigger?: boolean;
+    duration?: number;
+    persistOnDeath?: boolean;
+    causedByDeath?: boolean;
+    dayReminder?: boolean;
+    target?: TargetType;
+  }[];
 };
+
+const ABILITY_SPENT = {
+  name: "ability spent",
+  type: "drunk",
+  target: "self",
+} as const;
 
 export const CHARACTERS: CharacterDefinition[] = [
   {
@@ -26,7 +51,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Artist",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [{ name: "lost ability", type: "drunk", dayTrigger: true }],
     setup: false,
     delusional: false,
     ability:
@@ -40,7 +65,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Assassin",
     edition: "bmr",
     team: "Minion",
-    reminders: ["Dead", "No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -48,6 +73,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "assassin.png",
     firstNight: null,
     otherNight: {
+      setReminders: [ABILITY_SPENT.name],
       reminder:
         "If the Assassin has not yet used their ability: The Assassin either shows the 'no' head signal, or points to a player. That player dies.",
       order: 36,
@@ -59,7 +85,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Barber",
     edition: "snv",
     team: "Outsider",
-    reminders: ["Haircuts tonight"],
+    reminders: [
+      {
+        name: "haircuts tonight",
+        type: "info",
+        duration: 1,
+        causedByDeath: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -70,6 +103,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Barber died today: Wake the Demon. Show the 'This character selected you' card, then Barber token. The Demon either shows a 'no' head signal, or points to 2 players. If they chose players: Swap the character tokens. Wake each player. Show 'You are', then their new character token.",
       order: 40,
+      setReminders: ["haircuts tonight"],
       playerMessage: {
         type: "character-selected-you",
         restriction: {
@@ -96,17 +130,25 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Butler",
     edition: "tb",
     team: "Outsider",
-    reminders: ["Master"],
+    reminders: [
+      {
+        name: "master",
+        type: "info",
+        duration: 1,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player (not yourself): tomorrow, you may only vote if they are voting too.",
     imageSrc: "butler.png",
     firstNight: {
+      setReminders: ["master"],
       reminder: "The Butler points to a player. Mark that player as 'Master'.",
       order: 39,
     },
     otherNight: {
+      setReminders: ["master"],
       reminder: "The Butler points to a player. Mark that player as 'Master'.",
       order: 67,
     },
@@ -116,7 +158,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Cerenovus",
     edition: "snv",
     team: "Minion",
-    reminders: ["Mad"],
+    reminders: [
+      {
+        name: "gone mad",
+        type: "mad",
+        duration: 1,
+        causedByDeath: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -126,6 +175,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Cerenovus points to a player, then to a character on their sheet. Wake that player. Show the 'This character selected you' card, then the Cerenovus token. Show the selected character token. If the player is not mad about being that character tomorrow, they can be executed.",
       order: 25,
+      setReminders: ["gone mad"],
       playerMessage: {
         type: "madness",
       },
@@ -203,7 +253,13 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Courtier",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Drunk 3", "Drunk 2", "Drunk 1", "No ability"],
+    reminders: [
+      {
+        name: "entertain",
+        type: "drunk",
+        duration: 3,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -214,12 +270,14 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 19,
       status: [{ type: "drunk" }],
+      setReminders: ["entertain"],
     },
     otherNight: {
       reminder:
         "Reduce the remaining number of days the marked player is poisoned. If the Courtier has not yet used their ability: The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 8,
       status: [{ type: "drunk" }],
+      setReminders: ["entertain"],
     },
   },
   {
@@ -227,7 +285,12 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Devil's Advocate",
     edition: "bmr",
     team: "Minion",
-    reminders: ["Survives execution"],
+    reminders: [
+      {
+        name: "advocate",
+        type: "protected",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -238,12 +301,14 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The Devil’s Advocate points to a living player. That player survives execution tomorrow.",
       order: 22,
       status: [{ type: "protected" }],
+      setReminders: ["advocate"],
     },
     otherNight: {
       reminder:
         "The Devil’s Advocate points to a living player, different from the previous night. That player survives execution tomorrow.",
       order: 13,
       status: [{ type: "protected" }],
+      setReminders: ["advocate"],
     },
   },
   {
@@ -251,7 +316,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Dreamer",
     edition: "snv",
     team: "Townsfolk",
-    reminders: [],
+    reminders: [{ name: "dream", type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability:
@@ -261,6 +326,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Dreamer points to a player. Show 1 good and 1 evil character token; one of these is correct.",
       order: 42,
+      setReminders: ["dream"],
       playerMessage: {
         type: "reveal-character",
         count: 2,
@@ -270,6 +336,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Dreamer points to a player. Show 1 good and 1 evil character token; one of these is correct.",
       order: 56,
+      setReminders: ["dream"],
       playerMessage: {
         type: "reveal-character",
         count: 2,
@@ -317,16 +384,23 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Evil Twin",
     edition: "snv",
     team: "Minion",
-    reminders: ["Twin"],
+    reminders: [
+      {
+        name: "twinsies",
+        type: "reveal-role",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "You & an opposing player know each other. If the good player is executed, evil wins. Good can't win if you both live.",
     imageSrc: "eviltwin.png",
+
     firstNight: {
       reminder:
         "Wake the Evil Twin and their twin. Confirm that they have acknowledged each other. Point to the Evil Twin. Show their Evil Twin token to the twin player. Point to the twin. Show their character token to the Evil Twin player.",
       order: 23,
+      setReminders: ["twinsies"],
     },
     otherNight: null,
   },
@@ -335,7 +409,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Exorcist",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Chosen"],
+    reminders: [{ name: "exorcise", duration: 1, type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability:
@@ -346,13 +420,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Exorcist points to a player, different from the previous night. If that player is the Demon: Wake the Demon. Show the Exorcist token. Point to the Exorcist. The Demon does not act tonight.",
       order: 21,
-      playerMessage: {
-        type: "reveal-role",
-        count: 1,
-        restriction: {
-          role: ["exorcist"],
-        },
-      },
+      setReminders: ["exorcise"],
     },
   },
   {
@@ -360,7 +428,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fang Gu",
     edition: "snv",
     team: "Demon",
-    reminders: ["Dead", "Once"],
+    reminders: [{ name: "jumped", type: "info" }],
     setup: true,
     delusional: false,
     ability:
@@ -376,6 +444,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         alignmentChange: true,
       },
       status: [{ type: "dead" }],
+      setReminders: ["jumped"],
     },
   },
   {
@@ -383,7 +452,9 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Flowergirl",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["Demon voted", "Demon not voted"],
+    reminders: [
+      { name: "demon voted", type: "info", duration: 1, dayTrigger: true },
+    ],
     setup: false,
     delusional: false,
     ability: "Each night*, you learn if a Demon voted today.",
@@ -400,7 +471,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fool",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability: "The first time you die, you don't.",
@@ -413,7 +484,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fortune Teller",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["Red herring"],
+    reminders: [{ name: "red herring", type: "info" }],
     setup: false,
     delusional: false,
     ability:
@@ -423,6 +494,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Fortune Teller points to two players. Give the head signal (nod yes, shake no) for whether one of those players is the Demon. ",
       order: 38,
+      setReminders: ["red herring"],
     },
     otherNight: {
       reminder:
@@ -435,7 +507,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Gambler",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Dead"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -446,6 +518,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Gambler points to a player, and a character on their sheet. If incorrect, the Gambler dies.",
       order: 10,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -453,7 +526,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Godfather",
     edition: "bmr",
     team: "Minion",
-    reminders: ["Died today", "Dead"],
+    reminders: [{ name: "see the targets", type: "reveal-role" }],
     setup: true,
     delusional: false,
     ability:
@@ -462,6 +535,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     firstNight: {
       reminder: "Show each of the Outsider tokens in play.",
       order: 21,
+      setReminders: ["see the targets"],
       playerMessage: {
         type: "reveal-role",
         count: 1,
@@ -482,7 +556,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Goon",
     edition: "bmr",
     team: "Outsider",
-    reminders: ["Drunk"],
+    reminders: [{ name: "gooned", type: "drunk", duration: 1 }],
     setup: false,
     delusional: false,
     ability:
@@ -496,7 +570,9 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Gossip",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Dead"],
+    reminders: [
+      { name: "gossiped", type: "info", dayTrigger: true, duration: 1 },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -515,7 +591,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Grandmother",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Grandchild"],
+    reminders: [{ name: "grandchild", type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability:
@@ -524,6 +600,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     firstNight: {
       reminder: "Show the marked character token. Point to the marked player.",
       order: 40,
+      setReminders: ["grandchild"],
       playerMessage: {
         type: "reveal-role",
         count: 2,
@@ -544,7 +621,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Imp",
     edition: "tb",
     team: "Demon",
-    reminders: ["Dead"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -563,7 +640,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Innkeeper",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Protected", "Drunk"],
+    reminders: [
+      { name: "resting", type: "protected", duration: 1 },
+      { name: "resting too much", type: "drunk", duration: 1 },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -574,6 +654,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The previously protected and drunk players lose those markers. The Innkeeper points to two players. Those players are protected. One is drunk.",
       order: 9,
+      setReminders: ["resting", "resting", "resting too much"],
       status: [
         {
           type: "characterAbility",
@@ -589,7 +670,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Investigator",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["Minion", "Wrong"],
+    reminders: [{ name: "lead", type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability: "You start knowing that 1 of 2 players is a particular Minion.",
@@ -598,6 +679,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "Show the character token of a Minion in play. Point to two players, one of which is that character.",
       order: 35,
+      setReminders: ["lead", "lead"],
       playerMessage: {
         type: "reveal-role",
         count: 2,
@@ -613,7 +695,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Juggler",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["Correct"],
+    reminders: [{ name: "juggled correct", type: "counter" }],
     setup: false,
     delusional: false,
     ability:
@@ -621,6 +703,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "juggler.png",
     firstNight: null,
     otherNight: {
+      setReminders: ["juggled correct"],
       reminder:
         "If today was the Juggler’s first day: Show the hand signal for the number (0, 1, 2, etc.) of 'Correct' markers. Remove markers.",
       order: 61,
@@ -631,13 +714,25 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Klutz",
     edition: "snv",
     team: "Outsider",
-    reminders: [],
+    reminders: [
+      { name: "klutz", type: "triggerOnDeath" },
+      {
+        name: "slipped on a banana",
+        type: "info",
+        causedByDeath: true,
+        dayReminder: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "When you learn that you died, publicly choose 1 alive player: if they are evil, your team loses.",
     imageSrc: "klutz.png",
-    firstNight: null,
+    firstNight: {
+      reminder: "Apply the klutz status to the klutz",
+      order: 0,
+      setReminders: ["klutz"],
+    },
     otherNight: null,
   },
   {
@@ -645,7 +740,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Librarian",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["Outsider", "Wrong"],
+    reminders: [{ name: "potential outsider", type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability:
@@ -655,6 +750,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "Show the character token of an Outsider in play. Point to two players, one of which is that character.",
       order: 34,
+      setReminders: ["potential outsider"],
       playerMessage: {
         type: "reveal-role",
         count: 2,
@@ -684,18 +780,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Mathematician",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["Abnormal"],
+    reminders: [{ name: "abnormal", type: "counter" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, you learn how many players’ abilities worked abnormally (since dawn) due to another character's ability.",
     imageSrc: "mathematician.png",
     firstNight: {
+      setReminders: ["abnormal"],
       reminder:
         "Show the hand signal for the number (0, 1, 2, etc.) of players whose ability malfunctioned due to other abilities.",
       order: 52,
     },
     otherNight: {
+      setReminders: ["abnormal"],
       reminder:
         "Show the hand signal for the number (0, 1, 2, etc.) of players whose ability malfunctioned due to other abilities.",
       order: 71,
@@ -720,13 +818,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Minstrel",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Everyone drunk"],
+    reminders: [
+      { name: "minstrel", type: "triggerOnDeath" },
+      { name: "listening", type: "poison", duration: 1 },
+    ],
     setup: false,
     delusional: false,
     ability:
       "When a Minion dies by execution, all other players (except Travellers) are drunk until dusk tomorrow.",
     imageSrc: "minstrel.png",
-    firstNight: null,
+    firstNight: {
+      reminder: "Apply the minstrel token to all minions",
+      setReminders: ["minstrel"],
+      order: 0,
+    },
     otherNight: null,
   },
   {
@@ -734,7 +839,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Monk",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["Protected"],
+    reminders: [{ name: "holy protection", type: "protected", duration: 1 }],
     setup: false,
     delusional: false,
     ability:
@@ -745,6 +850,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The previously protected player is no longer protected. The Monk points to a player not themself. Mark that player 'Protected'.",
       order: 12,
+      setReminders: ["holy protection"],
       status: [{ type: "protected" }],
     },
   },
@@ -753,14 +859,25 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Moonchild",
     edition: "bmr",
     team: "Outsider",
-    reminders: ["Dead"],
+    reminders: [
+      {
+        name: "moonchild",
+        type: "triggerOnDeath",
+      },
+      { name: "moonchild died", type: "info", dayReminder: true, duration: 1 },
+    ],
     setup: false,
     delusional: false,
     ability:
       "When you learn that you died, publicly choose 1 alive player. Tonight, if it was a good player, they die.",
     imageSrc: "moonchild.png",
-    firstNight: null,
+    firstNight: {
+      setReminders: ["moonchild"],
+      reminder: "Set the moonchild status on the moonchild.",
+      order: 0,
+    },
     otherNight: {
+      setReminders: ["moonchild died"],
       reminder:
         "If the Moonchild used their ability to target a player today: If that player is good, they die.",
       order: 50,
@@ -772,12 +889,21 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Mutant",
     edition: "snv",
     team: "Outsider",
-    reminders: [],
+    reminders: [
+      {
+        name: "mutant",
+        type: "mad",
+      },
+    ],
     setup: false,
     delusional: false,
     ability: "If you are “mad” about being an Outsider, you might be executed.",
     imageSrc: "mutant.png",
-    firstNight: null,
+    firstNight: {
+      order: 0,
+      reminder: "Apply the Mad reminder to the mutant",
+      setReminders: ["mutant"],
+    },
     otherNight: null,
   },
   {
@@ -785,7 +911,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "No Dashii",
     edition: "snv",
     team: "Demon",
-    reminders: ["Dead", "Poisoned"],
+    reminders: [{ name: "gross", type: "poison" }],
     setup: false,
     delusional: false,
     ability:
@@ -793,6 +919,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "nodashii.png",
     firstNight: null,
     otherNight: {
+      setReminders: ["gross"],
       reminder: "The No Dashii points to a player. That player dies.",
       order: 30,
       status: [{ type: "dead" }],
@@ -833,7 +960,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Philosopher",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["Drunk", "Is the Philosopher"],
+    reminders: [{ name: "dumbfounded", type: "drunk" }],
     setup: false,
     delusional: false,
     ability:
@@ -879,7 +1006,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Po",
     edition: "bmr",
     team: "Demon",
-    reminders: ["Dead", "3 attacks"],
+    reminders: [{ name: "charged", type: "info" }],
     setup: false,
     delusional: false,
     ability:
@@ -887,6 +1014,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "po.png",
     firstNight: null,
     otherNight: {
+      setReminders: ["charged"],
       reminder:
         "If the Po chose no-one the previous night: The Po points to three players. Otherwise: The Po either shows the 'no' head signal , or points to a player. Chosen players die",
       order: 28,
@@ -898,18 +1026,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Poisoner",
     edition: "tb",
     team: "Minion",
-    reminders: ["Poisoned"],
+    reminders: [{ name: "poisoned", type: "poison" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player: they are poisoned tonight and tomorrow day.",
     imageSrc: "poisoner.png",
     firstNight: {
+      setReminders: ["poisoned"],
       reminder: "The Poisoner points to a player. That player is poisoned.",
       order: 17,
       status: [{ type: "poison" }],
     },
     otherNight: {
+      setReminders: ["poisoned"],
       reminder:
         "The previously poisoned player is no longer poisoned. The Poisoner points to a player. That player is poisoned.",
       order: 7,
@@ -921,7 +1051,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Professor",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Alive", "No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -932,6 +1062,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Professor has not used their ability: The Professor either shakes their head no, or points to a player. If that player is a Townsfolk, they are now alive.",
       order: 43,
+      setReminders: [ABILITY_SPENT.name],
       playerMessage: {
         type: "revived",
       },
@@ -943,18 +1074,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Pukka",
     edition: "bmr",
     team: "Demon",
-    reminders: ["Poisoned", "Dead"],
+    reminders: [{ name: "marked for death", type: "poison" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player: they are poisoned. The previously poisoned player dies then becomes healthy.",
     imageSrc: "pukka.png",
     firstNight: {
+      setReminders: ["marked for death"],
       reminder: "The Pukka points to a player. That player is poisoned.",
       order: 28,
       status: [{ type: "poison" }],
     },
     otherNight: {
+      setReminders: ["marked for death"],
       reminder:
         "The Pukka points to a player. That player is poisoned. The previously poisoned player dies. ",
       order: 26,
@@ -966,7 +1099,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Ravenkeeper",
     edition: "tb",
     team: "Townsfolk",
-    reminders: [],
+    reminders: [
+      {
+        name: "ravenkeeper",
+        type: "triggerOnDeath",
+        causedByDeath: true,
+        duration: 1,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -1025,19 +1165,21 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Sailor",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Drunk"],
+    reminders: [{ name: "hammered", type: "drunk" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose an alive player: either you or they are drunk until dusk. You can't die.",
     imageSrc: "sailor.png",
     firstNight: {
+      setReminders: ["hammered"],
       reminder:
         "The Sailor points to a living player. Either the Sailor, or the chosen player, is drunk.",
       order: 11,
       status: [{ type: "drunk" }],
     },
     otherNight: {
+      setReminders: ["hammered"],
       reminder:
         "The previously drunk player is no longer drunk. The Sailor points to a living player. Either the Sailor, or the chosen player, is drunk.",
       order: 4,
@@ -1076,7 +1218,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Scarlet Woman",
     edition: "tb",
     team: "Minion",
-    reminders: ["Demon"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -1098,7 +1240,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Seamstress",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1120,7 +1262,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Shabaloth",
     edition: "bmr",
     team: "Demon",
-    reminders: ["Dead", "Alive"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -1142,7 +1284,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Slayer",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [{ ...ABILITY_SPENT, dayTrigger: true }],
     setup: false,
     delusional: false,
     ability:
@@ -1156,13 +1298,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Snake Charmer",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["Poisoned"],
+    reminders: [{ name: "charmed", type: "poison" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose an alive player: a chosen Demon swaps characters & alignments with you & is then poisoned.",
     imageSrc: "snakecharmer.png",
     firstNight: {
+      setReminders: ["charmed"],
       reminder:
         "The Snake Charmer points to a player. If that player is the Demon: swap the Demon and Snake Charmer character and alignments. Wake each player to inform them of their new role and alignment. The new Snake Charmer is poisoned.",
       order: 20,
@@ -1172,6 +1315,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
+      setReminders: ["charmed"],
       reminder:
         "The Snake Charmer points to a player. If that player is the Demon: swap the Demon and Snake Charmer character and alignments. Wake each player to inform them of their new role and alignment. The new Snake Charmer is poisoned.",
       order: 11,
@@ -1186,12 +1330,16 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Soldier",
     edition: "tb",
     team: "Townsfolk",
-    reminders: [],
+    reminders: [{ name: "sturdy", type: "protected" }],
     setup: false,
     delusional: false,
     ability: "You are safe from the Demon.",
     imageSrc: "soldier.png",
-    firstNight: null,
+    firstNight: {
+      reminder: "Set the sturdy token on the soldier",
+      setReminders: ["sturdy"],
+      order: 0,
+    },
     otherNight: null,
   },
   {
@@ -1219,13 +1367,21 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Sweetheart",
     edition: "snv",
     team: "Outsider",
-    reminders: ["Drunk"],
+    reminders: [
+      { name: "loveable", type: "triggerOnDeath" },
+      { name: "in love", type: "poison" },
+    ],
     setup: false,
     delusional: false,
     ability: "When you die, 1 player is drunk from now on.",
     imageSrc: "sweetheart.png",
-    firstNight: null,
+    firstNight: {
+      order: 0,
+      setReminders: ["loveable"],
+      reminder: "Set the loveable token on the sweetheart",
+    },
     otherNight: {
+      setReminders: ["in love"],
       reminder: "Choose a player that is drunk.",
       order: 41,
       status: [{ type: "drunk" }],
@@ -1236,7 +1392,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Tea Lady",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: ["Can not die"],
+    reminders: [{ name: "rested", type: "protected" }],
     setup: false,
     delusional: false,
     ability: "If both your alive neighbours are good, they can't die.",
@@ -1249,7 +1405,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Tinker",
     edition: "bmr",
     team: "Outsider",
-    reminders: ["Dead"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability: "You might die at any time.",
@@ -1258,6 +1414,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "The Tinker might die.",
       order: 49,
+      status: [{ type: "dead" }],
     },
   },
   {
@@ -1265,7 +1422,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Town Crier",
     edition: "snv",
     team: "Townsfolk",
-    reminders: ["Minions not nominated", "Minion nominated"],
+    reminders: [
+      {
+        name: "minions nominated today",
+        type: "info",
+        dayTrigger: true,
+        duration: 1,
+      },
+    ],
     setup: false,
     delusional: false,
     ability: "Each night*, you learn if a Minion nominated today.",
@@ -1282,7 +1446,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Undertaker",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["Executed"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability: "Each night*, you learn which character died by execution today.",
@@ -1303,7 +1467,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Vigormortis",
     edition: "snv",
     team: "Demon",
-    reminders: ["Dead", "Has ability", "Poisoned"],
+    reminders: [
+      { name: "poisoned", type: "poison" },
+      { name: "has ability", type: "info" },
+    ],
     setup: true,
     delusional: false,
     ability:
@@ -1322,13 +1489,23 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Virgin",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [
+      {
+        name: "virgin",
+        type: "protected",
+        dayReminder: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "The 1st time you are nominated, if the nominator is a Townsfolk, they are executed immediately.",
     imageSrc: "virgin.png",
-    firstNight: null,
+    firstNight: {
+      order: 0,
+      reminder: "Add the virgin token to the virgin",
+      setReminders: ["virgin"],
+    },
     otherNight: null,
   },
   {
@@ -1336,7 +1513,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Vortox",
     edition: "snv",
     team: "Demon",
-    reminders: ["Dead"],
+    reminders: [{ name: "vortox", type: "info" }],
     setup: false,
     delusional: false,
     ability:
@@ -1353,7 +1530,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Washerwoman",
     edition: "tb",
     team: "Townsfolk",
-    reminders: ["Townsfolk", "Wrong"],
+    reminders: [{ name: "customer", type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability: "You start knowing that 1 of 2 players is a particular Townsfolk.",
@@ -1362,6 +1539,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "Show the character token of a Townsfolk in play. Point to two players, one of which is that character.",
       order: 33,
+      setReminders: ["customer", "customer"],
       playerMessage: {
         type: "reveal-role",
         count: 2,
@@ -1375,19 +1553,21 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Witch",
     edition: "snv",
     team: "Minion",
-    reminders: ["Cursed"],
+    reminders: [{ name: "cursed", type: "info", dayReminder: true }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player: if they nominate tomorrow, they die. If just 3 players live, you lose this ability.",
     imageSrc: "witch.png",
     firstNight: {
+      setReminders: ["cursed"],
       reminder:
         "The Witch points to a player. If that player nominates tomorrow they die immediately.",
       order: 24,
       status: [{ type: "characterAbility" }],
     },
     otherNight: {
+      setReminders: ["cursed"],
       reminder:
         "If there are 4 or more players alive: The Witch points to a player. If that player nominates tomorrow they die immediately.",
       order: 14,
@@ -1399,7 +1579,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Zombuul",
     edition: "bmr",
     team: "Demon",
-    reminders: ["Died today", "Dead"],
+    reminders: [{ name: "zombie", type: "info", persistOnDeath: true }],
     setup: false,
     delusional: false,
     ability:
@@ -1418,13 +1598,13 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Alchemist",
     edition: "",
     team: "Townsfolk",
-    reminders: [],
-    remindersGlobal: ["Is the Alchemist"],
+    reminders: [{ type: "info", name: "alchemist" }],
     setup: false,
     delusional: false,
     ability: "You have a not-in-play Minion ability.",
     imageSrc: "alchemist.png",
     firstNight: {
+      setReminders: ["alchemist"],
       reminder: "Show the Alchemist a not-in-play Minion token",
       order: 3,
       playerMessage: {
@@ -1442,7 +1622,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Amnesiac",
     edition: "",
     team: "Townsfolk",
-    reminders: ["?"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -1479,11 +1659,11 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Townsfolk",
     reminders: [
-      "Seen Townsfolk",
-      "Seen Outsider",
-      "Seen Minion",
-      "Seen Demon",
-      "Seen Traveler",
+      { name: "seen townsfolk", type: "info" },
+      { name: "seen outsider", type: "info" },
+      { name: "seen minion", type: "info" },
+      { name: "seen demon", type: "info" },
+      { name: "seen traveler", type: "info" },
     ],
     setup: true,
     delusional: false,
@@ -1514,7 +1694,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Bounty Hunter",
     edition: "",
     team: "Townsfolk",
-    reminders: ["Known"],
+    reminders: [
+      { name: "bounty", type: "triggerOnDeath" },
+      { name: "turned", type: "info" },
+    ],
     setup: true,
     delusional: false,
     ability:
@@ -1522,7 +1705,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "bountyhunter.png",
     firstNight: {
       reminder:
-        "Point to 1 evil player. Wake the townsfolk who is evil and show them the 'You are' card and the thumbs down evil sign.",
+        "Choose a townsfolk, they are evil. Wake this townsfolk and show them the 'You are' card and the thumbs down evil sign.",
       order: 46,
       playerMessage: {
         type: "alignment-change",
@@ -1542,7 +1725,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Cannibal",
     edition: "",
     team: "Townsfolk",
-    reminders: ["Poisoned", "Died today"],
+    reminders: [
+      { name: "poisoned", type: "poison", causedByDeath: true, target: "self" },
+      { name: "died today", type: "info", causedByDeath: true },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -1609,13 +1795,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Engineer",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
       "Once per game, at night, choose which Minions or which Demon is in play.",
     imageSrc: "engineer.png",
     firstNight: {
+      setReminders: ["ability spent"],
       reminder:
         "The Engineer shows a 'no' head signal, or points to a Demon or points to the relevant number of Minions. If the Engineer chose characters, replace the Demon or Minions with the choices, then wake the relevant players and show them the You are card and the relevant character tokens.",
       order: 13,
@@ -1625,6 +1812,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
+      setReminders: ["ability spent"],
       reminder:
         "The Engineer shows a 'no' head signal, or points to a Demon or points to the relevant number of Minions. If the Engineer chose characters, replace the Demon or Minions with the choices, then wake the relevant players and show them the 'You are' card and the relevant character tokens.",
       order: 5,
@@ -1660,7 +1848,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fisherman",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -1696,13 +1884,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Huntsman",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: true,
     delusional: false,
     ability:
       "Once per game, at night, choose a living player: the Damsel, if chosen, becomes a not-in-play Townsfolk. [+the Damsel]",
     imageSrc: "huntsman.png",
     firstNight: {
+      setReminders: ["ability spent"],
       reminder:
         "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
       order: 30,
@@ -1716,6 +1905,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
+      setReminders: ["ability spent"],
       reminder:
         "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
       order: 45,
@@ -1766,7 +1956,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Lycanthrope",
     edition: "",
     team: "Townsfolk",
-    reminders: ["Dead"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -1802,18 +1992,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Nightwatchman",
     edition: "",
     team: "Townsfolk",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
       "Once per game, at night, choose a player: they learn who you are.",
     imageSrc: "nightwatchman.png",
     firstNight: {
+      setReminders: ["ability spent"],
       reminder:
         "The Nightwatchman may point to a player. Wake that player, show the 'This character selected you' card and the Nightwatchman token, then point to the Nightwatchman player.",
       order: 47,
     },
     otherNight: {
+      setReminders: ["ability spent"],
       reminder:
         "The Nightwatchman may point to a player. Wake that player, show the 'This character selected you' card and the Nightwatchman token, then point to the Nightwatchman player.",
       order: 65,
@@ -1831,12 +2023,13 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Noble",
     edition: "",
     team: "Townsfolk",
-    reminders: ["Seen"],
+    reminders: [{ name: "seen", type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability: "You start knowing 3 players, 1 and only 1 of which is evil.",
     imageSrc: "noble.png",
     firstNight: {
+      setReminders: ["seen", "seen", "seen"],
       reminder:
         "Point to 3 players including one evil player, in no particular order.",
       order: 44,
@@ -1856,13 +2049,17 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Pixie",
     edition: "",
     team: "Townsfolk",
-    reminders: ["Mad", "Has ability"],
+    reminders: [
+      { name: "mad", type: "mad" },
+      { name: "has ability", type: "info", causedByDeath: true },
+    ],
     setup: false,
     delusional: false,
     ability:
       "You start knowing 1 in-play Townsfolk. If you were mad that you were this character, you gain their ability when they die.",
     imageSrc: "pixie.png",
     firstNight: {
+      setReminders: ["mad", "has ability"],
       reminder: "Show the Pixie 1 in-play Townsfolk character token.",
       order: 29,
       playerMessage: {
@@ -1880,7 +2077,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Poppy Grower",
     edition: "",
     team: "Townsfolk",
-    reminders: ["Evil wakes"],
+    reminders: [{ name: "evil wakes", type: "info", causedByDeath: true }],
     setup: false,
     delusional: false,
     ability:
@@ -1891,6 +2088,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       order: 4,
     },
     otherNight: {
+      setReminders: ["evil wakes"],
       reminder:
         "If the Poppy Grower has died, show the Minions/Demon who each other are.",
       order: 3,
@@ -1904,13 +2102,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Preacher",
     edition: "",
     team: "Townsfolk",
-    reminders: ["At a sermon"],
+    reminders: [{ name: "no ability", type: "reveal-role" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player: a Minion, if chosen, learns this. All chosen Minions have no ability.",
     imageSrc: "preacher.png",
     firstNight: {
+      setReminders: ["no ability"],
       reminder:
         "The Preacher chooses a player. If a Minion is chosen, wake the Minion and show the 'This character selected you' card and then the Preacher token.",
       order: 14,
@@ -1919,6 +2118,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
+      setReminders: ["no ability"],
       reminder:
         "The Preacher chooses a player. If a Minion is chosen, wake the Minion and show the 'This character selected you' card and then the Preacher token.",
       order: 6,
@@ -1932,7 +2132,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Acrobat",
     edition: "",
     team: "Outsider",
-    reminders: ["Dead"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -1950,13 +2150,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Damsel",
     edition: "",
     team: "Outsider",
-    reminders: ["Guess used"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
       "All Minions know you are in play. If a Minion publicly guesses you (once), your team loses.",
     imageSrc: "damsel.png",
     firstNight: {
+      setReminders: ["ability spent"],
       reminder:
         "Wake all the Minions, show them the 'This character selected you' card and the Damsel token.",
       order: 31,
@@ -1965,6 +2166,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
+      setReminders: ["ability spent"],
       reminder:
         "If selected by the Huntsman, wake the Damsel, show 'You are' card and a not-in-play Townsfolk token.",
       order: 46,
@@ -1983,7 +2185,15 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Golem",
     edition: "",
     team: "Outsider",
-    reminders: ["Can not nominate"],
+    reminders: [
+      {
+        name: "can not nominate",
+        type: "info",
+        persistOnDeath: true,
+        dayReminder: true,
+        target: "self",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -2024,7 +2234,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Puzzlemaster",
     edition: "",
     team: "Outsider",
-    reminders: ["Drunk", "Guess used"],
+    reminders: [
+      { name: "drunk", type: "drunk", persistOnDeath: true },
+      ABILITY_SPENT,
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -2072,19 +2285,21 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fearmonger",
     edition: "",
     team: "Minion",
-    reminders: ["Fear"],
+    reminders: [{ name: "fear", type: "info", causedByDeath: true }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player. If you nominate & execute them, their team loses. All players know if you choose a new player.",
     imageSrc: "fearmonger.png",
     firstNight: {
+      setReminders: ["fear"],
       reminder:
         "The Fearmonger points to a player. Place the Fear token next to that player and announce that a new player has been selected with the Fearmonger ability.",
       order: 26,
       status: [{ type: "characterAbility" }],
     },
     otherNight: {
+      setReminders: ["fear"],
       reminder:
         "The Fearmonger points to a player. If different from the previous night, place the Fear token next to that player and announce that a new player has been selected with the Fearmonger ability.",
       order: 17,
@@ -2096,7 +2311,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Goblin",
     edition: "",
     team: "Minion",
-    reminders: ["Claimed"],
+    reminders: [{ name: "claimed", type: "info", dayReminder: true }],
     setup: false,
     delusional: false,
     ability:
@@ -2110,7 +2325,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Legion",
     edition: "",
     team: "Demon",
-    reminders: ["Dead", "About to die"],
+    reminders: [],
     setup: true,
     delusional: false,
     ability:
@@ -2129,12 +2344,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Demon",
     reminders: [
-      "Day 1",
-      "Day 2",
-      "Day 3",
-      "Day 4",
-      "Day 5",
-      "Good player executed",
+      {
+        name: "good player executed",
+        type: "info",
+      },
     ],
     setup: false,
     delusional: false,
@@ -2147,6 +2360,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       order: 54,
     },
     otherNight: {
+      setReminders: ["good player executed"],
       reminder: "Change the Leviathan Day reminder for the next day.",
       order: 73,
     },
@@ -2157,7 +2371,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "bmr",
     team: "Outsider",
     reminders: [],
-    remindersGlobal: [],
     setup: true,
     delusional: true,
     ability:
@@ -2172,7 +2385,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Minion",
     reminders: [],
-    remindersGlobal: ["Is the Marionette"],
     setup: true,
     delusional: true,
     ability:
@@ -2197,17 +2409,28 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Mezepheles",
     edition: "",
     team: "Minion",
-    reminders: ["Turns evil", "No ability"],
+    reminders: [
+      {
+        name: "turns evil",
+        type: "info",
+        dayTrigger: true,
+        dayReminder: true,
+        target: "other",
+      },
+      ABILITY_SPENT,
+    ],
     setup: false,
     delusional: false,
     ability:
       "You start knowing a secret word. The 1st good player to say this word becomes evil that night.",
     imageSrc: "mezepheles.png",
     firstNight: {
+      setReminders: ["turns evil", "ability spent"],
       reminder: "Show the Mezepheles their secret word.",
       order: 27,
     },
     otherNight: {
+      setReminders: ["turns evil", "ability spent"],
       reminder:
         "Wake the 1st good player that said the Mezepheles' secret word and show them the 'You are' card and the thumbs down evil signal.",
       order: 18,
@@ -2238,13 +2461,28 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Lleech",
     edition: "",
     team: "Demon",
-    reminders: ["Dead", "Poisoned"],
+    reminders: [
+      {
+        name: "poisoned",
+        type: "poison",
+      },
+      {
+        name: "lleech dies",
+        type: "info",
+        causedByDeath: true,
+      },
+      {
+        name: "protected",
+        type: "protected",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "Each night*, choose a player: they die. You start by choosing an alive player: they are poisoned - you die if & only if they die.",
     imageSrc: "lleech.png",
     firstNight: {
+      setReminders: ["poisoned"],
       reminder:
         "The Lleech points to a player. Place the Poisoned reminder token.",
       order: 16,
@@ -2274,14 +2512,26 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Widow",
     edition: "",
     team: "Demon",
-    reminders: ["Poisoned"],
-    remindersGlobal: ["Knows"],
+    reminders: [
+      {
+        name: "poisoned",
+        type: "poison",
+        duration: 1,
+      },
+      {
+        name: "knows widow in game",
+        type: "reveal-role",
+        persistOnDeath: true,
+        target: "other",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "On your 1st night, look at the Grimoire and choose a player: they are poisoned. 1 good player knows a Widow is in play.",
     imageSrc: "widow.png",
     firstNight: {
+      setReminders: ["knows widow in game", "poisoned"],
       reminder:
         "Show the Grimoire to the Widow for as long as they need. The Widow points to a player. That player is poisoned. Wake a good player. Show the 'These characters are in play' card, then the Widow character token.",
       order: 18,
@@ -2301,17 +2551,27 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Bureaucrat",
     edition: "tb",
     team: "Traveler",
-    reminders: ["3 votes"],
+    reminders: [
+      {
+        name: "3 votes",
+        type: "info",
+        duration: 1,
+        dayReminder: true,
+        target: "other",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player (not yourself): their vote counts as 3 votes tomorrow.",
     firstNight: {
+      setReminders: ["3 votes"],
       reminder:
         "The Bureaucrat points to a player. Put the Bureaucrat's '3 votes' reminder by the chosen player's character token.",
       order: 1,
     },
     otherNight: {
+      setReminders: ["3 votes"],
       reminder:
         "The Bureaucrat points to a player. Put the Bureaucrat's '3 votes' reminder by the chosen player's character token.",
       order: 1,
@@ -2323,17 +2583,27 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Thief",
     edition: "tb",
     team: "Traveler",
-    reminders: ["Negative vote"],
+    reminders: [
+      {
+        name: "negative vote",
+        type: "info",
+        duration: 1,
+        dayReminder: true,
+        target: "other",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player (not yourself): their vote counts negatively tomorrow.",
     firstNight: {
+      setReminders: ["negative vote"],
       reminder:
         "The Thief points to a player. Put the Thief's 'Negative vote' reminder by the chosen player's character token.",
       order: 1,
     },
     otherNight: {
+      setReminders: ["negative vote"],
       reminder:
         "The Thief points to a player. Put the Thief's 'Negative vote' reminder by the chosen player's character token.",
       order: 1,
@@ -2387,12 +2657,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Apprentice",
     edition: "bmr",
     team: "Traveler",
-    reminders: ["Is the Apprentice"],
+    reminders: [
+      {
+        name: "is the apprentice",
+        type: "info",
+        persistOnDeath: true,
+        target: "self",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "On your 1st night, you gain a Townsfolk ability (if good), or a Minion ability (if evil).",
     firstNight: {
+      setReminders: ["is the apprentice"],
       reminder:
         "Show the Apprentice the 'You are' card, then a Townsfolk or Minion token. In the Grimoire, replace the Apprentice token with that character token, and put the Apprentice's 'Is the Apprentice' reminder by that character token.",
       order: 1,
@@ -2419,7 +2697,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Judge",
     edition: "bmr",
     team: "Traveler",
-    reminders: ["No ability"],
+    reminders: [ABILITY_SPENT],
     setup: false,
     delusional: false,
     ability:
@@ -2433,7 +2711,18 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Bishop",
     edition: "bmr",
     team: "Traveler",
-    reminders: ["Nominate good", "Nominate evil"],
+    reminders: [
+      {
+        name: "nominate good",
+        type: "info",
+        dayTrigger: true,
+      },
+      {
+        name: "nominate evil",
+        type: "info",
+        dayTrigger: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -2461,17 +2750,30 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Barista",
     edition: "snv",
     team: "Traveler",
-    reminders: ["Sober & Healthy", "Ability twice"],
+    reminders: [
+      {
+        name: "sober & healthy",
+        type: "info",
+        duration: 1,
+      },
+      {
+        name: "ability twice",
+        type: "info",
+        duration: 1,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "Each night, until dusk, 1) a player becomes sober, healthy and gets true info, or 2) their ability works twice. They learn which.",
     firstNight: {
+      setReminders: ["sober & healthy", "ability twice"],
       reminder:
         "Choose a player, wake them and tell them which Barista power is affecting them. Treat them accordingly (sober/healthy/true info or activate their ability twice).",
       order: 1,
     },
     otherNight: {
+      setReminders: ["sober & healthy", "ability twice"],
       reminder:
         "Choose a player, wake them and tell them which Barista power is affecting them. Treat them accordingly (sober/healthy/true info or activate their ability twice).",
       order: 1,
@@ -2483,7 +2785,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Harlot",
     edition: "snv",
     team: "Traveler",
-    reminders: ["Dead"],
+    reminders: [],
     setup: false,
     delusional: false,
     ability:
@@ -2514,13 +2816,22 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Bone Collector",
     edition: "snv",
     team: "Traveler",
-    reminders: ["No ability", "Has ability"],
+    reminders: [
+      ABILITY_SPENT,
+      {
+        name: "has ability",
+        type: "info",
+        duration: 1,
+        target: "other",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "Once per game, at night, choose a dead player: they regain their ability until dusk.",
     firstNight: null,
     otherNight: {
+      setReminders: ["has ability", "ability spent"],
       reminder:
         "The Bone Collector either shakes their head no or points at any dead player. If they pointed at any dead player, put the Bone Collector's 'Has Ability' reminder by the chosen player's character token. (They may need to be woken tonight to use it.)",
       order: 1,
@@ -2560,7 +2871,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Demon",
     reminders: [],
-    remindersGlobal: ["Is the Demon", "Dead"],
     setup: true,
     ability:
       "Each night, Minions choose who babysits Lil' Monsta's token & \"is the Demon\". A player dies each night*. [+1 Minion]",

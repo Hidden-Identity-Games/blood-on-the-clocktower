@@ -27,6 +27,7 @@ export interface CharacterNightData {
   reminder: string;
   playerMessage?: PlayerMessageCreator;
   status?: PlayerStatusType[];
+  setReminders?: string[];
 }
 
 export interface Character {
