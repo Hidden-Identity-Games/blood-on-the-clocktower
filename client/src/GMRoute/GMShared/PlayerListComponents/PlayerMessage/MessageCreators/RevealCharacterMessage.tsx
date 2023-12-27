@@ -1,4 +1,5 @@
 import {
+  type CharacterActionQueueItem,
   type PlayerMessageCreatorMap,
   type Role,
 } from "@hidden-identity/shared";
@@ -17,13 +18,14 @@ import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 interface RevealCharacterMessageProps {
   message: PlayerMessageCreatorMap["reveal-character"];
-  player: string;
+  action: CharacterActionQueueItem;
 }
 
 export function RevealCharacterMessage({
   message,
-  player,
+  action,
 }: RevealCharacterMessageProps) {
+  const { player } = action;
   const { restriction } = message;
 
   const filter = useCharacterRestriction(restriction);
@@ -64,6 +66,7 @@ export function RevealCharacterMessage({
         replaceRole={roleState.replace}
       />
       <SubmitMessage
+        action={action}
         player={player}
         message={roleState.value.map((potentialRole) => ({
           character: potentialRole,

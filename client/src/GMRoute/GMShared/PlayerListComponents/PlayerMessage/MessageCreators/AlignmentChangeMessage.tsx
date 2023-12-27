@@ -1,5 +1,6 @@
 import {
   type Alignment,
+  type CharacterActionQueueItem,
   type PlayerMessageCreatorMap,
 } from "@hidden-identity/shared";
 import { oppositeAlignment } from "@hidden-identity/shared";
@@ -12,12 +13,13 @@ import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface AlignmentChangeMessageProps {
   message: PlayerMessageCreatorMap["alignment-change"];
-  player: string;
+  action: CharacterActionQueueItem;
 }
 
 export function AlignmentChangeMessage({
-  player,
+  action,
 }: AlignmentChangeMessageProps) {
+  const { player } = action;
   const getPlayerAlignment = useGetPlayerAlignment();
   const [alignment, setAlignment] = useState<Alignment>(
     oppositeAlignment(getPlayerAlignment(player)),
@@ -31,6 +33,7 @@ export function AlignmentChangeMessage({
         onSelect={(next) => next && setAlignment(next)}
       />
       <SubmitMessage
+        action={action}
         player={player}
         message={[{ alignment, group: "You are now" }]}
       />

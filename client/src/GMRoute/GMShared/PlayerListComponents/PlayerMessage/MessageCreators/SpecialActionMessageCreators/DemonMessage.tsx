@@ -1,4 +1,8 @@
-import { type PlayerMessageEntry, type Role } from "@hidden-identity/shared";
+import {
+  type PlayerMessageEntry,
+  type Role,
+  type SpecialActionQueueItem,
+} from "@hidden-identity/shared";
 import { Flex, Heading } from "@radix-ui/themes";
 
 import { useDefiniteGame } from "../../../../../../store/GameContext";
@@ -10,8 +14,10 @@ import {
 import { useDynamicList } from "../../../Selectors/useDynamicList";
 import { SubmitMessage } from "../../messageShared/SubmitMessage";
 
-export interface DemonMessageProps {}
-export function DemonMessage() {
+export interface DemonMessageProps {
+  action: SpecialActionQueueItem;
+}
+export function DemonMessage({ action }: DemonMessageProps) {
   const { game, script } = useDefiniteGame();
   const rolesList = script.map(({ id }) => id);
 
@@ -70,6 +76,7 @@ export function DemonMessage() {
         replaceRole={bluffsState.replace}
       />
       <SubmitMessage
+        action={action}
         player={playerMessageIsFor.value[0]}
         message={[...bluffMessages, ...minionMessages]}
       />

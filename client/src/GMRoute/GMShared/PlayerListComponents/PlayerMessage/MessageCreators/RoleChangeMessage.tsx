@@ -1,5 +1,6 @@
 import {
   type Alignment,
+  type CharacterActionQueueItem,
   type PlayerMessageCreatorMap,
   type Role,
 } from "@hidden-identity/shared";
@@ -16,10 +17,12 @@ import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface RoleChangeMessageProps {
   message: PlayerMessageCreatorMap["role-change"];
-  player: string;
+  action: CharacterActionQueueItem;
 }
 
-export function RoleChangeMessage({ message, player }: RoleChangeMessageProps) {
+export function RoleChangeMessage({ message, action }: RoleChangeMessageProps) {
+  const { player } = action;
+
   const { script } = useDefiniteGame();
   const [alignmentOverride, setAlignmentOverride] = useState<Alignment | null>(
     null,
@@ -49,6 +52,7 @@ export function RoleChangeMessage({ message, player }: RoleChangeMessageProps) {
         onSelect={(alignment) => setAlignmentOverride(alignment)}
       />
       <SubmitMessage
+        action={action}
         player={player}
         message={[
           {

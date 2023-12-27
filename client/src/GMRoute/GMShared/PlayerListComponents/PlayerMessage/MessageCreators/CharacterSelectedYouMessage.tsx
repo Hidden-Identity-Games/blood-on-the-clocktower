@@ -1,4 +1,5 @@
 import {
+  type CharacterActionQueueItem,
   type PlayerMessageCreatorMap,
   type Role,
 } from "@hidden-identity/shared";
@@ -14,13 +15,14 @@ import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 interface CharacterSelectedYouMessageProps {
   message: PlayerMessageCreatorMap["character-selected-you"];
-  player: string;
+  action: CharacterActionQueueItem;
 }
 
 export function CharacterSelectedYouMessage({
   message,
-  player,
+  action,
 }: CharacterSelectedYouMessageProps) {
+  const { player } = action;
   const { script } = useDefiniteGame();
   const [groupName, setGroupName] = useState("In play");
   const rolesList = script.map(({ id }) => id);
@@ -45,6 +47,7 @@ export function CharacterSelectedYouMessage({
         replaceRole={rolesState.replace}
       />
       <SubmitMessage
+        action={action}
         player={player}
         message={rolesState.value.map((k) => ({
           character: k,

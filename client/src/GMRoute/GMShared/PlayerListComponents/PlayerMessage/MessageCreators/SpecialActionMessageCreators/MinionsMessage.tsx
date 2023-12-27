@@ -1,10 +1,16 @@
-import { getCharacter } from "@hidden-identity/shared";
+import {
+  getCharacter,
+  type SpecialActionQueueItem,
+} from "@hidden-identity/shared";
 import { Heading, Text } from "@radix-ui/themes";
 
 import { PlayerNameWithRoleIcon } from "../../../../../../shared/RoleIcon";
 import { useDefiniteGame } from "../../../../../../store/GameContext";
 
-export function MinionsMessages() {
+interface MinionsMessagesProps {
+  action: SpecialActionQueueItem;
+}
+export function MinionsMessages(_props: MinionsMessagesProps) {
   const { game } = useDefiniteGame();
   return (
     <>

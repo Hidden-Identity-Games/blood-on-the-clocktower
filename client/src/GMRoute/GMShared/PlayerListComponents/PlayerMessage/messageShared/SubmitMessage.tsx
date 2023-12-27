@@ -1,18 +1,26 @@
-import { type PlayerMessageEntry } from "@hidden-identity/shared";
+import {
+  type ActionQueueItem,
+  type PlayerMessageEntry,
+} from "@hidden-identity/shared";
 import { Button } from "@radix-ui/themes";
 
 import { ErrorCallout } from "../../../../../shared/ErrorCallout";
-import { useCreateMessage } from "../../../../../store/actions/gmActions";
+import {
+  useCompleteAction,
+  useCreateMessage,
+} from "../../../../../store/actions/gmActions";
 import { useSheetView } from "../../../../../store/url";
 
 export interface SubmitMessageProps {
   message: PlayerMessageEntry[];
   player: string;
+  action: ActionQueueItem;
 }
-export function SubmitMessage({ message, player }: SubmitMessageProps) {
+export function SubmitMessage({ message, player, action }: SubmitMessageProps) {
   const [createMessageError, createMessageisLoading, messageId, createMessage] =
     useCreateMessage();
   const [_, setSheetView] = useSheetView();
+  const [, , , completeAction] = useCompleteAction();
 
   return (
     <>
@@ -22,6 +30,7 @@ export function SubmitMessage({ message, player }: SubmitMessageProps) {
           disabled={createMessageisLoading && message.length === 0}
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async () => {
+            await completeAction(action.id);
             const messageId = await createMessage(player, message);
             if (messageId) {
               // make sure the request didn't fail

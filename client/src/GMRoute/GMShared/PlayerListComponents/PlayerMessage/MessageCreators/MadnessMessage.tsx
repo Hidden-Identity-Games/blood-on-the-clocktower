@@ -1,4 +1,5 @@
 import {
+  type CharacterActionQueueItem,
   type PlayerMessageCreatorMap,
   type Role,
 } from "@hidden-identity/shared";
@@ -11,10 +12,12 @@ import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface MadnessMessageProps {
   message: PlayerMessageCreatorMap["madness"];
-  player: string;
+  action: CharacterActionQueueItem;
 }
 
-export function MadnessMessage({ player }: MadnessMessageProps) {
+export function MadnessMessage({ action }: MadnessMessageProps) {
+  const { player } = action;
+
   const { script } = useDefiniteGame();
 
   const rolesList = script.map(({ id }) => id);
@@ -32,6 +35,7 @@ export function MadnessMessage({ player }: MadnessMessageProps) {
         replaceRole={rolesState.replace}
       />
       <SubmitMessage
+        action={action}
         player={player}
         message={[
           { group: "You are mad as:", character: rolesState.value[0] },

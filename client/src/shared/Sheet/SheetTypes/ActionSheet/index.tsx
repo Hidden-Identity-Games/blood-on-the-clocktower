@@ -1,6 +1,6 @@
 import { useDefiniteGame } from "../../../../store/GameContext";
 import { PlayerActionSheet } from "./PlayerActionSheet";
-import { isSpecialActionType, SpecialActionSheet } from "./SpecialActionSheet";
+import { SpecialActionSheet } from "./SpecialActionSheet";
 
 export interface ActionSheetProps {
   sheetId: string;
@@ -8,16 +8,14 @@ export interface ActionSheetProps {
 
 export function ActionSheet({ sheetId }: ActionSheetProps) {
   const { game } = useDefiniteGame();
-  if (isSpecialActionType(sheetId)) {
-    return <SpecialActionSheet actionType={sheetId} />;
+  const action = game.actionQueue.queue.find(({ id }) => id === sheetId);
+  if (!action) {
+    throw new Error("MEssage not found");
   }
 
-  const player = sheetId;
-
-  if (!Reflect.has(game.playersToRoles, player)) {
-    console.error(`player not found ${player}`);
-    return null;
+  if (action.type === "game") {
+    return <SpecialActionSheet action={action} />;
   }
 
-  return <PlayerActionSheet player={player} />;
+  return <PlayerActionSheet action={action} />;
 }

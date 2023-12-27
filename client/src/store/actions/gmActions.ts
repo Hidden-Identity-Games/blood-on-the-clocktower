@@ -101,3 +101,18 @@ export function useProgressTime() {
     return;
   });
 }
+
+export function useCompleteAction() {
+  const { gameId } = useGame();
+  return useAction(async (actionId: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.completeAction.mutate({
+      gameId,
+      actionId,
+    });
+    return;
+  });
+}

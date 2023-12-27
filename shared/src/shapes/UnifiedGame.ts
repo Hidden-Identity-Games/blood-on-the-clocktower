@@ -32,6 +32,7 @@ export interface UnifiedGameComputed {
   playerList: string[];
   rolesToPlayers: Record<Role, string[]>;
   messagesByNight: Record<number, CalculatedPlayerMessage[]>;
+  computedActionQueue: ActionQueueItem[];
 }
 
 export interface BaseUnifiedGame {
@@ -51,6 +52,7 @@ export interface BaseUnifiedGame {
   messages: PlayerMessage[];
   reminders: AppliedPlayerReminder[];
   time: TimeRecord;
+  actionQueue: { lastCompleted: string | null; queue: ActionQueueItem[] };
 }
 
 export interface WellOrderedPlayers {
@@ -75,3 +77,21 @@ export interface BrokenOrderedPlayers {
 export interface Neighbors {
   rightNeighbor: string | null;
 }
+
+export interface SpecialActionQueueItem {
+  type: "game";
+  id: string;
+  order: number;
+  skipped: boolean;
+  actionType: "DEMON" | "MINIONS";
+}
+export interface CharacterActionQueueItem {
+  type: "character";
+  id: string;
+  player: string;
+  order: number;
+  skipped: boolean;
+  role: Role;
+}
+
+export type ActionQueueItem = CharacterActionQueueItem | SpecialActionQueueItem;

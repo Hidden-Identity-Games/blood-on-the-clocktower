@@ -1,4 +1,5 @@
 import {
+  type CharacterActionQueueItem,
   type CharacterType,
   type PlayerMessageCreatorMap,
 } from "@hidden-identity/shared";
@@ -16,9 +17,11 @@ import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface RevealTeamMessageProps {
   message: PlayerMessageCreatorMap["reveal-team"];
-  player: string;
+  action: CharacterActionQueueItem;
 }
-export function RevealTeamMessage({ message, player }: RevealTeamMessageProps) {
+export function RevealTeamMessage({ message, action }: RevealTeamMessageProps) {
+  const { player } = action;
+
   const { game } = useDefiniteGame();
   const [team, setTeam] = useState<CharacterType>("Demon");
   const playerFilter = usePlayerRestrictions({
@@ -47,6 +50,7 @@ export function RevealTeamMessage({ message, player }: RevealTeamMessageProps) {
         replacePlayer={playersState.replace}
       />
       <SubmitMessage
+        action={action}
         player={player}
         message={playersState.value.map((p) => ({
           team,

@@ -1,40 +1,42 @@
+import { type CharacterActionQueueItem } from "@hidden-identity/shared";
+
 import { PlayerList } from "../../../../GMRoute/GMShared/PlayerListComponents";
 import { useDefiniteGame } from "../../../../store/GameContext";
 import { PlayerNameWithRoleIcon, RoleName } from "../../../RoleIcon";
 import { SheetBody, SheetContent, SheetHeader } from "../../SheetBody";
 
 export interface PlayerSheetProps {
-  player: string;
+  action: CharacterActionQueueItem;
 }
 
-function Header({ player }: PlayerSheetProps) {
+function Header({ action }: PlayerSheetProps) {
   const { game } = useDefiniteGame();
   return (
     <div className="flex h-full items-center gap-1 bg-[--color-background]">
-      <PlayerNameWithRoleIcon player={player} className="grow-0" />(
-      {RoleName(game.playersToRoles[player])})
+      <PlayerNameWithRoleIcon player={action.player} className="grow-0" />(
+      {RoleName(game.playersToRoles[action.player])})
     </div>
   );
 }
 
-function Body({ player }: PlayerSheetProps) {
-  return <PlayerList.NightReminder player={player} />;
+function Body({ action }: PlayerSheetProps) {
+  return <PlayerList.NightReminder player={action.player} />;
 }
 
-export function PlayerActionSheet({ player }: PlayerSheetProps) {
+export function PlayerActionSheet({ action }: PlayerSheetProps) {
   const { game } = useDefiniteGame();
 
-  if (!Reflect.has(game.playersToRoles, player)) {
-    console.error(`player not found ${player}`);
+  if (!Reflect.has(game.playersToRoles, action.player)) {
+    console.error(`player not found ${action.player}`);
     return null;
   }
   return (
     <SheetBody>
       <SheetContent>
-        <Body player={player} />
+        <Body action={action} />
       </SheetContent>
       <SheetHeader>
-        <Header player={player} />
+        <Header action={action} />
       </SheetHeader>
     </SheetBody>
   );

@@ -1,4 +1,5 @@
 import {
+  type CharacterActionQueueItem,
   type PlayerMessageCreator,
   type PlayerMessageCreatorMap,
 } from "@hidden-identity/shared";
@@ -15,11 +16,11 @@ import { RoleChangeMessage } from "./MessageCreators/RoleChangeMessage";
 
 interface PlayerMessageFlowProps {
   message: PlayerMessageCreator;
-  player: string;
+  action: CharacterActionQueueItem;
 }
 const ComponentMap: {
   [K in PlayerMessageCreator["type"]]: ComponentType<{
-    player: string;
+    action: CharacterActionQueueItem;
     message: PlayerMessageCreatorMap[K];
   }>;
 } = {
@@ -33,10 +34,10 @@ const ComponentMap: {
   "alignment-change": AlignmentChangeMessage,
 };
 
-export function PlayerMessageFlow({ message, player }: PlayerMessageFlowProps) {
+export function PlayerMessageFlow({ message, action }: PlayerMessageFlowProps) {
   const Component = ComponentMap[message.type] as React.ComponentType<{
-    player: string;
+    action: CharacterActionQueueItem;
     message: PlayerMessageCreatorMap[typeof message.type];
   }>;
-  return <Component player={player} message={message} />;
+  return <Component action={action} message={message} />;
 }
