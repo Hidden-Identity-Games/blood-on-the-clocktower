@@ -3,16 +3,15 @@ import { z } from "zod";
 const archetypeShape = z.enum(["Drunk/Poisoned", "Protected"]);
 
 export const playerReminderShape = z.object({
-  reminderText: z.string(),
+  name: z.string(),
   fromPlayer: z.string().optional(),
   toPlayer: z.string(),
-  startNight: z.number(),
   archetype: archetypeShape.optional(),
 });
 
 export const appliedPlayerReminderShape = z.intersection(
   playerReminderShape,
-  z.object({ id: z.string(), active: z.boolean() }),
+  z.object({ id: z.string(), active: z.boolean(), startNight: z.number() }),
 );
 
 export type PlayerReminderArchetype = z.TypeOf<typeof archetypeShape>;

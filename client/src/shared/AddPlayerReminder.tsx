@@ -2,7 +2,6 @@ import { Dialog, Grid } from "@radix-ui/themes";
 import { type ReactNode } from "react";
 
 import { usePlayerReminder } from "../store/actions/gmPlayerActions";
-import { useDefiniteGame } from "../store/GameContext";
 import { useAvailableReminders } from "../store/useStore";
 import { DialogHeader } from "./DialogHeader";
 
@@ -14,7 +13,6 @@ export function AddPlayerReminder({
   children,
   player,
 }: AddPlayerReminderProps) {
-  const { game } = useDefiniteGame();
   const availableReminders = useAvailableReminders();
   const [, isReminderLoading, , setReminder] = usePlayerReminder();
 
@@ -26,17 +24,16 @@ export function AddPlayerReminder({
         <Grid columns="2">
           {availableReminders.map((reminder) => (
             <button
-              key={reminder.reminderText}
+              key={reminder.name}
               disabled={isReminderLoading}
               onClick={() =>
                 void setReminder({
                   ...reminder,
                   toPlayer: player,
-                  startNight: game.time.count,
                 })
               }
             >
-              {reminder.reminderText}
+              {reminder.name}
             </button>
           ))}
         </Grid>

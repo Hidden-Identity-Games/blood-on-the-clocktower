@@ -332,19 +332,12 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             );
           case "AddPlayerReminder":
             return [...state, action.reminder];
-          case "ClearPlayerReminder": {
-            const reminder = state.find(
-              (reminder) => reminder.id === action.reminderId,
+          case "ClearPlayerReminder":
+            return state.map((reminder) =>
+              reminder.id === action.reminderId
+                ? { ...reminder, active: false }
+                : reminder,
             );
-            return reminder
-              ? [
-                  ...state.filter(
-                    (reminder) => reminder.id !== action.reminderId,
-                  ),
-                  { ...reminder, active: false },
-                ]
-              : state;
-          }
           default:
             return state;
         }

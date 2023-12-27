@@ -18,19 +18,6 @@ export function setupTestGames() {
       .assignSeating()
       .assignRandomRolesToCharacters()
       .moveToSetup(),
-    // .update((game) => {
-    //   const randomPlayer = Object.keys(game.getGame().playersToRoles)[0];
-    //   game.dispatch({
-    //     type: "AddPlayerStatus",
-    //     status: { id: "poison", type: "poison" },
-    //     player: randomPlayer,
-    //   });
-    //   game.dispatch({
-    //     type: "AddPlayerStatus",
-    //     status: { id: "drunk", type: "drunk" },
-    //     player: randomPlayer,
-    //   });
-    // }),
   );
 
   addTestGame(
@@ -40,20 +27,6 @@ export function setupTestGames() {
       .assignSeating()
       .assignRandomRolesToCharacters()
       .moveToSetup(),
-    // .update((game) => {
-    //   const randomPlayer = Object.keys(game.getGame().playersToRoles)[0];
-
-    //   game.dispatch({
-    //     type: "AddPlayerStatus",
-    //     status: { id: "poison", type: "poison" },
-    //     player: randomPlayer,
-    //   });
-    //   game.dispatch({
-    //     type: "AddPlayerStatus",
-    //     status: { id: "drunk", type: "drunk" },
-    //     player: randomPlayer,
-    //   });
-    // }),
   );
 
   addTestGame(

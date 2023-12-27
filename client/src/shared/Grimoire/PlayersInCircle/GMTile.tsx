@@ -48,7 +48,7 @@ export function GMTile({ player, index }: SpectatorTile) {
               {reminder.fromPlayer && (
                 <RoleIcon role={game.playersToRoles[reminder.fromPlayer]} />
               )}
-              {reminder.reminderText}
+              {reminder.name}
             </Flex>
           </button>
         </PlaceInCircle>

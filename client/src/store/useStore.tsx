@@ -74,15 +74,12 @@ export function useAvailableReminders() {
   );
 
   const reminderMap = availableReminders.flatMap(([player, reminders]) => {
-    return reminders.reduce((acc, reminder) => {
-      return [
-        ...acc,
-        {
-          reminderText: reminder,
-          fromPlayer: player,
-        } as PlayerReminder,
-      ];
-    }, [] as PlayerReminder[]);
+    return reminders.map((reminder) => {
+      return {
+        name: reminder,
+        fromPlayer: player,
+      } as PlayerReminder;
+    });
   });
 
   // TODO: Delusional reminders

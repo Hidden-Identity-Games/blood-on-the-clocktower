@@ -1,7 +1,6 @@
 import {
   alignmentShape,
   gameStatusShape,
-  generateThreeWordId,
   playerMessageEntryShape,
   playerReminderShape,
   roleShape,
@@ -10,6 +9,7 @@ import { z } from "zod";
 
 import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
 import {
+  addReminderAction,
   createMessageAction,
   drawRoleAction,
   progressTimeAction,
@@ -127,34 +127,13 @@ export const gameRoutes = {
       game.dispatch({ type: dead ? "KillPlayer" : "RevivePlayer", player });
     }),
   addPlayerReminder: gmProcedure
-    .input(z.intersection(gameIdShape, playerReminderShape))
-    .mutation(
-      async ({
-        input: {
-          gameId,
-          reminderText,
-          fromPlayer,
-          toPlayer,
-          startNight,
-          archetype,
-        },
-      }) => {
-        const game = await retrieveGame(gameId);
-        const id = generateThreeWordId();
-        game.dispatch({
-          type: "AddPlayerReminder",
-          reminder: {
-            id,
-            active: true,
-            reminderText,
-            fromPlayer,
-            toPlayer,
-            startNight,
-            archetype,
-          },
-        });
-      },
-    ),
+    .input(
+      z.intersection(gameIdShape, z.object({ reminder: playerReminderShape })),
+    )
+    .mutation(async ({ input: { gameId, reminder } }) => {
+      const game = await retrieveGame(gameId);
+      game.dispatch(addReminderAction({ reminder }));
+    }),
   clearPlayerReminder: gmProcedure
     .input(
       z.intersection(
@@ -274,7 +253,7 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, messages } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch(createMessageAction({ player, messages }));
+      return game.dispatch(createMessageAction({ player, messages }));
     }),
   deleteMessage: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ messageId: z.string() })))
