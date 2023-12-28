@@ -1,9 +1,9 @@
 import { exhaustiveCheck } from "@hidden-identity/shared";
 
 import { useSheetView } from "../../store/url";
+import { ActionSheet } from "./SheetTypes/ActionSheet";
 import { BlankSheet } from "./SheetTypes/BlankSheet";
 import { MessageSheet } from "./SheetTypes/MessageSheet";
-import { PlayerSheet } from "./SheetTypes/PlayerSheet";
 
 export function ControlledSheet() {
   const [sheetView] = useSheetView();
@@ -13,7 +13,7 @@ export function ControlledSheet() {
 
   switch (sheetView.type) {
     case "action":
-      return <PlayerSheet player={sheetView.id} />;
+      return <ActionSheet sheetId={sheetView.id} />;
     case "message":
       return <MessageSheet messageId={sheetView.id} />;
     case "none":

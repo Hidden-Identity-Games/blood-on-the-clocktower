@@ -63,9 +63,6 @@ export interface Restriction {
 }
 
 export interface PlayerMessageCreatorMap {
-  "demon-first-night": {
-    type: "demon-first-night";
-  };
   "character-selected-you": {
     type: "character-selected-you";
     restriction?: Restriction;

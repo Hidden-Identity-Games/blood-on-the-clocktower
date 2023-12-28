@@ -1,4 +1,5 @@
 import {
+  type CharacterActionQueueItem,
   type PlayerMessageCreatorMap,
   type Role,
 } from "@hidden-identity/shared";
@@ -16,9 +17,10 @@ import { SubmitMessage } from "../messageShared/SubmitMessage";
 
 export interface RevealRoleMessageProps {
   message: PlayerMessageCreatorMap["reveal-role"];
-  player: string;
+  action: CharacterActionQueueItem;
 }
-export function RevealRoleMessage({ message, player }: RevealRoleMessageProps) {
+export function RevealRoleMessage({ message, action }: RevealRoleMessageProps) {
+  const { player } = action;
   const playerfilter = usePlayerRestrictions({
     ...message.restriction,
     inPlay: true,
@@ -60,6 +62,7 @@ export function RevealRoleMessage({ message, player }: RevealRoleMessageProps) {
         replacePlayer={playersState.replace}
       />
       <SubmitMessage
+        action={action}
         player={player}
         message={playersState.value.map((p) => ({
           character: rolesState.value[0] ?? undefined,

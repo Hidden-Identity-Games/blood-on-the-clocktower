@@ -22,7 +22,7 @@ export function NewGameButton({
   const { gameId } = useGame();
   const [isTestGame, setIsTestGame] = useState(false);
   const [isFillRoles, setIsFillRoles] = useState(true);
-  const [playerCount, setPlayerCount] = useState("");
+  const [playerCount, setPlayerCount] = useState(15);
   const [script, setScript] = useState<Script | null>(
     getScript("Trouble Brewing"),
   );
@@ -69,10 +69,10 @@ export function NewGameButton({
                 <TextFieldInput
                   placeholder="number of players"
                   type="number"
-                  onChange={(e) => setPlayerCount(e.target.value)}
+                  onChange={(e) => setPlayerCount(Number(e.target.value))}
                   // stop the wheel from changing this input
                   onWheel={(e) => e.currentTarget.blur()}
-                  defaultValue={15}
+                  value={playerCount}
                   autoFocus
                 />
                 <Flex asChild gap="2" align="center">

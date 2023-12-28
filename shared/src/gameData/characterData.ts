@@ -2043,7 +2043,11 @@ export const CHARACTERS: CharacterDefinition[] = [
         "If the Poppy Grower has died, show the Minions/Demon who each other are.",
       order: 3,
       playerMessage: {
-        type: "demon-first-night",
+        type: "reveal-team",
+        count: 2,
+        restriction: {
+          team: ["Demon", "Minion"],
+        },
       },
     },
   },
@@ -2211,7 +2215,10 @@ export const CHARACTERS: CharacterDefinition[] = [
         "After Minion info wake each Minion and show them three not-in-play character tokens. These may be the same or different to each other and the ones shown to the Demon.",
       order: 7,
       playerMessage: {
-        type: "demon-first-night",
+        type: "character-selected-you",
+        restriction: {
+          team: ["Townsfolk", "Outsider"],
+        },
       },
     },
     otherNight: null,

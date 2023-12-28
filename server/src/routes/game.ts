@@ -270,4 +270,10 @@ export const gameRoutes = {
       const game = await retrieveGame(gameId);
       game.dispatch(progressTimeAction());
     }),
+  completeAction: gmProcedure
+    .input(z.intersection(gameIdShape, z.object({ actionId: z.string() })))
+    .mutation(async ({ input: { gameId, actionId } }) => {
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "CompleteAction", itemId: actionId });
+    }),
 };

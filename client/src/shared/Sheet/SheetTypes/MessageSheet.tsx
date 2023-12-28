@@ -39,11 +39,24 @@ function Body({ message }: MessageSheetPiecesProps) {
   const [hiddenView, setIsHiddenView] = useIsHiddenView();
   const [errorDeletingMessage, deleteMessageIsLoading, , deleteMessage] =
     useDeleteMessage();
+
   return (
     <div className="flex h-full flex-col gap-2 p-2">
-      {!hiddenView && message.showState === "needs to be shown" && (
-        <Button onClick={() => setIsHiddenView(true)}>Show to player</Button>
+      {!hiddenView && (
+        <DestructiveButton
+          variant="soft"
+          confirmationText="Are you sure?  This cannot be undone."
+          onClick={() => void deleteMessage(message.id)}
+        >
+          {deleteMessageIsLoading && (
+            <LoadingExperience>
+              <CgSpinner />
+            </LoadingExperience>
+          )}
+          DeleteMessage
+        </DestructiveButton>
       )}
+
       <Heading className="capitalize">{message.player}</Heading>
 
       {Object.keys(messagesByGroup).map((section) => (
@@ -92,17 +105,9 @@ function Body({ message }: MessageSheetPiecesProps) {
         </div>
       ))}
       <ErrorCallout error={errorDeletingMessage} />
-      <DestructiveButton
-        confirmationText="Are you sure?  This cannot be undone."
-        onClick={() => void deleteMessage(message.id)}
-      >
-        {deleteMessageIsLoading && (
-          <LoadingExperience>
-            <CgSpinner />
-          </LoadingExperience>
-        )}
-        DeleteMessage
-      </DestructiveButton>
+      {!hiddenView && message.showState === "needs to be shown" && (
+        <Button onClick={() => setIsHiddenView(true)}>Show to player</Button>
+      )}
     </div>
   );
 }

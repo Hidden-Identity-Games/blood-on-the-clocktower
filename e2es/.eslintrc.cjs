@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/consistent-type-imports": ["error", {fixStyle: 'inline-type-imports'}],
     "simple-import-sort/imports": "error",
+    "@typescript-eslint/no-confusing-void-expression": "off",
     "simple-import-sort/exports": "error",
     "@typescript-eslint/require-await": ["error"],
     "@typescript-eslint/no-unused-vars": [

@@ -8,7 +8,7 @@ export function toEntries<Key extends string, Value>(
   return Object.entries(object) as TypedTuple<Record<Key, Value>>[];
 }
 
-export function toKeys<Key extends string | number>(
+export function toKeys<Key extends string | number | symbol>(
   object: Record<Key, unknown>,
 ): Key[] {
   return Object.keys(object) as Key[];

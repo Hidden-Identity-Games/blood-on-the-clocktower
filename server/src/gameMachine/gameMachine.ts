@@ -8,7 +8,7 @@ import {
 } from "@hidden-identity/shared";
 import { createSelector } from "@reduxjs/toolkit";
 
-import { type AnyAction } from "./gameActions.ts";
+import { type AnyGameAction } from "./gameActions.ts";
 import {
   createGameReducer,
   type GameReducer,
@@ -32,9 +32,9 @@ export class GameMachine {
     );
   }
   dispatch<ReturnType>(action: GameThunk<ReturnType>): ReturnType;
-  dispatch<Action extends AnyAction>(action: Action): Action;
+  dispatch<Action extends AnyGameAction>(action: Action): Action;
 
-  dispatch<ReturnType>(action: AnyAction | GameThunk<ReturnType>) {
+  dispatch<ReturnType>(action: AnyGameAction | GameThunk<ReturnType>) {
     return this.store.dispatch(action);
   }
 
@@ -58,17 +58,30 @@ const gameSelector = createSelector(
   (game: BaseUnifiedGame) => computedGameSelectors.playerList(game),
   (game: BaseUnifiedGame) => computedGameSelectors.rolesToPlayers(game),
   (game: BaseUnifiedGame) => computedGameSelectors.messagesByNight(game),
-  (game, orderedPlayers, playerList, rolesToPlayers, messagesByNight) =>
+  (game: BaseUnifiedGame) => computedGameSelectors.computedActionQueue(game),
+  (
+    game,
+    orderedPlayers,
+    playerList,
+    rolesToPlayers,
+    messagesByNight,
+    computedActionQueue,
+  ) =>
     ({
       ...game,
       orderedPlayers,
       playerList,
       rolesToPlayers,
       messagesByNight,
+      computedActionQueue,
     }) satisfies UnifiedGame,
 );
 
-const computedGameSelectors = {
+export const computedGameSelectors: {
+  [Key in keyof UnifiedGameComputed]: (
+    game: BaseUnifiedGame,
+  ) => UnifiedGameComputed[Key];
+} = {
   orderedPlayers: createSelector(
     (game: BaseUnifiedGame) => game.partialPlayerOrdering,
     (players) => getOrderedPlayers(players),
@@ -85,6 +98,25 @@ const computedGameSelectors = {
         rolesToPlayers[role] = [...(rolesToPlayers[role] || []), player];
       });
       return rolesToPlayers;
+    },
+  ),
+  computedActionQueue: createSelector(
+    (game: BaseUnifiedGame) => game.actionQueue,
+    (actionQueue) => {
+      const lastCompletedIndex = actionQueue.queue.findIndex(
+        ({ id }) => id === actionQueue.lastCompleted,
+      );
+      if (lastCompletedIndex === -1) {
+        console.error("Couldn't find last completed index");
+        return actionQueue.queue;
+      }
+
+      return [
+        ...actionQueue.queue
+          .slice(0, lastCompletedIndex + 1)
+          .map((item) => ({ ...item, skipped: true })),
+        ...actionQueue.queue.slice(lastCompletedIndex + 1),
+      ];
     },
   ),
   messagesByNight: createSelector(

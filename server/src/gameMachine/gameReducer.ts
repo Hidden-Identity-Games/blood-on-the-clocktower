@@ -1,5 +1,8 @@
 import {
+  type ActionQueueItem,
   type BaseUnifiedGame,
+  generateThreeWordId,
+  getAbility,
   removeKey,
   type Role,
   shuffleList,
@@ -18,12 +21,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { generate } from "random-words";
 
 import { UNASSIGNED } from "../database/gameDB/base.ts";
-import { type ActionMap, type AnyAction } from "./gameActions.ts";
+import { type ActionMap, type AnyGameAction } from "./gameActions.ts";
+import { combineReducers } from "./reduxEnhacers/combineReducers.ts";
 
 // Needed so things can read the type of gameStore
 export type { EnhancedStore, StoreEnhancer, ThunkDispatch, UnknownAction };
 export type GameReducer = ReturnType<typeof createGameReducer>;
-export type Action<ActionType extends keyof ActionMap> = AnyAction & {
+export type Action<ActionType extends keyof ActionMap> = AnyGameAction & {
   type: ActionType;
 };
 
@@ -32,28 +36,29 @@ export type GameThunk<ReturnType> = ThunkAction<
   BaseUnifiedGame,
   // eslint-disable-next-line @typescript-eslint/ban-types
   {},
-  AnyAction
+  AnyGameAction
 >;
 
 export function createGameReducer(initialState?: BaseUnifiedGame) {
   return configureStore<
     BaseUnifiedGame,
-    AnyAction,
+    AnyGameAction,
     // Redux thunk types just ignore everything :-/ Need to do it manually
     Tuple<
       [
         Middleware<
           // eslint-disable-next-line @typescript-eslint/ban-types
-          ThunkDispatch<BaseUnifiedGame, {}, AnyAction>,
+          ThunkDispatch<BaseUnifiedGame, {}, AnyGameAction>,
           BaseUnifiedGame,
           // eslint-disable-next-line @typescript-eslint/ban-types
-          ThunkDispatch<BaseUnifiedGame, {}, AnyAction>
+          ThunkDispatch<BaseUnifiedGame, {}, AnyGameAction>
         >,
       ]
     >
   >({
     preloadedState: initialState,
-    reducer: {
+
+    reducer: combineReducers({
       playersToRoles: (state = {}, action) => {
         switch (action.type) {
           case "AddPlayer":
@@ -78,14 +83,77 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
           case "StartDay":
             return {
               time: "day",
-              count: state.count + 1,
+              count: state.count,
             };
           case "StartNight": {
             return {
               time: "night",
-              count: state.count,
+              count: state.count + 1,
             };
           }
+          default:
+            return state;
+        }
+      },
+      actionQueue: (
+        state = { lastCompleted: null, queue: [] },
+        action,
+        wholePreviousState,
+      ) => {
+        switch (action.type) {
+          case "StartNight":
+            return { lastCompleted: null, queue: action.initialActionQueue };
+          case "CompleteAction":
+            return { lastCompleted: action.itemId, queue: state.queue };
+          case "KillPlayer":
+            return {
+              lastCompleted: state.lastCompleted,
+              queue: state.queue.map((current) =>
+                "player" in current && current.player === action.player
+                  ? { ...current, skipped: true }
+                  : current,
+              ),
+            };
+
+          // When we add a new ability in, we add all abilities to the queue.
+          case "ChangePlayerRole":
+          case "RevivePlayer": {
+            const role = wholePreviousState.playersToRoles[action.player];
+            const ability = getAbility(role, wholePreviousState.time);
+
+            if (!ability) {
+              return state;
+            }
+
+            const nextQueue = state.queue.map((current) =>
+              "player" in current && current.player === action.player
+                ? { ...current, skipped: true }
+                : current,
+            );
+
+            const firstGreaterIndex = nextQueue.findIndex(
+              (current) => current.order > ability.order,
+            );
+            const insertBefore =
+              firstGreaterIndex === -1 ? nextQueue.length : firstGreaterIndex;
+
+            return {
+              lastCompleted: state.lastCompleted,
+              queue: [
+                ...nextQueue.slice(0, insertBefore),
+                {
+                  id: generateThreeWordId(),
+                  order: ability.order,
+                  player: action.player,
+                  skipped: false,
+                  role,
+                  type: "character",
+                } satisfies ActionQueueItem,
+                ...nextQueue.slice(insertBefore),
+              ],
+            };
+          }
+
           default:
             return state;
         }
@@ -342,6 +410,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state;
         }
       },
-    },
+    }),
   });
 }

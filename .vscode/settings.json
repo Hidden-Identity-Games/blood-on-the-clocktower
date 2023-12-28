@@ -1,5 +1,6 @@
 {
   "eslint.codeActionsOnSave.mode": "all",
+  "eslint.rules.customizations": [{ "rule": "*", "severity": "warn" }],
   "eslint.format.enable": true,
   "editor.formatOnSave": true,
   "eslint.workingDirectories": ["client", "server", "e2es", "shared"],
