@@ -9,7 +9,10 @@ export type ReminderType =
   | "protected"
   | "triggerOnDeath"
   | "reveal-role"
-  | "counter";
+  | "counter"
+  | "hasAbility"
+  | "abilitySpent";
+
 export type TargetType = "self" | "other";
 type CharacterDefinition = Omit<Character, "id"> & {
   id: string;
@@ -17,11 +20,13 @@ type CharacterDefinition = Omit<Character, "id"> & {
   reminders: Reminder[];
 };
 
-const ABILITY_SPENT = {
-  name: "ability spent",
-  type: "drunk",
-  target: "self",
-} as const;
+function abilitySpent(character: string) {
+  return {
+    name: `${character} ability spent`,
+    type: "abilitySpent",
+    target: "self",
+  } as const;
+}
 
 export const CHARACTERS: CharacterDefinition[] = [
   {
@@ -56,7 +61,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Assassin",
     edition: "bmr",
     team: "Minion",
-    reminders: [ABILITY_SPENT],
+    reminders: [abilitySpent("assassin")],
     setup: false,
     delusional: false,
     ability:
@@ -64,7 +69,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "assassin.png",
     firstNight: null,
     otherNight: {
-      setReminders: [ABILITY_SPENT.name],
+      setReminders: [abilitySpent("assassin").name],
       reminder:
         "If the Assassin has not yet used their ability: The Assassin either shows the 'no' head signal, or points to a player. That player dies.",
       order: 36,
@@ -153,7 +158,6 @@ export const CHARACTERS: CharacterDefinition[] = [
         name: "gone mad",
         type: "mad",
         duration: 1,
-        causedByDeath: true,
       },
     ],
     setup: false,
@@ -454,7 +458,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fool",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: [ABILITY_SPENT],
+    reminders: [abilitySpent("fool")],
     setup: false,
     delusional: false,
     ability: "The first time you die, you don't.",
@@ -990,19 +994,19 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Poisoner",
     edition: "tb",
     team: "Minion",
-    reminders: [{ name: "poisoned", type: "poison" }],
+    reminders: [{ name: "poisoner", type: "poison" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player: they are poisoned tonight and tomorrow day.",
     imageSrc: "poisoner.png",
     firstNight: {
-      setReminders: ["poisoned"],
+      setReminders: ["poisoner"],
       reminder: "The Poisoner points to a player. That player is poisoned.",
       order: 17,
     },
     otherNight: {
-      setReminders: ["poisoned"],
+      setReminders: ["poisoner"],
       reminder:
         "The previously poisoned player is no longer poisoned. The Poisoner points to a player. That player is poisoned.",
       order: 7,
@@ -1013,7 +1017,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Professor",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: [ABILITY_SPENT],
+    reminders: [abilitySpent("professor")],
     setup: false,
     delusional: false,
     ability:
@@ -1024,7 +1028,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Professor has not used their ability: The Professor either shakes their head no, or points to a player. If that player is a Townsfolk, they are now alive.",
       order: 43,
-      setReminders: [ABILITY_SPENT.name],
+      setReminders: [abilitySpent("professor").name],
       playerMessage: {
         type: "revived",
       },
@@ -1197,18 +1201,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Seamstress",
     edition: "snv",
     team: "Townsfolk",
-    reminders: [ABILITY_SPENT],
+    reminders: [abilitySpent("seamstress")],
     setup: false,
     delusional: false,
     ability:
       "Once per game, at night, choose 2 players (not yourself): you learn if they are the same alignment.",
     imageSrc: "seamstress.png",
     firstNight: {
+      setReminders: [abilitySpent("seamstress").name],
       reminder:
         "The Seamstress either shows a 'no' head signal, or points to two other players. If the Seamstress chose players , nod 'yes' or shake 'no' for whether they are of same alignment.",
       order: 43,
     },
     otherNight: {
+      setReminders: [abilitySpent("seamstress").name],
       reminder:
         "If the Seamstress has not yet used their ability: the Seamstress either shows a 'no' head signal, or points to two other players. If the Seamstress chose players , nod 'yes' or shake 'no' for whether they are of same alignment.",
       order: 60,
@@ -1240,7 +1246,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Slayer",
     edition: "tb",
     team: "Townsfolk",
-    reminders: [{ ...ABILITY_SPENT, dayTrigger: true }],
+    reminders: [
+      {
+        name: "slayed",
+        type: "abilitySpent",
+        target: "self",
+        dayTrigger: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -1422,8 +1435,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "snv",
     team: "Demon",
     reminders: [
-      { name: "poisoned", type: "poison" },
-      { name: "has ability", type: "info" },
+      { name: "poisoned neighbor", type: "poison" },
+      { name: "minion keeps ability", type: "hasAbility" },
     ],
     setup: true,
     delusional: false,
@@ -1435,6 +1448,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Vigormortis points to a player. That player dies. If a Minion, they keep their ability and one of their Townsfolk neighbours is poisoned.",
       order: 32,
+      setReminders: ["minion keeps ability", "poisoned neighbor"],
     },
   },
   {
@@ -1676,7 +1690,12 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Townsfolk",
     reminders: [
-      { name: "poisoned", type: "poison", causedByDeath: true, target: "self" },
+      {
+        name: "evil died",
+        type: "poison",
+        causedByDeath: true,
+        target: "self",
+      },
       { name: "died today", type: "info", causedByDeath: true },
     ],
     setup: false,
@@ -1745,14 +1764,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Engineer",
     edition: "",
     team: "Townsfolk",
-    reminders: [ABILITY_SPENT],
+    reminders: [abilitySpent("engineer")],
     setup: false,
     delusional: false,
     ability:
       "Once per game, at night, choose which Minions or which Demon is in play.",
     imageSrc: "engineer.png",
     firstNight: {
-      setReminders: ["ability spent"],
+      setReminders: [abilitySpent("engineer").name],
       reminder:
         "The Engineer shows a 'no' head signal, or points to a Demon or points to the relevant number of Minions. If the Engineer chose characters, replace the Demon or Minions with the choices, then wake the relevant players and show them the You are card and the relevant character tokens.",
       order: 13,
@@ -1762,7 +1781,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
-      setReminders: ["ability spent"],
+      setReminders: [abilitySpent("engineer").name],
       reminder:
         "The Engineer shows a 'no' head signal, or points to a Demon or points to the relevant number of Minions. If the Engineer chose characters, replace the Demon or Minions with the choices, then wake the relevant players and show them the 'You are' card and the relevant character tokens.",
       order: 5,
@@ -1798,7 +1817,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Fisherman",
     edition: "",
     team: "Townsfolk",
-    reminders: [ABILITY_SPENT],
+    reminders: [
+      {
+        name: "fished",
+        type: "abilitySpent",
+        dayTrigger: true,
+        target: "self",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
@@ -1834,14 +1860,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Huntsman",
     edition: "",
     team: "Townsfolk",
-    reminders: [ABILITY_SPENT],
+    reminders: [abilitySpent("huntsman")],
     setup: true,
     delusional: false,
     ability:
       "Once per game, at night, choose a living player: the Damsel, if chosen, becomes a not-in-play Townsfolk. [+the Damsel]",
     imageSrc: "huntsman.png",
     firstNight: {
-      setReminders: ["ability spent"],
+      setReminders: [abilitySpent("huntsman").name],
       reminder:
         "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
       order: 30,
@@ -1855,7 +1881,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
-      setReminders: ["ability spent"],
+      setReminders: [abilitySpent("huntsman").name],
       reminder:
         "The Huntsman shakes their head 'no' or points to a player. If they point to the Damsel, wake that player, show the 'You are' card and a not-in-play character token.",
       order: 45,
@@ -1942,20 +1968,20 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Nightwatchman",
     edition: "",
     team: "Townsfolk",
-    reminders: [ABILITY_SPENT],
+    reminders: [abilitySpent("nightwatchman")],
     setup: false,
     delusional: false,
     ability:
       "Once per game, at night, choose a player: they learn who you are.",
     imageSrc: "nightwatchman.png",
     firstNight: {
-      setReminders: ["ability spent"],
+      setReminders: [abilitySpent("nightwatchman").name],
       reminder:
         "The Nightwatchman may point to a player. Wake that player, show the 'This character selected you' card and the Nightwatchman token, then point to the Nightwatchman player.",
       order: 47,
     },
     otherNight: {
-      setReminders: ["ability spent"],
+      setReminders: [abilitySpent("nightwatchman").name],
       reminder:
         "The Nightwatchman may point to a player. Wake that player, show the 'This character selected you' card and the Nightwatchman token, then point to the Nightwatchman player.",
       order: 65,
@@ -2001,7 +2027,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [
       { name: "mad", type: "mad" },
-      { name: "has ability", type: "info", causedByDeath: true },
+      { name: "pixie ability", type: "hasAbility", causedByDeath: true },
     ],
     setup: false,
     delusional: false,
@@ -2009,7 +2035,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       "You start knowing 1 in-play Townsfolk. If you were mad that you were this character, you gain their ability when they die.",
     imageSrc: "pixie.png",
     firstNight: {
-      setReminders: ["mad", "has ability"],
+      setReminders: ["mad", "pixie ability"],
       reminder: "Show the Pixie 1 in-play Townsfolk character token.",
       order: 29,
       playerMessage: {
@@ -2104,14 +2130,21 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Damsel",
     edition: "",
     team: "Outsider",
-    reminders: [ABILITY_SPENT],
+    reminders: [
+      {
+        name: "guessed damsel",
+        type: "info",
+        dayTrigger: true,
+        target: "other",
+      },
+    ],
     setup: false,
     delusional: false,
     ability:
       "All Minions know you are in play. If a Minion publicly guesses you (once), your team loses.",
     imageSrc: "damsel.png",
     firstNight: {
-      setReminders: ["ability spent"],
+      setReminders: ["guessed damsel"],
       reminder:
         "Wake all the Minions, show them the 'This character selected you' card and the Damsel token.",
       order: 31,
@@ -2120,7 +2153,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       },
     },
     otherNight: {
-      setReminders: ["ability spent"],
+      setReminders: ["guessed damsel"],
       reminder:
         "If selected by the Huntsman, wake the Damsel, show 'You are' card and a not-in-play Townsfolk token.",
       order: 46,
@@ -2190,7 +2223,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     team: "Outsider",
     reminders: [
       { name: "drunk", type: "drunk", persistOnDeath: true },
-      ABILITY_SPENT,
+      abilitySpent("puzzlemaster"),
     ],
     setup: false,
     delusional: false,
@@ -2371,7 +2404,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         dayReminder: true,
         target: "other",
       },
-      ABILITY_SPENT,
+      abilitySpent("secret word"),
     ],
     setup: false,
     delusional: false,
@@ -2379,12 +2412,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       "You start knowing a secret word. The 1st good player to say this word becomes evil that night.",
     imageSrc: "mezepheles.png",
     firstNight: {
-      setReminders: ["turns evil", "ability spent"],
+      setReminders: ["turns evil", abilitySpent("secret word").name],
       reminder: "Show the Mezepheles their secret word.",
       order: 27,
     },
     otherNight: {
-      setReminders: ["turns evil", "ability spent"],
+      setReminders: ["turns evil", abilitySpent("secret word").name],
       reminder:
         "Wake the 1st good player that said the Mezepheles' secret word and show them the 'You are' card and the thumbs down evil signal.",
       order: 18,
@@ -2417,12 +2450,12 @@ export const CHARACTERS: CharacterDefinition[] = [
     team: "Demon",
     reminders: [
       {
-        name: "poisoned",
+        name: "leeched",
         type: "poison",
       },
       {
         name: "lleech dies",
-        type: "info",
+        type: "triggerOnDeath",
         causedByDeath: true,
       },
       {
@@ -2436,7 +2469,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       "Each night*, choose a player: they die. You start by choosing an alive player: they are poisoned - you die if & only if they die.",
     imageSrc: "lleech.png",
     firstNight: {
-      setReminders: ["poisoned"],
+      setReminders: ["leeched"],
       reminder:
         "The Lleech points to a player. Place the Poisoned reminder token.",
       order: 16,
@@ -2649,7 +2682,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Judge",
     edition: "bmr",
     team: "Traveler",
-    reminders: [ABILITY_SPENT],
+    reminders: [{ ...abilitySpent("judge"), dayTrigger: true }],
     setup: false,
     delusional: false,
     ability:
@@ -2769,10 +2802,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "snv",
     team: "Traveler",
     reminders: [
-      ABILITY_SPENT,
+      abilitySpent("bone collector"),
       {
-        name: "has ability",
-        type: "info",
+        name: "has ability while dead",
+        type: "hasAbility",
         duration: 1,
         target: "other",
       },
@@ -2783,7 +2816,10 @@ export const CHARACTERS: CharacterDefinition[] = [
       "Once per game, at night, choose a dead player: they regain their ability until dusk.",
     firstNight: null,
     otherNight: {
-      setReminders: ["has ability", "ability spent"],
+      setReminders: [
+        "has ability while dead",
+        abilitySpent("bone collector").name,
+      ],
       reminder:
         "The Bone Collector either shakes their head no or points at any dead player. If they pointed at any dead player, put the Bone Collector's 'Has Ability' reminder by the chosen player's character token. (They may need to be woken tonight to use it.)",
       order: 1,

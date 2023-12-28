@@ -2,6 +2,7 @@ import {
   type Alignment,
   type Character,
   type CharacterType,
+  type Reminder,
   type Role,
 } from "../shapes/Role.ts";
 import { type Script } from "../shapes/Script.ts";
@@ -47,6 +48,16 @@ export function getDefaultAlignment(role: Role) {
 
 export function getCharacter(role: Role): Character {
   return characters[role ?? "unassigned"];
+}
+
+export function getAllReminders(): Record<string, Reminder & { role: Role }> {
+  return Object.fromEntries(
+    allCharactersList()
+      .flatMap(({ reminders, id }) =>
+        reminders.map((r) => ({ ...r, role: id as Role })),
+      )
+      .map((reminder) => [reminder.name, reminder]),
+  );
 }
 
 const scripts: Record<ScriptName, Script> = Object.fromEntries(

@@ -6,6 +6,7 @@ import {
 
 import { PlayerMessageFlow } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage";
 import { SubmitMessage } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage/messageShared/SubmitMessage";
+import { ReminderCreator } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage/ReminderCreator";
 import { useDefiniteGame } from "../../../../store/GameContext";
 import { PlayerNameWithRoleIcon, RoleName } from "../../../RoleIcon";
 import { SheetBody, SheetContent, SheetHeader } from "../../SheetBody";
@@ -30,14 +31,26 @@ function Body({ action }: PlayerSheetProps) {
   const ability = getAbility(role, game.time);
 
   return (
-    <div className="flex">
+    <div className="flex flex-col gap-2">
       {ability?.playerMessage ? (
         <PlayerMessageFlow action={action} message={ability.playerMessage} />
       ) : (
-        <div>
-          {getCharacter(role).ability}{" "}
-          <SubmitMessage action={action} message={[]} player={action.player} />
-        </div>
+        <>
+          <div>{getCharacter(role).ability}</div>
+          {ability?.setReminders?.map((reminderName) => (
+            <ReminderCreator
+              reminder={reminderName}
+              fromPlayer={action.player}
+            />
+          ))}
+          <div className="w-full">
+            <SubmitMessage
+              action={action}
+              message={[]}
+              player={action.player}
+            />
+          </div>
+        </>
       )}
     </div>
   );
