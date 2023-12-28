@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 server/declarations
+*.tsbuildinfo
 
 
 /e2es/test-results/

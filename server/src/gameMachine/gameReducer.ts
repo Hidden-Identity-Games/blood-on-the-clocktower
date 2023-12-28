@@ -390,6 +390,26 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state;
         }
       },
+      reminders: (state = [], action) => {
+        switch (action.type) {
+          case "KickPlayer":
+            return state.filter(
+              (reminder) =>
+                reminder.fromPlayer !== action.player &&
+                reminder.toPlayer !== action.player,
+            );
+          case "AddPlayerReminder":
+            return [...state, action.reminder];
+          case "ClearPlayerReminder":
+            return state.map((reminder) =>
+              reminder.id === action.reminderId
+                ? { ...reminder, active: false }
+                : reminder,
+            );
+          default:
+            return state;
+        }
+      },
     }),
   });
 }
