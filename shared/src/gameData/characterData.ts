@@ -1,4 +1,4 @@
-import { type Character } from "../shapes/index.ts";
+import { type Character, type Reminder } from "../shapes/index.ts";
 
 export type ReminderType =
   | "info"
@@ -14,16 +14,7 @@ export type TargetType = "self" | "other";
 type CharacterDefinition = Omit<Character, "id"> & {
   id: string;
   edition: unknown;
-  reminders: {
-    name: string;
-    type: ReminderType;
-    dayTrigger?: boolean;
-    duration?: number;
-    persistOnDeath?: boolean;
-    causedByDeath?: boolean;
-    dayReminder?: boolean;
-    target?: TargetType;
-  }[];
+  reminders: Reminder[];
 };
 
 const ABILITY_SPENT = {
@@ -266,14 +257,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 19,
-      status: [{ type: "drunk" }],
       setReminders: ["entertain"],
     },
     otherNight: {
       reminder:
         "Reduce the remaining number of days the marked player is poisoned. If the Courtier has not yet used their ability: The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 8,
-      status: [{ type: "drunk" }],
       setReminders: ["entertain"],
     },
   },
@@ -297,14 +286,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Devil’s Advocate points to a living player. That player survives execution tomorrow.",
       order: 22,
-      status: [{ type: "protected" }],
       setReminders: ["advocate"],
     },
     otherNight: {
       reminder:
         "The Devil’s Advocate points to a living player, different from the previous night. That player survives execution tomorrow.",
       order: 13,
-      status: [{ type: "protected" }],
       setReminders: ["advocate"],
     },
   },
@@ -440,7 +427,6 @@ export const CHARACTERS: CharacterDefinition[] = [
         type: "role-change",
         alignmentChange: true,
       },
-      status: [{ type: "dead" }],
       setReminders: ["jumped"],
     },
   },
@@ -515,7 +501,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Gambler points to a player, and a character on their sheet. If incorrect, the Gambler dies.",
       order: 10,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -648,14 +633,6 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The previously protected and drunk players lose those markers. The Innkeeper points to two players. Those players are protected. One is drunk.",
       order: 9,
       setReminders: ["resting", "resting", "resting too much"],
-      status: [
-        {
-          type: "characterAbility",
-        },
-        {
-          type: "drunk",
-        },
-      ],
     },
   },
   {
@@ -844,7 +821,6 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The previously protected player is no longer protected. The Monk points to a player not themself. Mark that player 'Protected'.",
       order: 12,
       setReminders: ["holy protection"],
-      status: [{ type: "protected" }],
     },
   },
   {
@@ -1393,7 +1369,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "The Tinker might die.",
       order: 49,
-      status: [{ type: "dead" }],
     },
   },
   {

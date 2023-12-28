@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { type ReminderType, type TargetType } from "../index.ts";
+
 export const CharacterTypes = [
   "Townsfolk",
   "Outsider",
@@ -24,7 +26,6 @@ export interface CharacterNightData {
   order: number;
   reminder: string;
   playerMessage?: PlayerMessageCreator;
-  status?: PlayerStatusType[];
   setReminders?: string[];
 }
 
@@ -35,10 +36,21 @@ export interface Character {
   otherNight: CharacterNightData | null;
   setup: boolean;
   ability: string;
-  reminders: string[];
+  reminders: Reminder[];
   imageSrc: string;
   team: CharacterType;
   delusional?: boolean;
+}
+
+export interface Reminder {
+  name: string;
+  type: ReminderType;
+  dayTrigger?: boolean;
+  duration?: number;
+  persistOnDeath?: boolean;
+  causedByDeath?: boolean;
+  dayReminder?: boolean;
+  target?: TargetType;
 }
 
 export interface Restriction {

@@ -73,14 +73,16 @@ export function useAvailableReminders() {
     ([player, role]) => [player, getCharacter(role).reminders] as const,
   );
 
-  const reminderMap = availableReminders.flatMap(([player, reminders]) => {
-    return reminders.map((reminder) => {
-      return {
-        name: reminder,
-        fromPlayer: player,
-      } as PlayerReminder;
-    });
-  });
+  const reminderMap: PlayerReminder[] = availableReminders.flatMap(
+    ([player, reminders]) => {
+      return reminders.map((reminder) => {
+        return {
+          name: reminder.name,
+          fromPlayer: player,
+        } as PlayerReminder;
+      });
+    },
+  );
 
   // TODO: Delusional reminders
 
