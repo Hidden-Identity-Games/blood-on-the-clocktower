@@ -1,4 +1,4 @@
-import { type Character } from "../shapes/index.ts";
+import { type Character, type Reminder } from "../shapes/index.ts";
 
 export type ReminderType =
   | "info"
@@ -14,16 +14,7 @@ export type TargetType = "self" | "other";
 type CharacterDefinition = Omit<Character, "id"> & {
   id: string;
   edition: unknown;
-  reminders: {
-    name: string;
-    type: ReminderType;
-    dayTrigger?: boolean;
-    duration?: number;
-    persistOnDeath?: boolean;
-    causedByDeath?: boolean;
-    dayReminder?: boolean;
-    target?: TargetType;
-  }[];
+  reminders: Reminder[];
 };
 
 const ABILITY_SPENT = {
@@ -77,7 +68,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Assassin has not yet used their ability: The Assassin either shows the 'no' head signal, or points to a player. That player dies.",
       order: 36,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -179,7 +169,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "madness",
       },
-      status: [{ type: "characterAbility" }],
     },
     otherNight: {
       reminder:
@@ -188,7 +177,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "madness",
       },
-      status: [{ type: "characterAbility" }],
     },
   },
   {
@@ -269,14 +257,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 19,
-      status: [{ type: "drunk" }],
       setReminders: ["entertain"],
     },
     otherNight: {
       reminder:
         "Reduce the remaining number of days the marked player is poisoned. If the Courtier has not yet used their ability: The Courtier either shows a 'no' head signal, or points to a character on the sheet. If the Courtier used their ability: If that character is in play, that player is drunk.",
       order: 8,
-      status: [{ type: "drunk" }],
       setReminders: ["entertain"],
     },
   },
@@ -300,14 +286,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Devil’s Advocate points to a living player. That player survives execution tomorrow.",
       order: 22,
-      status: [{ type: "protected" }],
       setReminders: ["advocate"],
     },
     otherNight: {
       reminder:
         "The Devil’s Advocate points to a living player, different from the previous night. That player survives execution tomorrow.",
       order: 13,
-      status: [{ type: "protected" }],
       setReminders: ["advocate"],
     },
   },
@@ -443,7 +427,6 @@ export const CHARACTERS: CharacterDefinition[] = [
         type: "role-change",
         alignmentChange: true,
       },
-      status: [{ type: "dead" }],
       setReminders: ["jumped"],
     },
   },
@@ -518,7 +501,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Gambler points to a player, and a character on their sheet. If incorrect, the Gambler dies.",
       order: 10,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -548,7 +530,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If an Outsider died today: The Godfather points to a player. That player dies.",
       order: 37,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -583,7 +564,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Gossip’s public statement was true: Choose a player not protected from dying tonight. That player dies.",
       order: 38,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -613,7 +593,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Grandmother’s grandchild was killed by the Demon tonight: The Grandmother dies.",
       order: 51,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -632,7 +611,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Imp points to a player. That player dies. If the Imp chose themselves: Replace the character of 1 alive minion with a spare Imp token. Show the 'You are' card, then the Imp token.",
       order: 24,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -655,14 +633,6 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The previously protected and drunk players lose those markers. The Innkeeper points to two players. Those players are protected. One is drunk.",
       order: 9,
       setReminders: ["resting", "resting", "resting too much"],
-      status: [
-        {
-          type: "characterAbility",
-        },
-        {
-          type: "drunk",
-        },
-      ],
     },
   },
   {
@@ -851,7 +821,6 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The previously protected player is no longer protected. The Monk points to a player not themself. Mark that player 'Protected'.",
       order: 12,
       setReminders: ["holy protection"],
-      status: [{ type: "protected" }],
     },
   },
   {
@@ -881,7 +850,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Moonchild used their ability to target a player today: If that player is good, they die.",
       order: 50,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -922,7 +890,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       setReminders: ["gross"],
       reminder: "The No Dashii points to a player. That player dies.",
       order: 30,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -970,13 +937,11 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Philosopher either shows a 'no' head signal, or points to a good character on their sheet. If they chose a character: Swap the out-of-play character token with the Philosopher token and add the 'Is the Philosopher' reminder. If the character is in play, place the drunk marker by that player.",
       order: 2,
-      status: [{ type: "drunk" }],
     },
     otherNight: {
       reminder:
         "If the Philosopher has not used their ability: the Philosopher either shows a 'no' head signal, or points to a good character on their sheet. If they chose a character: Swap the out-of-play character token with the Philosopher token and add the 'Is the Philosopher' reminder. If the character is in play, place the drunk marker by that player.",
       order: 2,
-      status: [{ type: "drunk" }],
     },
   },
   {
@@ -1018,7 +983,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Po chose no-one the previous night: The Po points to three players. Otherwise: The Po either shows the 'no' head signal , or points to a player. Chosen players die",
       order: 28,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -1036,14 +1000,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       setReminders: ["poisoned"],
       reminder: "The Poisoner points to a player. That player is poisoned.",
       order: 17,
-      status: [{ type: "poison" }],
     },
     otherNight: {
       setReminders: ["poisoned"],
       reminder:
         "The previously poisoned player is no longer poisoned. The Poisoner points to a player. That player is poisoned.",
       order: 7,
-      status: [{ type: "poison" }],
     },
   },
   {
@@ -1066,7 +1028,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "revived",
       },
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -1084,14 +1045,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       setReminders: ["marked for death"],
       reminder: "The Pukka points to a player. That player is poisoned.",
       order: 28,
-      status: [{ type: "poison" }],
     },
     otherNight: {
       setReminders: ["marked for death"],
       reminder:
         "The Pukka points to a player. That player is poisoned. The previously poisoned player dies. ",
       order: 26,
-      status: [{ type: "dead" }, { type: "poison" }],
     },
   },
   {
@@ -1176,14 +1135,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Sailor points to a living player. Either the Sailor, or the chosen player, is drunk.",
       order: 11,
-      status: [{ type: "drunk" }],
     },
     otherNight: {
       setReminders: ["hammered"],
       reminder:
         "The previously drunk player is no longer drunk. The Sailor points to a living player. Either the Sailor, or the chosen player, is drunk.",
       order: 4,
-      status: [{ type: "drunk" }],
     },
   },
   {
@@ -1276,7 +1233,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "revived",
       },
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -1384,7 +1340,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       setReminders: ["in love"],
       reminder: "Choose a player that is drunk.",
       order: 41,
-      status: [{ type: "drunk" }],
     },
   },
   {
@@ -1414,7 +1369,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "The Tinker might die.",
       order: 49,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -1481,7 +1435,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Vigormortis points to a player. That player dies. If a Minion, they keep their ability and one of their Townsfolk neighbours is poisoned.",
       order: 32,
-      status: [{ type: "dead" }, { type: "characterAbility" }],
     },
   },
   {
@@ -1564,14 +1517,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Witch points to a player. If that player nominates tomorrow they die immediately.",
       order: 24,
-      status: [{ type: "characterAbility" }],
     },
     otherNight: {
       setReminders: ["cursed"],
       reminder:
         "If there are 4 or more players alive: The Witch points to a player. If that player nominates tomorrow they die immediately.",
       order: 14,
-      status: [{ type: "characterAbility" }],
     },
   },
   {
@@ -1590,7 +1541,6 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If no-one died during the day: The Zombuul points to a player. That player dies.",
       order: 25,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -2296,14 +2246,12 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Fearmonger points to a player. Place the Fear token next to that player and announce that a new player has been selected with the Fearmonger ability.",
       order: 26,
-      status: [{ type: "characterAbility" }],
     },
     otherNight: {
       setReminders: ["fear"],
       reminder:
         "The Fearmonger points to a player. If different from the previous night, place the Fear token next to that player and announce that a new player has been selected with the Fearmonger ability.",
       order: 17,
-      status: [{ type: "characterAbility" }],
     },
   },
   {
@@ -2335,7 +2283,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "Choose a player, that player dies.",
       order: 23,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -2490,7 +2437,6 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "The Lleech points to a player. That player dies.",
       order: 34,
-      status: [{ type: "dead" }],
     },
   },
   {
@@ -2541,7 +2487,6 @@ export const CHARACTERS: CharacterDefinition[] = [
           role: ["widow"],
         },
       },
-      status: [{ type: "poison" }],
     },
     otherNight: null,
   },

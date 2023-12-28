@@ -232,31 +232,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state;
         }
       },
-      playerPlayerStatuses: (state = {}, action) => {
-        switch (action.type) {
-          case "AddPlayer":
-            return {
-              ...state,
-              [action.player]: [],
-            };
-          case "KickPlayer":
-            return removeKey(state, action.player);
-          case "AddPlayerStatus":
-            return {
-              ...state,
-              [action.player]: [...state[action.player], action.status],
-            };
-          case "RemovePlayerStatus":
-            return {
-              ...state,
-              [action.player]: state[action.player].filter(
-                (status) => status.id !== action.statusId,
-              ),
-            };
-          default:
-            return state;
-        }
-      },
       playerNotes: (state = {}, action) => {
         switch (action.type) {
           case "AddPlayer":
@@ -343,6 +318,26 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return [...state, action.message];
           case "DeleteMessage":
             return state.filter((message) => message.id !== action.messageId);
+          default:
+            return state;
+        }
+      },
+      reminders: (state = [], action) => {
+        switch (action.type) {
+          case "KickPlayer":
+            return state.filter(
+              (reminder) =>
+                reminder.fromPlayer !== action.player &&
+                reminder.toPlayer !== action.player,
+            );
+          case "AddPlayerReminder":
+            return [...state, action.reminder];
+          case "ClearPlayerReminder":
+            return state.map((reminder) =>
+              reminder.id === action.reminderId
+                ? { ...reminder, active: false }
+                : reminder,
+            );
           default:
             return state;
         }

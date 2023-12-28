@@ -1,6 +1,6 @@
 import {
   type Alignment,
-  type PlayerStatus,
+  type PlayerReminder,
   type Role,
 } from "@hidden-identity/shared";
 
@@ -29,32 +29,6 @@ export function useAssignPlayerAlignment() {
 
     await trpc.setAlignment.mutate({ alignment, player, gameId });
   });
-}
-
-export function usePlayerStatuses() {
-  const { gameId } = useGame();
-
-  return useAction(
-    async (
-      player: string,
-      action: "add" | "remove",
-      playerStatus: PlayerStatus,
-    ) => {
-      if (!gameId) {
-        throw new Error("GameId not ready");
-      }
-
-      if (action === "add") {
-        await trpc.addPlayerStatus.mutate({ gameId, player, playerStatus });
-      } else {
-        await trpc.clearPlayerStatus.mutate({
-          gameId,
-          player,
-          playerStatusId: playerStatus.id,
-        });
-      }
-    },
-  );
 }
 
 export function usePlayerNotes() {
@@ -102,5 +76,32 @@ export function useClearVotesToExecute() {
     }
 
     await trpc.clearVotesToExecute.mutate({ gameId });
+  });
+}
+
+export function usePlayerReminder() {
+  const { gameId } = useGame();
+
+  return useAction(async (reminder: PlayerReminder) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.addPlayerReminder.mutate({
+      gameId,
+      reminder,
+    });
+  });
+}
+
+export function useClearPlayerReminder() {
+  const { gameId } = useGame();
+
+  return useAction(async (reminderId: string) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.clearPlayerReminder.mutate({ gameId, reminderId });
   });
 }

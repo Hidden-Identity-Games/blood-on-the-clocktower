@@ -1,18 +1,15 @@
 import {
   alignmentShape,
-  characterAbilityStatusShape,
-  deadStatusShape,
-  drunkStatusShape,
   gameStatusShape,
   playerMessageEntryShape,
-  poisonStatusShape,
-  protectedStatusShape,
+  playerReminderShape,
   roleShape,
 } from "@hidden-identity/shared";
 import { z } from "zod";
 
 import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
 import {
+  addReminderAction,
   createMessageAction,
   drawRoleAction,
   progressTimeAction,
@@ -129,40 +126,28 @@ export const gameRoutes = {
       const game = await retrieveGame(gameId);
       game.dispatch({ type: dead ? "KillPlayer" : "RevivePlayer", player });
     }),
-  addPlayerStatus: gmProcedure
+  addPlayerReminder: gmProcedure
     .input(
-      z.intersection(
-        playerAndGameIdShape,
-        z.object({
-          playerStatus: z.union([
-            poisonStatusShape,
-            drunkStatusShape,
-            protectedStatusShape,
-            characterAbilityStatusShape,
-            deadStatusShape,
-          ]),
-        }),
-      ),
+      z.intersection(gameIdShape, z.object({ reminder: playerReminderShape })),
     )
-    .mutation(async ({ input: { gameId, player, playerStatus } }) => {
+    .mutation(async ({ input: { gameId, reminder } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch({ type: "AddPlayerStatus", player, status: playerStatus });
+      game.dispatch(addReminderAction({ reminder }));
     }),
-  clearPlayerStatus: gmProcedure
+  clearPlayerReminder: gmProcedure
     .input(
       z.intersection(
-        playerAndGameIdShape,
+        gameIdShape,
         z.object({
-          playerStatusId: z.string(),
+          reminderId: z.string(),
         }),
       ),
     )
-    .mutation(async ({ input: { gameId, player, playerStatusId } }) => {
+    .mutation(async ({ input: { gameId, reminderId } }) => {
       const game = await retrieveGame(gameId);
       game.dispatch({
-        type: "RemovePlayerStatus",
-        player,
-        statusId: playerStatusId,
+        type: "ClearPlayerReminder",
+        reminderId,
       });
     }),
   setPlayerNote: gmProcedure

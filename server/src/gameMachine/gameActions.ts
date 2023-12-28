@@ -1,10 +1,11 @@
 import {
   type Alignment,
+  type AppliedPlayerReminder,
   type GameStatus,
   generateThreeWordId,
   type PlayerMessage,
   type PlayerMessageEntry,
-  type PlayerStatus,
+  type PlayerReminder,
   type Role,
 } from "@hidden-identity/shared";
 
@@ -41,8 +42,8 @@ export interface ActionMap {
   GiveBackDeadVote: PlayerActionProperties;
   UpdateNote: PlayerActionProperties & { newNote: string };
   OverrideAlignment: PlayerActionProperties & { newAlignment: Alignment };
-  AddPlayerStatus: PlayerActionProperties & { status: PlayerStatus };
-  RemovePlayerStatus: PlayerActionProperties & { statusId: string };
+  AddPlayerReminder: { reminder: AppliedPlayerReminder };
+  ClearPlayerReminder: { reminderId: string };
   SetVotesToExecute: PlayerActionProperties & { votesToExecute: number };
   // probably move this into something that starts the night
   ClearVotesToExecute: NoAdditionalProperties;
@@ -115,6 +116,28 @@ export function createMessageAction({
         messages,
       },
       player,
+    });
+
+    return id;
+  };
+}
+
+export function addReminderAction({
+  reminder,
+}: {
+  reminder: PlayerReminder;
+}): GameThunk<string> {
+  return (dispatch, getGame) => {
+    const id = generateThreeWordId();
+
+    dispatch({
+      type: "AddPlayerReminder",
+      reminder: {
+        ...reminder,
+        id,
+        active: true,
+        startNight: getGame().time.count,
+      },
     });
 
     return id;

@@ -4,7 +4,6 @@ import { FaFeather, FaSkull } from "react-icons/fa6";
 import { GiRaiseZombie } from "react-icons/gi";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PiKnifeBold } from "react-icons/pi";
-import { v4 } from "uuid";
 
 import { CharacterName } from "../../../shared/RoleIcon";
 import { useDeadVote } from "../../../store/actions/gmActions";
@@ -12,14 +11,9 @@ import {
   useAssignPlayerAlignment,
   useAssignRole,
   useDecideFate,
-  usePlayerStatuses,
 } from "../../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../store/useStore";
-import {
-  PlayerStatusIcon,
-  PlayerStatusIconList,
-} from "../../GMInGame/NotesIcons";
 import { PlayerList } from ".";
 import { PlayerName } from "./PlayerName";
 import { AlignmentSelect, RoleSelect } from "./Selectors";
@@ -34,7 +28,6 @@ export function PlayerActions({
   const { game } = useDefiniteGame();
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const [, deadVoteLoading, , setDeadVote] = useDeadVote();
-  const [, playerStatusesLoading, , setPlayerStatus] = usePlayerStatuses();
 
   return (
     <Dialog.Root>
@@ -46,13 +39,6 @@ export function PlayerActions({
             <Heading className="mx-3">
               <PlayerName player={player} />
             </Heading>
-            <Flex gap="3">
-              <PlayerStatusIconList
-                player={player}
-                playerStatuses={game.playerPlayerStatuses[player] ?? []}
-                size="2"
-              />
-            </Flex>
           </Flex>
           <Flex gap="2">
             <div className="flex-[2]">
@@ -75,58 +61,6 @@ export function PlayerActions({
             label={game.deadPlayers[player] ? "Revive" : "Kill"}
           >
             {game.deadPlayers[player] ? <GiRaiseZombie /> : <PiKnifeBold />}
-          </PlayerList.MenuItem>
-          <PlayerList.MenuItem
-            id={`${player}-set-poison`}
-            label="Poisoned"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "poison",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="poison" />
-          </PlayerList.MenuItem>
-          <PlayerList.MenuItem
-            id={`${player}-set-drunk`}
-            label="Drunk"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "drunk",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="drunk" />
-          </PlayerList.MenuItem>
-          <PlayerList.MenuItem
-            id={`${player}-set-protected`}
-            label="Protected"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "protected",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="protected" />
-          </PlayerList.MenuItem>
-          <PlayerList.MenuItem
-            id={`${player}-set-other`}
-            label="Other"
-            onClick={() =>
-              void setPlayerStatus(player, "add", {
-                type: "characterAbility",
-                id: v4(),
-              })
-            }
-            disabled={playerStatusesLoading}
-          >
-            <PlayerStatusIcon statusType="characterAbility" />
           </PlayerList.MenuItem>
           <PlayerList.MenuItem
             id={`${player}-toggle-dead-vote`}

@@ -1,4 +1,8 @@
-import { type Script } from "@hidden-identity/shared";
+import {
+  getCharacter,
+  type PlayerReminder,
+  type Script,
+} from "@hidden-identity/shared";
 import { getDefaultAlignment } from "@hidden-identity/shared";
 import { useCallback, useMemo } from "react";
 
@@ -60,4 +64,27 @@ export function useGetPlayerAlignment() {
   );
 
   return getAlignment;
+}
+
+export function useAvailableReminders() {
+  const { game } = useDefiniteGame();
+
+  const availableReminders = Object.entries(game.playersToRoles).map(
+    ([player, role]) => [player, getCharacter(role).reminders] as const,
+  );
+
+  const reminderMap: PlayerReminder[] = availableReminders.flatMap(
+    ([player, reminders]) => {
+      return reminders.map((reminder) => {
+        return {
+          name: reminder.name,
+          fromPlayer: player,
+        } as PlayerReminder;
+      });
+    },
+  );
+
+  // TODO: Delusional reminders
+
+  return reminderMap;
 }
