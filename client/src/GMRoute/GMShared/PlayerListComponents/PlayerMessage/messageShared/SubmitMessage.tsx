@@ -27,6 +27,7 @@ export function SubmitMessage({ message, player, action }: SubmitMessageProps) {
       <ErrorCallout error={createMessageError} />
       {!messageId && (
         <Button
+          className="w-full"
           disabled={createMessageisLoading && message.length === 0}
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async () => {

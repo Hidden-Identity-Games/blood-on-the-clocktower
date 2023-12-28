@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const playerReminderShape = z.object({
   name: z.string(),
-  role: z.string(),
   toPlayer: z.string(),
   fromPlayer: z.string().optional(),
 });
