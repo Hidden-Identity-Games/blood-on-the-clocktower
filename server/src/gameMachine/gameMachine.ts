@@ -19,17 +19,21 @@ type Callback<ResourceShape> = (value: ResourceShape | null) => void;
 
 export class GameMachine {
   store: GameStore;
-  constructor(initialState?: BaseUnifiedGame) {
-    const initialStateMinusComputedKeys = { ...initialState };
-    Object.keys(computedGameSelectors).forEach((key) => {
-      // @ts-expect-error I know the keys are there
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete initialStateMinusComputedKeys[key];
-    });
+  constructor(preloadedState?: BaseUnifiedGame) {
+    if (!preloadedState) {
+      this.store = createGameReducer();
+    } else {
+      const initialStateMinusComputedKeys = { ...preloadedState };
+      Object.keys(computedGameSelectors).forEach((key) => {
+        // @ts-expect-error I know the keys are there
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete initialStateMinusComputedKeys[key];
+      });
 
-    this.store = createGameReducer(
-      initialStateMinusComputedKeys as BaseUnifiedGame,
-    );
+      this.store = createGameReducer(
+        initialStateMinusComputedKeys as BaseUnifiedGame,
+      );
+    }
   }
   dispatch<ReturnType>(action: GameThunk<ReturnType>): ReturnType;
   dispatch<Action extends AnyGameAction>(action: Action): Action;
