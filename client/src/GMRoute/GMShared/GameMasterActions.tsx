@@ -33,7 +33,7 @@ export function GameMasterActions({
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
   return (
-    <Flex gap="2" direction="column">
+    <Flex gap="3" direction="column">
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
           <DialogHeader>Error</DialogHeader>

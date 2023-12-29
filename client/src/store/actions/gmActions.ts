@@ -116,3 +116,17 @@ export function useCompleteAction() {
     return;
   });
 }
+
+export function useUndo() {
+  const { gameId } = useGame();
+  return useAction(async () => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.undo.mutate({
+      gameId,
+    });
+    return;
+  });
+}

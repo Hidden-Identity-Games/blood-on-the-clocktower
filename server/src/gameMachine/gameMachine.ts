@@ -11,30 +11,38 @@ import { createSelector } from "@reduxjs/toolkit";
 import { type AnyGameAction } from "./gameActions.ts";
 import {
   createGameReducer,
-  type GameReducer,
+  type GameStore,
   type GameThunk,
 } from "./gameReducer.ts";
 import { getOrderedPlayers } from "./gameSelectors.ts";
 type Callback<ResourceShape> = (value: ResourceShape | null) => void;
 
 export class GameMachine {
-  store: GameReducer;
-  constructor(initialState?: BaseUnifiedGame) {
-    const initialStateMinusComputedKeys = { ...initialState };
-    Object.keys(computedGameSelectors).forEach((key) => {
-      // @ts-expect-error I know the keys are there
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete initialStateMinusComputedKeys[key];
-    });
+  store: GameStore;
+  constructor(preloadedState?: BaseUnifiedGame) {
+    if (!preloadedState) {
+      this.store = createGameReducer();
+    } else {
+      const initialStateMinusComputedKeys = { ...preloadedState };
+      Object.keys(computedGameSelectors).forEach((key) => {
+        // @ts-expect-error I know the keys are there
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete initialStateMinusComputedKeys[key];
+      });
 
-    this.store = createGameReducer(
-      initialStateMinusComputedKeys as BaseUnifiedGame,
-    );
+      this.store = createGameReducer(
+        initialStateMinusComputedKeys as BaseUnifiedGame,
+      );
+    }
   }
   dispatch<ReturnType>(action: GameThunk<ReturnType>): ReturnType;
   dispatch<Action extends AnyGameAction>(action: Action): Action;
 
   dispatch<ReturnType>(action: AnyGameAction | GameThunk<ReturnType>) {
+    if (typeof action === "function") {
+      // Typescript is kinda goofy, and we need to discriminate the union manually...
+      return this.store.dispatch(action);
+    }
     return this.store.dispatch(action);
   }
 
@@ -48,6 +56,10 @@ export class GameMachine {
 
   getGame() {
     return gameSelector(this.store.getState());
+  }
+
+  undo() {
+    return this.store.undo();
   }
 }
 

@@ -8,57 +8,32 @@ import {
   shuffleList,
   toEntries,
 } from "@hidden-identity/shared";
-import {
-  type EnhancedStore,
-  type Middleware,
-  type StoreEnhancer,
-  type ThunkAction,
-  type ThunkDispatch,
-  type Tuple,
-  type UnknownAction,
-} from "@reduxjs/toolkit";
-import { configureStore } from "@reduxjs/toolkit";
 import { generate } from "random-words";
 
 import { UNASSIGNED } from "../database/gameDB/base.ts";
 import { type ActionMap, type AnyGameAction } from "./gameActions.ts";
 import { combineReducers } from "./reduxEnhacers/combineReducers.ts";
+import {
+  createStore,
+  type InitAction,
+  type Store,
+  type Thunk,
+} from "./reduxEnhacers/reduxImplementation.ts";
 
-// Needed so things can read the type of gameStore
-export type { EnhancedStore, StoreEnhancer, ThunkDispatch, UnknownAction };
-export type GameReducer = ReturnType<typeof createGameReducer>;
+export type GameStore = Store<BaseUnifiedGame, AnyGameAction>;
 export type Action<ActionType extends keyof ActionMap> = AnyGameAction & {
   type: ActionType;
 };
 
-export type GameThunk<ReturnType> = ThunkAction<
+export type GameThunk<ReturnType> = Thunk<
   ReturnType,
   BaseUnifiedGame,
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  {},
   AnyGameAction
 >;
-
-export function createGameReducer(initialState?: BaseUnifiedGame) {
-  return configureStore<
-    BaseUnifiedGame,
-    AnyGameAction,
-    // Redux thunk types just ignore everything :-/ Need to do it manually
-    Tuple<
-      [
-        Middleware<
-          // eslint-disable-next-line @typescript-eslint/ban-types
-          ThunkDispatch<BaseUnifiedGame, {}, AnyGameAction>,
-          BaseUnifiedGame,
-          // eslint-disable-next-line @typescript-eslint/ban-types
-          ThunkDispatch<BaseUnifiedGame, {}, AnyGameAction>
-        >,
-      ]
-    >
-  >({
-    preloadedState: initialState,
-
-    reducer: combineReducers({
+export type { AnyGameAction, BaseUnifiedGame };
+export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
+  return createStore(
+    combineReducers<BaseUnifiedGame, AnyGameAction | InitAction>({
       playersToRoles: (state = {}, action) => {
         switch (action.type) {
           case "AddPlayer":
@@ -114,29 +89,24 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
                   : current,
               ),
             };
-
           // When we add a new ability in, we add all abilities to the queue.
           case "ChangePlayerRole":
           case "RevivePlayer": {
-            const role = wholePreviousState.playersToRoles[action.player];
+            const role = wholePreviousState?.playersToRoles[action.player];
             const ability = getAbility(role, wholePreviousState.time);
-
             if (!ability) {
               return state;
             }
-
             const nextQueue = state.queue.map((current) =>
               "player" in current && current.player === action.player
                 ? { ...current, skipped: true }
                 : current,
             );
-
             const firstGreaterIndex = nextQueue.findIndex(
               (current) => current.order > ability.order,
             );
             const insertBefore =
               firstGreaterIndex === -1 ? nextQueue.length : firstGreaterIndex;
-
             return {
               lastCompleted: state.lastCompleted,
               queue: [
@@ -153,7 +123,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
               ],
             };
           }
-
           default:
             return state;
         }
@@ -171,7 +140,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
               [action.player]: { rightNeighbor: action.newRightNeighbor },
             };
           }
-
           // When kicking, extract from the circle
           case "ExtractPlayerFromCircle":
           case "KickPlayer": {
@@ -180,7 +148,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             const oprhanedNeighbor = toEntries(nextState).find(
               ([_, value]) => value?.rightNeighbor === action.player,
             );
-
             if (oprhanedNeighbor) {
               return {
                 ...nextState,
@@ -192,18 +159,18 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
               return nextState;
             }
           }
-
           case "PlacePlayerInCircle": {
             const { newRightNeighbor } = action;
             const newLeftNeighborEntry = toEntries(state).find(
               ([_, neighbors]) => neighbors?.rightNeighbor === newRightNeighbor,
             );
-
             return {
               ...state,
               ...(newLeftNeighborEntry
                 ? {
-                    [newLeftNeighborEntry[0]]: { rightNeighbor: action.player },
+                    [newLeftNeighborEntry[0]]: {
+                      rightNeighbor: action.player,
+                    },
                   }
                 : {}),
               [action.player]: { rightNeighbor: newRightNeighbor },
@@ -213,7 +180,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state;
         }
       },
-
       deadPlayers: (state = {}, action) => {
         switch (action.type) {
           case "RevivePlayer":
@@ -265,7 +231,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state;
         }
       },
-
       gmSecretHash: (state, action) => {
         switch (action.type) {
           case "MakeIntoTestGame":
@@ -274,7 +239,6 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
             return state ?? generate(3).join(",");
         }
       },
-
       gameStatus: (state = "PlayersJoining", action) => {
         switch (action.type) {
           case "StartNight":
@@ -411,5 +375,7 @@ export function createGameReducer(initialState?: BaseUnifiedGame) {
         }
       },
     }),
-  });
+
+    initialState,
+  );
 }
