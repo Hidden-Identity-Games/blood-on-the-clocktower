@@ -1,4 +1,5 @@
-import { Button, Flex } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Flex } from "@radix-ui/themes";
 import { useCallback } from "react";
 
 import backgroundImg from "../assets/hidden_identity_cover.png";
@@ -42,7 +43,7 @@ export function NewGameLanding() {
           onSubmit={(gameId) => navigate("spectator", { gameId })}
           title="Spectate game"
         >
-          <Button variant="surface" className="w-full">
+          <Button variant="outline" className="w-full">
             Spectate
           </Button>
         </GameSelectModal>

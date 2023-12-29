@@ -1,4 +1,6 @@
-import { Button, Dialog, DialogClose, Flex, TextField } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Input } from "@design-system/components/ui/input";
 import {
   type ComponentProps,
   createContext,
@@ -7,8 +9,6 @@ import {
   useMemo,
   useState,
 } from "react";
-
-import { DialogHeader } from "./DialogHeader";
 
 type StringContextState = {
   value: string;
@@ -26,7 +26,7 @@ function GameSelectInput() {
   const { value, setValue, submit } = useContext(GameSelectContext);
 
   return (
-    <TextField.Input
+    <Input
       id="game-code-input"
       className="rounded"
       placeholder="Game code, e.g. XLBTV"
@@ -101,19 +101,19 @@ export function GameSelectModal({
 }: GameSelectModalProps) {
   return (
     <Dialog.Root>
-      <Dialog.Trigger>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Content>
-        <DialogHeader>{title}</DialogHeader>
+        <Dialog.Header>{title}</Dialog.Header>
         <GameSelect.Root onSubmit={onSubmit}>
           <GameSelect.Input />
-          <Flex justify="between" mt="3">
-            <DialogClose>
-              <Button variant="soft">Cancel</Button>
-            </DialogClose>
-            <DialogClose>
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button variant="ghost">Cancel</Button>
+            </Dialog.Close>
+            <Dialog.Close asChild>
               <GameSelect.SubmitButton />
-            </DialogClose>
-          </Flex>
+            </Dialog.Close>
+          </Dialog.Footer>
         </GameSelect.Root>
       </Dialog.Content>
     </Dialog.Root>
