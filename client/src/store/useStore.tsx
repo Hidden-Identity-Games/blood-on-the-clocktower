@@ -70,16 +70,19 @@ export function useAvailableReminders() {
   const { game } = useDefiniteGame();
 
   const availableReminders = Object.entries(game.playersToRoles).map(
-    ([player, role]) => [player, getCharacter(role).reminders] as const,
+    ([player, role]) => [player, role, getCharacter(role).reminders] as const,
   );
 
-  const reminderMap: PlayerReminder[] = availableReminders.flatMap(
-    ([player, reminders]) => {
+  const reminderMap = availableReminders.flatMap(
+    ([player, role, reminders]) => {
       return reminders.map((reminder) => {
-        return {
-          name: reminder.name,
-          fromPlayer: player,
-        } as PlayerReminder;
+        return [
+          role,
+          {
+            name: reminder.name,
+            fromPlayer: player,
+          } as PlayerReminder,
+        ] as const;
       });
     },
   );
