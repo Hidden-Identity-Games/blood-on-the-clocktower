@@ -1,5 +1,6 @@
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import react from "@vitejs/plugin-react";
+import path from "path";
 import { defineConfig } from "vitest/config";
 const TEST_MODE: boolean = !!process.env.TEST_MODE;
 const SERVER_PORT: number = Number(process.env.SERVER_PORT);
@@ -10,6 +11,11 @@ console.log(`TEST_MODE: ${TEST_MODE}`);
 
 const HTTPS = true;
 export default defineConfig((env) => ({
+  resolve: {
+    alias: {
+      "@design-system": path.resolve(__dirname, "./src/design-system"),
+    },
+  },
   test: {
     setupFiles: "./test/testSetup.tsx",
     environment: "jsdom",
@@ -39,7 +45,7 @@ export default defineConfig((env) => ({
       env.command === "build"
         ? process.env.SERVER_URL ?? '"blood-on-the-clocktower.onrender.com"'
         : TEST_MODE
-        ? "''"
-        : `\`\${window.location.hostname}:${CLIENT_PORT}/api\``,
+          ? "''"
+          : `\`\${window.location.hostname}:${CLIENT_PORT}/api\``,
   },
 }));

@@ -108,9 +108,8 @@ export function progressTimeAction(): GameThunk<void> {
         if (!ability) {
           return [];
         }
-        const playersInRole = computedGameSelectors.rolesToPlayers(getGame())[
-          role
-        ];
+        const playersInRole =
+          computedGameSelectors.rolesToPlayers(getGame())[role];
 
         if (playersInRole.length > 0) {
           return playersInRole.map(
