@@ -1,3 +1,4 @@
+import { Button } from "@design-system/components/button";
 import {
   type CharacterActionQueueItem,
   getAbility,
@@ -5,10 +6,13 @@ import {
 } from "@hidden-identity/shared";
 
 import { PlayerMessageFlow } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage";
-import { SubmitMessage } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage/messageShared/SubmitMessage";
 import { ReminderCreator } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerMessage/ReminderCreator";
+import { PlayerName } from "../../../../GMRoute/GMShared/PlayerListComponents/PlayerName";
+import { useCompleteAction } from "../../../../store/actions/gmActions";
 import { useDefiniteGame } from "../../../../store/GameContext";
-import { PlayerNameWithRoleIcon, RoleName } from "../../../RoleIcon";
+import { useSheetExpanded } from "../../../../store/url";
+import { ErrorCallout } from "../../../ErrorCallout";
+import { PlayerNameWithRoleIcon, RoleIcon, RoleName } from "../../../RoleIcon";
 import { SheetBody, SheetContent, SheetHeader } from "../../SheetBody";
 
 export interface PlayerSheetProps {
@@ -25,33 +29,60 @@ function Header({ action }: PlayerSheetProps) {
   );
 }
 
+interface CompleteActionButtonProps {
+  actionId: string;
+}
+function CompleteActionButton({ actionId }: CompleteActionButtonProps) {
+  const [error, loading, , completeAction] = useCompleteAction();
+  const [_, setSheetExpanded] = useSheetExpanded();
+  return (
+    <>
+      <ErrorCallout error={error} />
+      <Button
+        disabled={loading}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={async () => {
+          await completeAction(actionId);
+          setSheetExpanded(false);
+        }}
+      >
+        Complete Action
+      </Button>
+    </>
+  );
+}
+
 function Body({ action }: PlayerSheetProps) {
   const { game } = useDefiniteGame();
   const { role } = action;
   const ability = getAbility(role, game.time);
 
   return (
-    <div className="flex flex-col gap-2">
-      {ability?.playerMessage ? (
+    <div className="flex flex-col gap-2 py-3 text-xl">
+      <div className="items-center text-3xl font-semibold">
+        <span className="flex items-center gap-1 pl-1">
+          <PlayerName
+            player={action.player}
+            className="flex-initial shrink-0"
+          />
+          <RoleIcon role={role} />
+          <span className=" text-lg">({RoleName(role)})</span>
+        </span>
+      </div>
+      <div className="px-2">{getCharacter(role).ability}</div>
+
+      {ability?.setReminders?.map((reminderName, index) => (
+        <ReminderCreator
+          key={`${reminderName}_${index}`}
+          reminder={reminderName}
+          fromPlayer={action.player}
+        />
+      ))}
+
+      {ability?.playerMessage && (
         <PlayerMessageFlow action={action} message={ability.playerMessage} />
-      ) : (
-        <>
-          <div>{getCharacter(role).ability}</div>
-          {ability?.setReminders?.map((reminderName) => (
-            <ReminderCreator
-              reminder={reminderName}
-              fromPlayer={action.player}
-            />
-          ))}
-          <div className="w-full">
-            <SubmitMessage
-              action={action}
-              message={[]}
-              player={action.player}
-            />
-          </div>
-        </>
       )}
+      <CompleteActionButton actionId={action.id} />
     </div>
   );
 }

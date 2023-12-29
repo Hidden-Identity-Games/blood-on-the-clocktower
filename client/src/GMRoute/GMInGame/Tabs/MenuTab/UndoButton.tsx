@@ -1,4 +1,4 @@
-import { Button } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
 
 import { ErrorCallout } from "../../../../shared/ErrorCallout";
 import { useUndo } from "../../../../store/actions/gmActions";

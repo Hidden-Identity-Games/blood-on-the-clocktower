@@ -35,7 +35,7 @@ export function CharacterSelectedYouMessage({
 
   return (
     <Flex direction="column" gap="2">
-      <Heading>Role</Heading>
+      <Heading>Reveal</Heading>
       <Restrictions restrictions={message.restriction} />
       <TextFieldInput
         onChange={(e) => setGroupName(e.target.value)}

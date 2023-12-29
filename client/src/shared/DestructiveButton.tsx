@@ -1,4 +1,5 @@
-import { Button, Dialog, DialogClose, Flex } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 
 export function DestructiveButton({
   confirmationText,
@@ -9,25 +10,21 @@ export function DestructiveButton({
 }) {
   return (
     <Dialog.Root>
-      <Dialog.Content className="m-2">
-        <Dialog.Title>Are you sure?</Dialog.Title>
-        {confirmationText}
-        <Flex mt="5" justify="between">
-          <DialogClose>
-            <Button variant="surface" size="3">
-              Cancel
-            </Button>
-          </DialogClose>
-          <DialogClose>
-            <Button size="3" onClick={onClick}>
-              Confirm
-            </Button>
-          </DialogClose>
-        </Flex>
-      </Dialog.Content>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button {...buttonProps} />
       </Dialog.Trigger>
+      <Dialog.Content className="m-2">
+        <Dialog.Header>Are you sure?</Dialog.Header>
+        {confirmationText}
+        <Dialog.Footer>
+          <Dialog.Close asChild>
+            <Button variant="ghost">Cancel</Button>
+          </Dialog.Close>
+          <Dialog.Close asChild>
+            <Button onClick={onClick}>Confirm</Button>
+          </Dialog.Close>
+        </Dialog.Footer>
+      </Dialog.Content>
     </Dialog.Root>
   );
 }

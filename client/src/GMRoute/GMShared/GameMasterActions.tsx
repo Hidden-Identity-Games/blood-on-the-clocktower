@@ -1,6 +1,7 @@
+import { Button } from "@design-system/components/button";
 import { type Role } from "@hidden-identity/shared";
-import { Button, Dialog, DialogClose, Flex, Text } from "@radix-ui/themes";
-import { BsShare } from "react-icons/bs";
+import { Dialog, DialogClose, Flex, Text } from "@radix-ui/themes";
+import { Share2 } from "lucide-react";
 
 import { NewGameButton } from "../../NewGamePage/NewGameButton";
 import { DestructiveButton } from "../../shared/DestructiveButton";
@@ -12,6 +13,7 @@ import {
 } from "../../store/actions/gmActions";
 import { useDefiniteGame } from "../../store/GameContext";
 import { urlFromOrigin, useSearchParams } from "../../store/url";
+import { UndoButton } from "../GMInGame/Tabs/MenuTab/UndoButton";
 import { ExportButton } from "./ExportButton";
 
 interface GameMasterActionsProps {
@@ -33,7 +35,9 @@ export function GameMasterActions({
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
   return (
-    <Flex gap="3" direction="column">
+    <Flex gap="1" direction="column">
+      <UndoButton />
+
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
           <DialogHeader>Error</DialogHeader>
@@ -118,7 +122,7 @@ export function GameMasterActions({
         url={urlFromOrigin("gm", searchParams)}
       >
         <Button>
-          <BsShare className="inline" /> Share GM view
+          <Share2 className="h-[1em]" /> Share GM view
         </Button>
       </QRCodeModal>
       {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
