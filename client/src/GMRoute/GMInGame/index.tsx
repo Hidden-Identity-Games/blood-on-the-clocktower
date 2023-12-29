@@ -6,10 +6,9 @@ import { BsFillMoonStarsFill } from "react-icons/bs";
 import { GiNotebook, GiOpenBook } from "react-icons/gi";
 
 import { type PlayerOrder } from "../../shared/PlayerListOrder";
-import { ScriptList } from "../../shared/ScriptList";
-import { GameMasterActions } from "../GMShared/GameMasterActions";
 import { ActionsTab } from "./Tabs/ActionsTab";
 import { GrimoireTab } from "./Tabs/GrimoireTab";
+import { MenuTab } from "./Tabs/MenuTab";
 import { PlayerMessagesTab } from "./Tabs/PlayerMessagesTab";
 
 type Tabs = "grimoire" | "night" | "message" | "menu";
@@ -85,8 +84,7 @@ export function GMInGame() {
         )}
         value="menu"
       >
-        <GameMasterActions gameStartable={false} availableRolesList={[]} />
-        <ScriptList className="my-5" />
+        <MenuTab />
       </Tabs.Content>
     </Tabs.Root>
   );

@@ -53,6 +53,10 @@ export class GameMachine {
   getGame() {
     return gameSelector(this.store.getState());
   }
+
+  undo() {
+    return this.store.undo();
+  }
 }
 
 // could make this more automatic, but would be difficult to keep typesafe.

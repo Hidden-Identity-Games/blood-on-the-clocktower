@@ -276,4 +276,10 @@ export const gameRoutes = {
       const game = await retrieveGame(gameId);
       game.dispatch({ type: "CompleteAction", itemId: actionId });
     }),
+  undo: gmProcedure
+    .input(gameIdShape)
+    .mutation(async ({ input: { gameId } }) => {
+      const game = await retrieveGame(gameId);
+      return game.undo();
+    }),
 };

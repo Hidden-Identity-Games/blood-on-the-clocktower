@@ -15,7 +15,7 @@ export interface Store<StateShape, ActionType> {
   getState: () => StateShape;
   dispatch: Dispatch<StateShape, ActionType>;
   subscribe: (cb: () => void) => () => void;
-  undo: () => void;
+  undo: () => boolean;
   canUndo: () => boolean;
 }
 
@@ -42,6 +42,9 @@ export function createStore<StateShape, ActionType extends BaseAction<string>>(
   let history: StateShape[] = [];
   let state = initialState;
   let subscriptions: Array<() => void> = [];
+  const canUndo = () => {
+    return history.length > 0;
+  };
   const getState = () => state;
   const notify = () => {
     subscriptions.forEach((cb) => {
@@ -73,12 +76,14 @@ export function createStore<StateShape, ActionType extends BaseAction<string>>(
       return () =>
         (subscriptions = subscriptions.filter((s) => s === callback));
     },
+    canUndo,
     undo() {
-      [state, ...history] = history;
-      notify();
-    },
-    canUndo() {
-      return history.length > 0;
+      if (canUndo()) {
+        [state, ...history] = history;
+        notify();
+        return true;
+      }
+      return false;
     },
   };
 }
