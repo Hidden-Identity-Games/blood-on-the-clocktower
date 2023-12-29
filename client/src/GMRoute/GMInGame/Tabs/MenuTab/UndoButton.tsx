@@ -8,7 +8,7 @@ export function UndoButton() {
   return (
     <>
       <ErrorCallout error={error} />
-      <Button disabled={loading} onClick={undo}>
+      <Button disabled={loading} onClick={() => void undo()}>
         Undo
       </Button>
     </>
