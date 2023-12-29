@@ -1,10 +1,11 @@
 import { type UnifiedGame } from "@hidden-identity/shared";
 import { Dialog, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
-import { FaFeather, FaSkull } from "react-icons/fa6";
+import { FaFeather, FaGear, FaSkull } from "react-icons/fa6";
 import { GiRaiseZombie } from "react-icons/gi";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PiKnifeBold } from "react-icons/pi";
 
+import { AddReminder } from "../../../shared/Reminders/AddReminder";
 import { CharacterName } from "../../../shared/RoleIcon";
 import { useDeadVote } from "../../../store/actions/gmActions";
 import {
@@ -52,6 +53,15 @@ export function PlayerActions({
         </Flex>
 
         <Flex direction="column" gap="2">
+          <AddReminder player={player}>
+            <PlayerList.MenuItem
+              onClick={() => {}}
+              id={`${player}-add-reminder`}
+              label="Add Reminder"
+            >
+              <FaGear />
+            </PlayerList.MenuItem>
+          </AddReminder>
           <PlayerList.MenuItem
             onClick={() =>
               void handleDecideFate(player, !game.deadPlayers[player])

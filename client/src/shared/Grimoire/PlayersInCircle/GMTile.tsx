@@ -1,5 +1,4 @@
 import { getCharacter } from "@hidden-identity/shared";
-import { Flex, IconButton } from "@radix-ui/themes";
 import classNames from "classnames";
 import { FaEllipsis } from "react-icons/fa6";
 import useResizeObserver from "use-resize-observer";
@@ -8,8 +7,8 @@ import useResizeObserver from "use-resize-observer";
 import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
 import { useClearPlayerReminder } from "../../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { AddPlayerReminder } from "../../AddPlayerReminder";
-import { getRoleIcon, RoleIcon, RoleText } from "../../RoleIcon";
+import { ReminderIcon } from "../../Reminders/ReminderIcon";
+import { getRoleIcon, RoleText } from "../../RoleIcon";
 import { PlaceInCircle } from ".";
 import { useScalingTextClassName } from "./ScalingText";
 
@@ -37,19 +36,17 @@ export function GMTile({ player, index }: SpectatorTile) {
   return (
     <>
       {remindersToRender.map((reminder, idx) => (
-        <PlaceInCircle index={index} stepsIn={2 + idx / 2} key={reminder.id}>
+        <PlaceInCircle index={index} stepsIn={2 + idx} key={reminder.id}>
           {/* We need to add pointer events manually to prevent the div from overlapping us, because corners bullshit */}
           <button
-            className="pointer-events-auto rounded-full bg-green-600 p-1 text-sm"
+            className="pointer-events-auto rounded-full bg-green-600 p-1"
             onClick={() => void clearReminder(reminder.id)}
             disabled={isClearReminderLoading}
           >
-            <Flex direction="column">
-              {reminder.fromPlayer && (
-                <RoleIcon role={game.playersToRoles[reminder.fromPlayer]} />
-              )}
-              {reminder.name}
-            </Flex>
+            <ReminderIcon
+              reminder={reminder}
+              role={game.playersToRoles[reminder.fromPlayer!]}
+            />
           </button>
         </PlaceInCircle>
       ))}
@@ -62,17 +59,6 @@ export function GMTile({ player, index }: SpectatorTile) {
           </PlayerList.Actions>
         </PlaceInCircle>
       )}
-      <PlaceInCircle index={index} stepsIn={2 + baseReminders.length / 2 + 1}>
-        <AddPlayerReminder player={player}>
-          <IconButton
-            radius="full"
-            variant="soft"
-            className="pointer-events-auto bg-purple-600 p-1"
-          >
-            +
-          </IconButton>
-        </AddPlayerReminder>
-      </PlaceInCircle>
       <PlaceInCircle key={player} index={index} stepsIn={1}>
         <div className="z-10 h-full w-full p-2">
           <PlayerList.Actions player={player}>
