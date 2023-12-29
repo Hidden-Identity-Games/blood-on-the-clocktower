@@ -18,7 +18,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@design-system/*": ["./src/design-system/*"]
+    }
   },
   "include": ["src", "test"],
   "references": [{ "path": "./tsconfig.node.json" }]
