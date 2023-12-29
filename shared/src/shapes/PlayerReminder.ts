@@ -3,7 +3,7 @@ import { z } from "zod";
 export const playerReminderShape = z.object({
   name: z.string(),
   toPlayer: z.string(),
-  fromPlayer: z.string().optional(),
+  fromPlayer: z.string(),
 });
 
 export const appliedPlayerReminderShape = z.intersection(
