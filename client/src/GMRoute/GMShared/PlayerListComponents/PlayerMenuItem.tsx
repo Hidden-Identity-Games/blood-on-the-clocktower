@@ -15,7 +15,7 @@ export function PlayerMenuItem({
   ...props
 }: PlayerMenuItemProps) {
   return (
-    <Flex className="text-xl" gap="3">
+    <Flex className="items-center text-xl" gap="3">
       <IconButton
         id={id}
         variant="soft"
