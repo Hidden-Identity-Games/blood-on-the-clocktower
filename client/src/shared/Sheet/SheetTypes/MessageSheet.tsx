@@ -1,15 +1,11 @@
 import { groupBy, type PlayerMessage } from "@hidden-identity/shared";
 import { Button, Heading, Text, TextArea } from "@radix-ui/themes";
-import { CgMail, CgSpinner } from "react-icons/cg";
+import { CgMail } from "react-icons/cg";
 
 import { PlayerName } from "../../../GMRoute/GMShared/PlayerListComponents/PlayerName";
-import { useDeleteMessage } from "../../../store/actions/gmActions";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useIsHiddenView } from "../../../store/url";
 import { alignmentColorMap, colorMap } from "../../CharacterTypes";
-import { DestructiveButton } from "../../DestructiveButton";
-import { ErrorCallout } from "../../ErrorCallout";
-import { LoadingExperience } from "../../LoadingExperience";
 import { CharacterName } from "../../RoleIcon";
 import {
   LockedSheetHeader,
@@ -28,35 +24,18 @@ function Header({ message }: MessageSheetPiecesProps) {
   return hiddenView ? (
     <LockedSheetHeader />
   ) : (
-    <Heading className="flex h-full items-center justify-between px-2">
+    <div className="flex h-full grow-0 items-center justify-between px-2 text-3xl font-bold">
       <CgMail className="inline-block pr-1" size="1em" />
       <PlayerName player={message.player} />
-    </Heading>
+    </div>
   );
 }
 function Body({ message }: MessageSheetPiecesProps) {
   const messagesByGroup = groupBy(message.messages, "group");
   const [hiddenView, setIsHiddenView] = useIsHiddenView();
-  const [errorDeletingMessage, deleteMessageIsLoading, , deleteMessage] =
-    useDeleteMessage();
 
   return (
     <div className="flex h-full flex-col gap-2 p-2">
-      {!hiddenView && (
-        <DestructiveButton
-          variant="soft"
-          confirmationText="Are you sure?  This cannot be undone."
-          onClick={() => void deleteMessage(message.id)}
-        >
-          {deleteMessageIsLoading && (
-            <LoadingExperience>
-              <CgSpinner />
-            </LoadingExperience>
-          )}
-          DeleteMessage
-        </DestructiveButton>
-      )}
-
       <Heading className="capitalize">{message.player}</Heading>
 
       {Object.keys(messagesByGroup).map((section) => (
@@ -104,7 +83,6 @@ function Body({ message }: MessageSheetPiecesProps) {
           ))}
         </div>
       ))}
-      <ErrorCallout error={errorDeletingMessage} />
       {!hiddenView && message.showState === "needs to be shown" && (
         <Button onClick={() => setIsHiddenView(true)}>Show to player</Button>
       )}

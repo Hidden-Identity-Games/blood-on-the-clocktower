@@ -30,25 +30,24 @@ export interface SheetHeaderProps {
 }
 
 export function SheetHeader({ children }: SheetHeaderProps) {
-  const [sheetExpanded] = useSheetExpanded();
+  const [sheetExpanded, setSheetExpanded] = useSheetExpanded();
   const [isHiddenView] = useIsHiddenView();
   return (
-    <div
+    <button
       className={classNames(
-        "box-content flex h-[64px] w-full min-w-0 border-y border-gray-400 bg-[--color-background] pointer-events-auto shrink-0",
+        "box-content flex h-[64px] w-full min-w-0 border-y border-gray-400 bg-[--color-background] pointer-events-auto shrink-0 items-center",
         // helps the drag animation for the sheet
         "z-10",
       )}
+      onClick={() => !isHiddenView && setSheetExpanded(!sheetExpanded)}
     >
       <div className="flex-1 overflow-hidden whitespace-nowrap">{children}</div>
       {!isHiddenView && (
-        <SheetCollapse>
-          <button className="ml-1 flex aspect-square h-full items-center justify-around">
-            {sheetExpanded ? <CgChevronDown /> : <CgChevronUp />}
-          </button>
-        </SheetCollapse>
+        <div className="ml-1 flex aspect-square h-full items-center justify-around">
+          {sheetExpanded ? <CgChevronDown /> : <CgChevronUp />}
+        </div>
       )}
-    </div>
+    </button>
   );
 }
 

@@ -1,10 +1,11 @@
+import { Dialog } from "@design-system/components/ui/dialog";
+import { getCharacter } from "@hidden-identity/shared";
 import { Button } from "@radix-ui/themes";
 
 import { alignmentColorMap } from "../../../shared/CharacterTypes";
 import { MeaningfulIcon } from "../../../shared/MeaningfulIcon";
-import { RoleIcon, RoleName } from "../../../shared/RoleIcon";
+import { RoleIcon, RoleName, RoleText } from "../../../shared/RoleIcon";
 import { useDefiniteGame } from "../../../store/GameContext";
-import { useSheetView } from "../../../store/url";
 import { useGetPlayerAlignment } from "../../../store/useStore";
 
 interface PlayerRoleIconProps {
@@ -15,19 +16,25 @@ export function PlayerRoleIcon({ player }: PlayerRoleIconProps) {
   const { game } = useDefiniteGame();
   const getPlayerAlignment = useGetPlayerAlignment();
   const role = game.playersToRoles[player];
-  const [_, triggerSheet] = useSheetView();
   return (
-    <Button
-      onClick={() =>
-        triggerSheet({ id: player, type: "action", isOpen: "open" })
-      }
-      variant="surface"
-      className="aspect-square p-1 text-xl"
-      color={alignmentColorMap[getPlayerAlignment(player)]}
-      radius="full"
-    >
-      <RoleIcon role={role} />
-    </Button>
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <Button
+          variant="surface"
+          className="aspect-square p-1 text-xl"
+          color={alignmentColorMap[getPlayerAlignment(player)]}
+          radius="full"
+        >
+          <RoleIcon role={role} />
+        </Button>
+      </Dialog.Trigger>
+      <Dialog.Content>
+        <Dialog.Header>
+          <RoleText role={role} />
+        </Dialog.Header>
+        {getCharacter(role).ability}
+      </Dialog.Content>
+    </Dialog.Root>
   );
 }
 

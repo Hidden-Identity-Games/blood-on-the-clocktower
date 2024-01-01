@@ -5,7 +5,7 @@ import {
   useSearchParams as useRouterSearchParams,
 } from "react-router-dom";
 
-const TopLevelSheets = ["action", "message", "none"] as const;
+const TopLevelSheets = ["message", "none"] as const;
 const OpenClosed = ["open", "closed"] as const;
 type TopLevelSheetKey = (typeof TopLevelSheets)[number];
 type OpenClosedKey = (typeof OpenClosed)[number];

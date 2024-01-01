@@ -25,8 +25,16 @@ export function SubmitMessage({ message, player }: SubmitMessageProps) {
         <Button
           className="w-full"
           disabled={createMessageisLoading && message.length === 0}
-          onClick={() => {
-            void createMessage(player, message);
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={async () => {
+            const messageId = await createMessage(player, message);
+            if (messageId) {
+              void setSheetView({
+                type: "message",
+                id: messageId,
+                isOpen: "open",
+              });
+            }
           }}
         >
           {createMessageisLoading ? "Redirecting to message" : "Create message"}

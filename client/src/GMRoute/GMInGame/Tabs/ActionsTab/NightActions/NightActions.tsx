@@ -1,4 +1,5 @@
 import { Button } from "@design-system/components/button";
+import { Accordion } from "@design-system/components/ui/accordion";
 import { useState } from "react";
 import { BiHide, BiShow } from "react-icons/bi";
 
@@ -20,11 +21,13 @@ export function NightActions(_props: NightActionsProps) {
           {showAll ? <BiShow /> : <BiHide />}
         </Button>
       </div>
-      {actionQueue
-        .filter((current) => showAll || !current.skipped)
-        .map((queueItem) => (
-          <ActionQueueRow queueItem={queueItem} key={queueItem.id} />
-        ))}
+      <Accordion.Root type="multiple">
+        {actionQueue
+          .filter((current) => showAll || !current.skipped)
+          .map((queueItem) => (
+            <ActionQueueRow queueItem={queueItem} key={queueItem.id} />
+          ))}
+      </Accordion.Root>
       <ProgressTimeButton
         confirmationText={
           allCompleted
