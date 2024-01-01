@@ -1,4 +1,5 @@
 import { Button } from "@design-system/components/button";
+import { Card } from "@design-system/components/ui/card";
 import {
   type CharacterActionQueueItem,
   getAbility,
@@ -70,18 +71,36 @@ function Body({ action }: PlayerSheetProps) {
         </span>
       </div>
       <div className="px-2">{getCharacter(role).ability}</div>
-
-      {ability?.setReminders?.map((reminderName, index) => (
-        <ReminderCreator
-          key={`${reminderName}_${index}`}
-          reminder={reminderName}
-          fromPlayer={action.player}
-        />
-      ))}
-
       {ability?.playerMessage && (
-        <PlayerMessageFlow action={action} message={ability.playerMessage} />
+        <Card.Root>
+          <Card.Header>Create message for player</Card.Header>
+          <Card.Content>
+            {ability?.playerMessage && (
+              <PlayerMessageFlow
+                action={action}
+                message={ability.playerMessage}
+              />
+            )}
+          </Card.Content>
+        </Card.Root>
       )}
+      {(ability?.setReminders?.length ?? 0) > 0 && (
+        <Card.Root>
+          <Card.Header>Apply Reminders</Card.Header>
+          <Card.Content>
+            <div className="flex flex-col gap-1">
+              {ability?.setReminders?.map((reminderName, index) => (
+                <ReminderCreator
+                  key={`${reminderName}_${index}`}
+                  reminder={reminderName}
+                  fromPlayer={action.player}
+                />
+              ))}
+            </div>
+          </Card.Content>
+        </Card.Root>
+      )}
+
       <CompleteActionButton actionId={action.id} />
     </div>
   );

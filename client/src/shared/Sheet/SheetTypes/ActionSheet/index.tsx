@@ -10,7 +10,7 @@ export function ActionSheet({ sheetId }: ActionSheetProps) {
   const { game } = useDefiniteGame();
   const action = game.actionQueue.queue.find(({ id }) => id === sheetId);
   if (!action) {
-    throw new Error("MEssage not found");
+    return null;
   }
 
   if (action.type === "game") {
