@@ -1,3 +1,4 @@
+import { Button } from "@design-system/components/button";
 import { type Role } from "@hidden-identity/shared";
 import {
   allTravelers,
@@ -5,11 +6,11 @@ import {
   getDefaultAlignment,
 } from "@hidden-identity/shared";
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
+import { Dialog, Flex, IconButton } from "@radix-ui/themes";
 import { useMemo } from "react";
 
 import { colorMap } from "../../../../shared/CharacterTypes";
-import { CharacterName } from "../../../../shared/RoleIcon";
+import { CharacterName, RoleIcon, RoleText } from "../../../../shared/RoleIcon";
 import { useDefiniteGame } from "../../../../store/GameContext";
 
 interface RoleSelectProps {
@@ -40,16 +41,18 @@ export function RoleSelect({
     <Dialog.Root>
       <Dialog.Trigger>
         <Button
-          variant="outline"
-          size="3"
+          variant="select"
           className="w-full"
           color={colorMap[getCharacter(currentRole).team]}
         >
           {children || (
             <>
-              <CharacterName role={currentRole} size="3" />
+              <RoleIcon role={currentRole} />
+              <RoleText role={currentRole}>
+                {getCharacter(currentRole).name}
+              </RoleText>
               {!!game.rolesToPlayers[currentRole]?.length && (
-                <span className="-ml-1 truncate capitalize">
+                <span className="ml-1 truncate capitalize">
                   - {game.rolesToPlayers[currentRole].join(",")}
                 </span>
               )}
@@ -62,7 +65,6 @@ export function RoleSelect({
           <Dialog.Close key="remove">
             <Button
               className="capitalize"
-              size="3"
               variant={currentRole === null ? "soft" : "outline"}
               onClick={() => onSelect(null)}
             >
@@ -72,7 +74,6 @@ export function RoleSelect({
           {roles.map((role) => (
             <Dialog.Close key={role}>
               <Button
-                size="3"
                 color={colorMap[getCharacter(role).team]}
                 variant={role === currentRole ? "soft" : "outline"}
                 onClick={() => currentRole !== role && onSelect(role)}
@@ -107,8 +108,8 @@ export function RoleSelectList({
 }: RoleSelectListProps) {
   return (
     <>
-      <Heading className="flex items-center gap-1">
-        Role{" "}
+      <div className="flex items-center gap-1">
+        <h2 className="text-xl font-bold">Role{roles.length > 1 && "s"}</h2>{" "}
         {!fixedSize && (
           <IconButton
             variant="ghost"
@@ -121,7 +122,7 @@ export function RoleSelectList({
             <PlusIcon />
           </IconButton>
         )}
-      </Heading>
+      </div>
       {[...roles].map((current, index) => (
         <RoleSelect
           key={current}

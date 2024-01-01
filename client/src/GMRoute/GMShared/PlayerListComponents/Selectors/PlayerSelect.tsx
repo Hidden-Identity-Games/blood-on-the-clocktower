@@ -1,5 +1,5 @@
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Flex, Heading, IconButton } from "@radix-ui/themes";
+import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
 
 import { alignmentColorMap } from "../../../../shared/CharacterTypes";
 import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
@@ -74,8 +74,8 @@ export function PlayerSelectList({
 }: PlayerSelectListProps) {
   return (
     <>
-      <Heading className="flex items-center gap-1">
-        Player{" "}
+      <div className="flex items-center gap-1">
+        <h2 className="text-xl font-bold">Player{players.length > 1 && "s"}</h2>{" "}
         <IconButton
           variant="ghost"
           radius="full"
@@ -86,7 +86,7 @@ export function PlayerSelectList({
         >
           <PlusIcon />
         </IconButton>
-      </Heading>
+      </div>
       {[...players].map((currentPlayer, index) => (
         <PlayerSelect
           key={currentPlayer}

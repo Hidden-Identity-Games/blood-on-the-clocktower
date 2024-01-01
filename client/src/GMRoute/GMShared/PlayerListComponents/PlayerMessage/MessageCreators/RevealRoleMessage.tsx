@@ -3,7 +3,6 @@ import {
   type PlayerMessageCreatorMap,
   type Role,
 } from "@hidden-identity/shared";
-import { Flex, Heading } from "@radix-ui/themes";
 
 import { useDefiniteGame } from "../../../../../store/GameContext";
 import { PlayerSelectList, RoleSelectList } from "../../Selectors";
@@ -46,9 +45,11 @@ export function RevealRoleMessage({ message, action }: RevealRoleMessageProps) {
   });
 
   return (
-    <Flex direction="column" gap="2">
-      <Heading>Role</Heading>
-      <Restrictions restrictions={message.restriction} />
+    <div className="flex flex-col gap-2">
+      <h1 className="text-2xl font-semibold">Create a reveal role message</h1>
+      <div>
+        Restrictions: <Restrictions restrictions={message.restriction} />
+      </div>
       <RoleSelectList
         fixedSize
         roles={rolesState.value}
@@ -70,6 +71,6 @@ export function RevealRoleMessage({ message, action }: RevealRoleMessageProps) {
           group: "Reveal",
         }))}
       />
-    </Flex>
+    </div>
   );
 }

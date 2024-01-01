@@ -7,7 +7,7 @@ export function Restrictions({ restrictions }: RestrictionsProps) {
   return (
     <>
       {Object.entries(restrictions ?? {})
-        .map(([name, value]) => `${name}: ${value}`)
+        .map(([name, value]) => `${name}(${value})`)
         .join(", ")}
     </>
   );
