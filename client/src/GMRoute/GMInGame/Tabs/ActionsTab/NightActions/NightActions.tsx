@@ -10,8 +10,8 @@ interface NightActionsProps {}
 export function NightActions(_props: NightActionsProps) {
   const { game } = useDefiniteGame();
   const [showAll, setShowAll] = useState(false);
-  const { computedActionQueue } = game;
-  const allCompleted = computedActionQueue.every(({ skipped }) => skipped);
+  const { actionQueue } = game;
+  const allCompleted = actionQueue.every(({ skipped }) => skipped);
   return (
     <>
       <div className="flex">
@@ -20,7 +20,7 @@ export function NightActions(_props: NightActionsProps) {
           {showAll ? <BiShow /> : <BiHide />}
         </Button>
       </div>
-      {computedActionQueue
+      {actionQueue
         .filter((current) => showAll || !current.skipped)
         .map((queueItem) => (
           <ActionQueueRow queueItem={queueItem} key={queueItem.id} />

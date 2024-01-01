@@ -32,7 +32,6 @@ export interface UnifiedGameComputed {
   playerList: string[];
   rolesToPlayers: Record<Role, string[]>;
   messagesByNight: Record<number, CalculatedPlayerMessage[]>;
-  computedActionQueue: ActionQueueItem[];
 }
 
 export interface BaseUnifiedGame {
@@ -52,7 +51,7 @@ export interface BaseUnifiedGame {
   messages: PlayerMessage[];
   reminders: AppliedPlayerReminder[];
   time: TimeRecord;
-  actionQueue: { lastCompleted: string | null; queue: ActionQueueItem[] };
+  actionQueue: ActionQueueItem[];
 }
 
 export interface WellOrderedPlayers {

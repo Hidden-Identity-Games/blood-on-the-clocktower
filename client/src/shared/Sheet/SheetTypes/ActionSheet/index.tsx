@@ -8,7 +8,7 @@ export interface ActionSheetProps {
 
 export function ActionSheet({ sheetId }: ActionSheetProps) {
   const { game } = useDefiniteGame();
-  const action = game.actionQueue.queue.find(({ id }) => id === sheetId);
+  const action = game.actionQueue.find(({ id }) => id === sheetId);
   if (!action) {
     return null;
   }
