@@ -5,7 +5,6 @@ import {
   getCharacter,
   type Role,
 } from "@hidden-identity/shared";
-import { Flex } from "@radix-ui/themes";
 import { ArrowRight } from "lucide-react";
 import { type ReactNode } from "react";
 
@@ -34,24 +33,22 @@ export function DayReminders(_props: DayRemindersProps) {
           role={game.playersToRoles[reminder.fromPlayer]}
           key={reminder.id}
         >
-          <Flex className="capitalize" align="center" asChild>
-            <Button variant="soft">
-              {!reminder.appliesToSelf && (
-                <>
-                  <RoleIcon
-                    className="h-[50px]"
-                    role={game.playersToRoles[reminder.fromPlayer]}
-                  />
-                  <ArrowRight />
-                </>
-              )}
-              <RoleIcon
-                className="h-[50px]"
-                role={game.playersToRoles[reminder.toPlayer]}
-              />
-              <span className="mx-8 text-xl">{reminder.name}</span>
-            </Button>
-          </Flex>
+          <Button variant="soft" className="items-center capitalize">
+            {!reminder.appliesToSelf && (
+              <>
+                <RoleIcon
+                  className="h-14"
+                  role={game.playersToRoles[reminder.fromPlayer]}
+                />
+                <ArrowRight />
+              </>
+            )}
+            <RoleIcon
+              className="h-14"
+              role={game.playersToRoles[reminder.toPlayer]}
+            />
+            <span className="mx-8 text-xl">{reminder.name}</span>
+          </Button>
         </AbilityDialog>
       ))}
       <ProgressTimeButton confirmationText="Are you sure you'd like to start the night?">
