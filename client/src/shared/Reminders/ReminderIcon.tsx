@@ -28,7 +28,7 @@ export function ReminderIcon({
         useReminderTypeColor && typeColor,
       )}
     >
-      <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 text-ellipsis text-base capitalize">
+      <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 text-ellipsis text-base capitalize shadow-black text-shadow">
         {reminder.name}
       </div>
       {reminder.fromPlayer && (
