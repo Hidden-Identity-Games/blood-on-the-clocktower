@@ -124,7 +124,9 @@ function Row({ message, onChange }: RowProps) {
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <Button variant="select" className="max-w-[35%]  px-1">
-            <span className="truncate text-clip">{role || "No Role"}</span>
+            <span className="overflow-hidden text-clip whitespace-nowrap">
+              {role || "No Role"}
+            </span>
           </Button>
         </Dialog.Trigger>
         <Dialog.Content>
