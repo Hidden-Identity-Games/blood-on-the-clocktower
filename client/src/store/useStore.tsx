@@ -1,10 +1,12 @@
 import {
   getCharacter,
   type PlayerReminder,
+  type Reminder,
+  type Role,
   type Script,
 } from "@hidden-identity/shared";
 import { getDefaultAlignment } from "@hidden-identity/shared";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { trpc } from "../shared/trpcClient";
 import { type UnifiedGame } from "./Game";
@@ -67,11 +69,17 @@ export function useGetPlayerAlignment() {
 }
 
 export function useAvailableReminders() {
-  const { game } = useDefiniteGame();
+  const { game, script } = useDefiniteGame();
+  const [allReminders, setAllReminders] = useState(false);
 
-  const availableReminders = Object.entries(game.playersToRoles).map(
-    ([player, role]) => [player, role, getCharacter(role).reminders] as const,
-  );
+  const availableReminders: [string, Role, Reminder[]][] = allReminders
+    ? script.map(
+        (item) => ["", item.id, getCharacter(item.id).reminders] as const,
+      )
+    : Object.entries(game.playersToRoles).map(
+        ([player, role]) =>
+          [player, role, getCharacter(role).reminders] as const,
+      );
 
   const reminderMap = availableReminders.flatMap(
     ([player, role, reminders]) => {
@@ -87,7 +95,5 @@ export function useAvailableReminders() {
     },
   );
 
-  // TODO: Delusional reminders
-
-  return reminderMap;
+  return [reminderMap, allReminders, setAllReminders] as const;
 }

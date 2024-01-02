@@ -1,6 +1,7 @@
 import { Dialog } from "@design-system/components/ui/dialog";
 import {
   type AppliedPlayerReminder,
+  getAllReminders,
   getCharacter,
   type Role,
 } from "@hidden-identity/shared";
@@ -45,7 +46,7 @@ export function GMTile({ player, index }: SpectatorTile) {
           {/* We need to add pointer events manually to prevent the div from overlapping us, because corners bullshit */}
           <ClearReminderButton
             reminder={reminder}
-            role={game.playersToRoles[reminder.fromPlayer]}
+            role={getAllReminders()[reminder.name].role}
           />
         </PlaceInCircle>
       ))}
@@ -64,7 +65,7 @@ export function GMTile({ player, index }: SpectatorTile) {
                   <Dialog.Close>
                     <ClearReminderButton
                       reminder={reminder}
-                      role={game.playersToRoles[reminder.fromPlayer]}
+                      role={getAllReminders()[reminder.name].role}
                     />
                   </Dialog.Close>
                 ))}
