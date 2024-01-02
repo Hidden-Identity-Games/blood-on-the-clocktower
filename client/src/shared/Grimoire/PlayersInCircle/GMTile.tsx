@@ -45,7 +45,7 @@ export function GMTile({ player, index }: SpectatorTile) {
           {/* We need to add pointer events manually to prevent the div from overlapping us, because corners bullshit */}
           <ClearReminderButton
             reminder={reminder}
-            role={game.playersToRoles[reminder.fromPlayer!]}
+            role={game.playersToRoles[reminder.fromPlayer]}
           />
         </PlaceInCircle>
       ))}
@@ -131,11 +131,11 @@ function ClearReminderButton({ reminder, role }: ClearReminderButtonProps) {
 
   return (
     <button
-      className="pointer-events-auto rounded-full bg-green-600 p-1"
+      className="pointer-events-auto rounded-full bg-green-600"
       onClick={() => void clearReminder(reminder.id)}
       disabled={isClearReminderLoading}
     >
-      <ReminderIcon reminder={reminder} role={role} />
+      <ReminderIcon reminder={reminder} role={role} useReminderTypeColor />
     </button>
   );
 }
