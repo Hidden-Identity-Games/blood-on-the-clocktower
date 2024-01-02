@@ -617,6 +617,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Imp points to a player. That player dies. If the Imp chose themselves: Replace the character of 1 alive minion with a spare Imp token. Show the 'You are' card, then the Imp token.",
       order: 24,
+      kills: true,
     },
   },
   {
@@ -897,6 +898,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       setReminders: ["gross"],
       reminder: "The No Dashii points to a player. That player dies.",
       order: 30,
+      kills: true,
     },
   },
   {
@@ -990,6 +992,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Po chose no-one the previous night: The Po points to three players. Otherwise: The Po either shows the 'no' head signal , or points to a player. Chosen players die",
       order: 28,
+      kills: true,
     },
   },
   {
@@ -1058,6 +1061,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Pukka points to a player. That player is poisoned. The previously poisoned player dies. ",
       order: 26,
+      kills: true,
     },
   },
   {
@@ -1242,6 +1246,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "revived",
       },
+      kills: true,
     },
   },
   {
@@ -1452,6 +1457,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         "The Vigormortis points to a player. That player dies. If a Minion, they keep their ability and one of their Townsfolk neighbours is poisoned.",
       order: 32,
       setReminders: ["minion keeps ability", "poisoned neighbor"],
+      kills: true,
     },
   },
   {
@@ -1493,6 +1499,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "The Vortox points to a player. That player dies.",
       order: 31,
+      kills: true,
     },
   },
   {
@@ -1558,6 +1565,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If no-one died during the day: The Zombuul points to a player. That player dies.",
       order: 25,
+      kills: true,
     },
   },
   {
@@ -2326,6 +2334,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "Choose a player, that player dies.",
       order: 23,
+      kills: true,
     },
   },
   {
@@ -2480,6 +2489,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: {
       reminder: "The Lleech points to a player. That player dies.",
       order: 34,
+      kills: true,
     },
   },
   {
@@ -2874,6 +2884,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       order: 15,
       reminder:
         "Wake all Minions together, allow them to vote by pointing at who they want to babysit Lil' Monsta. Choose a player, that player dies.",
+      kills: true,
     },
     imageSrc: "lilmonsta.png",
   },

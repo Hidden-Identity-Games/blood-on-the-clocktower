@@ -1,4 +1,5 @@
-import { Button, Dialog, Flex } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 import { useMemo } from "react";
 import { GiChewedSkull } from "react-icons/gi";
 
@@ -9,7 +10,7 @@ import { useDefiniteGame } from "../../../../store/GameContext";
 export function KillAction() {
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button>Kill/Revive players</Button>
       </Dialog.Trigger>
       <Dialog.Content>
@@ -32,9 +33,9 @@ function PlayerActionSelect(_props: PlayerActionSelect) {
   }, []);
 
   return (
-    <Flex direction="column" gap="1">
-      <Dialog.Close key="cancel">
-        <Button className="capitalize" size="3" variant="soft" color="lime">
+    <div className="flex flex-col gap-1">
+      <Dialog.Close key="cancel" asChild>
+        <Button className="capitalize" variant="soft" color="lime">
           {"Done"}
         </Button>
       </Dialog.Close>
@@ -42,7 +43,6 @@ function PlayerActionSelect(_props: PlayerActionSelect) {
         <Button
           key={player}
           className="capitalize"
-          size="3"
           color="violet"
           variant={playerIsDead(player) ? "soft" : "outline"}
           onClick={() => {
@@ -53,6 +53,6 @@ function PlayerActionSelect(_props: PlayerActionSelect) {
           {playerIsDead(player) && <GiChewedSkull />}
         </Button>
       ))}
-    </Flex>
+    </div>
   );
 }
