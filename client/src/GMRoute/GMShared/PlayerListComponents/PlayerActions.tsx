@@ -38,7 +38,7 @@ export function PlayerActions({
           <Flex className="justify-center pb-2" align="center">
             {game.deadPlayers[player] && <FaSkull />}
             <Heading className="mx-3">
-              <PlayerName player={player} />
+              <PlayerName player={player} className="flex-1" />
             </Heading>
           </Flex>
           <Flex gap="2">

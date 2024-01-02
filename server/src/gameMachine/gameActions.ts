@@ -224,3 +224,16 @@ export function addReminderAction({
     return id;
   };
 }
+export function addPlayerAction({
+  player,
+  forceTraveling,
+}: {
+  player: string;
+  forceTraveling?: boolean;
+}): GameThunk<void> {
+  return (dispatch, getGame) => {
+    const traveling =
+      forceTraveling ?? getGame().gameStatus !== "PlayersJoining";
+    dispatch({ type: "AddPlayer", traveling, player });
+  };
+}

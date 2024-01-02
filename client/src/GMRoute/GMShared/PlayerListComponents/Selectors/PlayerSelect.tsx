@@ -1,5 +1,6 @@
-import { PlusIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Plus } from "lucide-react";
 
 import { alignmentColorMap } from "../../../../shared/CharacterTypes";
 import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
@@ -18,45 +19,40 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button
-          variant="outline"
-          size="3"
+          variant="select"
           className="capitalize"
           color={alignmentColorMap[getAlignment(currentPlayer)]}
         >
           <PlayerNameWithRoleIcon player={currentPlayer} />
         </Button>
       </Dialog.Trigger>
-      <Flex direction="column" gap="1" asChild>
-        <Dialog.Content>
-          <Dialog.Close key="remove">
-            <Button
-              className="capitalize"
-              size="3"
-              variant={currentPlayer === null ? "soft" : "outline"}
-              onClick={() => onSelect(null)}
-            >
-              {"Remove"}
-            </Button>
-          </Dialog.Close>
-          {[...playerList]
-            .sort((a, b) => (getAlignment(a) > getAlignment(b) ? 1 : -1))
-            .map((player) => (
-              <Dialog.Close key={player}>
-                <Button
-                  className="capitalize"
-                  size="3"
-                  color={alignmentColorMap[getAlignment(player)]}
-                  variant={player === currentPlayer ? "soft" : "outline"}
-                  onClick={() => onSelect(player)}
-                >
-                  <PlayerNameWithRoleIcon player={player} />
-                </Button>
-              </Dialog.Close>
-            ))}
-        </Dialog.Content>
-      </Flex>
+      <Dialog.Content className="flex flex-col gap-1">
+        <Dialog.Close key="remove" asChild>
+          <Button
+            className="w-full capitalize"
+            variant={currentPlayer === null ? "soft" : "outline"}
+            onClick={() => onSelect(null)}
+          >
+            {"Remove"}
+          </Button>
+        </Dialog.Close>
+        {[...playerList]
+          .sort((a, b) => (getAlignment(a) > getAlignment(b) ? 1 : -1))
+          .map((player) => (
+            <Dialog.Close key={player} asChild>
+              <Button
+                className="w-full capitalize"
+                color={alignmentColorMap[getAlignment(player)]}
+                variant={player === currentPlayer ? "soft" : "outline"}
+                onClick={() => onSelect(player)}
+              >
+                <PlayerNameWithRoleIcon player={player} />
+              </Button>
+            </Dialog.Close>
+          ))}
+      </Dialog.Content>
     </Dialog.Root>
   );
 }
@@ -76,16 +72,15 @@ export function PlayerSelectList({
     <>
       <div className="flex items-center gap-1">
         <h2 className="text-xl font-bold">Player{players.length > 1 && "s"}</h2>{" "}
-        <IconButton
+        <Button
           variant="ghost"
-          radius="full"
-          className="pt-1"
+          className="aspect-square rounded-full p-0"
           onClick={() => {
             addPlayer();
           }}
         >
-          <PlusIcon />
-        </IconButton>
+          <Plus className="text-green-500" />
+        </Button>
       </div>
       {[...players].map((currentPlayer, index) => (
         <PlayerSelect

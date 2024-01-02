@@ -82,7 +82,7 @@ export function ScriptSelect({ onScriptChange }: ScriptSelectProps) {
       className="flex-1 overflow-y-auto"
     >
       <Heading color="tomato">Select a Script</Heading>
-      <Flex wrap="wrap" align={"center"} gap="4" p="4" justify="center">
+      <div className="flex flex-wrap items-center justify-center gap-4 gap-y-2 p-4">
         {getScriptNames().map((name) => (
           <ScriptOption
             key={name}
@@ -100,7 +100,7 @@ export function ScriptSelect({ onScriptChange }: ScriptSelectProps) {
           handleSubmit={(script) => handleScriptChange("custom", script)}
           selected={"custom" === selectedScript}
         />
-      </Flex>
+      </div>
     </Flex>
   );
 }

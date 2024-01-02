@@ -20,7 +20,6 @@ import { useDefiniteGame } from "../../../../store/GameContext";
 import { useFirstSeat } from "../../../../store/url";
 import { PlayerList } from "../../../GMShared/PlayerListComponents";
 import { PlayerNotes } from "../../../GMShared/PlayerListComponents/PlayerNotes";
-import { DeadVoteIcon } from "../../NotesIcons";
 
 interface GrimoireTabProps {
   selectedOrder: PlayerOrder;
@@ -63,7 +62,6 @@ export function GrimoireTab({
                   <PlayerList.Name player={player} />
                 </button>
               </PlayerList.NoteInputModal>
-              <DeadVoteIcon player={player} />
               <SetCountModal
                 title="Set votes to execute:"
                 onSet={(votes: number) => void setVotesToExecute(player, votes)}

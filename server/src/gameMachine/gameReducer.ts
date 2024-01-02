@@ -70,25 +70,20 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             return state;
         }
       },
-      actionQueue: (
-        state = { lastCompleted: null, queue: [] },
-        action,
-        wholePreviousState,
-      ) => {
+      actionQueue: (state = [], action, wholePreviousState) => {
         switch (action.type) {
           case "StartNight":
-            return { lastCompleted: null, queue: action.initialActionQueue };
+            return action.initialActionQueue;
           case "CompleteAction":
-            return { lastCompleted: action.itemId, queue: state.queue };
+            return state.map((item) =>
+              item.id === action.itemId ? { ...item, skipped: true } : item,
+            );
           case "KillPlayer":
-            return {
-              lastCompleted: state.lastCompleted,
-              queue: state.queue.map((current) =>
-                "player" in current && current.player === action.player
-                  ? { ...current, skipped: true }
-                  : current,
-              ),
-            };
+            return state.map((current) =>
+              "player" in current && current.player === action.player
+                ? { ...current, skipped: true }
+                : current,
+            );
           // When we add a new ability in, we add all abilities to the queue.
           case "ChangePlayerRole":
           case "RevivePlayer": {
@@ -97,7 +92,7 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             if (!ability) {
               return state;
             }
-            const nextQueue = state.queue.map((current) =>
+            const nextQueue = state.map((current) =>
               "player" in current && current.player === action.player
                 ? { ...current, skipped: true }
                 : current,
@@ -107,21 +102,18 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             );
             const insertBefore =
               firstGreaterIndex === -1 ? nextQueue.length : firstGreaterIndex;
-            return {
-              lastCompleted: state.lastCompleted,
-              queue: [
-                ...nextQueue.slice(0, insertBefore),
-                {
-                  id: generateThreeWordId(),
-                  order: ability.order,
-                  player: action.player,
-                  skipped: false,
-                  role,
-                  type: "character",
-                } satisfies ActionQueueItem,
-                ...nextQueue.slice(insertBefore),
-              ],
-            };
+            return [
+              ...nextQueue.slice(0, insertBefore),
+              {
+                id: generateThreeWordId(),
+                order: ability.order,
+                player: action.player,
+                skipped: false,
+                role,
+                type: "character",
+              } satisfies ActionQueueItem,
+              ...nextQueue.slice(insertBefore),
+            ];
           }
           default:
             return state;

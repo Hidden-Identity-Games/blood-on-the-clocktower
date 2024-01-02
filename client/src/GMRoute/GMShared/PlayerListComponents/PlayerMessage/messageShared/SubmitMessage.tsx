@@ -29,7 +29,6 @@ export function SubmitMessage({ message, player }: SubmitMessageProps) {
           onClick={async () => {
             const messageId = await createMessage(player, message);
             if (messageId) {
-              // make sure the request didn't fail
               void setSheetView({
                 type: "message",
                 id: messageId,
@@ -39,6 +38,20 @@ export function SubmitMessage({ message, player }: SubmitMessageProps) {
           }}
         >
           {createMessageisLoading ? "Redirecting to message" : "Create message"}
+        </Button>
+      )}
+      {messageId && (
+        <Button
+          variant="secondary"
+          onClick={() => {
+            void setSheetView({
+              type: "message",
+              id: messageId,
+              isOpen: "open",
+            });
+          }}
+        >
+          Show message
         </Button>
       )}
     </>

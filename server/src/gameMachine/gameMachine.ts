@@ -70,22 +70,13 @@ const gameSelector = createSelector(
   (game: BaseUnifiedGame) => computedGameSelectors.playerList(game),
   (game: BaseUnifiedGame) => computedGameSelectors.rolesToPlayers(game),
   (game: BaseUnifiedGame) => computedGameSelectors.messagesByNight(game),
-  (game: BaseUnifiedGame) => computedGameSelectors.computedActionQueue(game),
-  (
-    game,
-    orderedPlayers,
-    playerList,
-    rolesToPlayers,
-    messagesByNight,
-    computedActionQueue,
-  ) =>
+  (game, orderedPlayers, playerList, rolesToPlayers, messagesByNight) =>
     ({
       ...game,
       orderedPlayers,
       playerList,
       rolesToPlayers,
       messagesByNight,
-      computedActionQueue,
     }) satisfies UnifiedGame,
 );
 
@@ -110,25 +101,6 @@ export const computedGameSelectors: {
         rolesToPlayers[role] = [...(rolesToPlayers[role] || []), player];
       });
       return rolesToPlayers;
-    },
-  ),
-  computedActionQueue: createSelector(
-    (game: BaseUnifiedGame) => game.actionQueue,
-    (actionQueue) => {
-      const lastCompletedIndex = actionQueue.queue.findIndex(
-        ({ id }) => id === actionQueue.lastCompleted,
-      );
-      if (lastCompletedIndex === -1) {
-        console.error("Couldn't find last completed index");
-        return actionQueue.queue;
-      }
-
-      return [
-        ...actionQueue.queue
-          .slice(0, lastCompletedIndex + 1)
-          .map((item) => ({ ...item, skipped: true })),
-        ...actionQueue.queue.slice(lastCompletedIndex + 1),
-      ];
     },
   ),
   messagesByNight: createSelector(

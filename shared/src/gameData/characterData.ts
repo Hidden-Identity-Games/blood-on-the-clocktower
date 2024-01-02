@@ -1509,7 +1509,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "Show the character token of a Townsfolk in play. Point to two players, one of which is that character.",
       order: 33,
-      setReminders: ["customer", "customer"],
+      setReminders: ["customer"],
       playerMessage: {
         type: "reveal-role",
         count: 2,

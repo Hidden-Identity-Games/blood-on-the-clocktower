@@ -58,7 +58,7 @@ export function createStore<StateShape, ActionType extends BaseAction<string>>(
   const dispatch: Dispatch<StateShape, ActionType> = function <ReturnType>(
     dispatchable: ActionType | Thunk<ReturnType, StateShape, ActionType>,
   ) {
-    history = [state, ...history];
+    history = [state, ...history].slice(0, 10);
     if (typeof dispatchable === "function") {
       return dispatchable(dispatch, getState);
     }
