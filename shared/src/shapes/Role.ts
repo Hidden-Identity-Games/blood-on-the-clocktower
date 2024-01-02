@@ -41,6 +41,7 @@ export interface Character {
   imageSrc: string;
   team: CharacterType;
   delusional?: boolean;
+  setupReminders?: string[];
 }
 
 export interface Reminder {
