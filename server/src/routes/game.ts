@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import { addGame, getGame, retrieveGame } from "../database/gameDB/base.ts";
 import {
+  addPlayerAction,
   addReminderAction,
   createMessageAction,
   drawRoleAction,
@@ -86,10 +87,15 @@ export const gameRoutes = {
       },
     ),
   addPlayer: playerProcedure
-    .input(playerAndGameIdShape)
-    .mutation(async ({ input: { gameId, player } }) => {
+    .input(
+      z.intersection(
+        playerAndGameIdShape,
+        z.object({ forceTraveling: z.oboolean() }),
+      ),
+    )
+    .mutation(async ({ input: { gameId, player, forceTraveling } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch({ type: "AddPlayer", player });
+      game.dispatch(addPlayerAction({ player, forceTraveling }));
     }),
   kickPlayer: gmProcedure
     .input(playerAndGameIdShape)
