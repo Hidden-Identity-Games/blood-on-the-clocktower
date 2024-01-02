@@ -710,11 +710,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     ability:
       "When you learn that you died, publicly choose 1 alive player: if they are evil, your team loses.",
     imageSrc: "klutz.png",
-    firstNight: {
-      reminder: "Apply the klutz status to the klutz",
-      order: 0,
-      setReminders: ["klutz"],
-    },
+    setupReminders: ["klutz"],
+    firstNight: null,
     otherNight: null,
   },
   {
@@ -809,11 +806,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     ability:
       "When a Minion dies by execution, all other players (except Travellers) are drunk until dusk tomorrow.",
     imageSrc: "minstrel.png",
-    firstNight: {
-      reminder: "Apply the minstrel token to all minions",
-      setReminders: ["minstrel"],
-      order: 0,
-    },
+    setupReminders: ["minstrel"],
+    firstNight: null,
     otherNight: null,
   },
   {
@@ -852,11 +846,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     ability:
       "When you learn that you died, publicly choose 1 alive player. Tonight, if it was a good player, they die.",
     imageSrc: "moonchild.png",
-    firstNight: {
-      setReminders: ["moonchild"],
-      reminder: "Set the moonchild status on the moonchild.",
-      order: 0,
-    },
+    setupReminders: ["moonchild"],
+    firstNight: null,
     otherNight: {
       setReminders: ["moonchild died"],
       reminder:
@@ -880,11 +871,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     delusional: false,
     ability: "If you are “mad” about being an Outsider, you might be executed.",
     imageSrc: "mutant.png",
-    firstNight: {
-      order: 0,
-      reminder: "Apply the Mad reminder to the mutant",
-      setReminders: ["mutant"],
-    },
+    setupReminders: ["mutant"],
+    firstNight: null,
     otherNight: null,
   },
   {
@@ -1320,11 +1308,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     delusional: false,
     ability: "You are safe from the Demon.",
     imageSrc: "soldier.png",
-    firstNight: {
-      reminder: "Set the sturdy token on the soldier",
-      setReminders: ["sturdy"],
-      order: 0,
-    },
+    setupReminders: ["sturdy"],
+    firstNight: null,
     otherNight: null,
   },
   {
@@ -1360,11 +1345,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     delusional: false,
     ability: "When you die, 1 player is drunk from now on.",
     imageSrc: "sweetheart.png",
-    firstNight: {
-      order: 0,
-      setReminders: ["loveable"],
-      reminder: "Set the loveable token on the sweetheart",
-    },
+    setupReminders: ["loveable"],
+    firstNight: null,
     otherNight: {
       setReminders: ["in love"],
       reminder: "Choose a player that is drunk.",
@@ -1485,11 +1467,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     ability:
       "The 1st time you are nominated, if the nominator is a Townsfolk, they are executed immediately.",
     imageSrc: "virgin.png",
-    firstNight: {
-      order: 0,
-      reminder: "Add the virgin token to the virgin",
-      setReminders: ["virgin"],
-    },
+    setupReminders: ["virgin"],
+    firstNight: null,
     otherNight: null,
   },
   {

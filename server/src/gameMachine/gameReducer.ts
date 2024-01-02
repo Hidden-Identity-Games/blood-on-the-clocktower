@@ -1,8 +1,11 @@
 import {
   type ActionQueueItem,
+  type AppliedPlayerReminder,
   type BaseUnifiedGame,
   generateThreeWordId,
   getAbility,
+  getCharacter,
+  getReminder,
   removeKey,
   type Role,
   shuffleList,
@@ -352,8 +355,43 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             return state;
         }
       },
-      reminders: (state = [], action) => {
+      reminders: (state = [], action, wholePreviousState) => {
         switch (action.type) {
+          case "DrawRole":
+            return (getCharacter(action.role).setupReminders ?? [])
+              .map((reminder) => getReminder(reminder))
+              .map(
+                (reminder) =>
+                  ({
+                    name: reminder.name,
+                    fromPlayer: action.player,
+                    toPlayer: action.player,
+                    active: true,
+                    id: generateThreeWordId(),
+                    startNight: wholePreviousState.time.count,
+                  }) satisfies AppliedPlayerReminder,
+              );
+          case "ChangePlayerRole":
+            return [
+              ...state.map((reminder) =>
+                reminder.fromPlayer === action.player
+                  ? { ...reminder, active: false }
+                  : reminder,
+              ),
+              ...(getCharacter(action.role).setupReminders ?? [])
+                .map((reminder) => getReminder(reminder))
+                .map(
+                  (reminder) =>
+                    ({
+                      name: reminder.name,
+                      fromPlayer: action.player,
+                      toPlayer: action.player,
+                      active: true,
+                      id: generateThreeWordId(),
+                      startNight: wholePreviousState.time.count,
+                    }) satisfies AppliedPlayerReminder,
+                ),
+            ];
           case "KickPlayer":
             return state.filter(
               (reminder) =>
