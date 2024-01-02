@@ -50,14 +50,19 @@ export function getCharacter(role: Role): Character {
   return characters[role ?? "unassigned"];
 }
 
+const allReminders = Object.fromEntries(
+  allCharactersList()
+    .flatMap(({ reminders, id }) =>
+      reminders.map((r) => ({ ...r, role: id as Role })),
+    )
+    .map((reminder) => [reminder.name, reminder]),
+);
 export function getAllReminders(): Record<string, Reminder & { role: Role }> {
-  return Object.fromEntries(
-    allCharactersList()
-      .flatMap(({ reminders, id }) =>
-        reminders.map((r) => ({ ...r, role: id as Role })),
-      )
-      .map((reminder) => [reminder.name, reminder]),
-  );
+  return allReminders;
+}
+
+export function getReminder(reminderName: string) {
+  return allReminders[reminderName];
 }
 
 const scripts: Record<ScriptName, Script> = Object.fromEntries(

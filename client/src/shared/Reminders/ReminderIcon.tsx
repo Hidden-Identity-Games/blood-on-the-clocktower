@@ -1,38 +1,37 @@
-import {
-  getAllReminders,
-  type PlayerReminder,
-  type ReminderType,
-  type Role,
-} from "@hidden-identity/shared";
+import { getReminder, type ReminderType } from "@hidden-identity/shared";
 import classNames from "classnames";
 
 import { RoleIcon } from "../RoleIcon";
 
 interface ReminderIconProps {
-  reminder: PlayerReminder;
-  role: Role;
+  reminderName: string;
   useReminderTypeColor?: boolean;
+  children?: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
 }
 export function ReminderIcon({
-  reminder,
-  role,
+  reminderName,
+  children,
+  className,
+  onClick,
   useReminderTypeColor = false,
 }: ReminderIconProps) {
-  const reminderData = getAllReminders()[reminder.name];
-  const typeColor = getReminderColorByType(reminderData.type);
+  const reminderData = getReminder(reminderName);
+  const Tag = onClick ? "button" : "div";
 
   return (
-    <div
+    <Tag
+      onClick={onClick}
       className={classNames(
-        "relative rounded-full",
-        useReminderTypeColor && typeColor,
+        "relative rounded-full h-full aspect-square",
+        useReminderTypeColor && getReminderColorByType(reminderData.type),
+        className,
       )}
     >
-      <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 text-ellipsis text-base capitalize shadow-black text-shadow">
-        {reminder.name}
-      </div>
-      <RoleIcon className="h-[80px] w-[80px]" role={role} />
-    </div>
+      {children}
+      <RoleIcon className="h-full w-full" role={reminderData.role} />
+    </Tag>
   );
 }
 
@@ -40,10 +39,11 @@ function getReminderColorByType(type: ReminderType) {
   switch (type) {
     case "drunk":
     case "poison":
+      return "border-4 border-red-400";
     case "abilitySpent":
-      return "bg-red-400";
+      return "border-4 border-red-400";
     case "protected":
-      return "bg-blue-400";
+      return "border-4 border-blue-400";
     default:
       return null;
   }

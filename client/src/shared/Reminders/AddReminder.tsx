@@ -27,10 +27,11 @@ export function AddReminder({ children, player }: AddReminderProps) {
           />
         </Dialog.Header>
         <div className="columns-4">
-          {availableReminders.map(([role, reminder]) => (
+          {availableReminders.map((reminder) => (
             <Dialog.Close asChild>
               <button
                 key={reminder.name}
+                className="w-full p-3"
                 disabled={isReminderLoading}
                 onClick={() =>
                   void setReminder({
@@ -39,7 +40,17 @@ export function AddReminder({ children, player }: AddReminderProps) {
                   })
                 }
               >
-                <ReminderIcon reminder={reminder} role={role} />
+                <ReminderIcon
+                  useReminderTypeColor
+                  reminderName={reminder.name}
+                  className="bg-primary/50"
+                >
+                  <div className="absolute inset-0 flex flex-col justify-end text-base capitalize">
+                    <div className="rounded-md bg-accent/40">
+                      {reminder.name}
+                    </div>
+                  </div>
+                </ReminderIcon>
               </button>
             </Dialog.Close>
           ))}

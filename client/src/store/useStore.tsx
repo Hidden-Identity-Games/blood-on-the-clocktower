@@ -2,7 +2,6 @@ import {
   getCharacter,
   type PlayerReminder,
   type Reminder,
-  type Role,
   type Script,
 } from "@hidden-identity/shared";
 import { getDefaultAlignment } from "@hidden-identity/shared";
@@ -72,28 +71,21 @@ export function useAvailableReminders() {
   const { game, script } = useDefiniteGame();
   const [allReminders, setAllReminders] = useState(false);
 
-  const availableReminders: [string, Role, Reminder[]][] = allReminders
-    ? script.map(
-        (item) => ["", item.id, getCharacter(item.id).reminders] as const,
-      )
+  const availableReminders: [string, Reminder[]][] = allReminders
+    ? script.map((item) => ["", getCharacter(item.id).reminders] as const)
     : Object.entries(game.playersToRoles).map(
-        ([player, role]) =>
-          [player, role, getCharacter(role).reminders] as const,
+        ([player, role]) => [player, getCharacter(role).reminders] as const,
       );
 
-  const reminderMap = availableReminders.flatMap(
-    ([player, role, reminders]) => {
-      return reminders.map((reminder) => {
-        return [
-          role,
-          {
-            name: reminder.name,
-            fromPlayer: player,
-          } as PlayerReminder,
-        ] as const;
-      });
-    },
-  );
+  const reminderMap = availableReminders.flatMap(([player, reminders]) => {
+    return reminders.map(
+      (reminder) =>
+        ({
+          name: reminder.name,
+          fromPlayer: player,
+        }) as PlayerReminder,
+    );
+  });
 
   return [reminderMap, allReminders, setAllReminders] as const;
 }

@@ -20,6 +20,7 @@ import { useDefiniteGame } from "../../../../store/GameContext";
 import { useFirstSeat } from "../../../../store/url";
 import { PlayerList } from "../../../GMShared/PlayerListComponents";
 import { PlayerNotes } from "../../../GMShared/PlayerListComponents/PlayerNotes";
+import { RemindersList } from "../../../GMShared/RemindersList";
 
 interface GrimoireTabProps {
   selectedOrder: PlayerOrder;
@@ -58,8 +59,9 @@ export function GrimoireTab({
                 {getCharacter(game.playersToRoles[player]).ability}
               </PlayerList.RoleIcon>
               <PlayerList.NoteInputModal player={player}>
-                <button className="flex-1 text-left">
+                <button className="flex flex-1 items-center gap-2 text-left">
                   <PlayerList.Name player={player} />
+                  <RemindersList className="h-6" player={player} />
                 </button>
               </PlayerList.NoteInputModal>
               <SetCountModal

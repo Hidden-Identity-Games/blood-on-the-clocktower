@@ -1,3 +1,4 @@
+export * from "./arrayUtils.ts";
 export * from "./characterUtils.ts";
 export * from "./createId.ts";
 export * from "./exhaustiveCheck.ts";

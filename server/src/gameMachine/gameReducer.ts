@@ -72,6 +72,8 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
       },
       actionQueue: (state = [], action, wholePreviousState) => {
         switch (action.type) {
+          case "StartDay":
+            return [];
           case "StartNight":
             return action.initialActionQueue;
           case "CompleteAction":
@@ -87,8 +89,10 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
           // When we add a new ability in, we add all abilities to the queue.
           case "ChangePlayerRole":
           case "RevivePlayer": {
-            const role = wholePreviousState?.playersToRoles[action.player];
-            const ability = getAbility(role, wholePreviousState.time);
+            const pastRole = wholePreviousState?.playersToRoles[action.player];
+            const nextRole =
+              action.type === "ChangePlayerRole" ? action.role : pastRole;
+            const ability = getAbility(nextRole, wholePreviousState.time);
             if (!ability) {
               return state;
             }
@@ -109,7 +113,7 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
                 order: ability.order,
                 player: action.player,
                 skipped: false,
-                role,
+                role: nextRole,
                 type: "character",
               } satisfies ActionQueueItem,
               ...nextQueue.slice(insertBefore),
