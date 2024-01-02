@@ -37,14 +37,14 @@ export function DayReminders(_props: DayRemindersProps) {
             {!reminder.appliesToSelf && (
               <>
                 <RoleIcon
-                  className="h-14"
+                  className="h-[60px]"
                   role={game.playersToRoles[reminder.fromPlayer]}
                 />
                 <ArrowRight />
               </>
             )}
             <RoleIcon
-              className="h-14"
+              className="h-[60px]"
               role={game.playersToRoles[reminder.toPlayer]}
             />
             <span className="mx-8 text-xl">{reminder.name}</span>

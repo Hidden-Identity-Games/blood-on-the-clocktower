@@ -132,7 +132,7 @@ function ClearReminderButton({ reminder, role }: ClearReminderButtonProps) {
 
   return (
     <button
-      className="pointer-events-auto rounded-full bg-green-600"
+      className="pointer-events-auto rounded-full bg-indigo-800"
       onClick={() => void clearReminder(reminder.id)}
       disabled={isClearReminderLoading}
     >
