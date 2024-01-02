@@ -1205,6 +1205,9 @@ export const CHARACTERS: CharacterDefinition[] = [
       playerMessage: {
         type: "role-change",
         alignmentChange: true,
+        restriction: {
+          team: ["Demon"],
+        },
       },
     },
   },

@@ -3,6 +3,7 @@ import { Dialog } from "@design-system/components/ui/dialog";
 import { getAllReminders } from "@hidden-identity/shared";
 import { useMemo } from "react";
 
+import { ReminderIcon } from "../../../../../shared/Reminders/ReminderIcon";
 import {
   PlayerNameWithRoleIcon,
   RoleIcon,
@@ -31,6 +32,13 @@ export function ReminderCreator({
   );
   const playerHasReminder = (player: string) =>
     relevantReminders.find((reminder) => reminder.toPlayer === player);
+  const playersWithReminder = (reminderName: string) => [
+    ...new Set(
+      game.reminders
+        .filter(({ active, name }) => reminderName === name && !!active)
+        .map(({ toPlayer }) => toPlayer),
+    ),
+  ];
 
   // don't change the ordering when statuses change
   const frozenPlayerList = game.playerList;
@@ -40,7 +48,10 @@ export function ReminderCreator({
       <Dialog.Trigger asChild>
         <Button>Apply {reminder}</Button>
       </Dialog.Trigger>
-
+      <div className="flex h-8 items-center truncate capitalize">
+        <ReminderIcon reminderName={reminder} className="inline-block" />
+        {playersWithReminder(reminder).join(", ")}
+      </div>
       <Dialog.Content>
         <Dialog.Header>Applying {reminder}</Dialog.Header>
         <div className="flex flex-1 flex-col gap-1 overflow-y-auto">

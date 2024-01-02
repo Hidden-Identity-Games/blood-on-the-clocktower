@@ -1,11 +1,13 @@
 import { type UnifiedGame } from "@hidden-identity/shared";
-import { Dialog, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
-import { FaFeather, FaGear, FaSkull } from "react-icons/fa6";
+import { Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import { SkullIcon } from "lucide-react";
+import { FaFeather, FaGear } from "react-icons/fa6";
 import { GiRaiseZombie } from "react-icons/gi";
 import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PiKnifeBold } from "react-icons/pi";
 
 import { AddReminder } from "../../../shared/Reminders/AddReminder";
+import { ReminderIcon } from "../../../shared/Reminders/ReminderIcon";
 import { CharacterName } from "../../../shared/RoleIcon";
 import { useDeadVote } from "../../../store/actions/gmActions";
 import {
@@ -27,6 +29,9 @@ export function PlayerActions({
   children: React.ReactNode;
 }) {
   const { game } = useDefiniteGame();
+  const reminders = game.reminders.filter(
+    ({ active, toPlayer }) => active && toPlayer === player,
+  );
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const [, deadVoteLoading, , setDeadVote] = useDeadVote();
 
@@ -36,10 +41,18 @@ export function PlayerActions({
       <Dialog.Content className="m-2">
         <Flex gap="2" direction="column" className="py-2 capitalize">
           <Flex className="justify-center pb-2" align="center">
-            {game.deadPlayers[player] && <FaSkull />}
-            <Heading className="mx-3">
+            {game.deadPlayers[player] && <SkullIcon height="1em" />}
+            <div className="mx-3 flex items-center gap-2 text-3xl font-bold">
               <PlayerName player={player} className="flex-1" />
-            </Heading>
+              {reminders.map((reminder) => (
+                <div className="h-8" key={reminder.id}>
+                  <ReminderIcon
+                    useReminderTypeColor
+                    reminderName={reminder.name}
+                  />
+                </div>
+              ))}
+            </div>
           </Flex>
           <Flex gap="2">
             <div className="flex-[2]">

@@ -1,11 +1,8 @@
 import { Dialog } from "@design-system/components/ui/dialog";
 import {
   type AppliedPlayerReminder,
-  getAllReminders,
   getCharacter,
-  type Role,
 } from "@hidden-identity/shared";
-import { Grid } from "@radix-ui/themes";
 import classNames from "classnames";
 import { FaEllipsis } from "react-icons/fa6";
 import useResizeObserver from "use-resize-observer";
@@ -42,12 +39,9 @@ export function GMTile({ player, index }: SpectatorTile) {
   return (
     <>
       {remindersToRender.map((reminder, idx) => (
-        <PlaceInCircle index={index} stepsIn={2 + idx} key={reminder.id}>
+        <PlaceInCircle index={index} stepsIn={2 + idx / 2} key={reminder.id}>
           {/* We need to add pointer events manually to prevent the div from overlapping us, because corners bullshit */}
-          <ClearReminderButton
-            reminder={reminder}
-            role={getAllReminders()[reminder.name].role}
-          />
+          <ClearReminderButton reminder={reminder} />
         </PlaceInCircle>
       ))}
       {showOverflowReminders && (
@@ -59,17 +53,14 @@ export function GMTile({ player, index }: SpectatorTile) {
               </button>
             </Dialog.Trigger>
             <Dialog.Content>
-              <Dialog.Header>Reminders:</Dialog.Header>
-              <Grid columns="3">
+              <Dialog.Header>Reminders</Dialog.Header>
+              <div className="columns-4 gap-x-3">
                 {[...baseReminders, ...overflowReminders].map((reminder) => (
-                  <Dialog.Close>
-                    <ClearReminderButton
-                      reminder={reminder}
-                      role={getAllReminders()[reminder.name].role}
-                    />
+                  <Dialog.Close asChild>
+                    <ClearReminderButton reminder={reminder} />
                   </Dialog.Close>
                 ))}
-              </Grid>
+              </div>
             </Dialog.Content>
           </Dialog.Root>
         </PlaceInCircle>
@@ -125,18 +116,21 @@ export function GMTile({ player, index }: SpectatorTile) {
 
 interface ClearReminderButtonProps {
   reminder: AppliedPlayerReminder;
-  role: Role;
 }
-function ClearReminderButton({ reminder, role }: ClearReminderButtonProps) {
+function ClearReminderButton({ reminder }: ClearReminderButtonProps) {
   const [, isClearReminderLoading, , clearReminder] = useClearPlayerReminder();
 
   return (
     <button
-      className="pointer-events-auto rounded-full bg-green-600"
+      className="group pointer-events-auto h-full w-full rounded-full bg-green-600 opacity-[50%] hover:opacity-[100%]"
       onClick={() => void clearReminder(reminder.id)}
       disabled={isClearReminderLoading}
     >
-      <ReminderIcon reminder={reminder} role={role} useReminderTypeColor />
+      <ReminderIcon reminderName={reminder.name} useReminderTypeColor>
+        <div className="absolute left-[50%] top-[50%] hidden -translate-x-1/2 -translate-y-1/2 text-base capitalize shadow-black text-shadow group-hover:block">
+          {reminder.name}
+        </div>
+      </ReminderIcon>
     </button>
   );
 }

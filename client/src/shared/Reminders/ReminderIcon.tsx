@@ -1,37 +1,33 @@
-import {
-  getAllReminders,
-  type PlayerReminder,
-  type ReminderType,
-  type Role,
-} from "@hidden-identity/shared";
+import { getReminder, type ReminderType } from "@hidden-identity/shared";
 import classNames from "classnames";
 
 import { RoleIcon } from "../RoleIcon";
 
 interface ReminderIconProps {
-  reminder: PlayerReminder;
-  role: Role;
+  reminderName: string;
   useReminderTypeColor?: boolean;
+  children?: React.ReactNode;
+  className?: string;
 }
 export function ReminderIcon({
-  reminder,
-  role,
+  reminderName,
+  children,
+  className,
   useReminderTypeColor = false,
 }: ReminderIconProps) {
-  const reminderData = getAllReminders()[reminder.name];
+  const reminderData = getReminder(reminderName);
   const typeColor = getReminderColorByType(reminderData.type);
 
   return (
     <div
       className={classNames(
-        "relative rounded-full",
+        "relative rounded-full h-full aspect-square",
         useReminderTypeColor && typeColor,
+        className,
       )}
     >
-      <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 text-ellipsis text-base capitalize shadow-black text-shadow">
-        {reminder.name}
-      </div>
-      <RoleIcon className="h-[80px] w-[80px]" role={role} />
+      {children}
+      <RoleIcon className="h-full w-full" role={reminderData.role} />
     </div>
   );
 }
