@@ -17,6 +17,7 @@ import { ErrorCallout } from "../../../../../shared/ErrorCallout";
 import { RoleIcon, RoleText } from "../../../../../shared/RoleIcon";
 import { useCompleteAction } from "../../../../../store/actions/gmActions";
 import { useDefiniteGame } from "../../../../../store/GameContext";
+import { KillAction } from "../../../../GMShared/PlayerListComponents/NightAction/KillAction";
 import { PlayerMessageFlow } from "../../../../GMShared/PlayerListComponents/PlayerMessage";
 import { DemonMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/DemonMessage";
 import { MinionsMessages } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/MinionsMessage";
@@ -107,6 +108,14 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
                 />
               ))}
             </div>
+          </Card.Content>
+        </Card.Root>
+      )}
+      {ability?.kills && (
+        <Card.Root>
+          <Card.Header>Kill a player if applicable</Card.Header>
+          <Card.Content>
+            <KillAction />
           </Card.Content>
         </Card.Root>
       )}

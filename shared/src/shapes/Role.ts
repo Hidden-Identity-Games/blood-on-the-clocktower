@@ -27,6 +27,7 @@ export interface CharacterNightData {
   reminder: string;
   playerMessage?: PlayerMessageCreator;
   setReminders?: string[];
+  kills?: boolean;
 }
 
 export interface Character {
