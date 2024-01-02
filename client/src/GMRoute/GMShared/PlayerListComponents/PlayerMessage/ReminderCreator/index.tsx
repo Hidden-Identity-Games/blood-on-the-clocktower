@@ -46,11 +46,11 @@ export function ReminderCreator({
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <Button>Apply {reminder}</Button>
+        <Button variant="select">Apply {reminder}</Button>
       </Dialog.Trigger>
       <div className="flex h-8 items-center truncate capitalize">
         <ReminderIcon reminderName={reminder} className="inline-block" />
-        {playersWithReminder(reminder).join(", ")}
+        {playersWithReminder(reminder).join(", ") || "  -  "}
       </div>
       <Dialog.Content>
         <Dialog.Header>Applying {reminder}</Dialog.Header>

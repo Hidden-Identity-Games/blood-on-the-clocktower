@@ -10,6 +10,7 @@ import {
   type PlayerMessageEntry,
   type PlayerReminder,
   type Role,
+  unique,
 } from "@hidden-identity/shared";
 
 import { computedGameSelectors } from "./gameMachine.ts";
@@ -98,8 +99,8 @@ export function progressTimeAction(): GameThunk<void> {
   return (dispatch, getGame) => {
     if (getGame().time.time === "day") {
       const isFirstDay = getGame().time.count === 0;
-      const actionsForRoles = Object.values(
-        getGame().playersToRoles ?? [],
+      const actionsForRoles = unique(
+        Object.values(getGame().playersToRoles ?? []),
       ).flatMap((role) => {
         const ability = getAbility(
           role,
