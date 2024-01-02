@@ -163,7 +163,15 @@ export function progressTimeAction(): GameThunk<void> {
               skipped: false,
             } as ActionQueueItem,
           ]
-        : [];
+        : [
+            {
+              type: "game",
+              actionType: "EXECUTION",
+              id: "EXECUTION",
+              order: 0,
+              skipped: false,
+            } as ActionQueueItem,
+          ];
 
       dispatch({
         type: "StartNight",

@@ -12,7 +12,7 @@ export function KillAction() {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <Button>Kill/Revive players</Button>
+        <Button variant="select">Kill/Revive players</Button>
       </Dialog.Trigger>
       <Dialog.Content>
         <Dialog.Header className="w-full text-center">
