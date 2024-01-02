@@ -332,6 +332,8 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             };
           case "ClearVotesToExecute":
             return {};
+          case "StartDay":
+            return {};
           default:
             return state;
         }

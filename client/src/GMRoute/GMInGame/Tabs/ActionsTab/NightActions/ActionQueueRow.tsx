@@ -20,6 +20,7 @@ import { useDefiniteGame } from "../../../../../store/GameContext";
 import { KillAction } from "../../../../GMShared/PlayerListComponents/NightAction/KillAction";
 import { PlayerMessageFlow } from "../../../../GMShared/PlayerListComponents/PlayerMessage";
 import { DemonMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/DemonMessage";
+import { ExecutionMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/ExecutionMessage";
 import { MinionsMessages } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/MinionsMessage";
 import { ReminderCreator } from "../../../../GMShared/PlayerListComponents/PlayerMessage/ReminderCreator";
 import { PlayerName } from "../../../../GMShared/PlayerListComponents/PlayerName";
@@ -60,11 +61,15 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
           </>
         )}
       </Accordion.Trigger>
-      <Accordion.Content className="pl-6" forceMount>
-        {queueItem.type == "character" && (
+      <Accordion.Content
+        className="flex flex-col gap-2 py-3 pl-6 text-xl"
+        forceMount
+      >
+        {queueItem.type === "character" && (
           <PlayerActionFlow action={queueItem} />
         )}
-        {queueItem.type == "game" && <SpecialActionFlow action={queueItem} />}
+        {queueItem.type === "game" && <SpecialActionFlow action={queueItem} />}
+        <CompleteActionButton actionId={queueItem.id} />
       </Accordion.Content>
     </Accordion.Item>
   );
@@ -119,8 +124,6 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
           </Card.Content>
         </Card.Root>
       )}
-
-      <CompleteActionButton actionId={action.id} />
     </div>
   );
 }
@@ -134,6 +137,8 @@ export function SpecialActionFlow({ action }: SpecialActionFlowProps) {
       return <DemonMessage action={action} />;
     case "MINIONS":
       return <MinionsMessages action={action} />;
+    case "EXECUTION":
+      return <ExecutionMessage action={action} />;
     default:
       exhaustiveCheck(action.actionType);
   }

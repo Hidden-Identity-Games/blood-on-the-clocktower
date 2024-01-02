@@ -82,7 +82,7 @@ export interface SpecialActionQueueItem {
   id: string;
   order: number;
   skipped: boolean;
-  actionType: "DEMON" | "MINIONS";
+  actionType: "DEMON" | "MINIONS" | "EXECUTION";
 }
 export interface CharacterActionQueueItem {
   type: "character";
