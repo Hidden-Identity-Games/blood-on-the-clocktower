@@ -130,6 +130,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         name: "master",
         type: "info",
         duration: 1,
+        dayReminder: true,
       },
     ],
     setup: false,
@@ -158,6 +159,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         name: "gone mad",
         type: "mad",
         duration: 1,
+        dayReminder: true,
       },
     ],
     setup: false,
@@ -865,6 +867,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       {
         name: "mutant",
         type: "mad",
+        dayReminder: true,
       },
     ],
     setup: false,
@@ -1459,7 +1462,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     reminders: [
       {
         name: "virgin",
-        type: "protected",
+        type: "hasAbility",
         dayReminder: true,
       },
     ],
@@ -2026,7 +2029,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     edition: "",
     team: "Townsfolk",
     reminders: [
-      { name: "mad", type: "mad" },
+      { name: "mad", type: "mad", dayReminder: true },
       { name: "pixie ability", type: "hasAbility", causedByDeath: true },
     ],
     setup: false,
