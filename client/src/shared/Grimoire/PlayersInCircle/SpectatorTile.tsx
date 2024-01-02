@@ -28,7 +28,7 @@ export function SpectatorTile({ player, index }: SpectatorTile) {
             ref={ref}
             className={classNames(
               scalingTextclass,
-              "h-full w-full group relative flex flex-col p-1 hover:z-30 bg-violet-500 bg-opacity-70 rounded-full align-middle justify-between",
+              "h-full w-full group relative flex flex-col p-1 hover:z-30 bg-accent bg-opacity-70 rounded-full align-middle justify-between",
               {
                 "outline outline-8 outline-green-600":
                   game.deadPlayers[player] && !game.deadVotes[player],

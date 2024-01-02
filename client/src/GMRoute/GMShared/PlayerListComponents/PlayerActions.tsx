@@ -7,7 +7,6 @@ import { LiaVoteYeaSolid } from "react-icons/lia";
 import { PiKnifeBold } from "react-icons/pi";
 
 import { AddReminder } from "../../../shared/Reminders/AddReminder";
-import { ReminderIcon } from "../../../shared/Reminders/ReminderIcon";
 import { CharacterName } from "../../../shared/RoleIcon";
 import { useDeadVote } from "../../../store/actions/gmActions";
 import {
@@ -17,6 +16,7 @@ import {
 } from "../../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../store/useStore";
+import { RemindersList } from "../RemindersList";
 import { PlayerList } from ".";
 import { PlayerName } from "./PlayerName";
 import { AlignmentSelect, RoleSelect } from "./Selectors";
@@ -29,9 +29,7 @@ export function PlayerActions({
   children: React.ReactNode;
 }) {
   const { game } = useDefiniteGame();
-  const reminders = game.reminders.filter(
-    ({ active, toPlayer }) => active && toPlayer === player,
-  );
+
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const [, deadVoteLoading, , setDeadVote] = useDeadVote();
 
@@ -44,14 +42,7 @@ export function PlayerActions({
             {game.deadPlayers[player] && <SkullIcon height="1em" />}
             <div className="mx-3 flex items-center gap-2 text-3xl font-bold">
               <PlayerName player={player} className="flex-1" />
-              {reminders.map((reminder) => (
-                <div className="h-8" key={reminder.id}>
-                  <ReminderIcon
-                    useReminderTypeColor
-                    reminderName={reminder.name}
-                  />
-                </div>
-              ))}
+              <RemindersList className="h-8" player={player} clearOnClick />
             </div>
           </Flex>
           <Flex gap="2">

@@ -40,9 +40,15 @@ export function AddReminder({ children, player }: AddReminderProps) {
                   })
                 }
               >
-                <ReminderIcon reminderName={reminder.name}>
-                  <div className="absolute left-[50%] top-[50%] hidden -translate-x-1/2 -translate-y-1/2 text-base capitalize shadow-black text-shadow">
-                    {reminder.name}
+                <ReminderIcon
+                  useReminderTypeColor
+                  reminderName={reminder.name}
+                  className="bg-primary/50"
+                >
+                  <div className="absolute inset-0 flex flex-col justify-end text-base capitalize">
+                    <div className="rounded-md bg-accent/40">
+                      {reminder.name}
+                    </div>
                   </div>
                 </ReminderIcon>
               </button>

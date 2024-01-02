@@ -74,7 +74,7 @@ export function GMTile({ player, index }: SpectatorTile) {
                 ref={ref}
                 className={classNames(
                   scalingTextclass,
-                  "h-full w-full group relative flex flex-col p-2 hover:z-30 bg-violet-500 bg-opacity-70 rounded-full justify-around items-center",
+                  "h-full w-full group relative flex flex-col p-2 hover:z-30 bg-accent bg-opacity-70 rounded-full justify-around items-center",
                   {
                     "outline outline-8 outline-green-600":
                       game.deadPlayers[player] && !game.deadVotes[player],
@@ -122,12 +122,12 @@ function ClearReminderButton({ reminder }: ClearReminderButtonProps) {
 
   return (
     <button
-      className="group pointer-events-auto h-full w-full rounded-full bg-green-600 opacity-[50%] hover:opacity-[100%]"
+      className="group pointer-events-auto h-1/2 w-1/2 rounded-full bg-primary opacity-[50%] hover:opacity-[100%]"
       onClick={() => void clearReminder(reminder.id)}
       disabled={isClearReminderLoading}
     >
       <ReminderIcon reminderName={reminder.name} useReminderTypeColor>
-        <div className="absolute left-[50%] top-[50%] hidden -translate-x-1/2 -translate-y-1/2 text-base capitalize shadow-black text-shadow group-hover:block">
+        <div className="absolute left-[50%] top-[50%] hidden -translate-x-1/2 -translate-y-1/2 rounded-lg bg-primary/50 text-base capitalize text-green-500 group-hover:block">
           {reminder.name}
         </div>
       </ReminderIcon>

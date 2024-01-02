@@ -8,27 +8,30 @@ interface ReminderIconProps {
   useReminderTypeColor?: boolean;
   children?: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }
 export function ReminderIcon({
   reminderName,
   children,
   className,
+  onClick,
   useReminderTypeColor = false,
 }: ReminderIconProps) {
   const reminderData = getReminder(reminderName);
-  const typeColor = getReminderColorByType(reminderData.type);
+  const Tag = onClick ? "button" : "div";
 
   return (
-    <div
+    <Tag
+      onClick={onClick}
       className={classNames(
         "relative rounded-full h-full aspect-square",
-        useReminderTypeColor && typeColor,
+        useReminderTypeColor && getReminderColorByType(reminderData.type),
         className,
       )}
     >
       {children}
       <RoleIcon className="h-full w-full" role={reminderData.role} />
-    </div>
+    </Tag>
   );
 }
 
@@ -36,10 +39,11 @@ function getReminderColorByType(type: ReminderType) {
   switch (type) {
     case "drunk":
     case "poison":
+      return "border-4 border-red-400";
     case "abilitySpent":
-      return "bg-red-400";
+      return "border-4 border-red-400";
     case "protected":
-      return "bg-blue-400";
+      return "border-4 border-blue-400";
     default:
       return null;
   }
