@@ -73,6 +73,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Assassin has not yet used their ability: The Assassin either shows the 'no' head signal, or points to a player. That player dies.",
       order: 36,
+      kills: true,
     },
   },
   {
@@ -434,6 +435,7 @@ export const CHARACTERS: CharacterDefinition[] = [
         alignmentChange: true,
       },
       setReminders: ["jumped"],
+      kills: true,
     },
   },
   {
@@ -507,6 +509,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Gambler points to a player, and a character on their sheet. If incorrect, the Gambler dies.",
       order: 10,
+      kills: true,
     },
   },
   {
@@ -536,6 +539,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If an Outsider died today: The Godfather points to a player. That player dies.",
       order: 37,
+      kills: true,
     },
   },
   {
@@ -570,6 +574,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Gossip’s public statement was true: Choose a player not protected from dying tonight. That player dies.",
       order: 38,
+      kills: true,
     },
   },
   {
@@ -2134,6 +2139,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If a good living neighbour is drunk or poisoned, the Acrobat player dies.",
       order: 39,
+      kills: true,
     },
   },
   {
