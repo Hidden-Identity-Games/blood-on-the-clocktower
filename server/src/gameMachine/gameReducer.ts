@@ -358,19 +358,22 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
       reminders: (state = [], action, wholePreviousState) => {
         switch (action.type) {
           case "DrawRole":
-            return (getCharacter(action.role).setupReminders ?? [])
-              .map((reminder) => getReminder(reminder))
-              .map(
-                (reminder) =>
-                  ({
-                    name: reminder.name,
-                    fromPlayer: action.player,
-                    toPlayer: action.player,
-                    active: true,
-                    id: generateThreeWordId(),
-                    startNight: wholePreviousState.time.count,
-                  }) satisfies AppliedPlayerReminder,
-              );
+            return [
+              ...state,
+              ...(getCharacter(action.role).setupReminders ?? [])
+                .map((reminder) => getReminder(reminder))
+                .map(
+                  (reminder) =>
+                    ({
+                      name: reminder.name,
+                      fromPlayer: action.player,
+                      toPlayer: action.player,
+                      active: true,
+                      id: generateThreeWordId(),
+                      startNight: wholePreviousState.time.count,
+                    }) satisfies AppliedPlayerReminder,
+                ),
+            ];
           case "ChangePlayerRole":
             return [
               ...state.map((reminder) =>
