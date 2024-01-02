@@ -26,7 +26,7 @@ function Header({ message }: MessageSheetPiecesProps) {
   ) : (
     <div className="flex h-full grow-0 items-center justify-between px-2 text-3xl font-bold">
       <CgMail className="inline-block pr-1" size="1em" />
-      <PlayerName player={message.player} />
+      <PlayerName className="flex-1 text-left" player={message.player} />
     </div>
   );
 }

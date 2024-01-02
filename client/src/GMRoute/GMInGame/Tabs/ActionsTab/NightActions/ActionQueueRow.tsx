@@ -44,7 +44,7 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
             </span>
             <span className="mx-2 flex-1 text-right">
               {queueItem.player ? (
-                <PlayerName player={queueItem.player} />
+                <PlayerName player={queueItem.player} className="flex-1" />
               ) : (
                 "Skip"
               )}

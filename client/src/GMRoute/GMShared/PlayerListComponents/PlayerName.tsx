@@ -15,7 +15,7 @@ export function PlayerName({
   return (
     <AlignmentText
       player={player}
-      className={classNames("flex-1", dead && "line-through", className)}
+      className={classNames(dead && "line-through", className)}
     >
       {player}
     </AlignmentText>
