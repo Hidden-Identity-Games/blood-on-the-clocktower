@@ -339,7 +339,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Drunk",
     edition: "tb",
     team: "Outsider",
-    reminders: [],
+    reminders: [{ name: "the drunk", type: "drunk" }],
     setup: true,
     delusional: true,
     ability:
@@ -2375,7 +2375,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Lunatic",
     edition: "bmr",
     team: "Outsider",
-    reminders: [],
+    reminders: [{ name: "the lunatic", type: "drunk" }],
     setup: true,
     delusional: true,
     ability:
