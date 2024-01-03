@@ -37,7 +37,7 @@ export function createStore<StateShape, ActionType extends BaseAction<string>>(
   reducer: TopLevelReducer<StateShape, ActionType | InitAction>,
   preloadState?: StateShape,
 ) {
-  const initialState = preloadState ?? reducer(undefined, INIT_ACTION);
+  const initialState = reducer(preloadState, INIT_ACTION);
 
   let history: StateShape[] = [];
   let state = initialState;
