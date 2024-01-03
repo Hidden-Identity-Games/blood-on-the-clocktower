@@ -8,11 +8,13 @@ import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
 import { useDecideFate } from "../../../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../../../store/GameContext";
 
-export function KillAction() {
+export function KillAction({ className }: { className?: string }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <Button variant="select">Kill/Revive players</Button>
+        <Button variant="select" className={className}>
+          Kill/Revive players
+        </Button>
       </Dialog.Trigger>
       <Dialog.Content>
         <Dialog.Header className="w-full text-center">

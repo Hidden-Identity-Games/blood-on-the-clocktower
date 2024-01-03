@@ -4,7 +4,8 @@ export type ScriptName =
   | "Sects & Violets"
   | "Catfishing"
   | "🌶️ TB"
-  | "No Roles Barred";
+  | "No Roles Barred"
+  | "Uncertain Death";
 export type ScriptDefinition = {
   name: ScriptName;
   imageSrc: string;
@@ -167,6 +168,36 @@ export const SCRIPTS: ScriptDefinition[] = [
       { id: "marionette" },
       { id: "imp" },
       { id: "legion" },
+    ],
+  },
+  {
+    name: "Uncertain Death",
+    imageSrc:
+      "https://quotefancy.com/media/wallpaper/1600x900/558572-Buddha-Quote-Life-is-uncertain-death-is-certain.jpg",
+    characters: [
+      { id: "clockmaker" },
+      { id: "grandmother" },
+      { id: "librarian" },
+      { id: "empath" },
+      { id: "fortune_teller" },
+      { id: "exorcist" },
+      { id: "flowergirl" },
+      { id: "oracle" },
+      { id: "undertaker" },
+      { id: "artist" },
+      { id: "slayer" },
+      { id: "seamstress" },
+      { id: "monk" },
+      { id: "lunatic" },
+      { id: "mutant" },
+      { id: "sweetheart" },
+      { id: "recluse" },
+      { id: "godfather" },
+      { id: "assassin" },
+      { id: "scarlet_woman" },
+      { id: "marionette" },
+      { id: "no_dashii" },
+      { id: "pukka" },
     ],
   },
   {

@@ -1,4 +1,4 @@
-import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
+import { Flex, Heading, Text } from "@radix-ui/themes";
 import classNames from "classnames";
 import React from "react";
 
@@ -33,18 +33,18 @@ export function PlayerRoleSelect() {
 
   return (
     <Flex
-      className="h-full w-full p-1"
+      className="w-full flex-1"
       direction="column"
       align="center"
       justify="center"
       gap="5"
     >
       <Heading>Select a Role</Heading>
-      <Grid columns="3" gap="3" width="auto" align="center" justify="center">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {Object.entries(game.roleBag ?? {}).map(([roleNum, role], idx) => (
           <button
             key={idx}
-            className={classNames(!role && "opacity-40")}
+            className={classNames(!role && "opacity-40", "max-w-[25%]")}
             disabled={!role}
             onClick={() => {
               void takeRole(player!, parseInt(roleNum));
@@ -55,7 +55,7 @@ export function PlayerRoleSelect() {
             <img className={rotationMap[rotations[idx]]} src={tokenBack} />
           </button>
         ))}
-      </Grid>
+      </div>
     </Flex>
   );
 }

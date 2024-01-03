@@ -23,7 +23,9 @@ export function DemonMessage({ action }: DemonMessageProps) {
 
   const demonFilter = usePlayerRestrictions({ team: ["Demon"] });
   const playerMessageIsFor = useDynamicList<string>(game.playerList, {
-    recommended: game.playerList.filter(demonFilter),
+    recommended: action.player
+      ? [action.player]
+      : game.playerList.filter(demonFilter),
     defaultCount: 1,
   });
 

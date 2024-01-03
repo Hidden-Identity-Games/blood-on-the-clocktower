@@ -44,8 +44,8 @@ export interface GrimoireProps {
 export function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const { game } = useGame();
   const [firstSeat] = useFirstSeat();
-  const [_isHiddenView] = useIsHiddenView();
-  const hideInfo = _isHiddenView || isPlayerView;
+  const [isHiddenView] = useIsHiddenView();
+  const hideInfo = isHiddenView || isPlayerView;
   const players = usePlayerOrder("seat order", firstSeat);
 
   if (!game) {

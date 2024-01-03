@@ -53,7 +53,11 @@ export function ReminderCreator({
         {playersWithReminder(reminder).join(", ") || "  -  "}
       </div>
       <Dialog.Content>
-        <Dialog.Header>Applying {reminder}</Dialog.Header>
+        <Dialog.Header className="flex h-8 flex-row items-center justify-center capitalize">
+          <div>Toggle {reminder}</div>
+
+          <ReminderIcon className="h-[150%] pb-2" reminderName={reminder} />
+        </Dialog.Header>
         <div className="flex flex-1 flex-col gap-1 overflow-y-auto">
           <Dialog.Close key="cancel" asChild>
             <Button className="capitalize">{"Done"}</Button>

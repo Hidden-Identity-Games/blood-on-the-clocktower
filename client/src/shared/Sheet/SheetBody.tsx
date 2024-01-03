@@ -56,6 +56,7 @@ export function SheetContent({ children }: SheetHeaderProps) {
   const [currentDiff, setCurrentDiff] = useState(0);
   const [sheetExpanded, setSheetExpanded] = useSheetExpanded();
   const [_, setSheet] = useSheetView();
+  const [isHiddenView] = useIsHiddenView();
 
   return (
     <motion.div
@@ -97,9 +98,11 @@ export function SheetContent({ children }: SheetHeaderProps) {
       }}
       className="pointer-events-auto relative w-full overflow-y-scroll bg-[--color-background] px-2"
     >
-      <CloseButton
-        onClick={() => setSheet({ id: "", isOpen: "closed", type: "none" })}
-      />
+      {!isHiddenView && (
+        <CloseButton
+          onClick={() => setSheet({ id: "", isOpen: "closed", type: "none" })}
+        />
+      )}
 
       {children}
     </motion.div>

@@ -1,11 +1,13 @@
+import { Button } from "@design-system/components/button";
+import { Textarea } from "@design-system/components/ui/textarea";
 import { groupBy, type PlayerMessage } from "@hidden-identity/shared";
-import { Button, Heading, Text, TextArea } from "@radix-ui/themes";
+import { Heading, Text } from "@radix-ui/themes";
 import { CgMail } from "react-icons/cg";
 
 import { PlayerName } from "../../../GMRoute/GMShared/PlayerListComponents/PlayerName";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useIsHiddenView } from "../../../store/url";
-import { alignmentColorMap, colorMap } from "../../CharacterTypes";
+import { colorMap, radixAlignmentColorMap } from "../../CharacterTypes";
 import { CharacterName } from "../../RoleIcon";
 import {
   LockedSheetHeader,
@@ -44,16 +46,9 @@ function Body({ message }: MessageSheetPiecesProps) {
           {messagesByGroup[section].map((revealItem, UNSAFE_INDEX_KEY) => (
             <div className="flex gap-1 px-1" key={UNSAFE_INDEX_KEY}>
               {revealItem.message && (
-                <TextArea
-                  // TODO: support changing the message
-                  readOnly
-                  value={revealItem.message}
-                  className="flex-1 text-6xl"
-                  style={{
-                    fontSize: "3rem",
-                    lineHeight: 1,
-                  }}
-                />
+                <div className="text-xl font-semibold">
+                  {revealItem.message}
+                </div>
               )}
               {revealItem.character && (
                 <CharacterName role={revealItem.character} />
@@ -73,7 +68,7 @@ function Body({ message }: MessageSheetPiecesProps) {
               {revealItem.alignment && (
                 <Text
                   as="div"
-                  color={alignmentColorMap[revealItem.alignment]}
+                  color={radixAlignmentColorMap[revealItem.alignment]}
                   className="uppercase"
                 >
                   {revealItem.alignment}
@@ -83,6 +78,12 @@ function Body({ message }: MessageSheetPiecesProps) {
           ))}
         </div>
       ))}
+      <Textarea
+        placeholder={
+          hiddenView ? "" : "This text won't be saved to the server."
+        }
+        className="min-h-[25%] flex-1"
+      />
       {!hiddenView && message.showState === "needs to be shown" && (
         <Button onClick={() => setIsHiddenView(true)}>Show to player</Button>
       )}

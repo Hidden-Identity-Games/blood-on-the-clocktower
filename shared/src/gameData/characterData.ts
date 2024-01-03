@@ -22,32 +22,32 @@ type CharacterDefinition = Omit<Character, "id"> & {
 
 function abilitySpent(character: string) {
   return {
-    name: `${character} ability spent`,
+    name: `${character} spent`,
     type: "abilitySpent",
     target: "self",
   } as const;
 }
-
+export const UNASSIGNED = {
+  id: "unassigned",
+  name: "Unassigned",
+  edition: "",
+  team: "Traveler",
+  reminders: [],
+  setup: true,
+  delusional: false,
+  ability: "Please see the storyteller for a role!",
+  imageSrc: "",
+  firstNight: null,
+  otherNight: null,
+} satisfies CharacterDefinition;
 export const CHARACTERS: CharacterDefinition[] = [
-  {
-    id: "unassigned",
-    name: "Unassigned",
-    edition: "",
-    team: "Traveler",
-    reminders: [],
-    setup: true,
-    delusional: false,
-    ability: "Please see the storyteller for a role!",
-    imageSrc: "",
-    firstNight: null,
-    otherNight: null,
-  },
+  UNASSIGNED,
   {
     id: "artist",
     name: "Artist",
     edition: "snv",
     team: "Townsfolk",
-    reminders: [{ name: "lost ability", type: "drunk", dayTrigger: true }],
+    reminders: [{ ...abilitySpent("artist"), dayTrigger: true }],
     setup: false,
     delusional: false,
     ability:
@@ -400,7 +400,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Exorcist",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: [{ name: "exorcise", duration: 1, type: "reveal-role" }],
+    reminders: [{ name: "exorcist", duration: 1, type: "info" }],
     setup: false,
     delusional: false,
     ability:
@@ -411,7 +411,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Exorcist points to a player, different from the previous night. If that player is the Demon: Wake the Demon. Show the Exorcist token. Point to the Exorcist. The Demon does not act tonight.",
       order: 21,
-      setReminders: ["exorcise"],
+      setReminders: ["exorcist"],
     },
   },
   {
@@ -528,8 +528,8 @@ export const CHARACTERS: CharacterDefinition[] = [
       order: 21,
       setReminders: ["see the targets"],
       playerMessage: {
-        type: "reveal-role",
-        count: 1,
+        type: "character-selected-you",
+        // count: 1,
         restriction: {
           team: ["Outsider"],
         },
@@ -582,7 +582,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Grandmother",
     edition: "bmr",
     team: "Townsfolk",
-    reminders: [{ name: "grandchild", type: "reveal-role" }],
+    reminders: [{ name: "grandchild", type: "triggerOnDeath" }],
     setup: false,
     delusional: false,
     ability:
@@ -815,7 +815,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Monk",
     edition: "tb",
     team: "Townsfolk",
-    reminders: [{ name: "holy protection", type: "protected", duration: 1 }],
+    reminders: [{ name: "monk", type: "protected", duration: 1 }],
     setup: false,
     delusional: false,
     ability:
@@ -826,7 +826,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The previously protected player is no longer protected. The Monk points to a player not themself. Mark that player 'Protected'.",
       order: 12,
-      setReminders: ["holy protection"],
+      setReminders: ["monk"],
     },
   },
   {
@@ -899,7 +899,14 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Oracle",
     edition: "snv",
     team: "Townsfolk",
-    reminders: [],
+    reminders: [
+      {
+        type: "info",
+        name: "evildead",
+        causedByDeath: true,
+        persistOnDeath: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability: "Each night*, you learn how many dead players are evil.",
@@ -1252,9 +1259,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [
       {
-        name: "slayed",
-        type: "abilitySpent",
-        target: "self",
+        ...abilitySpent("slayer"),
         dayTrigger: true,
       },
     ],
@@ -1411,7 +1416,15 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Undertaker",
     edition: "tb",
     team: "Townsfolk",
-    reminders: [],
+    reminders: [
+      {
+        name: "undertaker",
+        type: "info",
+        duration: 1,
+        persistOnDeath: true,
+        causedByDeath: true,
+      },
+    ],
     setup: false,
     delusional: false,
     ability: "Each night*, you learn which character died by execution today.",
@@ -1817,10 +1830,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [
       {
-        name: "fished",
-        type: "abilitySpent",
+        ...abilitySpent("fisherman"),
         dayTrigger: true,
-        target: "self",
       },
     ],
     setup: false,

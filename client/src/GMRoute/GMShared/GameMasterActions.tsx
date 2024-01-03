@@ -35,7 +35,7 @@ export function GameMasterActions({
     game.orderedPlayers.problems && game.orderedPlayers.playerProblems;
 
   return (
-    <Flex gap="1" direction="column">
+    <Flex gap="2" direction="column">
       <UndoButton />
 
       <Dialog.Root open={!!distributeRolesError}>
@@ -106,7 +106,7 @@ export function GameMasterActions({
       <NewGameButton>New Game</NewGameButton>
       {game.gameStatus !== "PlayersJoining" &&
         (game.gameStatus === "Setup" ? (
-          <ExportButton />
+          <ExportButton className="w-full" />
         ) : (
           <DestructiveButton
             onClick={() => void setGameStatus("Setup")}

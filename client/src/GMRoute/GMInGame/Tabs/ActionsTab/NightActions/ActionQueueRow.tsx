@@ -22,6 +22,7 @@ import { PlayerMessageFlow } from "../../../../GMShared/PlayerListComponents/Pla
 import { DemonMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/DemonMessage";
 import { ExecutionMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/ExecutionMessage";
 import { MinionsMessages } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/MinionsMessage";
+import { SubmitMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/messageShared/SubmitMessage";
 import { ReminderCreator } from "../../../../GMShared/PlayerListComponents/PlayerMessage/ReminderCreator";
 import { PlayerName } from "../../../../GMShared/PlayerListComponents/PlayerName";
 
@@ -87,7 +88,7 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
   return (
     <div className="flex flex-col gap-2 py-3 text-xl">
       <div className="px-2">{getCharacter(role).ability}</div>
-      {ability?.playerMessage && (
+      {ability?.playerMessage ? (
         <Card.Root>
           <Card.Header>Create message for player</Card.Header>
           <Card.Content>
@@ -99,6 +100,8 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
             )}
           </Card.Content>
         </Card.Root>
+      ) : (
+        <SubmitMessage player={action.player} message={[]} />
       )}
       {(ability?.setReminders?.length ?? 0) > 0 && (
         <Card.Root>
@@ -120,7 +123,7 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
         <Card.Root>
           <Card.Header>Kill a player if applicable</Card.Header>
           <Card.Content>
-            <KillAction />
+            <KillAction className="w-full" />
           </Card.Content>
         </Card.Root>
       )}

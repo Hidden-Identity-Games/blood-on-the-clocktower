@@ -7,7 +7,7 @@ import DefaultRoleImageSrc from "../assets/default_role.svg";
 import { useDefiniteGame } from "../store/GameContext";
 import { useGetPlayerAlignment } from "../store/useStore";
 import { type ExtnesionProps, type RadixTextProps } from "../types/radixTypes";
-import { alignmentColorMap, colorMap } from "./CharacterTypes";
+import { colorMap, radixAlignmentColorMap } from "./CharacterTypes";
 
 export const getRoleIcon = (character: Character) =>
   character.imageSrc
@@ -51,7 +51,7 @@ export function AlignmentText({
   return (
     <Text
       {...textProps}
-      color={alignmentColorMap[getPlayerAlignment(player)] ?? undefined}
+      color={radixAlignmentColorMap[getPlayerAlignment(player)] ?? undefined}
       className={classNames("capitalize", className)}
     >
       {children}

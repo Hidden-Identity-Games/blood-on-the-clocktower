@@ -1,6 +1,6 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 
-import { alignmentColorMap } from "../../../../shared/CharacterTypes";
+import { radixAlignmentColorMap } from "../../../../shared/CharacterTypes";
 import { PlayerNameWithRoleIcon } from "../../../../shared/RoleIcon";
 import { useDefiniteGame } from "../../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../../store/useStore";
@@ -33,7 +33,7 @@ export function PlayerOrderActionList({ player }: { player: string }) {
           <Button
             mx={p === player ? "1" : "4"}
             variant={p === player ? "outline" : "soft"}
-            color={alignmentColorMap[getPlayerAlignment(p)]}
+            color={radixAlignmentColorMap[getPlayerAlignment(p)]}
           >
             <PlayerNameWithRoleIcon player={p} />
           </Button>
