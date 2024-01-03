@@ -104,7 +104,7 @@ export const computedGameSelectors: {
     },
   ),
   messagesByNight: createSelector(
-    (game: BaseUnifiedGame) => game.messages,
+    (game: BaseUnifiedGame) => game.messages ?? [], // TODO: why
     (messages) => {
       const messagesAsGroups = messages.map(
         (message) => ({

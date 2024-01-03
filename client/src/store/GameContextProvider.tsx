@@ -55,32 +55,36 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (!gameId) {
       return;
     }
-
-    const unsub = trpc.subscribeToGame.subscribe(
-      { gameId },
-      {
-        onData: (data) => {
-          if (data.objectType === "game") {
-            setGame(data.nextObj);
-          }
-          if (data.objectType === "script") {
-            setScript(data.nextObj);
-          }
+    try {
+      const unsub = trpc.subscribeToGame.subscribe(
+        { gameId },
+        {
+          onData: (data) => {
+            if (data.objectType === "game") {
+              setGame(data.nextObj);
+            }
+            if (data.objectType === "script") {
+              setScript(data.nextObj);
+            }
+          },
+          onError: () => {
+            setError("Cannot find game");
+          },
+          onStarted: () => {
+            setReady(ReadyState.OPEN);
+          },
+          onStopped: () => {
+            setReady(ReadyState.CLOSED);
+          },
         },
-        onError: () => {
-          setError("Cannot find game");
-        },
-        onStarted: () => {
-          setReady(ReadyState.OPEN);
-        },
-        onStopped: () => {
-          setReady(ReadyState.CLOSED);
-        },
-      },
-    );
-    return () => {
-      unsub.unsubscribe();
-    };
+      );
+      return () => {
+        unsub.unsubscribe();
+      };
+    } catch (e) {
+      setError("Error subscribing to game");
+      return () => {};
+    }
   }, [gameId]);
 
   return (
