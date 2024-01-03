@@ -1418,7 +1418,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [
       {
-        name: "died today",
+        name: "undertaker",
         type: "info",
         duration: 1,
         persistOnDeath: true,
