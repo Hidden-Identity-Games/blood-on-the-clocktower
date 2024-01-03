@@ -16,7 +16,7 @@ export function AlignmentSelect({
 }: AlignmentSelectProps) {
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button
           variant="select"
           className="w-full capitalize"

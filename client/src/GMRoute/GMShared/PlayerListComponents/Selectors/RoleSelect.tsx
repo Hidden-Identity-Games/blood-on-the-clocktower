@@ -39,7 +39,7 @@ export function RoleSelect({
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button
           variant="select"
           className="w-full"

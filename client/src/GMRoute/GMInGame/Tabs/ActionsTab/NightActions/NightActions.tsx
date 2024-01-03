@@ -21,7 +21,7 @@ export function NightActions(_props: NightActionsProps) {
           {showAll ? <BiShow /> : <BiHide />}
         </Button>
       </div>
-      <Accordion.Root type="multiple" onValueChange={console.log}>
+      <Accordion.Root type="multiple">
         {actionQueue
           .filter((current) => showAll || !current.skipped)
           .map((queueItem) => (
