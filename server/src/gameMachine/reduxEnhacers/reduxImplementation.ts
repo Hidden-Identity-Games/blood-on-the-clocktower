@@ -37,7 +37,9 @@ export function createStore<StateShape, ActionType extends BaseAction<string>>(
   reducer: TopLevelReducer<StateShape, ActionType | InitAction>,
   preloadState?: StateShape,
 ) {
+  console.log("preload", preloadState);
   const initialState = reducer(preloadState, INIT_ACTION);
+  console.log(initialState);
 
   let history: StateShape[] = [];
   let state = initialState;
@@ -74,7 +76,7 @@ export function createStore<StateShape, ActionType extends BaseAction<string>>(
     subscribe: (callback: () => void) => {
       subscriptions = [...subscriptions, callback];
       return () =>
-        (subscriptions = subscriptions.filter((s) => s === callback));
+        (subscriptions = subscriptions.filter((s) => s !== callback));
     },
     canUndo,
     undo() {

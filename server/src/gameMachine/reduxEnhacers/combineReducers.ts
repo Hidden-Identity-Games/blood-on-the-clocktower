@@ -2,7 +2,6 @@ import { toKeys } from "@hidden-identity/shared";
 
 import {
   type BaseAction,
-  isInitAction,
   type TopLevelReducer,
 } from "./reduxImplementation.ts";
 
@@ -37,16 +36,10 @@ export function combineReducers<
       toKeys<keyof StateShape>(reducerMap).map((reducerKey) => {
         const reducer = reducerMap[reducerKey];
 
-        if (isInitAction(action)) {
-          return [
-            reducerKey,
-            reducer(undefined, action, undefined as StateShape),
-          ];
-        }
         return [
           reducerKey,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          reducer(state![reducerKey], action, state!),
+          reducer(state?.[reducerKey], action, state!),
         ] as [keyof StateShape, StateShape[keyof StateShape]];
       }),
     ) as StateShape;
