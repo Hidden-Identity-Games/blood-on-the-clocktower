@@ -1,15 +1,15 @@
 import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 import { type Role } from "@hidden-identity/shared";
 import {
   allTravelers,
   getCharacter,
   getDefaultAlignment,
 } from "@hidden-identity/shared";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { Dialog, Flex, IconButton } from "@radix-ui/themes";
+import { Plus } from "lucide-react";
 import { useMemo } from "react";
 
-import { colorMap } from "../../../../shared/CharacterTypes";
+import { shadCnColorMap } from "../../../../shared/CharacterTypes";
 import { CharacterName, RoleIcon, RoleText } from "../../../../shared/RoleIcon";
 import { useDefiniteGame } from "../../../../store/GameContext";
 
@@ -43,7 +43,7 @@ export function RoleSelect({
         <Button
           variant="select"
           className="w-full"
-          color={colorMap[getCharacter(currentRole).team]}
+          color={shadCnColorMap[getCharacter(currentRole).team]}
         >
           {children || (
             <>
@@ -60,35 +60,35 @@ export function RoleSelect({
           )}
         </Button>
       </Dialog.Trigger>
-      <Flex direction="column" gap="1" asChild>
-        <Dialog.Content>
-          <Dialog.Close key="remove">
+      <Dialog.Content className="flex flex-col gap-1">
+        <Dialog.Header>Choose role</Dialog.Header>
+        <Dialog.Close key="remove" asChild>
+          <Button
+            className="w-full capitalize"
+            variant="secondary"
+            onClick={() => onSelect(null)}
+          >
+            Remove
+          </Button>
+        </Dialog.Close>
+        {roles.map((role) => (
+          <Dialog.Close key={role} asChild>
             <Button
-              className="capitalize"
-              variant={currentRole === null ? "soft" : "outline"}
-              onClick={() => onSelect(null)}
+              className="w-full"
+              color={shadCnColorMap[getCharacter(role).team]}
+              variant={role === currentRole ? "select" : "outline"}
+              onClick={() => currentRole !== role && onSelect(role)}
             >
-              Remove
+              <CharacterName role={role} className="" />
+              {!!game.rolesToPlayers[role]?.length && (
+                <span className="ml-1 truncate capitalize">
+                  - {game.rolesToPlayers[role].join(",")}
+                </span>
+              )}
             </Button>
           </Dialog.Close>
-          {roles.map((role) => (
-            <Dialog.Close key={role}>
-              <Button
-                color={colorMap[getCharacter(role).team]}
-                variant={role === currentRole ? "soft" : "outline"}
-                onClick={() => currentRole !== role && onSelect(role)}
-              >
-                <CharacterName role={role} className="" />
-                {!!game.rolesToPlayers[role]?.length && (
-                  <span className="ml-1 truncate capitalize">
-                    - {game.rolesToPlayers[role].join(",")}
-                  </span>
-                )}
-              </Button>
-            </Dialog.Close>
-          ))}
-        </Dialog.Content>
-      </Flex>
+        ))}
+      </Dialog.Content>
     </Dialog.Root>
   );
 }
@@ -111,23 +111,22 @@ export function RoleSelectList({
       <div className="flex items-center gap-1">
         <h2 className="text-xl font-bold">Role{roles.length > 1 && "s"}</h2>{" "}
         {!fixedSize && (
-          <IconButton
+          <Button
             variant="ghost"
-            radius="full"
-            className="pt-1"
+            className="aspect-square rounded-full p-0"
             onClick={() => {
               addRole();
             }}
           >
-            <PlusIcon />
-          </IconButton>
+            <Plus className="text-green-500" />
+          </Button>
         )}
       </div>
       {[...roles].map((current, index) => (
         <RoleSelect
           key={current}
           currentRole={current}
-          onSelect={(newItem) => newItem && replaceRole(newItem, index)}
+          onSelect={(newItem) => replaceRole(newItem, index)}
         />
       ))}
     </>

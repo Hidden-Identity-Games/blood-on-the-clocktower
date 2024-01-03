@@ -29,10 +29,11 @@ export function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
         </Button>
       </Dialog.Trigger>
       <Dialog.Content className="flex flex-col gap-1">
+        <Dialog.Header>Choose player</Dialog.Header>
         <Dialog.Close key="remove" asChild>
           <Button
             className="w-full capitalize"
-            variant={currentPlayer === null ? "soft" : "outline"}
+            variant={"secondary"}
             onClick={() => onSelect(null)}
           >
             {"Remove"}

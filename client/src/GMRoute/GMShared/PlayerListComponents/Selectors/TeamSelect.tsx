@@ -1,6 +1,7 @@
-import { Button, Dialog, Flex } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 
-import { colorMap } from "../../../../shared/CharacterTypes";
+import { shadCnColorMap } from "../../../../shared/CharacterTypes";
 import { type CharacterType, CharacterTypes } from "../../../../types/script";
 
 type Team = CharacterType;
@@ -18,38 +19,30 @@ export function TeamSelect({ currentTeam, onSelect }: TeamSelectProps) {
       <Dialog.Trigger>
         <Button
           variant="soft"
-          size="3"
           className="capitalize"
-          color={colorMap[currentTeam]}
+          color={shadCnColorMap[currentTeam]}
         >
-          <Flex className="w-full text-center" align="center" justify="center">
+          <div className="flex w-full items-center justify-center text-center">
             {currentTeam}
-          </Flex>
+          </div>
         </Button>
       </Dialog.Trigger>
-      <Flex direction="column" gap="1" asChild>
-        <Dialog.Content>
-          {teamList.map((team) => (
-            <Dialog.Close key={team}>
-              <Button
-                className="capitalize"
-                size="3"
-                color={colorMap[team]}
-                variant={team === currentTeam ? "soft" : "outline"}
-                onClick={() => onSelect(team)}
-              >
-                <Flex
-                  className="w-full text-center"
-                  align="center"
-                  justify="center"
-                >
-                  {team}
-                </Flex>
-              </Button>
-            </Dialog.Close>
-          ))}
-        </Dialog.Content>
-      </Flex>
+      <Dialog.Content className="flex flex-col gap-1">
+        {teamList.map((team) => (
+          <Dialog.Close key={team}>
+            <Button
+              className="capitalize"
+              color={shadCnColorMap[team]}
+              variant={team === currentTeam ? "soft" : "outline"}
+              onClick={() => onSelect(team)}
+            >
+              <div className="flex w-full items-center justify-center text-center">
+                {team}
+              </div>
+            </Button>
+          </Dialog.Close>
+        ))}
+      </Dialog.Content>
     </Dialog.Root>
   );
 }

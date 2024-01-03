@@ -38,6 +38,8 @@ export function CharacterSelectedYouMessage({
       <Heading>Reveal</Heading>
       <Restrictions restrictions={message.restriction} />
       <TextFieldInput
+        // the text field just is above everything for some reason
+        className="z-0"
         onChange={(e) => setGroupName(e.target.value)}
         value={groupName}
       />

@@ -40,15 +40,21 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  // TODO: Fix all the colored buttons I broke
+  // color?: never;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, color, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        style={{
+          // @ts-expect-error TS types incomplete for variables
+          "--primary": color,
+        }}
         {...props}
       />
     );

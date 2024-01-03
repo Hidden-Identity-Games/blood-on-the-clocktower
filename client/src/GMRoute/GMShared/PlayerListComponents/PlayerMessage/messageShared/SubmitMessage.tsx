@@ -9,11 +9,17 @@ import { useCreateMessage } from "../../../../../store/actions/gmActions";
 import { useSheetView } from "../../../../../store/url";
 
 export interface SubmitMessageProps {
-  message: PlayerMessageEntry[];
+  message?: PlayerMessageEntry[];
   player: string;
-  action: ActionQueueItem;
+  action?: ActionQueueItem;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
 }
-export function SubmitMessage({ message, player }: SubmitMessageProps) {
+export function SubmitMessage({
+  message = [],
+  player,
+  onClick,
+}: SubmitMessageProps) {
   const [createMessageError, createMessageisLoading, messageId, createMessage] =
     useCreateMessage();
   const [_, setSheetView] = useSheetView();
@@ -21,12 +27,13 @@ export function SubmitMessage({ message, player }: SubmitMessageProps) {
   return (
     <>
       <ErrorCallout error={createMessageError} />
-      {!messageId && (
+      {(!messageId || messageId) && (
         <Button
-          className="w-full"
+          variant="secondary"
+          className={"w-full"}
           disabled={createMessageisLoading && message.length === 0}
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onClick={async () => {
+          onClick={async (e) => {
             const messageId = await createMessage(player, message);
             if (messageId) {
               void setSheetView({
@@ -35,23 +42,14 @@ export function SubmitMessage({ message, player }: SubmitMessageProps) {
                 isOpen: "open",
               });
             }
+            onClick?.(e);
           }}
         >
-          {createMessageisLoading ? "Redirecting to message" : "Create message"}
-        </Button>
-      )}
-      {messageId && (
-        <Button
-          variant="secondary"
-          onClick={() => {
-            void setSheetView({
-              type: "message",
-              id: messageId,
-              isOpen: "open",
-            });
-          }}
-        >
-          Show message
+          {createMessageisLoading ? (
+            <span className="spin-in" />
+          ) : (
+            "Create message"
+          )}
         </Button>
       )}
     </>

@@ -1,21 +1,14 @@
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 import {
   type UnifiedGame,
   type WellOrderedPlayers,
 } from "@hidden-identity/shared";
 import { ArrowLeftIcon, ClipboardCopyIcon } from "@radix-ui/react-icons";
-import {
-  Button,
-  Dialog,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-  TextArea,
-} from "@radix-ui/themes";
+import { Flex, Heading, IconButton, Text, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
 import { useState } from "react";
 
-import { DialogHeader } from "../../shared/DialogHeader";
 import { PlayerNameButton } from "../../shared/PlayerNameButton";
 import { useDefiniteGame } from "../../store/GameContext";
 
@@ -37,7 +30,7 @@ export function ExportButton({
       </Dialog.Trigger>
 
       <Dialog.Content className="m-2">
-        <DialogHeader>Export to town square</DialogHeader>
+        <Dialog.Header>Export to town square</Dialog.Header>
         {game.orderedPlayers.problems ? (
           <ProblemsPanel />
         ) : (

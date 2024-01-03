@@ -10,12 +10,12 @@ export function ExecutionMessage(_props: ExecutionMessageProps) {
   const playerOnBlock = usePlayerOnBlock();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <div>
         The day's executee:{" "}
         <span className="capitalize">{playerOnBlock.player ?? "Nobody"}</span>
       </div>
-      <KillAction />
+      <KillAction className="w-full" />
     </div>
   );
 }

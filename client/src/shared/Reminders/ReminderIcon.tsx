@@ -39,11 +39,16 @@ function getReminderColorByType(type: ReminderType) {
   switch (type) {
     case "drunk":
     case "poison":
-      return "border-4 border-red-400";
     case "abilitySpent":
       return "border-4 border-red-400";
     case "protected":
       return "border-4 border-blue-400";
+    case "hasAbility":
+      return "border-4 border-green-400";
+    case "triggerOnDeath":
+    case "info":
+    case "mad":
+      return "border-4 border-yellow-500";
     default:
       return null;
   }

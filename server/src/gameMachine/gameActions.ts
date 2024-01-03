@@ -143,15 +143,18 @@ export function progressTimeAction(): GameThunk<void> {
               .filter(
                 (player) =>
                   getCharacter(getGame().playersToRoles[player]).team ===
-                  "Demon",
+                    "Demon" ||
+                  getCharacter(getGame().playersToRoles[player]).id ===
+                    "lunatic",
               )
               .map(
-                () =>
+                (player) =>
                   ({
                     type: "game",
                     actionType: "DEMON",
                     id: generateThreeWordId(),
                     order: 7,
+                    player,
                     skipped: false,
                   }) as ActionQueueItem,
               ),
