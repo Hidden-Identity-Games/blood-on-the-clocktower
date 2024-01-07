@@ -12,7 +12,7 @@ export function NightActions(_props: NightActionsProps) {
   const { game } = useDefiniteGame();
   const [showAll, setShowAll] = useState(false);
   const { actionQueue } = game;
-  const allCompleted = actionQueue.every(({ skipped }) => skipped);
+  const allCompleted = actionQueue.every(({ status }) => status !== "todo");
   return (
     <>
       <div className="flex">
@@ -23,7 +23,7 @@ export function NightActions(_props: NightActionsProps) {
       </div>
       <Accordion.Root type="multiple">
         {actionQueue
-          .filter((current) => showAll || !current.skipped)
+          .filter((current) => showAll || current.status === "todo")
           .map((queueItem) => (
             <ActionQueueRow queueItem={queueItem} key={queueItem.id} />
           ))}

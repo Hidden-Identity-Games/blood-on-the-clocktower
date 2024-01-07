@@ -1,7 +1,7 @@
 import { roleShape } from "@hidden-identity/shared";
 import { z } from "zod";
 
-import { setScript } from "../database/scriptDB.ts";
+import { retrieveGame } from "../database/gameDB/base.ts";
 import { gmProcedure } from "../trpcServerInternals/trpc.ts";
 import { gameIdShape } from "./baseApiShapes.ts";
 
@@ -17,6 +17,7 @@ export const scriptRoutes = {
     )
     .mutation(async ({ input: { gameId, script } }) => {
       // Retrieve users from a datasource, this is an imaginary database
-      await setScript(gameId, script);
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "SetScript", script });
     }),
 };

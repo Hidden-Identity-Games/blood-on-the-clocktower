@@ -30,8 +30,7 @@ export interface ActionQueueRowProps {
   queueItem: ActionQueueItem;
 }
 export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
-  const { game } = useDefiniteGame();
-  const disabled = queueItem.skipped;
+  const disabled = queueItem.status !== "todo";
 
   return (
     <Accordion.Item value={queueItem.id}>
@@ -39,11 +38,12 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
         key={queueItem.id}
         className={classNames("h-auto p-3 text-lg", { grayscale: disabled })}
       >
-        {queueItem.type === "character" ? (
+        {(queueItem.type === "character" ||
+          queueItem.type === "notInGameCharacter") && (
           <>
             <RoleIcon role={queueItem.role} className="mr-2 h-[2em]" />
             <span className="flex-1 text-left">
-              <RoleText role={game.playersToRoles[queueItem.player]} />
+              <RoleText role={queueItem.role} />
             </span>
             <span className="mx-2 flex-1 text-right">
               {queueItem.player ? (
@@ -53,7 +53,8 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
               )}
             </span>
           </>
-        ) : (
+        )}
+        {queueItem.type === "game" && (
           <>
             <span className="ml-1 mr-3 flex aspect-square h-[1.5em] grow-0 items-center justify-center">
               <MoonIcon />
@@ -70,6 +71,12 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
           <PlayerActionFlow action={queueItem} />
         )}
         {queueItem.type === "game" && <SpecialActionFlow action={queueItem} />}
+        {queueItem.type === "notInGameCharacter" && (
+          <>
+            <span className="text-lg font-semibold">Not in the game</span>
+            <span>{getCharacter(queueItem.role).ability}</span>
+          </>
+        )}
         <CompleteActionButton actionId={queueItem.id} />
       </Accordion.Content>
     </Accordion.Item>

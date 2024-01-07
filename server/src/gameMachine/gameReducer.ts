@@ -81,12 +81,14 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             return action.initialActionQueue;
           case "CompleteAction":
             return state.map((item) =>
-              item.id === action.itemId ? { ...item, skipped: true } : item,
+              item.id === action.itemId
+                ? ({ ...item, status: "done" } satisfies ActionQueueItem)
+                : item,
             );
           case "KillPlayer":
             return state.map((current) =>
               "player" in current && current.player === action.player
-                ? { ...current, skipped: true }
+                ? ({ ...current, status: "skip" } satisfies ActionQueueItem)
                 : current,
             );
           // When we add a new ability in, we add all abilities to the queue.
@@ -99,9 +101,14 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             if (!ability) {
               return state;
             }
+
+            // The current player changed roles, skip their current actions.
             const nextQueue = state.map((current) =>
-              "player" in current && current.player === action.player
-                ? { ...current, skipped: true }
+              current.player === action.player
+                ? ({
+                    ...current,
+                    status: "notInGame",
+                  } satisfies ActionQueueItem)
                 : current,
             );
             const firstGreaterIndex = nextQueue.findIndex(
@@ -115,7 +122,7 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
                 id: generateThreeWordId(),
                 order: ability.order,
                 player: action.player,
-                skipped: false,
+                status: "todo",
                 role: nextRole,
                 type: "character",
               } satisfies ActionQueueItem,
@@ -299,6 +306,16 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             };
           case "KickPlayer":
             return removeKey(state, action.player);
+          default:
+            return state;
+        }
+      },
+      script: (state = [], action) => {
+        switch (action.type) {
+          case "SetScript":
+            return action.script;
+          case "AddRoleToScript":
+            return [...state, { id: action.role }];
           default:
             return state;
         }

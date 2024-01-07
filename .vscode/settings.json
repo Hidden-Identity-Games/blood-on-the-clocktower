@@ -35,5 +35,13 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "editor.tabSize": 2,
-  "cSpell.words": ["dispatchable", "Gamemaster", "grimoire", "ostring", "tailwindcss", "trpc"]
+  "cSpell.words": [
+    "dispatchable",
+    "Gamemaster",
+    "grimoire",
+    "ostring",
+    "tailwindcss",
+    "trpc"
+  ],
+  "autoRestart.fileGlobForESLint": "{**/.eslintrc.{js,cjs,yaml,yml,json},*/dist/**}"
 }

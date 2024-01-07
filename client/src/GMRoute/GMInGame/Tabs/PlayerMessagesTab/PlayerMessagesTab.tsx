@@ -52,9 +52,9 @@ function CustomMessageTab() {
   const { game } = useDefiniteGame();
   const [forPlayer, setForPlayer] = useState<string>(() => {
     const topOfQueue = game.actionQueue.find(
-      (action) => !action.skipped && action.type === "character",
+      (action) => action.status === "todo" && action.player,
     ) as CharacterActionQueueItem | undefined;
-    return topOfQueue ? topOfQueue.player : game.playerList[0];
+    return topOfQueue?.player ?? game.playerList[0];
   });
 
   return (
