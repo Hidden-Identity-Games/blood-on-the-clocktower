@@ -30,6 +30,9 @@ export const appRouter = router({
         }).catch((e) => {
           emit.error(e);
           console.error(e);
+          if (e instanceof Error) {
+            console.error(e.stack);
+          }
           return () => {};
         });
 

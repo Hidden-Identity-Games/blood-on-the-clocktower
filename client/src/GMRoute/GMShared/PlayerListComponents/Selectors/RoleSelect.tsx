@@ -53,7 +53,7 @@ export function RoleSelect({
               </RoleText>
               {!!game.rolesToPlayers[currentRole]?.length && (
                 <span className="ml-1 truncate capitalize">
-                  - {game.rolesToPlayers[currentRole].join(",")}
+                  - {(game.rolesToPlayers[currentRole] ?? []).join(",")}
                 </span>
               )}
             </>
@@ -82,7 +82,7 @@ export function RoleSelect({
               <CharacterName role={role} className="" />
               {!!game.rolesToPlayers[role]?.length && (
                 <span className="ml-1 truncate capitalize">
-                  - {game.rolesToPlayers[role].join(",")}
+                  - {(game.rolesToPlayers[role] ?? []).join(",")}
                 </span>
               )}
             </Button>
