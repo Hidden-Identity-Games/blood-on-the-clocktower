@@ -9,7 +9,6 @@ import {
 import { GameMachine } from "../../gameMachine/gameMachine.ts";
 import { type GameCreator } from "../../testingUtils/gameCreator.ts";
 import { RemoteStorage, StoreFile } from "../remoteStorage.ts";
-import { addScript, addTestScript } from "../scriptDB.ts";
 
 export const UNASSIGNED: Role = "unassigned" as Role;
 
@@ -60,7 +59,7 @@ export async function addGame(
   }
 
   gameDB[gameId] = new GameMachine(game);
-  await addScript(gameId, script);
+  gameDB[gameId].dispatch({ type: "SetScript", script });
 
   gameDB[gameId].subscribe((value) => {
     storage.putFile(gameId, value as BaseUnifiedGame).catch((e) => {
@@ -71,7 +70,6 @@ export async function addGame(
 
 export function addTestGame(gameId: string, gameCreator: GameCreator): void {
   gameDB[gameId] = gameCreator.toGameMachine();
-  addTestScript(gameId.toUpperCase(), gameCreator.script);
 }
 
 export async function subscribeToGame(

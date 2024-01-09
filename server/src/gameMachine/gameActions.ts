@@ -10,6 +10,7 @@ import {
   type PlayerMessageEntry,
   type PlayerReminder,
   type Role,
+  type Script,
   unique,
 } from "@hidden-identity/shared";
 
@@ -59,7 +60,8 @@ export interface ActionMap {
   MakeNewGame: { nextGameId: string };
   CreateMessage: PlayerActionProperties & { message: PlayerMessage };
   DeleteMessage: { messageId: string };
-
+  SetScript: { script: Script };
+  AddRoleToScript: { role: Role };
   StartDay: NoAdditionalProperties;
   StartNight: { initialActionQueue: ActionQueueItem[] };
   CompleteAction: { itemId: string };
@@ -100,7 +102,7 @@ export function progressTimeAction(): GameThunk<void> {
     if (getGame().time.time === "day") {
       const isFirstDay = getGame().time.count === 0;
       const actionsForRoles = unique(
-        Object.values(getGame().playersToRoles ?? []),
+        Object.values(getGame().script ?? []).map(({ id }) => id),
       ).flatMap((role) => {
         const ability = getAbility(
           role,
@@ -110,7 +112,7 @@ export function progressTimeAction(): GameThunk<void> {
           return [];
         }
         const playersInRole =
-          computedGameSelectors.rolesToPlayers(getGame())[role];
+          computedGameSelectors.rolesToPlayers(getGame())[role] ?? [];
 
         if (playersInRole.length > 0) {
           return playersInRole.map(
@@ -119,7 +121,7 @@ export function progressTimeAction(): GameThunk<void> {
                 id: generateThreeWordId(),
                 player,
                 order: ability.order,
-                skipped: getGame().deadPlayers[player],
+                status: getGame().deadPlayers[player] ? "skip" : "todo",
                 role,
                 type: "character",
               }) as ActionQueueItem,
@@ -129,11 +131,11 @@ export function progressTimeAction(): GameThunk<void> {
         return [
           {
             id: generateThreeWordId(),
-            player: "",
+            player: undefined,
             order: ability.order,
-            skipped: true,
+            status: "notInGame",
             role,
-            type: "character",
+            type: "notInGameCharacter",
           } as ActionQueueItem,
         ];
       });
@@ -155,7 +157,7 @@ export function progressTimeAction(): GameThunk<void> {
                     id: generateThreeWordId(),
                     order: 7,
                     player,
-                    skipped: false,
+                    status: "todo",
                   }) as ActionQueueItem,
               ),
             {
@@ -163,7 +165,7 @@ export function progressTimeAction(): GameThunk<void> {
               actionType: "MINIONS",
               id: "MINIONS",
               order: 8,
-              skipped: false,
+              status: "todo",
             } as ActionQueueItem,
           ]
         : [
@@ -172,7 +174,7 @@ export function progressTimeAction(): GameThunk<void> {
               actionType: "EXECUTION",
               id: "EXECUTION",
               order: 0,
-              skipped: false,
+              status: "todo",
             } as ActionQueueItem,
           ];
 

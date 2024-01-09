@@ -54,6 +54,9 @@ export function createStore<StateShape, ActionType extends BaseAction<string>>(
         cb();
       } catch (e) {
         console.error(e);
+        if (e instanceof Error) {
+          console.error(e.stack);
+        }
       }
     });
   };

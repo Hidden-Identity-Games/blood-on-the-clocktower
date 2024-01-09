@@ -21,6 +21,9 @@ export function createServer() {
       await handler(req, res);
     } catch (e) {
       console.error(e);
+      if (e instanceof Error) {
+        console.error(e.stack);
+      }
     }
   });
 
@@ -38,10 +41,16 @@ export function createServer() {
 
   wss.on("error", (e) => {
     console.error(e);
+    if (e instanceof Error) {
+      console.error(e.stack);
+    }
   });
 
   server.on("error", (e) => {
     console.error(e);
+    if (e instanceof Error) {
+      console.error(e.stack);
+    }
   });
 
   process.on("SIGTERM", () => {

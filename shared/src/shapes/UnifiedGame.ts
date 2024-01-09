@@ -30,7 +30,7 @@ export interface UnifiedGame extends BaseUnifiedGame, UnifiedGameComputed {}
 export interface UnifiedGameComputed {
   orderedPlayers: WellOrderedPlayers | BrokenOrderedPlayers;
   playerList: string[];
-  rolesToPlayers: Record<Role, string[]>;
+  rolesToPlayers: Partial<Record<Role, string[]>>;
   messagesByNight: Record<number, CalculatedPlayerMessage[]>;
 }
 
@@ -52,7 +52,13 @@ export interface BaseUnifiedGame {
   reminders: AppliedPlayerReminder[];
   time: TimeRecord;
   actionQueue: ActionQueueItem[];
+  script: Script;
 }
+
+export interface ScriptItem {
+  id: Role;
+}
+export type Script = ScriptItem[];
 
 export interface WellOrderedPlayers {
   problems: false;
@@ -77,21 +83,29 @@ export interface Neighbors {
   rightNeighbor: string | null;
 }
 
-export interface SpecialActionQueueItem {
-  type: "game";
+export interface BaseActionQueueItem {
   id: string;
-  order: number;
-  skipped: boolean;
-  actionType: "DEMON" | "MINIONS" | "EXECUTION";
   player?: string;
-}
-export interface CharacterActionQueueItem {
-  type: "character";
-  id: string;
-  player: string;
   order: number;
-  skipped: boolean;
+  status: "skip" | "done" | "notInGame" | "todo";
+}
+
+export interface SpecialActionQueueItem extends BaseActionQueueItem {
+  type: "game";
+  actionType: "DEMON" | "MINIONS" | "EXECUTION";
+}
+export interface CharacterActionQueueItem extends BaseActionQueueItem {
+  type: "character";
+  player: string;
+  role: Role;
+}
+export interface NotInGameActionQueueItem extends BaseActionQueueItem {
+  type: "notInGameCharacter";
+  player?: undefined;
   role: Role;
 }
 
-export type ActionQueueItem = CharacterActionQueueItem | SpecialActionQueueItem;
+export type ActionQueueItem =
+  | CharacterActionQueueItem
+  | SpecialActionQueueItem
+  | NotInGameActionQueueItem;

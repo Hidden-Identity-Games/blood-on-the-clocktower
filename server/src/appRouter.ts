@@ -2,7 +2,6 @@ import { observable } from "@trpc/server/observable";
 import { z } from "zod";
 
 import { subscribeToGame } from "./database/gameDB/base.ts";
-import { subscribeToScript } from "./database/scriptDB.ts";
 import { gameRoutes } from "./routes/game.ts";
 import { scriptRoutes } from "./routes/script.ts";
 import { router, t } from "./trpcServerInternals/trpc.ts";
@@ -31,25 +30,15 @@ export const appRouter = router({
         }).catch((e) => {
           emit.error(e);
           console.error(e);
-          return () => {};
-        });
-        const scriptUnsubPromise = subscribeToScript(gameId, (script) => {
-          emit.next({
-            type: "ObjectUpdated",
-            objectType: "script",
-            updatedId: gameId,
-            nextObj: script,
-          });
-        }).catch((e) => {
-          emit.error(e);
-          console.error(e);
+          if (e instanceof Error) {
+            console.error(e.stack);
+          }
           return () => {};
         });
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         return async () => {
           (await gameUnsubPromise)();
-          (await scriptUnsubPromise)();
         };
       });
     }),

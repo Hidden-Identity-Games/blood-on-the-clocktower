@@ -16,10 +16,9 @@ import { GameMachine } from "../gameMachine/gameMachine.ts";
 
 export class GameCreator {
   game: GameMachine;
-  script: Script;
   constructor(script: Script, game?: GameMachine) {
     this.game = game ?? new GameMachine();
-    this.script = script;
+    this.game.dispatch({ type: "SetScript", script });
   }
 
   addPlayers(playerCount: number) {
@@ -88,8 +87,9 @@ export class GameCreator {
 
     let roleBagCharacters = roles;
     if (!roleBagCharacters) {
-      const filledScript = this.script
-        .map(({ id }) => getCharacter(id))
+      const filledScript = this.game
+        .getGame()
+        .script.map(({ id }) => getCharacter(id))
         .filter((c) => !c.delusional);
       const generatedRoles = shuffleList(
         toEntries(DistributionsByPlayerCount[playerCount])

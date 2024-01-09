@@ -4,8 +4,8 @@ import {
   type CharacterType,
   type Reminder,
   type Role,
-} from "../shapes/Role.ts";
-import { type Script } from "../shapes/Script.ts";
+  type Script,
+} from "../shapes/index.ts";
 import { CHARACTERS as charactersList } from "./characterData.ts";
 import { type ScriptDefinition, type ScriptName, SCRIPTS } from "./scripts.ts";
 
