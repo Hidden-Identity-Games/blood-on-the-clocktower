@@ -26,7 +26,8 @@ export function RoleSelect({
   traveler,
   children,
 }: RoleSelectProps) {
-  const { script, game } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const roles = useMemo(() => {
     return traveler
       ? allTravelers()

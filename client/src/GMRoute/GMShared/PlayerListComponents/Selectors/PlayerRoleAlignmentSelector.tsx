@@ -91,7 +91,8 @@ interface RowProps {
 }
 function Row({ message, onChange }: RowProps) {
   const { player, alignment, role, itemId } = message;
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   return (
     <div className="flex justify-between gap-1">
       <Dialog.Root>

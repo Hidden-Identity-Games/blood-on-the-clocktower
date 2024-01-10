@@ -10,7 +10,7 @@ function ExampleComponent(_props: { k: string }) {
 describe("An example", () => {
   test("asserts on a component", () => {
     render(<ExampleComponent k="" />, {
-      gameContext: { gameId: "xyz", game: null, script: null },
+      gameContext: { gameId: "xyz", game: null },
     });
     expect(screen.getByText("xyz")).toBeInTheDocument();
   });

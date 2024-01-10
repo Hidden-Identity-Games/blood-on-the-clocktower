@@ -29,7 +29,8 @@ export function RevealCharacterMessage({
   const { restriction } = message;
 
   const filter = useCharacterRestriction(restriction);
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
 
   const playerFilter = usePlayerRestrictions({
     ...message.restriction,

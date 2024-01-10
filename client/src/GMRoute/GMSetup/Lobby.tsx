@@ -20,7 +20,8 @@ export interface LobbyProps {
 }
 
 export function Lobby() {
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const [selectedTab, setSelectedTab] = useState<string>("roles");
 
   const characterSelectState = useCharacterSelectState(

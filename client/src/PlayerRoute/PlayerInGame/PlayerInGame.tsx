@@ -37,7 +37,8 @@ import { useFirstSeat } from "../../store/url";
 import { useMe } from "../../store/usePlayer";
 
 export function PlayerInGame() {
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const me = useMe();
   const [selectedTab, setSelectedTab] = React.useState("script");
   const [selectedOrder, setSelectedOrder] =

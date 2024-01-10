@@ -18,7 +18,8 @@ export interface DemonMessageProps {
   action: SpecialActionQueueItem;
 }
 export function DemonMessage({ action }: DemonMessageProps) {
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const rolesList = script.map(({ id }) => id);
 
   const demonFilter = usePlayerRestrictions({ team: ["Demon"] });

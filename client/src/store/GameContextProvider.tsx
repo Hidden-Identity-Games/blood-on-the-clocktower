@@ -1,4 +1,3 @@
-import { type Script } from "@hidden-identity/shared";
 import { Callout, CalloutIcon } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { ReadyState } from "react-use-websocket";
@@ -14,29 +13,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const navigate = useSafeNavigate();
   const [game, setGame] = useState<UnifiedGame | null>(null);
-  const [script, setScript] = useState<Script | null>([
-    { id: "baron" },
-    { id: "chef" },
-    { id: "empath" },
-    { id: "fortune_teller" },
-    { id: "monk" },
-    { id: "virgin" },
-    { id: "slayer" },
-    { id: "soldier" },
-    { id: "mayor" },
-    { id: "librarian" },
-    { id: "investigator" },
-    { id: "undertaker" },
-    { id: "ravenkeeper" },
-    { id: "washerwoman" },
-    { id: "butler" },
-    { id: "recluse" },
-    { id: "saint" },
-    { id: "poisoner" },
-    { id: "spy" },
-    { id: "scarlet_woman" },
-    { id: "imp" },
-  ] as Script);
   const [readyState, setReady] = useState<ReadyState>(
     ReadyState.UNINSTANTIATED,
   );
@@ -45,9 +21,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     () => ({
       gameId,
       game: game,
-      script: script,
     }),
-    [gameId, game, script],
+    [gameId, game],
   );
 
   useEffect(() => {
@@ -62,9 +37,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           onData: (data) => {
             if (data.objectType === "game") {
               setGame(data.nextObj);
-            }
-            if (data.objectType === "script") {
-              setScript(data.nextObj);
             }
           },
           onError: () => {

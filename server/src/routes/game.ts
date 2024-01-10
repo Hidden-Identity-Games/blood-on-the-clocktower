@@ -74,7 +74,7 @@ export const gameRoutes = {
           }
         }
 
-        await addGame(gameId, gameCreator.toGameMachine().getGame(), script);
+        await addGame(gameId, gameCreator.toGameMachine());
 
         if (oldGameId) {
           console.log(`recieved old gameID: ${oldGameId}, updating old game`);
@@ -83,7 +83,9 @@ export const gameRoutes = {
           oldGame.dispatch({ type: "MakeNewGame", nextGameId: gameId });
         }
 
-        return await getGame(gameId);
+        const game = await getGame(gameId);
+        console.log(game.script);
+        return game;
       },
     ),
   addPlayer: playerProcedure
