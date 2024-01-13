@@ -15,7 +15,6 @@ import {
   drawRoleAction,
   progressTimeAction,
 } from "../gameMachine/gameActions.ts";
-import { setupTestGames } from "../testGames.ts";
 import { GameCreator } from "../testingUtils/gameCreator.ts";
 import {
   gmProcedure,
@@ -23,8 +22,6 @@ import {
   publicProcedure,
 } from "../trpcServerInternals/trpc.ts";
 import { gameIdShape, playerAndGameIdShape } from "./baseApiShapes.ts";
-
-setupTestGames();
 
 const testGameOptions = z.object({
   isTestGame: z.boolean(),

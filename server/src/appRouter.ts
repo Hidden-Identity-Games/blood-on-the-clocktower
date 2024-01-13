@@ -4,16 +4,16 @@ import { z } from "zod";
 import { subscribeToGame } from "./database/gameDB/base.ts";
 import { gameRoutes } from "./routes/game.ts";
 import { scriptRoutes } from "./routes/script.ts";
-import { router, t } from "./trpcServerInternals/trpc.ts";
+import { router, trpcBase } from "./trpcServerInternals/trpc.ts";
 import { type MessageFromServer } from "./types/messageShapes.ts";
 
 export const appRouter = router({
   ...gameRoutes,
   ...scriptRoutes,
-  healthcheck: t.procedure.query(() => {
+  healthcheck: trpcBase.procedure.query(() => {
     return "Ok!";
   }),
-  subscribeToGame: t.procedure
+  subscribeToGame: trpcBase.procedure
     .input(z.object({ gameId: z.string() }))
     .subscription((resolver) => {
       const { gameId } = resolver.input;

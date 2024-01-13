@@ -56,11 +56,7 @@ export function usePlayerOrder(order: PlayerOrder, firstSeat?: string | null) {
 
   if (!game) return [];
 
-  if (
-    order === "alphabetical" ||
-    game.orderedPlayers.problems ||
-    !game.playerList.length
-  ) {
+  if (order === "alphabetical" || !game.playerList.length) {
     return game.playerList ?? [];
   }
 

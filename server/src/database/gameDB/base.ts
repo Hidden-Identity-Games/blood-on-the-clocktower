@@ -7,7 +7,7 @@ import {
 
 import { GameMachine } from "../../gameMachine/gameMachine.ts";
 import { type GameCreator } from "../../testingUtils/gameCreator.ts";
-import { RemoteStorage, StoreFile } from "../remoteStorage.ts";
+import { RemoteStorage, StoreFile } from "../PersistentStorage/index.ts";
 
 export const UNASSIGNED: Role = "unassigned" as Role;
 

@@ -77,6 +77,7 @@ export type Problem =
 export interface BrokenOrderedPlayers {
   problems: true;
   playerProblems: Record<string, Problem | null>;
+  fullList: string[];
 }
 
 export interface Neighbors {

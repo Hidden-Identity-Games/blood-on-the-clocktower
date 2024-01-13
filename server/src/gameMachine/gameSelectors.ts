@@ -17,6 +17,7 @@ export function getOrderedPlayers(
 
   return {
     problems: true,
+    fullList: players,
     playerProblems: players.reduce<Record<string, Problem | null>>(
       (problemMap, player) => {
         return {
