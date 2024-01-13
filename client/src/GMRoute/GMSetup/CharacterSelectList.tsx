@@ -62,7 +62,9 @@ export function CharacterSelectList({
 }: {
   state: CharacterSelectState;
 }) {
-  const { script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
+
   const [, , , setScript] = useSetScript();
   const rolesByType: Record<CharacterType, Role[]> = React.useMemo(() => {
     return {
@@ -173,7 +175,9 @@ interface AddRoleProps {
   characterSelectState: CharacterSelectState;
 }
 function AddRole({ characterSelectState }: AddRoleProps) {
-  const { script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
+
   const [, , , setScript] = useSetScript();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [results, setResults] = React.useState<Character[]>([]);

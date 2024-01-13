@@ -24,7 +24,8 @@ export function RevealRoleMessage({ message, action }: RevealRoleMessageProps) {
     ...message.restriction,
     inPlay: true,
   });
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
 
   const rolesList = script.map(({ id }) => id);
 

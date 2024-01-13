@@ -23,7 +23,8 @@ export interface RoleChangeMessageProps {
 export function RoleChangeMessage({ message, action }: RoleChangeMessageProps) {
   const { player } = action;
 
-  const { script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const [alignmentOverride, setAlignmentOverride] = useState<Alignment | null>(
     null,
   );

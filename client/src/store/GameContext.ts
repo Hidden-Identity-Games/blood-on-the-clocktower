@@ -1,4 +1,3 @@
-import { type Script } from "@hidden-identity/shared";
 import { createContext, useContext, useState } from "react";
 
 import { type UnifiedGame } from "./Game";
@@ -7,12 +6,10 @@ type NonNullableValues<T> = { [K in keyof T]: NonNullable<T[K]> };
 export interface GameContext {
   gameId: string | null;
   game: UnifiedGame | null;
-  script: Script | null;
 }
 
 export const UnifiedGameContext = createContext<GameContext>({
   game: null,
-  script: null,
   gameId: null,
 });
 
@@ -22,7 +19,7 @@ export function useGame() {
 }
 export function useDefiniteGame(): NonNullableValues<GameContext> {
   const context = useContext(UnifiedGameContext);
-  if (!context.game || !context.script || !context.gameId) {
+  if (!context.game || !context.gameId) {
     throw new Error("Not in a game?");
   }
   return context as NonNullableValues<GameContext>;

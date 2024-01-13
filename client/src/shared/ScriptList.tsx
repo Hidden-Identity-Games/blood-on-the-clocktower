@@ -16,7 +16,8 @@ interface ScriptListProps {
   className?: string;
 }
 export function ScriptList({ className }: ScriptListProps) {
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const charactersByType = React.useMemo(() => {
     const charactersFromScript =
       script?.map(({ id }) => getCharacter(id)) ?? [];

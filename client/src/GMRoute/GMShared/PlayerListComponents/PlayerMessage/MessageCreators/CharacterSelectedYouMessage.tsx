@@ -23,7 +23,8 @@ export function CharacterSelectedYouMessage({
   action,
 }: CharacterSelectedYouMessageProps) {
   const { player } = action;
-  const { script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const [groupName, setGroupName] = useState("In play");
   const rolesList = script.map(({ id }) => id);
 

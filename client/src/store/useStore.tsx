@@ -68,7 +68,8 @@ export function useGetPlayerAlignment() {
 }
 
 export function useAvailableReminders() {
-  const { game, script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
   const [allReminders, setAllReminders] = useState(false);
 
   const availableReminders: [string, Reminder[]][] = allReminders

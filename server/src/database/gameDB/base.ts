@@ -2,7 +2,6 @@ import {
   type BaseUnifiedGame,
   type GameStatus,
   type Role,
-  type Script,
   type UnifiedGame,
 } from "@hidden-identity/shared";
 
@@ -50,16 +49,14 @@ export async function getGame(gameId: string): Promise<UnifiedGame> {
 
 export async function addGame(
   gameId: string,
-  game: BaseUnifiedGame,
-  script: Script,
+  gameMachine: GameMachine,
 ): Promise<void> {
   console.log(`adding ${gameId}`);
   if (await gameExists(gameId)) {
     throw new Error("Game already exists");
   }
 
-  gameDB[gameId] = new GameMachine(game);
-  gameDB[gameId].dispatch({ type: "SetScript", script });
+  gameDB[gameId] = gameMachine;
 
   gameDB[gameId].subscribe((value) => {
     storage.putFile(gameId, value as BaseUnifiedGame).catch((e) => {

@@ -18,7 +18,8 @@ export interface MadnessMessageProps {
 export function MadnessMessage({ action }: MadnessMessageProps) {
   const { player } = action;
 
-  const { script } = useDefiniteGame();
+  const { game } = useDefiniteGame();
+  const { script } = game;
 
   const rolesList = script.map(({ id }) => id);
 
