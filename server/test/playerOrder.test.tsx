@@ -1,8 +1,4 @@
-import {
-  pluck,
-  type UnifiedGame,
-  type WellOrderedPlayers,
-} from "@hidden-identity/shared";
+import { pluck, type UnifiedGame } from "@hidden-identity/shared";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -16,7 +12,7 @@ import {
 } from "./utils.ts";
 
 function playerListFromGame(game: UnifiedGame): string[] {
-  return (game.orderedPlayers as WellOrderedPlayers).fullList;
+  return game.orderedPlayers.fullList;
 }
 
 describe("playerOrder", () => {
@@ -216,7 +212,7 @@ describe("playerOrder", () => {
         expect(
           playerListFromGame(await apiCaller.getGame({ gameId })),
         ).toMatchObject([
-          playerListBeforeRemove.filter((p) => p !== playerToRemove),
+          ...playerListBeforeRemove.filter((p) => p !== playerToRemove),
           playerToRemove,
         ]);
       });

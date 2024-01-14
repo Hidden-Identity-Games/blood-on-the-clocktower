@@ -11,13 +11,14 @@ export function getOrderedPlayers(
 ): BrokenOrderedPlayers | WellOrderedPlayers {
   const players = Object.keys(partialPlayerOrdering);
   const fullList = followGraph(partialPlayerOrdering);
-  if (fullList.length === players.length) {
+  const leftovers = players.filter((p) => !fullList.includes(p));
+  if (leftovers.length === 0) {
     return { fullList, problems: false };
   }
 
   return {
     problems: true,
-    fullList: players,
+    fullList: [...fullList, ...leftovers],
     playerProblems: players.reduce<Record<string, Problem | null>>(
       (problemMap, player) => {
         return {
@@ -69,16 +70,9 @@ function followGraph(players: UnifiedGame["partialPlayerOrdering"]): string[] {
     const nextPlayer: string | null =
       players[currentPlayer]?.rightNeighbor ?? null;
     if (!nextPlayer) {
-      return [];
+      return chain;
     }
     currentPlayer = nextPlayer;
   }
-
-  if (
-    chain.length === allPlayers.length &&
-    players[chain[chain.length - 1]]?.rightNeighbor === chain[0]
-  ) {
-    return chain;
-  }
-  return [];
+  return chain;
 }
