@@ -36,8 +36,10 @@ jobs:
     - name: Install Playwright Browsers
       run: pnpm exec playwright install chromium --with-deps
       working-directory: e2es/ 
+    - name: Build dependencies
+      run:  pnpm run --stream --filter @hidden-identity/client^... build-client
     - name: Run server
-      run: pnpm build-client && pnpm dev & sleep 5
+      run:  pnpm dev & sleep 5
     - name: Run Playwright tests
       run: pnpm run e2e-test
     - uses: actions/upload-artifact@v3
