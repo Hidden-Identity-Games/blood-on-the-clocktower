@@ -226,6 +226,9 @@ importers:
       prettier:
         specifier: ^3.1.1
         version: 3.1.1
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
     devDependencies:
       eslint-plugin-playwright:
         specifier: ^0.18.0

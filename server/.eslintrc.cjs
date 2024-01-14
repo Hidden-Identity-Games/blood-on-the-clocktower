@@ -24,6 +24,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    EXPERIMENTAL_useProjectService: true,
+
   },
   rules: {
     "@typescript-eslint/no-explicit-any": "off", // Don't do this, unless you're certain!
