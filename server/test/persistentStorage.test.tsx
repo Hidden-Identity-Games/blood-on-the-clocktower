@@ -1,10 +1,4 @@
-import {
-  GetObjectCommand,
-  PutObjectCommand,
-  S3Client,
-} from "@aws-sdk/client-s3";
 import { getScript } from "@hidden-identity/shared";
-import { mockClient } from "aws-sdk-client-mock";
 import { beforeEach, describe, expect, it, type MockedFunction } from "vitest";
 
 import { remoteStorage } from "../src/database/PersistentStorage/RemoteStorage.ts";
@@ -12,8 +6,8 @@ import { GameCreator } from "../src/testingUtils/gameCreator.ts";
 import { apiCaller, createGame } from "./utils.ts";
 
 const remoteMock = remoteStorage as unknown as {
-  getFile: MockedFunction<() => {}>;
-  putFile: MockedFunction<() => {}>;
+  getFile: MockedFunction<() => unknown>;
+  putFile: MockedFunction<() => unknown>;
 };
 
 describe("presistent storage", () => {
