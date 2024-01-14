@@ -2,7 +2,7 @@ import { type S3ServiceException } from "@aws-sdk/client-s3";
 
 import { S3Storage } from "./S3Storage.ts";
 
-export class RemoteStorage {
+class RemoteStorage {
   private readonly storage: S3Storage;
 
   constructor() {
@@ -12,6 +12,7 @@ export class RemoteStorage {
   getFile = async <T>(directory: string, file: string): Promise<T | null> => {
     try {
       const response = await this.storage.getObject(directory, file);
+
       if (response.$metadata.httpStatusCode === 200 && response.Body) {
         return JSON.parse(await response.Body.transformToString()) as T;
       }
@@ -38,3 +39,5 @@ export class RemoteStorage {
     }
   };
 }
+
+export const remoteStorage = new RemoteStorage();
