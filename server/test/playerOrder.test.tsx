@@ -200,6 +200,26 @@ describe("playerOrder", () => {
           ...playerListBeforeAdd.slice(INSERT_AT),
         ]);
       });
+      it("player still shows with no neighbor", async () => {
+        const REMOVE_AT = 4;
+        const { gameId } = await createStartedGameWithPlayers();
+
+        const playerListBeforeRemove = playerListFromGame(
+          await apiCaller.getGame({ gameId }),
+        );
+        const playerToRemove = playerListBeforeRemove[REMOVE_AT];
+        await apiCaller.setPlayerOrder({
+          gameId,
+          player: playerToRemove,
+          rightNeighbor: null,
+        });
+        expect(
+          playerListFromGame(await apiCaller.getGame({ gameId })),
+        ).toMatchObject([
+          playerListBeforeRemove.filter((p) => p !== playerToRemove),
+          playerToRemove,
+        ]);
+      });
     });
   });
 });

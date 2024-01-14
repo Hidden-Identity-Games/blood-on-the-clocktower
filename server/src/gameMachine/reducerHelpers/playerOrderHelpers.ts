@@ -8,18 +8,19 @@ export function extractPlayerFromCircle(
   state: UnifiedGame["partialPlayerOrdering"],
   player: string,
 ) {
-  const { [player]: kickedPlayerNeighbor, ...nextState } = state;
+  const { [player]: kickedPlayerNeighbor } = state;
   const leftNeighbor = findLeftNeighbor(state, player);
-  if (leftNeighbor) {
-    return {
-      ...nextState,
+  return {
+    ...state,
+    ...(leftNeighbor && {
       [leftNeighbor[0]]: {
         rightNeighbor: kickedPlayerNeighbor?.rightNeighbor ?? null,
       },
-    };
-  } else {
-    return nextState;
-  }
+    }),
+    [player]: {
+      rightNeighbor: null,
+    },
+  };
 }
 
 export function insertIntoCircle(

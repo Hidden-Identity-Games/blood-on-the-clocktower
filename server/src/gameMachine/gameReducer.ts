@@ -159,8 +159,12 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
           }
           // When kicking, extract from the circle
           case "ExtractPlayerFromCircle":
-          case "KickPlayer": {
             return extractPlayerFromCircle(state, action.player);
+
+          case "KickPlayer": {
+            const { [action.player]: _omit, ...nextState } =
+              extractPlayerFromCircle(state, action.player);
+            return nextState;
           }
           default:
             return state;

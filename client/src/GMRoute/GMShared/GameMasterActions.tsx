@@ -1,16 +1,18 @@
 import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Select } from "@design-system/components/ui/select";
 import { type Role } from "@hidden-identity/shared";
-import { Dialog, DialogClose, Flex, Text } from "@radix-ui/themes";
-import { Share2 } from "lucide-react";
+import { Flex, Text } from "@radix-ui/themes";
+import { AlertCircleIcon, Share2 } from "lucide-react";
 
 import { NewGameButton } from "../../NewGamePage/NewGameButton";
 import { DestructiveButton } from "../../shared/DestructiveButton";
-import { DialogHeader } from "../../shared/DialogHeader";
 import { QRCodeModal } from "../../shared/QRCodeModal";
 import {
   useDistributeRoles,
   useSetGameStatus,
 } from "../../store/actions/gmActions";
+import { useOrderPlayer } from "../../store/actions/playerActions";
 import { useDefiniteGame } from "../../store/GameContext";
 import { urlFromOrigin, useSearchParams } from "../../store/url";
 import { UndoButton } from "../GMInGame/Tabs/MenuTab/UndoButton";
@@ -40,7 +42,7 @@ export function GameMasterActions({
 
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
-          <DialogHeader>Error</DialogHeader>
+          <Dialog.Header>Error</Dialog.Header>
           <Flex direction="column" gap="2">
             <div>It looks like there was an error:</div>
             {distributeRolesError}
@@ -51,13 +53,13 @@ export function GameMasterActions({
 
       {game.gameStatus === "PlayersJoining" && (
         <Dialog.Root>
-          <Dialog.Trigger>
+          <Dialog.Trigger asChild>
             <Button disabled={!gameStartable} className="">
               Start Game
             </Button>
           </Dialog.Trigger>
           <Dialog.Content>
-            <DialogHeader>Start game?</DialogHeader>
+            <Dialog.Header>Start game?</Dialog.Header>
             <Flex direction="column" gap="2">
               {gameStartable ? (
                 <>
@@ -66,7 +68,7 @@ export function GameMasterActions({
                     recieve roles.
                   </Text>
                   <Flex justify="end">
-                    <DialogClose>
+                    <Dialog.Close asChild>
                       <Button
                         onClick={() => {
                           void distributeRoles(availableRolesList);
@@ -74,7 +76,7 @@ export function GameMasterActions({
                       >
                         Start Game
                       </Button>
-                    </DialogClose>
+                    </Dialog.Close>
                   </Flex>
                 </>
               ) : (
@@ -125,21 +127,75 @@ export function GameMasterActions({
           <Share2 className="h-[1em]" /> Share GM view
         </Button>
       </QRCodeModal>
-      {game.gameStatus === "PlayersJoining" && <SandboxOptions />}
+      <PlayerSeatingModal />
     </Flex>
   );
 }
 
-function SandboxOptions() {
+function PlayerSeatingModal() {
+  const { game } = useDefiniteGame();
+  const [, , , setPlayerOrder] = useOrderPlayer();
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
-        <Button>Sandbox tools</Button>
+      <Dialog.Trigger asChild>
+        <Button>Player seating</Button>
       </Dialog.Trigger>
-      <Dialog.Content>
-        <DialogHeader>Sandbox tools</DialogHeader>
-        Coming Soon
+      <Dialog.Content className="flex flex-col gap-1">
+        <Dialog.Header>Player Seating</Dialog.Header>
+        {game.orderedPlayers.fullList.map((player) => (
+          <div className="columns-2" key={player}>
+            <div>
+              <span className="capitalize">{player} </span>
+              {game.orderedPlayers.playerProblems?.[player] && (
+                <AlertCircleIcon className="inline-block" />
+              )}
+            </div>
+            <PlayerSelect
+              currentPlayer={
+                game.partialPlayerOrdering[player]?.rightNeighbor ?? null
+              }
+              onSelect={(newNeighbor) => {
+                void setPlayerOrder(player, newNeighbor);
+              }}
+            />
+          </div>
+        ))}
       </Dialog.Content>
     </Dialog.Root>
+  );
+}
+
+interface PlayerSelectProps {
+  currentPlayer: string | null;
+  onSelect: (nextrole: string | null) => void;
+}
+
+function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
+  const { game } = useDefiniteGame();
+  const playerList = [...game.playerList].sort();
+
+  return (
+    <Select.Root>
+      <Select.Trigger className="capitalize">{currentPlayer}</Select.Trigger>
+      <Select.OptionsList className="flex flex-col gap-1">
+        <Select.Option
+          currentlySelected={!currentPlayer}
+          className="capitalize"
+          onClick={() => onSelect(null)}
+        >
+          NONE
+        </Select.Option>
+        {[...playerList].map((player) => (
+          <Select.Option
+            key={player}
+            className="capitalize"
+            currentlySelected={player === currentPlayer}
+            onClick={() => onSelect(player)}
+          >
+            {player}
+          </Select.Option>
+        ))}
+      </Select.OptionsList>
+    </Select.Root>
   );
 }
