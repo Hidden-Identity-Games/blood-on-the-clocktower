@@ -58,3 +58,25 @@ export async function createGameWithPlayers({
   await addPlayersToGame(players, gameId);
   return { gameId, players };
 }
+
+export async function createStartedGameWithPlayers({
+  playerCount = 10,
+  script = getScript("No Roles Barred"),
+}: {
+  playerCount?: number;
+  script?: Script;
+} = {}) {
+  const gameId = `t_${generateThreeWordId()}`;
+
+  await apiCaller.createGame({
+    gameId,
+    script,
+    testGameOptions: {
+      isTestGame: true,
+      players: playerCount,
+      randomRoles: true,
+    },
+  });
+
+  return { gameId };
+}

@@ -24,8 +24,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    EXPERIMENTAL_useProjectService: true,
-
+    project: ['tsconfig(.*)?.json']
   },
   rules: {
     "@typescript-eslint/no-explicit-any": "off", // Don't do this, unless you're certain!

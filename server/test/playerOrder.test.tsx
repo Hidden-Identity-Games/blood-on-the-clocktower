@@ -12,6 +12,7 @@ import {
   createGame,
   createGameWithPlayers,
   createPlayerList,
+  createStartedGameWithPlayers,
 } from "./utils.ts";
 
 function playerListFromGame(game: UnifiedGame): string[] {
@@ -107,11 +108,8 @@ describe("playerOrder", () => {
         await assignAllNeighbors(players, gameId);
         const game = await apiCaller.getGame({ gameId });
         expect(game.orderedPlayers.problems).toBeFalsy();
-        // Just makes TS happy
-        if (!game.orderedPlayers.problems) {
-          expect(game.orderedPlayers.fullList).toHaveLength(players.length);
-          expect(game.orderedPlayers.fullList).toMatchObject(players);
-        }
+        expect(game.orderedPlayers.fullList).toHaveLength(players.length);
+        expect(game.orderedPlayers.fullList).toMatchObject(players);
       });
     });
     describe("full player circle", () => {
@@ -146,6 +144,61 @@ describe("playerOrder", () => {
         expect(
           playerListFromGame(await apiCaller.getGame({ gameId })),
         ).toMatchObject([...playerListBeforeAdd, traveler]);
+      });
+    });
+    describe("Game in progress", () => {
+      it("stays full circle when player leaves", async () => {
+        const { gameId } = await createStartedGameWithPlayers();
+
+        const playerListPreKick = playerListFromGame(
+          await apiCaller.getGame({ gameId }),
+        );
+        const kickPlayer = pluck(playerListPreKick);
+
+        await apiCaller.kickPlayer({
+          gameId,
+          player: kickPlayer,
+        });
+        const postKickGame = await apiCaller.getGame({ gameId });
+
+        expect(postKickGame.orderedPlayers.problems).toBeFalsy();
+        expect(playerListFromGame(postKickGame)).toMatchObject(
+          playerListPreKick.filter((player) => player !== kickPlayer),
+        );
+      });
+      it("adds new player at the end until they select a neighbor", async () => {
+        const traveler = "TRAVELER:1";
+        const { gameId } = await createStartedGameWithPlayers();
+
+        const playerListBeforeAdd = playerListFromGame(
+          await apiCaller.getGame({ gameId }),
+        );
+        await apiCaller.addPlayer({ player: traveler, gameId });
+        expect(
+          playerListFromGame(await apiCaller.getGame({ gameId })),
+        ).toMatchObject([...playerListBeforeAdd, traveler]);
+      });
+      it("inserts a player once they choose a neighbor", async () => {
+        const traveler = "TRAVELER:1";
+        const INSERT_AT = 4;
+        const { gameId } = await createStartedGameWithPlayers();
+
+        const playerListBeforeAdd = playerListFromGame(
+          await apiCaller.getGame({ gameId }),
+        );
+        await apiCaller.addPlayer({ player: traveler, gameId });
+        await apiCaller.setPlayerOrder({
+          gameId,
+          player: traveler,
+          rightNeighbor: playerListBeforeAdd[INSERT_AT],
+        });
+        expect(
+          playerListFromGame(await apiCaller.getGame({ gameId })),
+        ).toMatchObject([
+          ...playerListBeforeAdd.slice(0, INSERT_AT),
+          traveler,
+          ...playerListBeforeAdd.slice(INSERT_AT),
+        ]);
       });
     });
   });

@@ -62,6 +62,7 @@ export type Script = ScriptItem[];
 
 export interface WellOrderedPlayers {
   problems: false;
+  playerProblems?: Record<string, Problem | null>;
   fullList: string[];
 }
 

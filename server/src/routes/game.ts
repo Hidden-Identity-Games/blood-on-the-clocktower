@@ -111,11 +111,26 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, rightNeighbor } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch({
-        type: "SetNeighbor",
-        player,
-        newRightNeighbor: rightNeighbor,
-      });
+      if (game.getGame().gameStatus === "PlayersJoining") {
+        game.dispatch({
+          type: "SetNeighbor",
+          player,
+          newRightNeighbor: rightNeighbor,
+        });
+      } else {
+        if (rightNeighbor) {
+          game.dispatch({
+            type: "PlacePlayerInCircle",
+            player,
+            newRightNeighbor: rightNeighbor,
+          });
+        } else {
+          game.dispatch({
+            type: "ExtractPlayerFromCircle",
+            player,
+          });
+        }
+      }
     }),
   assignRoles: gmProcedure
     .input(z.intersection(gameIdShape, z.object({ roles: z.array(roleShape) })))

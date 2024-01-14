@@ -9,12 +9,15 @@ import {
   removeKey,
   type Role,
   shuffleList,
-  toEntries,
 } from "@hidden-identity/shared";
 import { generate } from "random-words";
 
 import { UNASSIGNED } from "../database/gameDB/base.ts";
 import { type ActionMap, type AnyGameAction } from "./gameActions.ts";
+import {
+  extractPlayerFromCircle,
+  insertIntoCircle,
+} from "./reducerHelpers/playerOrderHelpers.ts";
 import { combineReducers } from "./reduxEnhacers/combineReducers.ts";
 import {
   createStore,
@@ -146,41 +149,18 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
               [action.player]: { rightNeighbor: action.newRightNeighbor },
             };
           }
+          case "PlacePlayerInCircle": {
+            const extracted = extractPlayerFromCircle(state, action.player);
+            return insertIntoCircle(
+              extracted,
+              action.player,
+              action.newRightNeighbor,
+            );
+          }
           // When kicking, extract from the circle
           case "ExtractPlayerFromCircle":
           case "KickPlayer": {
-            const { [action.player]: kickedPlayerNeighbor, ...nextState } =
-              state;
-            const oprhanedNeighbor = toEntries(nextState).find(
-              ([_, value]) => value?.rightNeighbor === action.player,
-            );
-            if (oprhanedNeighbor) {
-              return {
-                ...nextState,
-                [oprhanedNeighbor[0]]: {
-                  rightNeighbor: kickedPlayerNeighbor?.rightNeighbor ?? null,
-                },
-              };
-            } else {
-              return nextState;
-            }
-          }
-          case "PlacePlayerInCircle": {
-            const { newRightNeighbor } = action;
-            const newLeftNeighborEntry = toEntries(state).find(
-              ([_, neighbors]) => neighbors?.rightNeighbor === newRightNeighbor,
-            );
-            return {
-              ...state,
-              ...(newLeftNeighborEntry
-                ? {
-                    [newLeftNeighborEntry[0]]: {
-                      rightNeighbor: action.player,
-                    },
-                  }
-                : {}),
-              [action.player]: { rightNeighbor: newRightNeighbor },
-            };
+            return extractPlayerFromCircle(state, action.player);
           }
           default:
             return state;
