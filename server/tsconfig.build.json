@@ -1,19 +1,22 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["es2021"],
     "module": "NodeNext",
     "skipLibCheck": true,
+    "declarationMap": true,
 
     /* Bundler mode */
     "moduleResolution": "NodeNext",
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleDetection": "auto",
     "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
 
     /* Linting */
     "strict": true,
@@ -22,8 +25,12 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
 
-    "declaration": false
+    "declarationDir": "declarations",
+    "declaration": true,
+
+    /* build */
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
-  "include": ["test", "./vitest.config.ts"],
-  "references": [{ "path": "./tsconfig.build.json" }]
+  "include": ["src"]
 }
