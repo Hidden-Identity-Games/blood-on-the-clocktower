@@ -45,18 +45,18 @@ function SelectOptionsList({ children, ...divProps }: SelectOptionsListProps) {
 
 interface SelectOptionProps extends ButtonProps {
   children: React.ReactNode;
-  currentlySelected: boolean;
+  isCurrentlySelected: boolean;
 }
 function SelectOption({
   children,
-  currentlySelected,
+  isCurrentlySelected,
   className,
   ...buttonProps
 }: SelectOptionProps) {
   return (
     <Dialog.Close asChild>
       <Button
-        variant={currentlySelected ? "soft" : "outline"}
+        variant={isCurrentlySelected ? "soft" : "outline"}
         className={classNames(className, "w-full")}
         {...buttonProps}
       >

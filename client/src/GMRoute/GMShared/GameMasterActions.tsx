@@ -179,7 +179,7 @@ function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
       <Select.Trigger className="capitalize">{currentPlayer}</Select.Trigger>
       <Select.OptionsList className="flex flex-col gap-1">
         <Select.Option
-          currentlySelected={!currentPlayer}
+          isCurrentlySelected={!currentPlayer}
           className="capitalize"
           onClick={() => onSelect(null)}
         >
@@ -189,7 +189,7 @@ function PlayerSelect({ currentPlayer, onSelect }: PlayerSelectProps) {
           <Select.Option
             key={player}
             className="capitalize"
-            currentlySelected={player === currentPlayer}
+            isCurrentlySelected={player === currentPlayer}
             onClick={() => onSelect(player)}
           >
             {player}

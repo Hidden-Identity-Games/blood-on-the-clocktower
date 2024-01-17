@@ -107,13 +107,6 @@ test("travelers keep player order", async ({ context }) => {
   const { orderedPlayers: actualPlayerOrder } = await trpc.getGame.query({
     gameId,
   });
-  console.log(
-    (
-      await trpc.getGame.query({
-        gameId,
-      })
-    ).gameStatus,
-  );
 
   expect(actualPlayerOrder.fullList).toMatchObject(postTravelersOrderedValues);
 });
