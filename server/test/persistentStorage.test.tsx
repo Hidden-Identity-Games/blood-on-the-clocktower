@@ -29,7 +29,6 @@ describe("presistent storage", () => {
     remoteMock.getFile.mockResolvedValueOnce(gameFromStorage);
 
     const game = await apiCaller.getGame({ gameId });
-    console.log(game);
     expect(remoteMock.getFile).toHaveBeenCalledOnce();
     expect(remoteMock.getFile).toHaveBeenCalledWith("game", gameId);
     expect(game).toMatchObject(gameFromStorage);
