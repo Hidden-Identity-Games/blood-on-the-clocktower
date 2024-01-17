@@ -11,7 +11,7 @@
   "scripts": {
     "e2e-test": "pnpm run --stream -r e2e-test",
     "dev": "pnpm run --stream -r --parallel dev",
-    "build-client": "pnpm run --stream -r build-client",
+    "build-client": "pnpm run --stream --filter @hidden-identity/client... build-client",
     "prepare": "husky install",
     "type-check": "pnpm run --stream -r type-check",
     "test": "pnpm run --stream -r test"

@@ -7,12 +7,12 @@ import {
 
 import { GameMachine } from "../../gameMachine/gameMachine.ts";
 import { type GameCreator } from "../../testingUtils/gameCreator.ts";
-import { RemoteStorage, StoreFile } from "../remoteStorage.ts";
+import { StoreFile } from "../PersistentStorage/index.ts";
 
 export const UNASSIGNED: Role = "unassigned" as Role;
 
 const gameDB: Record<string, GameMachine> = {};
-const storage = new StoreFile<BaseUnifiedGame>("game", new RemoteStorage());
+const storage = new StoreFile<BaseUnifiedGame>("game");
 
 export function gameInProgress(game: UnifiedGame): boolean {
   return game.gameStatus === "Started" || game.gameStatus === "Setup";

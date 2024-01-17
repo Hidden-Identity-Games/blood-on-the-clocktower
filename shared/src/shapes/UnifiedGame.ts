@@ -62,6 +62,7 @@ export type Script = ScriptItem[];
 
 export interface WellOrderedPlayers {
   problems: false;
+  playerProblems?: Record<string, Problem | null>;
   fullList: string[];
 }
 
@@ -77,6 +78,7 @@ export type Problem =
 export interface BrokenOrderedPlayers {
   problems: true;
   playerProblems: Record<string, Problem | null>;
+  fullList: string[];
 }
 
 export interface Neighbors {

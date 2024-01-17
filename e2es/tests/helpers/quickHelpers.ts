@@ -30,7 +30,11 @@ export const QuickSetupHelpers = {
     const newGame = await trpc.createGame.mutate({
       gameId,
       script: getScript(script),
-      testGameOptions: { isTestGame: true, players: players.length },
+      testGameOptions: {
+        isTestGame: true,
+        players: players.length,
+        randomRoles: true,
+      },
     });
     return { gameId, game: newGame };
   },

@@ -24,6 +24,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    project: ['tsconfig(.*)?.json'],
+    tsconfigRootDir: __dirname,
+
   },
   rules: {
     "@typescript-eslint/no-explicit-any": "off", // Don't do this, unless you're certain!
@@ -41,6 +44,7 @@ module.exports = {
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
     "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-array-constructor": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

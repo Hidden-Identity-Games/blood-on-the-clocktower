@@ -61,7 +61,6 @@ export function SheetContent({ children }: SheetHeaderProps) {
   return (
     <motion.div
       onTouchStart={(e) => {
-        console.log("start");
         if (e.currentTarget.scrollTop <= 4) {
           startThumb.current = e.touches[0].clientY;
         }
@@ -69,15 +68,12 @@ export function SheetContent({ children }: SheetHeaderProps) {
       onTouchMove={(e) => {
         // scrolltop never quite gets to 0, it just gets REALLY small, so 4px is good enough
         if (e.currentTarget.scrollTop >= 4) {
-          console.log("blocked", e.currentTarget.scrollTop);
           startThumb.current = 0;
           return;
         }
         if (!startThumb.current) {
           startThumb.current = e.touches[0].clientY;
-          console.log("set");
         } else {
-          console.log("calc");
           const currentDiff = startThumb.current
             ? e.touches[0].clientY - startThumb.current
             : 0;

@@ -15,12 +15,12 @@
     }
   },
   "scripts": {
-    "build-client": "tsc",
+    "build-client": "tsc --build --force",
     "start-prod": "SERVER_PORT=3000 ts-node --esm src/index.ts",
     "dev": "concurrently \"pnpm run build-client --watch\" \"SERVER_PORT=6001 nodemon --esm src/index.ts\" --watch ../shared/src ./src",
     "lint": "eslint . --ext ts --report-unused-disable-directives ",
     "type-check": "tsc",
-    "test": "pnpm run type-check && pnpm run lint"
+    "test": "pnpm run type-check && pnpm run lint && vitest run"
   },
   "keywords": [],
   "author": "",
@@ -49,10 +49,12 @@
     "redux": "^5.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
+    "vitest": "^0.34.6",
     "ws": "^8.16.0",
     "zod": "^3.22.4"
   },
   "dependencies": {
+    "aws-sdk-client-mock": "^3.0.1",
     "eslint-plugin-simple-import-sort": "^10.0.0"
   }
 }

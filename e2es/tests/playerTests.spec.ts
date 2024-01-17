@@ -72,7 +72,7 @@ test("can 15 players join", async ({ context }) => {
 });
 
 // currently broken
-test.skip("travelers keep player order", async ({ context }) => {
+test("travelers keep player order", async ({ context }) => {
   const players = Array.from({ length: 8 }, (_, i) => `player${i}`);
 
   const { gameId } = await QuickSetupHelpers.createStartedGame(
@@ -80,7 +80,7 @@ test.skip("travelers keep player order", async ({ context }) => {
     players,
   );
 
-  const { playerList: expectedOrderedValues } = await trpc.getGame.query({
+  const { orderedPlayers: expectedOrderedValues } = await trpc.getGame.query({
     gameId,
   });
 
@@ -93,20 +93,20 @@ test.skip("travelers keep player order", async ({ context }) => {
   );
   await travelerPage
     .getByRole("button", {
-      name: players[insertTravelerBefore],
+      name: expectedOrderedValues.fullList[insertTravelerBefore],
       exact: true,
     })
     .click();
 
   const postTravelersOrderedValues = [
-    ...expectedOrderedValues.slice(0, insertTravelerBefore),
+    ...expectedOrderedValues.fullList.slice(0, insertTravelerBefore),
     travelerName,
-    ...expectedOrderedValues.slice(insertTravelerBefore),
+    ...expectedOrderedValues.fullList.slice(insertTravelerBefore),
   ];
 
-  const { playerList: actualPlayerOrder } = await trpc.getGame.query({
+  const { orderedPlayers: actualPlayerOrder } = await trpc.getGame.query({
     gameId,
   });
 
-  expect(actualPlayerOrder).toMatchObject(postTravelersOrderedValues);
+  expect(actualPlayerOrder.fullList).toMatchObject(postTravelersOrderedValues);
 });
