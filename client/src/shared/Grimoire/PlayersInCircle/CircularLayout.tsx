@@ -48,7 +48,8 @@ export function PlaceInCircle({
 }: PlaceInCircleProps) {
   const { radius, totalItems } = React.useContext(CircularLayoutContext);
   const distanceToStartOfStep = (1 - stepsIn / 5) * radius;
-  const sliceAngle = (2 * Math.PI) / totalItems;
+  // We optoimize size for 15, as it makes it easier to do math, and looks good in 5-20 size
+  const sliceAngle = (2 * Math.PI) / 15;
   const widthAtTopOfStep = distanceToStartOfStep * Math.sin(sliceAngle / 2) * 2;
 
   const pepperoniSize = widthAtTopOfStep;
