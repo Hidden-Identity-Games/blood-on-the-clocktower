@@ -36,6 +36,12 @@ export const DistributionsByPlayerCount: Record<
   13: { Townsfolk: 9, Outsider: 0, Minion: 3, Demon: 1, Traveler: 0 },
   14: { Townsfolk: 9, Outsider: 1, Minion: 3, Demon: 1, Traveler: 0 },
   15: { Townsfolk: 9, Outsider: 2, Minion: 3, Demon: 1, Traveler: 0 },
+  16: { Townsfolk: 11, Outsider: 0, Minion: 4, Demon: 1, Traveler: 0 },
+  17: { Townsfolk: 11, Outsider: 1, Minion: 4, Demon: 1, Traveler: 0 },
+  18: { Townsfolk: 11, Outsider: 2, Minion: 4, Demon: 1, Traveler: 0 },
+  19: { Townsfolk: 13, Outsider: 0, Minion: 5, Demon: 1, Traveler: 0 },
+  20: { Townsfolk: 13, Outsider: 1, Minion: 5, Demon: 1, Traveler: 0 },
+  21: { Townsfolk: 13, Outsider: 2, Minion: 5, Demon: 1, Traveler: 0 },
 };
 
 export function oppositeAlignment(alignment: Alignment): "Evil" | "Good" {
