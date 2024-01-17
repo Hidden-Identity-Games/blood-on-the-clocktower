@@ -1,3 +1,4 @@
+import { type UnifiedGame } from "@hidden-identity/shared";
 import { act, render, type RenderOptions } from "@testing-library/react";
 import React, { type ReactElement, useContext } from "react";
 
@@ -28,10 +29,14 @@ export function useSetGameContextForTest() {
 
 const customRender = (
   ui: ReactElement,
-  options: Omit<RenderOptions, "wrapper"> & { gameContext: GameContext },
+  options: Omit<RenderOptions, "wrapper"> & {
+    gameContext: Omit<GameContext, "game"> & {
+      game: Partial<UnifiedGame> | null;
+    };
+  },
 ) =>
   render(
-    <RenderWithProviders gameContext={options.gameContext}>
+    <RenderWithProviders gameContext={options.gameContext as GameContext}>
       {ui}
     </RenderWithProviders>,
     {

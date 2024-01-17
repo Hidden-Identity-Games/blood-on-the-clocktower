@@ -17,7 +17,8 @@
     "start-prod": "",
     "type-check": "tsc",
     "test": "pnpm run type-check && pnpm run lint && pnpm run vitest",
-    "vitest": "TEST_MODE=1 vitest --run"
+    "vitest": "TEST_MODE=1 vitest --run",
+    "vitest:dev": "TEST_MODE=1 vitest"
   },
   "dependencies": {
     "@hidden-identity/server": "workspace:*",

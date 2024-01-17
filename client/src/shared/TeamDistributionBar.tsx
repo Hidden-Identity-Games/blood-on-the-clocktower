@@ -27,19 +27,10 @@ function CharacterTypeSection({
   }
 
   const target =
-    charsSelected?.length ?? 0 > 0
-      ? getDistribution(
-          charsSelected!.filter(
-            (role) => getCharacter(role)?.team !== "Traveler",
-          ).length,
-          charType,
-        ) ?? "?"
-      : getDistribution(
-          Object.values(game.playersToRoles).filter(
-            (role) => getCharacter(role)?.team !== "Traveler",
-          ).length,
-          charType,
-        ) ?? "?";
+    getDistribution(
+      game.playerList.filter((player) => !game.travelers[player]).length,
+      charType,
+    ) ?? "?";
 
   return (
     <Text
@@ -48,6 +39,7 @@ function CharacterTypeSection({
       onClick={() => {
         document.querySelector(`#${charType}`)?.scrollIntoView();
       }}
+      data-testid={`${charType}-distribution`}
     >
       <Text
         size="1"
@@ -59,9 +51,17 @@ function CharacterTypeSection({
       >
         {charType}
       </Text>
-      {charsSelected
-        ? `${uniqueCharsByTeam(charType, charsSelected)}/${target}`
-        : target}{" "}
+
+      {charsSelected && (
+        <>
+          <span data-testid={`${charType}-distribution-count`}>
+            {uniqueCharsByTeam(charType, charsSelected)}
+          </span>
+          {"/"}
+        </>
+      )}
+
+      <span data-testid={`${charType}-distribution-target`}>{target}</span>
     </Text>
   );
 }
