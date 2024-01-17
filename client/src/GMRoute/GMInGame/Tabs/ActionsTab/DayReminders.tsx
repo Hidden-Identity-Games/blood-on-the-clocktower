@@ -24,6 +24,9 @@ export function DayReminders(_props: DayRemindersProps) {
         appliesToSelf: reminder.fromPlayer === reminder.toPlayer,
       };
     });
+  const playersNotSenRoles = game.playerList.filter(
+    (p) => !game.playersSeenRoles.includes(p),
+  );
 
   return (
     <>
@@ -50,6 +53,9 @@ export function DayReminders(_props: DayRemindersProps) {
             <span className="mx-8 text-xl">{reminder.name}</span>
           </Button>
         </AbilityDialog>
+      ))}
+      {playersNotSenRoles.map((p) => (
+        <div>{p} has not seen role yet!</div>
       ))}
       <ProgressTimeButton confirmationText="Are you sure you'd like to start the night?">
         Start Night

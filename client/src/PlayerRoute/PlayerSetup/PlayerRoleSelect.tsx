@@ -41,20 +41,26 @@ export function PlayerRoleSelect() {
     >
       <Heading>Select a Role</Heading>
       <div className="flex flex-wrap items-center justify-center gap-2">
-        {Object.entries(game.roleBag ?? {}).map(([roleNum, role], idx) => (
-          <button
-            key={idx}
-            className={classNames(!role && "opacity-40", "max-w-[25%]")}
-            disabled={!role}
-            onClick={() => {
-              void takeRole(player!, parseInt(roleNum));
-            }}
-            aria-label={`Role number ${roleNum}`}
-          >
-            <Heading className="absolute z-10">{idx + 1}</Heading>
-            <img className={rotationMap[rotations[idx]]} src={tokenBack} />
-          </button>
-        ))}
+        {game.playerList
+          .filter((player) => !game.travelers[player])
+          .map((_, idx) => {
+            const roleNum = idx + 1;
+            const role = game.roleBag[roleNum];
+            return (
+              <button
+                key={roleNum}
+                className={classNames(!role && "opacity-40", "max-w-[25%]")}
+                disabled={!role}
+                onClick={() => {
+                  void takeRole(player!, Number(roleNum));
+                }}
+                aria-label={`Role number ${roleNum}`}
+              >
+                <Heading className="absolute z-10">{roleNum}</Heading>
+                <img className={rotationMap[rotations[idx]]} src={tokenBack} />
+              </button>
+            );
+          })}
       </div>
     </Flex>
   );

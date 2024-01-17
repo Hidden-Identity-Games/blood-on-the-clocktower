@@ -28,10 +28,11 @@ export function TeamSelect({ currentTeam, onSelect }: TeamSelectProps) {
         </Button>
       </Dialog.Trigger>
       <Dialog.Content className="flex flex-col gap-1">
+        <Dialog.Header>Team</Dialog.Header>
         {teamList.map((team) => (
           <Dialog.Close key={team}>
             <Button
-              className="capitalize"
+              className="w-full capitalize"
               color={shadCnColorMap[team]}
               variant={team === currentTeam ? "soft" : "outline"}
               onClick={() => onSelect(team)}

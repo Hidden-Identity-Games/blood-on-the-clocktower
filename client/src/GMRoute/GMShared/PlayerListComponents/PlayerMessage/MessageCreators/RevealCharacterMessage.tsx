@@ -40,7 +40,7 @@ export function RevealCharacterMessage({
     recommended: game.playerList
       .filter((p) => p !== player)
       .filter(playerFilter),
-    defaultCount: message.count,
+    defaultCount: 1,
   });
 
   const rolesList = useMemo(() => script.map(({ id }) => id), [script]);
