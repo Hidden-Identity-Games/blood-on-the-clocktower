@@ -1,12 +1,6 @@
-import {
-  Button,
-  Dialog,
-  Flex,
-  IconButton,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
-import React from "react";
+import { Input } from "@design-system/components/ui/input";
+import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import React, { useEffect, useRef } from "react";
 import { type ReactNode } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
@@ -22,11 +16,16 @@ export function SetCount({
   setCount,
   min = 0,
   max = 100,
-  autoFocus = false,
 }: SetCountProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    inputRef.current?.focus();
+    inputRef.current?.select();
+  }, []);
   return (
     <>
       <IconButton
+        type="button"
         variant="soft"
         radius="full"
         size="3"
@@ -34,10 +33,10 @@ export function SetCount({
       >
         <AiOutlineMinus />
       </IconButton>
-      <TextField.Input
-        className="w-6"
-        size="3"
+      <Input
+        className="flex w-16 text-center"
         type="number"
+        inputMode="decimal"
         value={count}
         onChange={(e) =>
           setCount(
@@ -48,10 +47,11 @@ export function SetCount({
         }
         min={min}
         max={max}
-        autoFocus={autoFocus}
-        onFocus={(e) => e.currentTarget.select()}
+        ref={inputRef}
+        onFocus={(e) => e.target.select()}
       />
       <IconButton
+        type="button"
         variant="soft"
         radius="full"
         size="3"
@@ -80,23 +80,32 @@ export function SetCountModal({
   defaultValue = min,
 }: SetCountModalProps) {
   const [count, setCount] = React.useState(defaultValue);
+  const [isOpen, setOpen] = React.useState(false);
 
   return (
-    <Dialog.Root onOpenChange={() => setCount(defaultValue)}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(isNowOpen) => {
+        setOpen(isNowOpen);
+        setCount(defaultValue);
+      }}
+    >
       <Dialog.Trigger>{children}</Dialog.Trigger>
 
-      <Dialog.Content className="mx-3">
+      <Dialog.Content
+        className="mx-3"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onSet(count);
+            setOpen(false);
+          }
+        }}
+      >
         <Flex direction="column" gap="9">
           <Dialog.Title>{title}</Dialog.Title>
           <Text size="8">
             <Flex justify="center" align="center" gap="7">
-              <SetCount
-                count={count}
-                setCount={setCount}
-                min={min}
-                max={max}
-                autoFocus
-              />
+              <SetCount count={count} setCount={setCount} min={min} max={max} />
             </Flex>
           </Text>
           <Flex justify="between">

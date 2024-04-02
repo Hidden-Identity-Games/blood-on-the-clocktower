@@ -135,7 +135,7 @@ export function progressTimeAction(): GameThunk<void> {
             order: ability.order,
             status: "notInGame",
             role,
-            type: "notInGameCharacter",
+            type: "character",
           } as ActionQueueItem,
         ];
       });
@@ -204,7 +204,6 @@ export function createMessageAction({
     dispatch({
       type: "CreateMessage",
       message: {
-        player,
         id,
         nightNumber: getGame().time.count,
         showState: "needs to be shown",

@@ -215,7 +215,7 @@ export function PlayerInGame() {
                   </Text>
                 )}
                 <SetCountModal
-                  title="Set votes to execute:"
+                  title="Votes cast"
                   onSet={(votes: number) =>
                     void setVotesToExecute(player, votes)
                   }

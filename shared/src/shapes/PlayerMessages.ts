@@ -12,7 +12,6 @@ export const playerMessageEntryShape = z.object({
 });
 export const playerMessageShape = z.object({
   id: z.string(),
-  player: z.string(),
   nightNumber: z.number(),
   showState: z.enum(["needs to be shown", "shown", "do not show"]),
   messages: z.array(playerMessageEntryShape),

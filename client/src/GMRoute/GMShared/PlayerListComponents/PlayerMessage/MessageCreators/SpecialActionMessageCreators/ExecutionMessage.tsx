@@ -13,7 +13,7 @@ export function ExecutionMessage(_props: ExecutionMessageProps) {
     <div className="flex w-full flex-col">
       <div>
         The day's executee:{" "}
-        <span className="capitalize">{playerOnBlock.player ?? "Nobody"}</span>
+        <span className="capitalize">{playerOnBlock.player ?? " - "}</span>
       </div>
       <KillAction className="w-full" />
     </div>

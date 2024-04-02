@@ -1,5 +1,4 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
-import React from "react";
 
 import { useGame } from "../../store/GameContext";
 import {
@@ -12,7 +11,7 @@ import { LoadingExperience } from "../LoadingExperience";
 import { usePlayerOrder } from "../PlayerListOrder";
 import { TeamDistributionBar } from "../TeamDistributionBar";
 import { CircularLayout, PlaceInCenter } from "./PlayersInCircle";
-import { GMTile } from "./PlayersInCircle/GMTile";
+import { GMTile, HiddenTile } from "./PlayersInCircle/GMTile";
 import { SpectatorTile } from "./PlayersInCircle/SpectatorTile";
 
 function HideShowButton() {
@@ -39,13 +38,51 @@ function HideShowButton() {
 }
 
 export interface GrimoireProps {
-  isPlayerView?: boolean;
+  hideCenter?: boolean;
 }
-export function Grimoire({ isPlayerView = true }: GrimoireProps) {
+export function GMGrimoire({ hideCenter }: GrimoireProps) {
   const { game } = useGame();
   const [firstSeat] = useFirstSeat();
   const [isHiddenView] = useIsHiddenView();
-  const hideInfo = isHiddenView || isPlayerView;
+  const players = usePlayerOrder("seat order", firstSeat);
+
+  if (!game) {
+    return <LoadingExperience>Loading</LoadingExperience>;
+  }
+
+  return (
+    <Flex
+      className="w-full flex-1"
+      align="center"
+      justify="center"
+      direction="column"
+    >
+      <CircularLayout
+        className="h-full w-full flex-1"
+        totalItems={players.length}
+      >
+        {!hideCenter && (
+          <PlaceInCenter>
+            <HideShowButton />
+          </PlaceInCenter>
+        )}
+        <>
+          {players.map((player, idx) =>
+            isHiddenView ? (
+              <HiddenTile player={player} index={idx} />
+            ) : (
+              <GMTile player={player} index={idx} key={player} />
+            ),
+          )}
+        </>
+      </CircularLayout>
+    </Flex>
+  );
+}
+
+export function SpectatorGrimoire() {
+  const { game } = useGame();
+  const [firstSeat] = useFirstSeat();
   const players = usePlayerOrder("seat order", firstSeat);
 
   if (!game) {
@@ -55,33 +92,32 @@ export function Grimoire({ isPlayerView = true }: GrimoireProps) {
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
 
   return (
-    <Flex className="flex-1" align="center" justify="center" direction="column">
-      <CircularLayout className="w-full flex-1" totalItems={players.length}>
+    <Flex
+      className="w-full flex-1"
+      align="center"
+      justify="center"
+      direction="column"
+    >
+      <CircularLayout
+        className="h-full w-full flex-1"
+        totalItems={players.length}
+      >
         <PlaceInCenter>
           <Flex direction="column" gap="3">
-            {isPlayerView && (
-              <>
-                <TeamDistributionBar />
-                <Flex className="text-center" gap="0" direction="column">
-                  <Text>Alive players: {alivePlayers.length}</Text>
-                  <Flex justify="between" p="2" direction="column" gap="2">
-                    <ExecutionInfo />
-                  </Flex>
+            <>
+              <TeamDistributionBar />
+              <Flex className="text-center" gap="0" direction="column">
+                <Text>Alive players: {alivePlayers.length}</Text>
+                <Flex justify="between" p="2" direction="column" gap="2">
+                  <ExecutionInfo />
                 </Flex>
-              </>
-            )}
-            {!isPlayerView && <HideShowButton />}
+              </Flex>
+            </>
           </Flex>
         </PlaceInCenter>
         <>
           {players.map((player, idx) => (
-            <React.Fragment key={player}>
-              {hideInfo ? (
-                <SpectatorTile player={player} index={idx} />
-              ) : (
-                <GMTile player={player} index={idx} />
-              )}
-            </React.Fragment>
+            <SpectatorTile player={player} index={idx} key={player} />
           ))}
         </>
       </CircularLayout>

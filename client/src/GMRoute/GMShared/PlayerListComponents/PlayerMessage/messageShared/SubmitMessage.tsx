@@ -10,7 +10,7 @@ import { useSheetView } from "../../../../../store/url";
 
 export interface SubmitMessageProps {
   message?: PlayerMessageEntry[];
-  player: string;
+  player?: string | null;
   action?: ActionQueueItem;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
@@ -34,7 +34,8 @@ export function SubmitMessage({
           disabled={createMessageisLoading && message.length === 0}
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async (e) => {
-            const messageId = await createMessage(player, message);
+            // TODO: Fix types so player is optional here.
+            const messageId = await createMessage(player ?? "", message);
             if (messageId) {
               void setSheetView({
                 type: "message",

@@ -73,7 +73,7 @@ export function PlayerRoleAlignmentSelector({
       <Button onClick={() => dispatch({ type: "add" })}>Add message row</Button>
       <SubmitMessage
         action={action}
-        player={action.player}
+        player={action.player ?? ""}
         message={messageRows.map((messageRow) => ({
           player: messageRow.player ?? undefined,
           alignment: messageRow.alignment ?? undefined,

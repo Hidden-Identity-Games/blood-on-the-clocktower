@@ -26,9 +26,11 @@ function isTopLevelSheetKey(str: string): str is TopLevelSheetKey {
 function isOpenClosed(str: string): str is OpenClosedKey {
   return (OpenClosed as readonly string[]).includes(str);
 }
+const DEFAULT_SHEET = { type: "message", isOpen: "closed", id: "" } as const;
+
 function parseSheetView(unparsed: string | undefined): ParsedSheetView | null {
   if (!unparsed) {
-    return null;
+    return DEFAULT_SHEET;
   }
 
   const split = unparsed.split("/");
@@ -36,8 +38,9 @@ function parseSheetView(unparsed: string | undefined): ParsedSheetView | null {
     return null;
   }
   const [type, id, isOpen] = split;
-  if (!isTopLevelSheetKey(type)) return null;
-  if (!isOpenClosed(isOpen)) return null;
+  if (!isTopLevelSheetKey(type) || !isOpenClosed(isOpen)) {
+    return DEFAULT_SHEET;
+  }
   return { type, id, isOpen };
 }
 

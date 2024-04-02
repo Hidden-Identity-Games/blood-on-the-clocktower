@@ -45,13 +45,20 @@ export function ReminderCreator({
 
   return (
     <Dialog.Root>
+      <div className="flex h-8 items-center truncate capitalize">
+        <ReminderIcon
+          reminderName={reminder}
+          className="mr-1 inline-block"
+          useReminderTypeColor
+        />
+        {playersWithReminder(reminder).join(", ") || (
+          <span className="text-gray-400"> - </span>
+        )}
+      </div>
       <Dialog.Trigger asChild>
         <Button variant="select">Apply {reminder}</Button>
       </Dialog.Trigger>
-      <div className="flex h-8 items-center truncate capitalize">
-        <ReminderIcon reminderName={reminder} className="inline-block" />
-        {playersWithReminder(reminder).join(", ") || "  -  "}
-      </div>
+
       <Dialog.Content>
         <Dialog.Header className="flex h-8 flex-row items-center justify-center capitalize">
           <div>Toggle {reminder}</div>

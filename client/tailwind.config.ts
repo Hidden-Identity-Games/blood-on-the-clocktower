@@ -61,17 +61,17 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: { "max-height": "0" },
+          to: { "max-height": "2000px" },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: { "max-height": "2000px" },
+          to: { "max-height": "0" },
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-down": "accordion-down 0.3s ease-in",
+        "accordion-up": "accordion-up 0.3s ease-out",
       },
       textShadow: {
         sm: "0px 0px 4px var(--tw-shadow-color)",
