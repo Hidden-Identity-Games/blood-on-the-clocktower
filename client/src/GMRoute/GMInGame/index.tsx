@@ -1,19 +1,20 @@
 import { Flex, Tabs } from "@radix-ui/themes";
 import classNames from "classnames";
+import { ScrollText } from "lucide-react";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsFillMoonStarsFill } from "react-icons/bs";
-import { GiNotebook, GiOpenBook } from "react-icons/gi";
+import { GiOpenBook } from "react-icons/gi";
 
 import { type PlayerOrder } from "../../shared/PlayerListOrder";
 import { ActionsTab } from "./Tabs/ActionsTab";
+import { GrimoireCircleTab } from "./Tabs/GrimoireCircleTab";
 import { GrimoireTab } from "./Tabs/GrimoireTab";
 import { MenuTab } from "./Tabs/MenuTab";
-import { PlayerMessagesTab } from "./Tabs/PlayerMessagesTab";
 
-type Tabs = "grimoire" | "night" | "message" | "menu";
+type Tabs = "list-grimoire" | "night" | "grimoire-circle" | "menu";
 export function GMInGame() {
-  const [selectedTab, setSelectedTab] = React.useState<Tabs>("grimoire");
+  const [selectedTab, setSelectedTab] = React.useState<Tabs>("list-grimoire");
 
   const [selectedOrder, setSelectedOrder] =
     React.useState<PlayerOrder>("alphabetical");
@@ -26,17 +27,24 @@ export function GMInGame() {
     >
       <Tabs.List>
         <TabTrigger
-          value="grimoire"
+          value="grimoire-circle"
           heading="Grimoire"
           selectedTab={selectedTab}
+          // hide if we're showing the big grimoire
+          className="lg:hidden"
         >
           <GiOpenBook />
         </TabTrigger>
+        <TabTrigger
+          value="list-grimoire"
+          heading="List"
+          selectedTab={selectedTab}
+        >
+          <ScrollText />
+        </TabTrigger>
+
         <TabTrigger value="night" heading="Actions" selectedTab={selectedTab}>
           <BsFillMoonStarsFill />
-        </TabTrigger>
-        <TabTrigger value="message" heading="Message" selectedTab={selectedTab}>
-          <GiNotebook />
         </TabTrigger>
         <TabTrigger value="menu" heading="Menu" selectedTab={selectedTab}>
           <AiOutlineMenu />
@@ -46,9 +54,9 @@ export function GMInGame() {
       <Tabs.Content
         className={classNames(
           "flex flex-1 flex-col gap-2 overflow-y-auto pb-[80px] p-3",
-          selectedTab !== "grimoire" && "hidden",
+          selectedTab !== "list-grimoire" && "hidden",
         )}
-        value="grimoire"
+        value="list-grimoire"
       >
         <GrimoireTab
           selectedOrder={selectedOrder}
@@ -70,11 +78,11 @@ export function GMInGame() {
       <Tabs.Content
         className={classNames(
           "flex flex-1 flex-col overflow-y-auto pb-[80px] p-3 divide-y",
-          selectedTab !== "message" && "hidden",
+          selectedTab !== "grimoire-circle" && "hidden",
         )}
-        value="message"
+        value="grimoire-circle"
       >
-        <PlayerMessagesTab />
+        <GrimoireCircleTab />
       </Tabs.Content>
 
       <Tabs.Content
@@ -95,15 +103,21 @@ interface TabTriggerProps {
   heading: string;
   selectedTab: Tabs;
   children: React.ReactNode;
+  className?: string;
 }
 function TabTrigger({
   value,
   heading,
   selectedTab,
   children,
+  className,
 }: TabTriggerProps) {
   return (
-    <Tabs.Trigger className="flex-1" value={value} aria-label={value}>
+    <Tabs.Trigger
+      className={classNames(className, "flex-1")}
+      value={value}
+      aria-label={value}
+    >
       <Flex align="center" gap="1">
         {children}
         {selectedTab === value && heading}

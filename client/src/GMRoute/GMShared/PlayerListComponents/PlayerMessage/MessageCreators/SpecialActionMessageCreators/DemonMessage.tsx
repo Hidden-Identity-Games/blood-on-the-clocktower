@@ -22,14 +22,6 @@ export function DemonMessage({ action }: DemonMessageProps) {
   const { script } = game;
   const rolesList = script.map(({ id }) => id);
 
-  const demonFilter = usePlayerRestrictions({ team: ["Demon"] });
-  const playerMessageIsFor = useDynamicList<string>(game.playerList, {
-    recommended: action.player
-      ? [action.player]
-      : game.playerList.filter(demonFilter),
-    defaultCount: 1,
-  });
-
   const bluffsFilter = useCharacterRestriction({
     team: ["Townsfolk", "Outsider"],
     inPlay: false,
@@ -60,12 +52,6 @@ export function DemonMessage({ action }: DemonMessageProps) {
 
   return (
     <Flex direction="column" gap="2">
-      <Heading>For player:</Heading>
-      <PlayerSelectList
-        players={playerMessageIsFor.value}
-        addPlayer={playerMessageIsFor.add}
-        replacePlayer={playerMessageIsFor.replace}
-      />
       <Heading>Minions:</Heading>
       <PlayerSelectList
         players={minionsState.value}
@@ -80,7 +66,7 @@ export function DemonMessage({ action }: DemonMessageProps) {
       />
       <SubmitMessage
         action={action}
-        player={playerMessageIsFor.value[0]}
+        player={""}
         message={[...bluffMessages, ...minionMessages]}
       />
     </Flex>

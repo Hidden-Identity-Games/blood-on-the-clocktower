@@ -661,7 +661,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "Show the character token of a Minion in play. Point to two players, one of which is that character.",
       order: 35,
-      setReminders: ["lead", "lead"],
+      setReminders: ["lead"],
       playerMessage: {
         type: "reveal-role",
         count: 2,
@@ -1000,19 +1000,19 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Poisoner",
     edition: "tb",
     team: "Minion",
-    reminders: [{ name: "poisoner", type: "poison" }],
+    reminders: [{ name: "poisoned", type: "poison" }],
     setup: false,
     delusional: false,
     ability:
       "Each night, choose a player: they are poisoned tonight and tomorrow day.",
     imageSrc: "poisoner.png",
     firstNight: {
-      setReminders: ["poisoner"],
+      setReminders: ["poisoned"],
       reminder: "The Poisoner points to a player. That player is poisoned.",
       order: 17,
     },
     otherNight: {
-      setReminders: ["poisoner"],
+      setReminders: ["poisoned"],
       reminder:
         "The previously poisoned player is no longer poisoned. The Poisoner points to a player. That player is poisoned.",
       order: 7,
@@ -2512,7 +2512,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     team: "Demon",
     reminders: [
       {
-        name: "poisoned",
+        name: "widow poisoned",
         type: "poison",
         duration: 1,
       },
@@ -2529,7 +2529,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       "On your 1st night, look at the Grimoire and choose a player: they are poisoned. 1 good player knows a Widow is in play.",
     imageSrc: "widow.png",
     firstNight: {
-      setReminders: ["knows widow in game", "poisoned"],
+      setReminders: ["knows widow in game", "widow poisoned"],
       reminder:
         "Show the Grimoire to the Widow for as long as they need. The Widow points to a player. That player is poisoned. Wake a good player. Show the 'These characters are in play' card, then the Widow character token.",
       order: 18,

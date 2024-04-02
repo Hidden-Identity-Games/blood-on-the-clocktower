@@ -16,11 +16,32 @@ import { getRoleIcon, RoleText } from "../../RoleIcon";
 import { PlaceInCircle } from ".";
 import { useScalingTextClassName } from "./ScalingText";
 
-export interface SpectatorTile {
+export interface TileProps {
   player: string;
   index: number;
 }
-export function GMTile({ player, index }: SpectatorTile) {
+
+export function HiddenTile({ player, index }: TileProps) {
+  const { ref, width = 0 } = useResizeObserver();
+  const scalingTextclass = useScalingTextClassName(width);
+
+  return (
+    <PlaceInCircle index={index} stepsIn={1}>
+      <div className="h-full w-full p-2">
+        <div
+          ref={ref}
+          className={classNames(
+            scalingTextclass,
+            "flex h-full w-full items-center justify-around rounded-full bg-accent capitalize",
+          )}
+        >
+          {player}
+        </div>
+      </div>
+    </PlaceInCircle>
+  );
+}
+export function GMTile({ player, index }: TileProps) {
   const { game } = useDefiniteGame();
   const { ref, width = 0 } = useResizeObserver();
   const scalingTextclass = useScalingTextClassName(width);
@@ -45,7 +66,7 @@ export function GMTile({ player, index }: SpectatorTile) {
         </PlaceInCircle>
       ))}
       {showOverflowReminders && (
-        <PlaceInCircle index={index} stepsIn={2 + baseReminders.length}>
+        <PlaceInCircle index={index} stepsIn={2 + baseReminders.length / 2}>
           <Dialog.Root>
             <Dialog.Trigger>
               <button className="pointer-events-auto rounded-full bg-green-600 p-1">
@@ -74,11 +95,12 @@ export function GMTile({ player, index }: SpectatorTile) {
                 ref={ref}
                 className={classNames(
                   scalingTextclass,
-                  "h-full w-full group relative flex flex-col p-2 hover:z-30 bg-accent bg-opacity-70 rounded-full justify-around items-center",
+                  "h-full w-full group relative flex flex-col p-2 hover:z-30 bg-accent bg-opacity-70 rounded-full justify-around items-center hover:opacity-100",
                   {
-                    "outline outline-8 outline-green-600":
+                    "outline outline-8 outline-red-500 opacity-10":
+                      game.deadPlayers[player] && game.deadVotes[player],
+                    "opacity-50":
                       game.deadPlayers[player] && !game.deadVotes[player],
-                    "opacity-30 hover:opacity-100": game.deadPlayers[player],
                   },
                 )}
               >

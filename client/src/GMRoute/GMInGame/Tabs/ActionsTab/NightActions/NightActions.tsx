@@ -23,7 +23,10 @@ export function NightActions(_props: NightActionsProps) {
       </div>
       <Accordion.Root type="multiple">
         {actionQueue
-          .filter((current) => showAll || current.status === "todo")
+          .filter(
+            (current) =>
+              showAll || current.status === "todo" || current.status === "done",
+          )
           .map((queueItem) => (
             <ActionQueueRow queueItem={queueItem} key={queueItem.id} />
           ))}

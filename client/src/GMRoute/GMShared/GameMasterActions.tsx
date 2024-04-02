@@ -14,7 +14,7 @@ import {
 } from "../../store/actions/gmActions";
 import { useOrderPlayer } from "../../store/actions/playerActions";
 import { useDefiniteGame } from "../../store/GameContext";
-import { urlFromOrigin, useSearchParams } from "../../store/url";
+import { urlFromOrigin, useFirstSeat, useSearchParams } from "../../store/url";
 import { UndoButton } from "../GMInGame/Tabs/MenuTab/UndoButton";
 import { ExportButton } from "./ExportButton";
 
@@ -39,6 +39,7 @@ export function GameMasterActions({
   return (
     <Flex gap="2" direction="column">
       <UndoButton />
+      <FirstSeatButton />
 
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
@@ -132,6 +133,26 @@ export function GameMasterActions({
   );
 }
 
+function FirstSeatButton() {
+  const [firstSeat, setFirstSeat] = useFirstSeat();
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button className="w-full">Choose Circle Start</Button>
+      </Dialog.Trigger>
+
+      <Dialog.Content className="m-3">
+        <Dialog.Header>Choose player at the top of the circle</Dialog.Header>
+        <PlayerSelect
+          currentPlayer={firstSeat}
+          onSelect={(next) => next && setFirstSeat(next)}
+        />
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+}
+
 function PlayerSeatingModal() {
   const { game } = useDefiniteGame();
   const [, , , setPlayerOrder] = useOrderPlayer();
@@ -142,6 +163,7 @@ function PlayerSeatingModal() {
       </Dialog.Trigger>
       <Dialog.Content className="flex flex-col gap-1">
         <Dialog.Header>Player Seating</Dialog.Header>
+
         {game.orderedPlayers.fullList.map((player) => (
           <div className="columns-2" key={player}>
             <div>

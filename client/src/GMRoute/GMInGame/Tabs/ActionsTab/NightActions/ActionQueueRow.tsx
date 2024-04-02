@@ -11,7 +11,7 @@ import {
 } from "@hidden-identity/shared";
 import { Trigger as PrimitiveAccordionTrigger } from "@radix-ui/react-accordion";
 import classNames from "classnames";
-import { MoonIcon } from "lucide-react";
+import { CheckIcon, MoonIcon } from "lucide-react";
 
 import { ErrorCallout } from "../../../../../shared/ErrorCallout";
 import { RoleIcon, RoleText } from "../../../../../shared/RoleIcon";
@@ -38,10 +38,12 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
         key={queueItem.id}
         className={classNames("h-auto p-3 text-lg", { grayscale: disabled })}
       >
-        {(queueItem.type === "character" ||
-          queueItem.type === "notInGameCharacter") && (
+        {queueItem.type === "character" && (
           <>
-            <RoleIcon role={queueItem.role} className="mr-2 h-[2em]" />
+            <ActionQueueRowIcon item={queueItem}>
+              <RoleIcon role={queueItem.role} className="mr-2 h-[2em]" />
+            </ActionQueueRowIcon>
+
             <span className="flex-1 text-left">
               <RoleText role={queueItem.role} />
             </span>
@@ -56,9 +58,9 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
         )}
         {queueItem.type === "game" && (
           <>
-            <span className="ml-1 mr-3 flex aspect-square h-[1.5em] grow-0 items-center justify-center">
-              <MoonIcon />
-            </span>
+            <ActionQueueRowIcon item={queueItem}>
+              <MoonIcon className="mr-2 h-[2em]" />
+            </ActionQueueRowIcon>
             <span className="flex-1 text-left">{queueItem.actionType}</span>
           </>
         )}
@@ -71,16 +73,41 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
           <PlayerActionFlow action={queueItem} />
         )}
         {queueItem.type === "game" && <SpecialActionFlow action={queueItem} />}
-        {queueItem.type === "notInGameCharacter" && (
+        {/* {queueItem.type === "notInGameCharacter" && (
           <>
             <span className="text-lg font-semibold">Not in the game</span>
             <span>{getCharacter(queueItem.role).ability}</span>
           </>
-        )}
+        )} */}
         <CompleteActionButton actionId={queueItem.id} />
       </Accordion.Content>
     </Accordion.Item>
   );
+}
+
+interface ActionQueueRowIconProps {
+  item: ActionQueueItem;
+  children: React.ReactNode;
+}
+export function ActionQueueRowIcon({
+  item,
+  children,
+}: ActionQueueRowIconProps) {
+  switch (item.status) {
+    case "done":
+      return (
+        <CheckIcon
+          className="mr-2 h-[2em]"
+          style={{ "--tw-rotate": "0" } as Record<string, string>}
+        />
+      );
+    case "skip":
+      return children;
+    case "notInGame":
+      return children;
+    case "todo":
+      return children;
+  }
 }
 
 export interface PlayerActionFlowProps {
@@ -96,8 +123,7 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
     <div className="flex flex-col gap-2 py-3 text-xl">
       <div className="px-2">{getCharacter(role).ability}</div>
       {ability?.playerMessage ? (
-        <Card.Root>
-          <Card.Header>Create message for player</Card.Header>
+        <Card.Root className="pt-3">
           <Card.Content>
             {ability?.playerMessage && (
               <PlayerMessageFlow
@@ -108,18 +134,18 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
           </Card.Content>
         </Card.Root>
       ) : (
-        <SubmitMessage player={action.player} message={[]} />
+        <SubmitMessage player={""} message={[]} />
       )}
       {(ability?.setReminders?.length ?? 0) > 0 && (
-        <Card.Root>
-          <Card.Header>Apply Reminders</Card.Header>
+        <Card.Root className="pb-2">
+          <Card.Header>Reminders</Card.Header>
           <Card.Content>
             <div className="flex flex-col gap-1">
               {ability?.setReminders?.map((reminderName, index) => (
                 <ReminderCreator
                   key={`${reminderName}_${index}`}
                   reminder={reminderName}
-                  fromPlayer={action.player}
+                  fromPlayer={action.player ?? ""}
                 />
               ))}
             </div>

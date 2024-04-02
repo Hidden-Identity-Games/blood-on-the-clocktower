@@ -7,6 +7,9 @@ function is(num: number) {
 }
 
 export function useScalingTextClassName(width: number) {
+  if (!width) {
+    return "opacity-0";
+  }
   return {
     [is(width).inBounds(150)]: "text-3xl",
     [is(width).inBounds(125, 150)]: "text-2xl",

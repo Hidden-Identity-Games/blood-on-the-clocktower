@@ -4,6 +4,7 @@ import React from "react";
 import { GiAxeInStump } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 
+import { ExecutionInfo } from "../../../../shared/ExecutionInfo";
 import {
   type PlayerFilter,
   PlayerListFilters,
@@ -41,6 +42,7 @@ export function GrimoireTab({
 
   return (
     <>
+      {game.time.time === "day" && <ExecutionInfo />}
       <PlayerListFilters
         allFilters={allFilters}
         selectedFilter={selectedFilter}
@@ -65,7 +67,7 @@ export function GrimoireTab({
                 </button>
               </PlayerList.NoteInputModal>
               <SetCountModal
-                title="Set votes to execute:"
+                title="Votes cast"
                 onSet={(votes: number) => void setVotesToExecute(player, votes)}
                 defaultValue={game.onTheBlock[player] ?? 0}
               >

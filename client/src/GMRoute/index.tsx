@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
-import { Grimoire } from "../shared/Grimoire/GrimoireView";
+import { GMGrimoire } from "../shared/Grimoire/GrimoireView";
 import { LoadingExperience } from "../shared/LoadingExperience";
 import { ControlledSheet } from "../shared/Sheet";
 import { useGame } from "../store/GameContext";
@@ -27,7 +27,7 @@ function GMGrimoireView() {
   return (
     <div className=" relative flex min-h-0 flex-1 justify-between gap-4 overflow-hidden">
       <div className="hidden flex-1 lg:flex">
-        <Grimoire isPlayerView={false} />
+        <GMGrimoire />
       </div>
       <div className="flex h-full w-full min-w-[400px] shrink grow overflow-hidden empty:hidden md:grow-0 lg:w-1/4">
         <SideBar />

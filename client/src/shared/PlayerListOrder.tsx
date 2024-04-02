@@ -43,7 +43,7 @@ export function PlayerListOrder({
         </Dialog.Trigger>
 
         <Dialog.Content className="m-3">
-          <Dialog.Title>Choose a player to lead the list:</Dialog.Title>
+          <Dialog.Title>Choose player at the tp of the circle</Dialog.Title>
           <ChoosePlayer player={player} setPlayer={setFirstSeat} />
         </Dialog.Content>
       </Dialog.Root>

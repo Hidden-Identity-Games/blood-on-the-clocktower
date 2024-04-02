@@ -22,7 +22,8 @@ export function AlignmentChangeMessage({
   const { player } = action;
   const getPlayerAlignment = useGetPlayerAlignment();
   const [alignment, setAlignment] = useState<Alignment>(
-    oppositeAlignment(getPlayerAlignment(player)),
+    // TODO: Fix player message types
+    oppositeAlignment(getPlayerAlignment(player ?? "")),
   );
 
   return (

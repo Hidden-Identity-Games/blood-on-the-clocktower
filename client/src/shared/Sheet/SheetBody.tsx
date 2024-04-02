@@ -1,4 +1,3 @@
-import { CloseButton } from "@design-system/components/ui/CloseButton";
 import { LockOpen1Icon } from "@radix-ui/react-icons";
 import { IconButton } from "@radix-ui/themes";
 import classNames from "classnames";
@@ -7,11 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import React from "react";
 import { CgChevronDown, CgChevronUp } from "react-icons/cg";
 
-import {
-  useIsHiddenView,
-  useSheetExpanded,
-  useSheetView,
-} from "../../store/url";
+import { useIsHiddenView, useSheetExpanded } from "../../store/url";
 
 export interface SheetBodyProps {
   children: React.ReactNode;
@@ -55,8 +50,6 @@ export function SheetContent({ children }: SheetHeaderProps) {
   const startThumb = useRef<number>(0);
   const [currentDiff, setCurrentDiff] = useState(0);
   const [sheetExpanded, setSheetExpanded] = useSheetExpanded();
-  const [_, setSheet] = useSheetView();
-  const [isHiddenView] = useIsHiddenView();
 
   return (
     <motion.div
@@ -92,14 +85,8 @@ export function SheetContent({ children }: SheetHeaderProps) {
         height: sheetExpanded ? "100%" : "0%",
         y: Math.max(currentDiff, 0),
       }}
-      className="pointer-events-auto relative w-full overflow-y-scroll bg-[--color-background] px-2"
+      className="pointer-events-auto relative z-50 w-full overflow-y-scroll bg-[--color-background] px-2"
     >
-      {!isHiddenView && (
-        <CloseButton
-          onClick={() => setSheet({ id: "", isOpen: "closed", type: "none" })}
-        />
-      )}
-
       {children}
     </motion.div>
   );

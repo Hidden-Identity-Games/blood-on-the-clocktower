@@ -35,7 +35,7 @@ export function ReminderIcon({
   );
 }
 
-function getReminderColorByType(type: ReminderType) {
+export function getReminderColorByType(type: ReminderType) {
   switch (type) {
     case "drunk":
     case "poison":

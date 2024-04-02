@@ -98,16 +98,8 @@ export interface SpecialActionQueueItem extends BaseActionQueueItem {
 }
 export interface CharacterActionQueueItem extends BaseActionQueueItem {
   type: "character";
-  player: string;
-  role: Role;
-}
-export interface NotInGameActionQueueItem extends BaseActionQueueItem {
-  type: "notInGameCharacter";
-  player?: undefined;
+  player?: string;
   role: Role;
 }
 
-export type ActionQueueItem =
-  | CharacterActionQueueItem
-  | SpecialActionQueueItem
-  | NotInGameActionQueueItem;
+export type ActionQueueItem = CharacterActionQueueItem | SpecialActionQueueItem;

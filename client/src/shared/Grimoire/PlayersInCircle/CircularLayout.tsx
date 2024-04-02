@@ -6,7 +6,7 @@ const CircularLayoutContext = React.createContext({ radius: 0, totalItems: 0 });
 
 interface CircularLayoutProps {
   totalItems: number;
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode;
   className?: string;
 }
 export function CircularLayout({
@@ -26,7 +26,7 @@ export function CircularLayout({
     <CircularLayoutContext.Provider value={contextValue}>
       <div
         data-radius={contextValue.radius}
-        className={classNames("relative", className)}
+        className={classNames("relative", className, !radius && "opacity-0")}
         style={{ marginLeft: Math.max(width - height, 0) }}
         ref={ref}
       >
