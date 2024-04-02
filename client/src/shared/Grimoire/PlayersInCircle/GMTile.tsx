@@ -12,7 +12,7 @@ import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
 import { useClearPlayerReminder } from "../../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { ReminderIcon } from "../../Reminders/ReminderIcon";
-import { getRoleIcon, RoleText } from "../../RoleIcon";
+import { getRoleIcon, RoleIcon, RoleText } from "../../RoleIcon";
 import { PlaceInCircle } from ".";
 import { useScalingTextClassName } from "./ScalingText";
 
@@ -56,6 +56,7 @@ export function GMTile({ player, index }: TileProps) {
   const remindersToRender = showOverflowReminders
     ? baseReminders
     : [...baseReminders, ...overflowReminders];
+  const bluffing = ["virgin"];
 
   return (
     <>
@@ -86,6 +87,8 @@ export function GMTile({ player, index }: TileProps) {
           </Dialog.Root>
         </PlaceInCircle>
       )}
+      {/* We need to add pointer events manually to prevent the div from overlapping us, because corners bullshit */}
+
       <PlaceInCircle key={player} index={index} stepsIn={1}>
         <div className="z-10 h-full w-full p-2">
           <PlayerList.Actions player={player}>
@@ -127,6 +130,16 @@ export function GMTile({ player, index }: TileProps) {
                 >
                   {player}
                 </div>
+              </div>
+              <div className="absolute left-0 top-0 flex h-full flex-col items-center justify-center">
+                {bluffing.map((bluff) => (
+                  <div className="" key={bluff}>
+                    <RoleIcon
+                      role={bluff}
+                      className="rounded-full bg-gray-600"
+                    />
+                  </div>
+                ))}
               </div>
             </button>
           </PlayerList.Actions>
