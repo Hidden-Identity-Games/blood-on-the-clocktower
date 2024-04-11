@@ -4,13 +4,12 @@ import { expect, test } from "@playwright/test";
 import { trpc } from "./api/client";
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
 import { QuickSetupHelpers } from "./helpers/quickHelpers";
-import { urlFromBase } from "./productUrls";
 
 test("join game", async ({ page }) => {
   const { gameId } = await QuickSetupHelpers.createNewGame(
     getScript("Trouble Brewing"),
   );
-  await page.goto(urlFromBase("", {}));
+  await ClickthroughModel.openHomePage(page);
   await page.getByRole("button", { name: "Join" }).click();
   await page.getByRole("textbox", { name: "code" }).fill(gameId);
   await page.getByRole("button", { name: "Join" }).click();

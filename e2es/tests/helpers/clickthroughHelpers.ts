@@ -10,8 +10,15 @@ import { urlFromBase } from "../productUrls";
 import { asyncMap, getRandomCharactersForDistribution } from "./utils";
 
 export const ClickthroughModel = {
+  openHomePage: async function openHomePage(
+    page: Page,
+    testPlayerKey?: string,
+  ) {
+    await page.goto(urlFromBase("", testPlayerKey ? { testPlayerKey } : {}));
+    await page.getByRole("button", { name: "Close dialog" }).click();
+  },
   createNewGame: async function createNewGame(page: Page, script: ScriptName) {
-    await page.goto(urlFromBase("", {}));
+    await ClickthroughModel.openHomePage(page);
     await page.getByRole("button", { name: "Create" }).click();
     await page
       .getByRole("button", {
@@ -56,7 +63,8 @@ export const ClickthroughModel = {
     playerName: string,
     testKey: string = playerName,
   ) {
-    await page.goto(urlFromBase("", { testPlayerKey: testKey }));
+    await ClickthroughModel.openHomePage(page, testKey);
+
     await page.getByRole("button", { name: "Join game" }).click();
     await page.getByRole("textbox", { name: "code" }).fill(gameId);
     await page.getByRole("button", { name: "Join" }).click();
