@@ -137,10 +137,15 @@ export function GameMasterActions({
 
 function FirstSeatButton() {
   const [firstSeat, setFirstSeat] = useFirstSeat();
+  const { game } = useDefiniteGame();
+
+  if (!game.playerList?.length) {
+    return null;
+  }
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button className="w-full">Choose Circle Start</Button>
       </Dialog.Trigger>
 
@@ -158,6 +163,10 @@ function FirstSeatButton() {
 function PlayerSeatingModal() {
   const { game } = useDefiniteGame();
   const [, , , setPlayerOrder] = useOrderPlayer();
+
+  if (!game.playerList?.length) {
+    return null;
+  }
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>

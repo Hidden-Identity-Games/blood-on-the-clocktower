@@ -23,7 +23,7 @@ export function ExportButton({
   const { game } = useDefiniteGame();
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button disabled={disabled} className={className}>
           Export to Townsquare
         </Button>
