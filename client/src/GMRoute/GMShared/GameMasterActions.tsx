@@ -144,7 +144,7 @@ function FirstSeatButton() {
         <Button className="w-full">Choose Circle Start</Button>
       </Dialog.Trigger>
 
-      <Dialog.Content className="m-3 *:w-full">
+      <Dialog.Content className="m-3 [&>*]:w-full">
         <Dialog.Header>Choose player at the top of the circle</Dialog.Header>
         <PlayerSelect
           currentPlayer={firstSeat}

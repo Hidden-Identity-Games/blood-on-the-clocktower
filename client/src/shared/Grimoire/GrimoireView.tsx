@@ -70,7 +70,7 @@ export function GMGrimoire({ hideCenter }: GrimoireProps) {
               <HideShowButton />
               <div
                 className={classNames(
-                  isHiddenView && "*:opacity-0",
+                  isHiddenView && "[&>*]:opacity-0",
                   "contents",
                 )}
               >

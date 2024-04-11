@@ -2,6 +2,7 @@ import { Button } from "@design-system/components/button";
 import { Textarea } from "@design-system/components/ui/textarea";
 import { groupBy, type PlayerMessage } from "@hidden-identity/shared";
 import { Heading, Text } from "@radix-ui/themes";
+import { Mail } from "lucide-react";
 import { useState } from "react";
 
 import { useDefiniteGame } from "../../../store/GameContext";
@@ -14,7 +15,6 @@ import {
   SheetContent,
   SheetHeader,
 } from "../SheetBody";
-import { Mail } from "lucide-react";
 
 interface MessageSheetPiecesProps {
   message?: PlayerMessage;
@@ -58,10 +58,7 @@ function Body({ message }: MessageSheetPiecesProps) {
         <div className="flex flex-col gap-1 px-2" key={section}>
           <h1 className="text-4xl font-bold">{section}:</h1>
           {messagesByGroup[section].map((revealItem, UNSAFE_INDEX_KEY) => (
-            <div
-              className="columns-3 gap-3 pl-3 *:text-clip *:truncate"
-              key={UNSAFE_INDEX_KEY}
-            >
+            <div className="columns-2 gap-3 pl-3" key={UNSAFE_INDEX_KEY}>
               {revealItem.message && (
                 <div className="text-xl font-semibold">
                   {revealItem.message}
