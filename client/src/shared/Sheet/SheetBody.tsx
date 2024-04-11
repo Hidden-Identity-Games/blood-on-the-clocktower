@@ -2,6 +2,7 @@ import { LockOpen1Icon } from "@radix-ui/react-icons";
 import { IconButton } from "@radix-ui/themes";
 import classNames from "classnames";
 import { motion } from "framer-motion";
+import { LockKeyhole } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import React from "react";
 import { CgChevronDown, CgChevronUp } from "react-icons/cg";
@@ -110,8 +111,11 @@ export function LockedSheetHeader() {
   const [_, setIsHiddenView] = useIsHiddenView();
 
   return (
-    <div className="flex h-full w-full items-center justify-between">
-      <div className="text-base font-bold">Only unlock if Storyteller</div>
+    <div className="flex h-full w-full items-center justify-between px-3">
+      <span className="h-full items-center text-3xl font-bold">
+        <LockKeyhole className="inline-block pr-2" size="1em" />
+        <span>Locked</span>
+      </span>
       <IconButton
         variant="surface"
         onClick={() => setIsHiddenView(false)}

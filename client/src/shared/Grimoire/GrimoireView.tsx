@@ -1,4 +1,5 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
+import classNames from "classnames";
 
 import { useGame } from "../../store/GameContext";
 import {
@@ -27,6 +28,7 @@ function HideShowButton() {
     </Button>
   ) : (
     <Button
+      className="w-fit"
       onClick={() => {
         // uggh https://github.com/remix-run/react-router/issues/9757
         setSearchParams({ hiddenView: "true", sheetView: undefined });
@@ -49,6 +51,7 @@ export function GMGrimoire({ hideCenter }: GrimoireProps) {
   if (!game) {
     return <LoadingExperience>Loading</LoadingExperience>;
   }
+  const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
 
   return (
     <Flex
@@ -63,7 +66,21 @@ export function GMGrimoire({ hideCenter }: GrimoireProps) {
       >
         {!hideCenter && (
           <PlaceInCenter>
-            <HideShowButton />
+            <div className="flex flex-col items-center gap-2">
+              <HideShowButton />
+              <div
+                className={classNames(
+                  isHiddenView && "*:opacity-0",
+                  "contents",
+                )}
+              >
+                <div className="text-2xl">
+                  Alive players: {alivePlayers.length}
+                </div>
+
+                <ExecutionInfo />
+              </div>
+            </div>
           </PlaceInCenter>
         )}
         <>
@@ -90,6 +107,7 @@ export function SpectatorGrimoire() {
   }
 
   const alivePlayers = players.filter((p) => !game.deadPlayers[p]);
+  const isNight = game.time.time === "night";
 
   return (
     <Flex
@@ -104,21 +122,29 @@ export function SpectatorGrimoire() {
       >
         <PlaceInCenter>
           <Flex direction="column" gap="3">
-            <>
-              <TeamDistributionBar />
-              <Flex className="text-center" gap="0" direction="column">
-                <Text>Alive players: {alivePlayers.length}</Text>
-                <Flex justify="between" p="2" direction="column" gap="2">
-                  <ExecutionInfo />
+            {isNight ? (
+              "Information hidden during night time"
+            ) : (
+              <>
+                <TeamDistributionBar />
+                <Flex className="text-center" gap="0" direction="column">
+                  <Text>Alive players: {alivePlayers.length}</Text>
+                  <Flex justify="between" p="2" direction="column" gap="2">
+                    <ExecutionInfo />
+                  </Flex>
                 </Flex>
-              </Flex>
-            </>
+              </>
+            )}
           </Flex>
         </PlaceInCenter>
         <>
-          {players.map((player, idx) => (
-            <SpectatorTile player={player} index={idx} key={player} />
-          ))}
+          {players.map((player, idx) =>
+            isNight ? (
+              <HiddenTile player={player} index={idx} key={player} />
+            ) : (
+              <SpectatorTile player={player} index={idx} key={player} />
+            ),
+          )}
         </>
       </CircularLayout>
     </Flex>

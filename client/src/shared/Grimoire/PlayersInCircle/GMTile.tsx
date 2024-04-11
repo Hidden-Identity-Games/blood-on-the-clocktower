@@ -56,6 +56,9 @@ export function GMTile({ player, index }: TileProps) {
   const remindersToRender = showOverflowReminders
     ? baseReminders
     : [...baseReminders, ...overflowReminders];
+  const activeQueueItem = game.actionQueue.find(
+    (item) => item.status === "todo",
+  );
 
   return (
     <>
@@ -95,13 +98,16 @@ export function GMTile({ player, index }: TileProps) {
                 ref={ref}
                 className={classNames(
                   scalingTextclass,
-                  "h-full w-full group relative flex flex-col p-2 hover:z-30 bg-accent bg-opacity-70 rounded-full justify-around items-center hover:opacity-100",
+                  "h-full w-full group relative flex flex-col p-2 hover:z-30  bg-opacity-70 rounded-full justify-around items-center hover:opacity-100",
                   {
                     "outline outline-8 outline-red-500 opacity-10":
                       game.deadPlayers[player] && game.deadVotes[player],
                     "opacity-50":
                       game.deadPlayers[player] && !game.deadVotes[player],
                   },
+                  activeQueueItem?.player === player
+                    ? "bg-destructive scale-125"
+                    : "bg-accent",
                 )}
               >
                 <>

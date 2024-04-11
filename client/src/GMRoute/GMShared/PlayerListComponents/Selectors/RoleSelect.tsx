@@ -18,6 +18,7 @@ interface RoleSelectProps {
   currentRole: Role;
   onSelect: (nextrole: Role | null) => void;
   children?: React.ReactNode;
+  removable: boolean;
 }
 
 export function RoleSelect({
@@ -25,6 +26,7 @@ export function RoleSelect({
   onSelect,
   traveler,
   children,
+  removable,
 }: RoleSelectProps) {
   const { game } = useDefiniteGame();
   const { script } = game;
@@ -64,13 +66,19 @@ export function RoleSelect({
       <Dialog.Content className="flex flex-col gap-1">
         <Dialog.Header>Choose role</Dialog.Header>
         <Dialog.Close key="remove" asChild>
-          <Button
-            className="w-full capitalize"
-            variant="secondary"
-            onClick={() => onSelect(null)}
-          >
-            Remove
-          </Button>
+          {removable ? (
+            <Button
+              className="w-full capitalize"
+              variant="secondary"
+              onClick={() => onSelect(null)}
+            >
+              Remove
+            </Button>
+          ) : (
+            <Button className="w-full capitalize" variant="secondary">
+              Cancel
+            </Button>
+          )}
         </Dialog.Close>
         {roles.map((role) => (
           <Dialog.Close key={role} asChild>
@@ -125,6 +133,7 @@ export function RoleSelectList({
       </div>
       {[...roles].map((current, index) => (
         <RoleSelect
+          removable={!fixedSize}
           key={current}
           currentRole={current}
           onSelect={(newItem) => replaceRole(newItem, index)}

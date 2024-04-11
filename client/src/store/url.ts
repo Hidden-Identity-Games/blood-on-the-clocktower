@@ -5,6 +5,8 @@ import {
   useSearchParams as useRouterSearchParams,
 } from "react-router-dom";
 
+import { useGame } from "./GameContext";
+
 const TopLevelSheets = ["message", "none"] as const;
 const OpenClosed = ["open", "closed"] as const;
 type TopLevelSheetKey = (typeof TopLevelSheets)[number];
@@ -96,13 +98,14 @@ export function urlFromOrigin(url: Route, searchParams: SearchParams): string {
 
 export function useFirstSeat(): [string | null, (next: string) => void] {
   const [{ firstSeat }, setSearchParams] = useSearchParams();
+  const { game } = useGame();
   const setFirstPlayer = useCallback(
     (player: string) => {
       setSearchParams({ firstSeat: player });
     },
     [setSearchParams],
   );
-  return [firstSeat ?? null, setFirstPlayer];
+  return [(firstSeat || game?.playerList[0]) ?? null, setFirstPlayer];
 }
 
 export function useSheetView(): [

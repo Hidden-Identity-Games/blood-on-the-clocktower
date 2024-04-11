@@ -55,7 +55,7 @@ export function PlaceInCircle({
   const pepperoniSize = widthAtTopOfStep;
   const pepperoniRadius = pepperoniSize / 2;
 
-  const angle = ((2 * Math.PI) / totalItems) * index + -Math.PI / 2;
+  const angle = ((2 * Math.PI) / totalItems) * index;
   const distanceToCenterOfPepperoni = distanceToStartOfStep - pepperoniRadius;
 
   const position = {

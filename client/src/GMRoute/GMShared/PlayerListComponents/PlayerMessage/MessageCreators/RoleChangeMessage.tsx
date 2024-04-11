@@ -47,6 +47,7 @@ export function RoleChangeMessage({ message, action }: RoleChangeMessageProps) {
         replaceRole={rolesState.replace}
       />
       <AlignmentSelect
+        player={player}
         currentAlignment={
           alignmentOverride || getDefaultAlignment(rolesState.value[0])
         }

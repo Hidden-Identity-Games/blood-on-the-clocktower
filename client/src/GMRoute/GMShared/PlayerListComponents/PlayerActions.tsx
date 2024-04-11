@@ -1,4 +1,4 @@
-import { type UnifiedGame } from "@hidden-identity/shared";
+import { getCharacter, type UnifiedGame } from "@hidden-identity/shared";
 import { Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { SkullIcon } from "lucide-react";
 import { FaFeather, FaGear } from "react-icons/fa6";
@@ -37,7 +37,7 @@ export function PlayerActions({
     <Dialog.Root>
       <Dialog.Trigger>{children}</Dialog.Trigger>
       <Dialog.Content className="m-2">
-        <Flex gap="2" direction="column" className="py-2 capitalize">
+        <Flex gap="2" direction="column" className="py-2 ">
           <Flex className="justify-center pb-2" align="center">
             {game.deadPlayers[player] && <SkullIcon height="1em" />}
             <div className="mx-3 flex items-center gap-2 text-3xl font-bold">
@@ -55,6 +55,9 @@ export function PlayerActions({
             </div>
           </Flex>
         </Flex>
+        <div className="p-2 pb-4 text-xl">
+          {getCharacter(game.playersToRoles[player]).ability}
+        </div>
 
         <Flex direction="column" gap="2">
           <AddReminder player={player}>
@@ -124,6 +127,7 @@ function RoleChangeMenuItem({
 
   return (
     <RoleSelect
+      removable={false}
       traveler={game.travelers[player]}
       currentRole={game.playersToRoles[player]}
       onSelect={(next) => next && void setPlayerRole(player, next)}
@@ -138,6 +142,7 @@ function AlignmentChangeMenuItem({ player }: { player: string }) {
 
   return (
     <AlignmentSelect
+      player={player}
       currentAlignment={getPlayerAlignment(player)}
       onSelect={(next) => next && void setPlayerAlignment(player, next)}
     />
