@@ -64,8 +64,6 @@ export function NewGameButton({
                 placeholder="number of players"
                 type="number"
                 onChange={(e) => setPlayerCount(Number(e.target.value))}
-                // stop the wheel from changing this input
-                onWheel={(e) => e.preventDefault()}
                 value={playerCount}
                 autoFocus
               />

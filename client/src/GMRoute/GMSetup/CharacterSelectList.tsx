@@ -1,3 +1,6 @@
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Input } from "@design-system/components/ui/input";
 import { type Character, type Role } from "@hidden-identity/shared";
 import {
   CHARACTERS,
@@ -5,9 +8,7 @@ import {
   getCharacter,
 } from "@hidden-identity/shared";
 import {
-  Button,
   Checkbox,
-  Dialog,
   Flex,
   Heading,
   IconButton,
@@ -16,7 +17,8 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import Fuse from "fuse.js";
-import React from "react";
+import { Bot } from "lucide-react";
+import React, { useEffect } from "react";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 import { FaQuestion } from "react-icons/fa6";
 
@@ -25,35 +27,34 @@ import { DestructiveButton } from "../../shared/DestructiveButton";
 import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import { RoleIcon, RoleName } from "../../shared/RoleIcon";
 import { SetCount } from "../../shared/SetCount";
+import {
+  useGenerateRandomRoleSet,
+  useSetPlayerEstimate,
+  useSetRoleInGame,
+} from "../../store/actions/gmActions";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useSetScript } from "../../store/useStore";
 
-interface StateContainer<T> {
-  value: T;
-  set: (newValue: T | ((prevState: T) => T)) => void;
-}
-
 export interface CharacterSelectState {
-  selectedRoles: StateContainer<Record<Role, number>>;
+  selectedRoles: {
+    set: (role: Role, count: number) => void;
+    value: Record<Role, number>;
+  };
   availableRoles: Role[];
 }
 
 // doing some wonky shit because we cannot elave the tab mounted when we switch.
 // so if we don't hoist state we lose data when switching tabs.
-export function useCharacterSelectState(
-  availableRoles?: Role[],
-): CharacterSelectState {
-  const characters: Role[] = availableRoles ?? [];
-  const [selectedRoles, setSelectedRoles] = React.useState<
-    Record<Role, number>
-  >({});
+export function useCharacterSelectState(): CharacterSelectState {
+  const { game } = useDefiniteGame();
+  const [, , , setRoles] = useSetRoleInGame();
 
   return {
     selectedRoles: {
-      set: setSelectedRoles,
-      value: selectedRoles,
+      set: (role: Role, count: number) => void setRoles(role, count),
+      value: game.setupRoleSet,
     },
-    availableRoles: characters,
+    availableRoles: game.script.map(({ id }) => id),
   };
 }
 
@@ -86,9 +87,57 @@ export function CharacterSelectList({
       Unknown: state.availableRoles.filter((c) => !getCharacter(c)),
     };
   }, [state.availableRoles]);
+  const [, setPlayerEstimateLoading, , setPlayerEstimate] =
+    useSetPlayerEstimate();
+  const [, , , generateRandomRoles] = useGenerateRandomRoleSet();
 
+  useEffect(() => () => console.log("unmount"), []);
   return (
-    <Flex gap="1" direction="column" px="3">
+    <Flex gap="1" direction="column" px="3" py="1">
+      <div className="flex items-center gap-2">
+        <Input
+          placeholder="Expected player count"
+          className="h-12 flex-1"
+          aria-label="Expected player count"
+          disabled={setPlayerEstimateLoading}
+          onBlur={(e) => void setPlayerEstimate(Number(e.target.value))}
+          defaultValue={game.estimatedPlayerCount || undefined}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              void setPlayerEstimate(
+                Number((e.target as HTMLInputElement).value),
+              );
+            }
+          }}
+          type="number"
+        />
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <Button aria-label="Randomize">
+              <Bot />
+            </Button>
+          </Dialog.Trigger>
+          <Dialog.Content>
+            <Dialog.Header>Generate a base script</Dialog.Header>
+            <Dialog.Description>
+              <div className="py-1">
+                This will generate a base role set of random characters.
+              </div>
+              <div>
+                <strong>WARNING</strong> You will need to manually modify based
+                on additional setup rules
+              </div>
+            </Dialog.Description>
+            <Dialog.Footer>
+              <Dialog.Close asChild>
+                <Button onClick={() => void generateRandomRoles()}>
+                  Generate starter role set
+                </Button>
+              </Dialog.Close>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Root>
+      </div>
       {Object.entries(rolesByType)
         .filter(([_, roles]) => roles.length > 0)
         .map(([roleType, roles]) => (
@@ -129,10 +178,10 @@ export function CharacterSelectList({
                         className="mr-1"
                         checked={state.selectedRoles.value[role] > 0}
                         onClick={() => {
-                          state.selectedRoles.set((selectedroles) => ({
-                            ...selectedroles,
-                            [role]: selectedroles[role] ? 0 : 1,
-                          }));
+                          state.selectedRoles.set(
+                            role,
+                            state.selectedRoles.value[role] ? 0 : 1,
+                          );
                         }}
                       />
                     )}
@@ -149,10 +198,7 @@ export function CharacterSelectList({
                       await setScript(
                         script.filter((char) => char.id !== role),
                       );
-                      state.selectedRoles.set((selectedRoles) => ({
-                        ...selectedRoles,
-                        [role]: 0,
-                      }));
+                      state.selectedRoles.set(role, 0);
                     }}
                     confirmationText={`This will ENTIRELY remove the ${RoleName(
                       role,
@@ -193,64 +239,62 @@ function AddRole({ characterSelectState }: AddRoleProps) {
         setResults([]);
       }}
     >
-      <Dialog.Trigger>
-        <Flex gap="5" align="center" style={{ height: "2em" }}>
+      <Flex gap="5" align="center" style={{ height: "2em" }}>
+        <Dialog.Trigger asChild>
           <IconButton variant="soft" size="1">
             <AiOutlinePlus />
           </IconButton>
-          <label>Add a Role</label>
-        </Flex>
-      </Dialog.Trigger>
+        </Dialog.Trigger>
+        <label>Add a Role</label>
+      </Flex>
 
       <Dialog.Content className="mx-3">
-        <Dialog.Title>Role Search:</Dialog.Title>
-
-        <Flex direction="column" gap="3">
-          <TextField.Input
-            placeholder="Find a role..."
-            value={searchTerm}
-            onChange={(e) => {
-              const nextSearchTerm = e.currentTarget.value;
-              setSearchTerm(nextSearchTerm);
-              setResults(
-                fuse
-                  .search(nextSearchTerm)
-                  .slice(0, 3)
-                  .map(({ item }) => getCharacter(item.id as Role)),
-              );
-            }}
-          />
-          {results.map((role) => (
-            <Dialog.Close key={role.id}>
-              <button
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onClick={async () => {
-                  if (!script.find((r) => r.id === role.id)) {
-                    await setScript([...script, { id: role.id }]);
-                  }
-                  if (!characterSelectState.selectedRoles.value[role.id]) {
-                    characterSelectState.selectedRoles.set((selectedRoles) => ({
-                      ...selectedRoles,
-                      [role.id]: 1,
-                    }));
-                  }
-                }}
-              >
-                <Flex justify="between" align="center">
-                  <Flex gap="2" align="center">
-                    <RoleIcon role={role.id} className="h-[60px]" />
+        <Dialog.Header>Role Search:</Dialog.Header>
+        <Dialog.Description>
+          <Flex direction="column" gap="3">
+            <TextField.Input
+              placeholder="Find a role..."
+              value={searchTerm}
+              onChange={(e) => {
+                const nextSearchTerm = e.currentTarget.value;
+                setSearchTerm(nextSearchTerm);
+                setResults(
+                  fuse
+                    .search(nextSearchTerm)
+                    .slice(0, 3)
+                    .map(({ item }) => getCharacter(item.id as Role)),
+                );
+              }}
+            />
+            {results.map((role) => (
+              <Dialog.Close key={role.id} asChild>
+                <button
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                  onClick={async () => {
+                    if (!script.find((r) => r.id === role.id)) {
+                      await setScript([...script, { id: role.id }]);
+                    }
+                    if (!characterSelectState.selectedRoles.value[role.id]) {
+                      characterSelectState.selectedRoles.set(role.id, 1);
+                    }
+                  }}
+                >
+                  <Flex justify="between" align="center">
+                    <Flex gap="2" align="center">
+                      <RoleIcon role={role.id} className="h-[60px]" />
+                      <Text size="5" autoCapitalize="true">
+                        {RoleName(role.id)}
+                      </Text>
+                    </Flex>
                     <Text size="5" autoCapitalize="true">
-                      {RoleName(role.id)}
+                      {role.team}
                     </Text>
                   </Flex>
-                  <Text size="5" autoCapitalize="true">
-                    {role.team}
-                  </Text>
-                </Flex>
-              </button>
-            </Dialog.Close>
-          ))}
-        </Flex>
+                </button>
+              </Dialog.Close>
+            ))}
+          </Flex>
+        </Dialog.Description>
       </Dialog.Content>
     </Dialog.Root>
   );
@@ -272,6 +316,7 @@ function RoleCount({ role, characterSelectState }: RoleCountProps) {
     >
       <Dialog.Trigger
         disabled={!characterSelectState.selectedRoles.value[role]}
+        asChild
       >
         <IconButton
           variant="surface"
@@ -287,34 +332,28 @@ function RoleCount({ role, characterSelectState }: RoleCountProps) {
       </Dialog.Trigger>
 
       <Dialog.Content className="mx-3">
-        <Flex direction="column" gap="9">
-          <Dialog.Title>Number of players to get this Role:</Dialog.Title>
+        <Dialog.Header>Number of players to get this Role</Dialog.Header>
+        <Dialog.Description>
           <Text size="8">
             <Flex justify="center" align="center" gap="7">
               <SetCount count={roleCount} setCount={setRoleCount} />
             </Flex>
           </Text>
-          <Flex justify="between">
-            <Dialog.Close>
-              <Button variant="surface" size="3">
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close>
-              <Button
-                size="3"
-                onClick={() =>
-                  characterSelectState.selectedRoles.set((selected) => ({
-                    ...selected,
-                    [role]: roleCount,
-                  }))
-                }
-              >
-                Confirm
-              </Button>
-            </Dialog.Close>
-          </Flex>
-        </Flex>
+        </Dialog.Description>
+        <Dialog.Footer>
+          <Dialog.Close asChild>
+            <Button variant="secondary">Cancel</Button>
+          </Dialog.Close>
+          <Dialog.Close asChild>
+            <Button
+              onClick={() =>
+                characterSelectState.selectedRoles.set(role, roleCount)
+              }
+            >
+              Confirm
+            </Button>
+          </Dialog.Close>
+        </Dialog.Footer>
       </Dialog.Content>
     </Dialog.Root>
   );

@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
 import { QuickSetupHelpers } from "./helpers/quickHelpers";
+import { findCharacterDistributionCounts } from "./helpers/selectors";
 import { urlFromBase } from "./productUrls";
 
 test("can create game", async ({ page }) => {
@@ -60,4 +61,60 @@ test("can start game", async ({ page }) => {
     .click();
 
   await expect(page.getByRole("tab", { name: "night" })).toBeEnabled();
+});
+
+test("can use player estimates", async ({ page }) => {
+  const script = "Trouble Brewing";
+  const players = Array.from({ length: 12 }, (_, i) => `player${i}`);
+  await ClickthroughModel.createNewGame(page, script);
+
+  await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
+
+  await ClickthroughModel.setPlayerEstimate(page, players.length);
+
+  await ClickthroughModel.fillRoleBag(page, {
+    script: getScript(script),
+    playerCount: players.length,
+  });
+
+  expect(await findCharacterDistributionCounts(page, "Demon")).toMatchObject({
+    count: 1,
+    target: 1,
+  });
+  expect(await findCharacterDistributionCounts(page, "Minion")).toMatchObject({
+    count: 2,
+    target: 2,
+  });
+  expect(await findCharacterDistributionCounts(page, "Outsider")).toMatchObject(
+    { count: 2, target: 2 },
+  );
+  expect(
+    await findCharacterDistributionCounts(page, "Townsfolk"),
+  ).toMatchObject({ count: 7, target: 7 });
+});
+
+test("can generate roles for a script", async ({ page }) => {
+  const players = Array.from({ length: 12 }, (_, i) => `player${i}`);
+  await ClickthroughModel.createNewGame(page, "Trouble Brewing");
+
+  await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
+
+  await ClickthroughModel.generateRandomRoles(page, {
+    playerCount: players.length,
+  });
+
+  expect(await findCharacterDistributionCounts(page, "Demon")).toMatchObject({
+    count: 1,
+    target: 1,
+  });
+  expect(await findCharacterDistributionCounts(page, "Minion")).toMatchObject({
+    count: 2,
+    target: 2,
+  });
+  expect(await findCharacterDistributionCounts(page, "Outsider")).toMatchObject(
+    { count: 2, target: 2 },
+  );
+  expect(
+    await findCharacterDistributionCounts(page, "Townsfolk"),
+  ).toMatchObject({ count: 7, target: 7 });
 });

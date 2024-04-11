@@ -10,7 +10,7 @@ import {
 import { ExecutionInfo } from "../ExecutionInfo";
 import { LoadingExperience } from "../LoadingExperience";
 import { usePlayerOrder } from "../PlayerListOrder";
-import { TeamDistributionBar } from "../TeamDistributionBar";
+import { allNonTravelers, TeamDistributionBar } from "../TeamDistributionBar";
 import { CircularLayout, PlaceInCenter } from "./PlayersInCircle";
 import { GMTile, HiddenTile } from "./PlayersInCircle/GMTile";
 import { SpectatorTile } from "./PlayersInCircle/SpectatorTile";
@@ -126,7 +126,11 @@ export function SpectatorGrimoire() {
               "Information hidden during night time"
             ) : (
               <>
-                <TeamDistributionBar />
+                <TeamDistributionBar
+                  targetPlayerCount={
+                    game.estimatedPlayerCount ?? allNonTravelers(game).length
+                  }
+                />
                 <Flex className="text-center" gap="0" direction="column">
                   <Text>Alive players: {alivePlayers.length}</Text>
                   <Flex justify="between" p="2" direction="column" gap="2">

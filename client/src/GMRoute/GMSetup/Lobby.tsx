@@ -6,7 +6,10 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 import { FaMasksTheater } from "react-icons/fa6";
 
-import { TeamDistributionBar } from "../../shared/TeamDistributionBar";
+import {
+  allNonTravelers,
+  TeamDistributionBar,
+} from "../../shared/TeamDistributionBar";
 import { useDefiniteGame } from "../../store/GameContext";
 import { GameMasterActions } from "../GMShared/GameMasterActions";
 import {
@@ -21,17 +24,12 @@ export interface LobbyProps {
 
 export function Lobby() {
   const { game } = useDefiniteGame();
-  const { script } = game;
   const [selectedTab, setSelectedTab] = useState<string>("roles");
 
-  const characterSelectState = useCharacterSelectState(
-    script.map(({ id }) => id),
-  );
+  const characterSelectState = useCharacterSelectState();
 
-  const availableRolesList = Object.entries(
-    characterSelectState.selectedRoles.value,
-  ).flatMap(([role, qty]) =>
-    Array.from({ length: qty }).map(() => role),
+  const availableRolesList = Object.entries(game.setupRoleSet).flatMap(
+    ([role, qty]) => Array.from({ length: qty }).map(() => role),
   ) as Role[];
 
   const gameStartable =
@@ -47,6 +45,9 @@ export function Lobby() {
       className="flex flex-1 flex-col overflow-y-auto"
     >
       <TeamDistributionBar
+        targetPlayerCount={
+          game.estimatedPlayerCount ?? allNonTravelers(game).length
+        }
         charsSelected={
           Object.entries(characterSelectState.selectedRoles.value).flatMap(
             ([role, qty]) => Array.from({ length: qty }).map(() => role),
@@ -161,10 +162,7 @@ export function Lobby() {
                   value="menu"
                 >
                   <div className="p-2">
-                    <GameMasterActions
-                      gameStartable={gameStartable}
-                      availableRolesList={availableRolesList}
-                    />
+                    <GameMasterActions gameStartable={gameStartable} />
                   </div>
                 </Tabs.Content>
               </motion.div>

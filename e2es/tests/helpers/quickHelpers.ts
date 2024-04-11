@@ -1,4 +1,5 @@
 import {
+  getRandomCharactersForDistribution,
   getScript,
   type Script,
   type ScriptName,
@@ -6,7 +7,7 @@ import {
 import { generate } from "random-words";
 
 import { trpc } from "../api/client";
-import { asyncMap, getRandomCharactersForDistribution } from "./utils";
+import { asyncMap } from "./utils";
 
 /**
  * functions in this file help get games into states needed to start a test.  They do not test app funcionality, just help get things set up.
@@ -98,9 +99,17 @@ export const QuickSetupHelpers = {
     gameId: string;
     playerCount: number;
   }) {
-    const roles = getRandomCharactersForDistribution(script, playerCount).map(
-      (c) => c.id,
-    );
-    await trpc.assignRoles.mutate({ roles, gameId });
+    const roles = getRandomCharactersForDistribution(script, playerCount)
+      .map((c) => c.id)
+      .reduce<Record<string, number>>(
+        (acc, role) => ({ ...acc, [role]: (acc[role] || 0) + 1 }),
+        {},
+      );
+
+    for (const key in roles) {
+      await trpc.setSetupRole.mutate({ gameId, role: key, count: roles[key] });
+    }
+
+    await trpc.assignRoles.mutate({ gameId });
   },
 };

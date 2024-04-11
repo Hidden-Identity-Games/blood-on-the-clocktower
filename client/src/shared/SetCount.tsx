@@ -34,7 +34,7 @@ export function SetCount({
         <AiOutlineMinus />
       </IconButton>
       <Input
-        className="flex w-16 text-center"
+        className="mx-4 flex w-16 text-center"
         type="number"
         inputMode="decimal"
         value={count}

@@ -35,6 +35,8 @@ export interface UnifiedGameComputed {
 }
 
 export interface BaseUnifiedGame {
+  setupRoleSet: Record<Role, number>;
+  estimatedPlayerCount: number | null;
   playersToRoles: Record<string, Role>;
   partialPlayerOrdering: Record<string, Neighbors | null>;
   gmSecretHash: string;

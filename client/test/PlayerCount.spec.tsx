@@ -21,13 +21,10 @@ describe("TeamDistributionBar", () => {
     describe("targets", () => {
       it("all categories sum to player count", () => {
         const players = createPlayers(playerCount);
-        render(<TeamDistributionBar />, {
+        render(<TeamDistributionBar targetPlayerCount={players.length} />, {
           gameContext: {
             gameId: "test",
-            game: {
-              playerList: players,
-              travelers: Object.fromEntries(players.map((p) => [p, false])),
-            },
+            game: {},
           },
         });
         const allRoleMarkers = screen.getAllByTestId(/-distribution-target/);
@@ -45,13 +42,10 @@ describe("TeamDistributionBar", () => {
       )("$team", ({ team }) => {
         it("shows matching number", () => {
           const players = createPlayers(playerCount);
-          render(<TeamDistributionBar />, {
+          render(<TeamDistributionBar targetPlayerCount={players.length} />, {
             gameContext: {
               gameId: "test",
-              game: {
-                playerList: players,
-                travelers: Object.fromEntries(players.map((p) => [p, false])),
-              },
+              game: {},
             },
           });
 
@@ -67,13 +61,10 @@ describe("TeamDistributionBar", () => {
   describe("charsSelected", () => {
     it("hides count and slash if not provided", () => {
       const players = createPlayers(10);
-      render(<TeamDistributionBar />, {
+      render(<TeamDistributionBar targetPlayerCount={players.length} />, {
         gameContext: {
           gameId: "test",
-          game: {
-            playerList: players,
-            travelers: Object.fromEntries(players.map((p) => [p, false])),
-          },
+          game: {},
         },
       });
       const allRoleMarkers = screen.queryAllByTestId(/-distribution-count/);
@@ -86,6 +77,7 @@ describe("TeamDistributionBar", () => {
       const players = createPlayers(6);
       render(
         <TeamDistributionBar
+          targetPlayerCount={players.length}
           charsSelected={
             [
               // Demon: 1

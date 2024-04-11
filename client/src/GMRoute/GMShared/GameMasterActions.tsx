@@ -1,7 +1,6 @@
 import { Button } from "@design-system/components/button";
 import { Dialog } from "@design-system/components/ui/dialog";
 import { Select } from "@design-system/components/ui/select";
-import { type Role } from "@hidden-identity/shared";
 import { Flex, Text } from "@radix-ui/themes";
 import { AlertCircleIcon, Share2 } from "lucide-react";
 
@@ -20,13 +19,9 @@ import { ExportButton } from "./ExportButton";
 
 interface GameMasterActionsProps {
   gameStartable: boolean;
-  availableRolesList: Role[];
 }
 
-export function GameMasterActions({
-  gameStartable,
-  availableRolesList,
-}: GameMasterActionsProps) {
+export function GameMasterActions({ gameStartable }: GameMasterActionsProps) {
   const { game } = useDefiniteGame();
   const [searchParams] = useSearchParams();
   const [, , , setGameStatus] = useSetGameStatus();
@@ -84,7 +79,7 @@ export function GameMasterActions({
                     <Dialog.Close asChild>
                       <Button
                         onClick={() => {
-                          void distributeRoles(availableRolesList);
+                          void distributeRoles();
                         }}
                       >
                         Start Game
