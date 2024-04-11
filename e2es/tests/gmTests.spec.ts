@@ -77,6 +77,11 @@ test("can use player estimates", async ({ page }) => {
     playerCount: players.length,
   });
 
+  // Not much of a better way to wait for the network to settle.
+  // We can really only fix this by fixing loading states
+  // eslint-disable-next-line playwright/no-wait-for-timeout
+  await page.waitForTimeout(500);
+
   expect(await findCharacterDistributionCounts(page, "Demon")).toMatchObject({
     count: 1,
     target: 1,
