@@ -18,7 +18,7 @@ import {
 } from "@radix-ui/themes";
 import Fuse from "fuse.js";
 import { Bot } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 import { FaQuestion } from "react-icons/fa6";
 
@@ -91,7 +91,6 @@ export function CharacterSelectList({
     useSetPlayerEstimate();
   const [, , , generateRandomRoles] = useGenerateRandomRoleSet();
 
-  useEffect(() => () => console.log("unmount"), []);
   return (
     <Flex gap="1" direction="column" px="3" py="1">
       <div className="flex items-center gap-2">

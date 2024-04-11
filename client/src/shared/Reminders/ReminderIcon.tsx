@@ -40,9 +40,9 @@ export function getReminderColorByType(type: ReminderType) {
     case "drunk":
     case "poison":
     case "abilitySpent":
-      return "border-4 border-red-400";
+      return "border-0 bg-green-400";
     case "protected":
-      return "border-4 border-blue-400";
+      return "border-4 border-white";
     case "hasAbility":
       return "border-4 border-green-400";
     case "triggerOnDeath":
