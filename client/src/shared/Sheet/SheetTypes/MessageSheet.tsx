@@ -2,8 +2,8 @@ import { Button } from "@design-system/components/button";
 import { Textarea } from "@design-system/components/ui/textarea";
 import { groupBy, type PlayerMessage } from "@hidden-identity/shared";
 import { Heading, Text } from "@radix-ui/themes";
+import { Mail } from "lucide-react";
 import { useState } from "react";
-import { CgMail } from "react-icons/cg";
 
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useIsHiddenView, useSheetView } from "../../../store/url";
@@ -27,7 +27,7 @@ function Header() {
     <LockedSheetHeader />
   ) : (
     <div className="flex h-full items-center px-2 text-3xl font-bold">
-      <CgMail className="inline-block pr-1" size="1em" />
+      <Mail className="inline-block pr-1" size="1em" />
       <div className="flex-1 pl-2 text-left">Messages</div>
     </div>
   );
@@ -56,9 +56,9 @@ function Body({ message }: MessageSheetPiecesProps) {
 
       {Object.keys(messagesByGroup).map((section) => (
         <div className="flex flex-col gap-1 px-2" key={section}>
-          <Text>{section}:</Text>
+          <h1 className="text-4xl font-bold">{section}:</h1>
           {messagesByGroup[section].map((revealItem, UNSAFE_INDEX_KEY) => (
-            <div className="flex gap-1 px-1" key={UNSAFE_INDEX_KEY}>
+            <div className="columns-2 gap-3 pl-3" key={UNSAFE_INDEX_KEY}>
               {revealItem.message && (
                 <div className="text-xl font-semibold">
                   {revealItem.message}

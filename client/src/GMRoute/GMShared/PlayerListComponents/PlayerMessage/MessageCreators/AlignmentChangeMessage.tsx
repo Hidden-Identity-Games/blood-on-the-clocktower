@@ -25,11 +25,16 @@ export function AlignmentChangeMessage({
     // TODO: Fix player message types
     oppositeAlignment(getPlayerAlignment(player ?? "")),
   );
+  if (!player) {
+    // TODO: fix types, this should never happen
+    return null;
+  }
 
   return (
     <Flex direction="column" gap="2">
       <Heading>Alignment</Heading>
       <AlignmentSelect
+        player={player}
         currentAlignment={alignment}
         onSelect={(next) => next && setAlignment(next)}
       />

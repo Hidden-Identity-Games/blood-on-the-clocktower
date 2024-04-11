@@ -18,6 +18,7 @@ export const CloseButton = React.forwardRef(function CloseButton(
       )}
       onClick={onClick}
       ref={ref}
+      aria-label="Close dialog"
     >
       <X className="h-4 w-4" />
     </button>

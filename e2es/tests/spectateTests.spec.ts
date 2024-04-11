@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { ClickthroughModel } from "./helpers/clickthroughHelpers";
 import { QuickSetupHelpers } from "./helpers/quickHelpers";
-import { urlFromBase } from "./productUrls";
 
 test("can spectate a game", async ({ page }) => {
   const players = Array.from({ length: 10 }, (_, i) => `player${i}`);
@@ -10,7 +10,7 @@ test("can spectate a game", async ({ page }) => {
     players,
   );
 
-  await page.goto(urlFromBase("", {}));
+  await ClickthroughModel.openHomePage(page);
   await page.getByRole("button", { name: /spectate/i }).click();
   await page.getByRole("textbox").fill(gameId);
   await page.getByRole("button", { name: /join/i }).click();

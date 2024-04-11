@@ -22,7 +22,6 @@ import { PlayerMessageFlow } from "../../../../GMShared/PlayerListComponents/Pla
 import { DemonMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/DemonMessage";
 import { ExecutionMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/ExecutionMessage";
 import { MinionsMessages } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/MinionsMessage";
-import { SubmitMessage } from "../../../../GMShared/PlayerListComponents/PlayerMessage/messageShared/SubmitMessage";
 import { ReminderCreator } from "../../../../GMShared/PlayerListComponents/PlayerMessage/ReminderCreator";
 import { PlayerName } from "../../../../GMShared/PlayerListComponents/PlayerName";
 
@@ -62,6 +61,13 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
               <MoonIcon className="mr-2 h-[2em]" />
             </ActionQueueRowIcon>
             <span className="flex-1 text-left">{queueItem.actionType}</span>
+            {queueItem.actionType === "DEMON" && (
+              <span className="mx-2 flex-1 text-right">
+                {queueItem.player ? (
+                  <PlayerName player={queueItem.player} className="flex-1" />
+                ) : null}
+              </span>
+            )}
           </>
         )}
       </Accordion.Trigger>
@@ -122,7 +128,7 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
   return (
     <div className="flex flex-col gap-2 py-3 text-xl">
       <div className="px-2">{getCharacter(role).ability}</div>
-      {ability?.playerMessage ? (
+      {ability?.playerMessage && (
         <Card.Root className="pt-3">
           <Card.Content>
             {ability?.playerMessage && (
@@ -133,8 +139,6 @@ export function PlayerActionFlow({ action }: PlayerActionFlowProps) {
             )}
           </Card.Content>
         </Card.Root>
-      ) : (
-        <SubmitMessage player={""} message={[]} />
       )}
       {(ability?.setReminders?.length ?? 0) > 0 && (
         <Card.Root className="pb-2">

@@ -19,7 +19,7 @@ export function AddReminder({ children, player }: AddReminderProps) {
     <Dialog.Root>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Content>
-        <Dialog.Header className="flex flex-row items-center justify-between">
+        <Dialog.Header className="flex flex-row items-center gap-2">
           <span>{allReminders ? "All" : "Available"} Reminders</span>
           <Switch
             checked={allReminders}

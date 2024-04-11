@@ -38,8 +38,20 @@ export function GameMasterActions({
 
   return (
     <Flex gap="2" direction="column">
-      <UndoButton />
-      <FirstSeatButton />
+      {game.gameStatus !== "PlayersJoining" &&
+        (game.gameStatus === "Setup" ? (
+          <ExportButton className="w-full" />
+        ) : (
+          <>
+            <UndoButton />
+            <DestructiveButton
+              onClick={() => void setGameStatus("Setup")}
+              confirmationText="All notes and statuses will be kept."
+            >
+              Back to First Day
+            </DestructiveButton>
+          </>
+        ))}
 
       <Dialog.Root open={!!distributeRolesError}>
         <Dialog.Content className="m-2">
@@ -106,18 +118,8 @@ export function GameMasterActions({
           </Dialog.Content>
         </Dialog.Root>
       )}
-      <NewGameButton>New Game</NewGameButton>
-      {game.gameStatus !== "PlayersJoining" &&
-        (game.gameStatus === "Setup" ? (
-          <ExportButton className="w-full" />
-        ) : (
-          <DestructiveButton
-            onClick={() => void setGameStatus("Setup")}
-            confirmationText="All notes and statuses will be kept."
-          >
-            Back to First Day
-          </DestructiveButton>
-        ))}
+      <FirstSeatButton />
+      <PlayerSeatingModal />
 
       <QRCodeModal
         message="Scan to open phone view:"
@@ -128,21 +130,26 @@ export function GameMasterActions({
           <Share2 className="h-[1em]" /> Share GM view
         </Button>
       </QRCodeModal>
-      <PlayerSeatingModal />
+      <NewGameButton>New Game</NewGameButton>
     </Flex>
   );
 }
 
 function FirstSeatButton() {
   const [firstSeat, setFirstSeat] = useFirstSeat();
+  const { game } = useDefiniteGame();
+
+  if (!game.playerList?.length) {
+    return null;
+  }
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button className="w-full">Choose Circle Start</Button>
       </Dialog.Trigger>
 
-      <Dialog.Content className="m-3">
+      <Dialog.Content className="m-3 [&>*]:w-full">
         <Dialog.Header>Choose player at the top of the circle</Dialog.Header>
         <PlayerSelect
           currentPlayer={firstSeat}
@@ -156,6 +163,10 @@ function FirstSeatButton() {
 function PlayerSeatingModal() {
   const { game } = useDefiniteGame();
   const [, , , setPlayerOrder] = useOrderPlayer();
+
+  if (!game.playerList?.length) {
+    return null;
+  }
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
