@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
 import { QuickSetupHelpers } from "./helpers/quickHelpers";
+import { assertCharacterDistributions } from "./helpers/selectors";
 import { urlFromBase } from "./productUrls";
 
 test("can create game", async ({ page }) => {
@@ -60,4 +61,42 @@ test("can start game", async ({ page }) => {
     .click();
 
   await expect(page.getByRole("tab", { name: "night" })).toBeEnabled();
+});
+
+// eslint-disable-next-line playwright/expect-expect
+test("can use player estimates", async ({ page }) => {
+  const script = "Trouble Brewing";
+  const players = Array.from({ length: 12 }, (_, i) => `player${i}`);
+  await ClickthroughModel.createNewGame(page, script);
+
+  await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
+
+  await ClickthroughModel.setPlayerEstimate(page, players.length);
+
+  await ClickthroughModel.fillRoleBag(page, {
+    script: getScript(script),
+    playerCount: players.length,
+  });
+
+  await assertCharacterDistributions(page, "Demon", 1);
+  await assertCharacterDistributions(page, "Minion", 2);
+  await assertCharacterDistributions(page, "Outsider", 2);
+  await assertCharacterDistributions(page, "Townsfolk", 7);
+});
+
+// eslint-disable-next-line playwright/expect-expect
+test("can generate roles for a script", async ({ page }) => {
+  const players = Array.from({ length: 12 }, (_, i) => `player${i}`);
+  await ClickthroughModel.createNewGame(page, "Trouble Brewing");
+
+  await page.getByRole("checkbox", { name: "Washerwoman" }).waitFor();
+
+  await ClickthroughModel.generateRandomRoles(page, {
+    playerCount: players.length,
+  });
+
+  await assertCharacterDistributions(page, "Demon", 1);
+  await assertCharacterDistributions(page, "Minion", 2);
+  await assertCharacterDistributions(page, "Outsider", 2);
+  await assertCharacterDistributions(page, "Townsfolk", 7);
 });

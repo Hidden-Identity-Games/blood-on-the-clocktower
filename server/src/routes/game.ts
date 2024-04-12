@@ -133,10 +133,10 @@ export const gameRoutes = {
       }
     }),
   assignRoles: gmProcedure
-    .input(z.intersection(gameIdShape, z.object({ roles: z.array(roleShape) })))
-    .mutation(async ({ input: { gameId, roles } }) => {
+    .input(gameIdShape)
+    .mutation(async ({ input: { gameId } }) => {
       const game = await retrieveGame(gameId);
-      game.dispatch({ type: "FillRoleBag", roles });
+      game.dispatch({ type: "FillRoleBag" });
     }),
   decideFate: gmProcedure
     .input(
@@ -144,6 +144,12 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, dead } }) => {
       const game = await retrieveGame(gameId);
+      if (
+        game.getGame().playerList.length !==
+        Object.values(game.getGame().setupRoleSet).reduce((a, b) => a + b)
+      ) {
+        throw new Error("count does not match selected roles");
+      }
       game.dispatch({ type: dead ? "KillPlayer" : "RevivePlayer", player });
     }),
   addPlayerReminder: gmProcedure
@@ -301,5 +307,33 @@ export const gameRoutes = {
     .mutation(async ({ input: { gameId } }) => {
       const game = await retrieveGame(gameId);
       return game.undo();
+    }),
+  setSetupRole: gmProcedure
+    .input(
+      z.intersection(
+        gameIdShape,
+        z.object({ role: roleShape, count: z.number() }),
+      ),
+    )
+    .mutation(async ({ input: { gameId, role, count } }) => {
+      const game = await retrieveGame(gameId);
+      game.dispatch({ type: "SetSetupRoleSet", count, role });
+    }),
+  setEstimatedPlayerCount: gmProcedure
+    .input(z.intersection(gameIdShape, z.object({ count: z.number() })))
+    .mutation(async ({ input: { count, gameId } }) => {
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: "SetEstimatedPlayerCount",
+        estimatedPlayerCount: count,
+      });
+    }),
+  generateRandomRoleSet: gmProcedure
+    .input(gameIdShape)
+    .mutation(async ({ input: { gameId } }) => {
+      const game = await retrieveGame(gameId);
+      game.dispatch({
+        type: "GenerateRandomRoleSet",
+      });
     }),
 };

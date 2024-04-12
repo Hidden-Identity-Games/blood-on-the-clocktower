@@ -2,6 +2,7 @@ import { fakerEN } from "@faker-js/faker";
 import {
   generateThreeWordId,
   getScript,
+  type Role,
   type Script,
 } from "@hidden-identity/shared";
 
@@ -79,4 +80,19 @@ export async function createStartedGameWithPlayers({
   });
 
   return { gameId };
+}
+
+export async function setEstimatedPlayerCount(gameId: string, count: number) {
+  await apiCaller.setEstimatedPlayerCount({ gameId, count });
+}
+export async function generateRandomRoleSet(gameId: string) {
+  await apiCaller.generateRandomRoleSet({ gameId });
+}
+
+export async function setRoleInRoleBag(
+  gameId: string,
+  role: Role,
+  count: number,
+) {
+  await apiCaller.setSetupRole({ gameId, count, role });
 }

@@ -5,10 +5,12 @@ import {
   generateThreeWordId,
   getAbility,
   getCharacter,
+  getRandomCharactersForDistribution,
   getReminder,
   removeKey,
   type Role,
   shuffleList,
+  toEntries,
 } from "@hidden-identity/shared";
 import { generate } from "random-words";
 
@@ -40,6 +42,14 @@ export type { AnyGameAction, BaseUnifiedGame };
 export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
   return createStore(
     combineReducers<BaseUnifiedGame, AnyGameAction | InitAction>({
+      estimatedPlayerCount: (state = null, action) => {
+        switch (action.type) {
+          case "SetEstimatedPlayerCount":
+            return action.estimatedPlayerCount;
+          default:
+            return state;
+        }
+      },
       playersToRoles: (state = {}, action) => {
         switch (action.type) {
           case "AddPlayer":
@@ -304,14 +314,36 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             return state;
         }
       },
-      roleBag: (state = {}, action) => {
+      setupRoleSet: (state = {}, action, wholePreviousState) => {
+        switch (action.type) {
+          case "GenerateRandomRoleSet":
+            return Object.fromEntries(
+              getRandomCharactersForDistribution(
+                wholePreviousState.script,
+                wholePreviousState.estimatedPlayerCount ?? 12,
+              ).map((role) => [role.id, 1]),
+            ) as Record<Role, number>;
+          case "SetSetupRoleSet":
+            return {
+              ...state,
+              [action.role]: action.count,
+            };
+          default:
+            return state;
+        }
+      },
+      roleBag: (state = {}, action, wholePreviousState) => {
         switch (action.type) {
           case "DrawRole":
             return removeKey(state, action.roleNumber);
           case "FillRoleBag": {
-            return shuffleList(action.roles).reduce<
-              Record<number, Role | null>
-            >(
+            const roles: Role[] = toEntries(
+              wholePreviousState.setupRoleSet,
+            ).flatMap(([role, count]) =>
+              Array.from({ length: count }, () => role),
+            );
+            console.log(roles);
+            return shuffleList(roles).reduce<Record<number, Role | null>>(
               (acc, item, idx) => ({
                 ...acc,
                 [idx + 1]: item,

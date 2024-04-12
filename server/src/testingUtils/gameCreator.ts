@@ -9,6 +9,7 @@ import {
   type Script,
   shuffleList,
   toEntries,
+  toKeys,
 } from "@hidden-identity/shared";
 
 import { drawRoleAction } from "../gameMachine/gameActions.ts";
@@ -103,10 +104,20 @@ export class GameCreator {
       ).map((c) => c.id);
       roleBagCharacters = generatedRoles;
     }
+    const roleMap = roleBagCharacters.reduce<Record<Role, number>>(
+      (acc, character) => ({ ...acc, [character]: (acc[character] || 0) + 1 }),
+      {},
+    );
 
+    toKeys(roleMap).forEach((role) => {
+      this.game.dispatch({
+        type: "SetSetupRoleSet",
+        role,
+        count: roleMap[role],
+      });
+    });
     this.game.dispatch({
       type: "FillRoleBag",
-      roles: roleBagCharacters,
     });
     return this;
   }

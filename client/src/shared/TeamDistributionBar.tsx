@@ -1,18 +1,23 @@
-import { type CharacterType, type Role } from "@hidden-identity/shared";
+import {
+  type CharacterType,
+  type Role,
+  type UnifiedGame,
+} from "@hidden-identity/shared";
 import {
   DistributionsByPlayerCount,
   getCharacter,
 } from "@hidden-identity/shared";
 import { Flex, Text } from "@radix-ui/themes";
 
-import { useGame } from "../store/GameContext";
 import { colorMap } from "./CharacterTypes";
 
 interface TeamDistributionBarProps {
   charsSelected?: Role[];
+  targetPlayerCount: number;
 }
 
 interface CharacterTypeSectionProps {
+  targetPlayerCount: number;
   charsSelected?: Role[];
   charType: CharacterType;
 }
@@ -20,18 +25,9 @@ interface CharacterTypeSectionProps {
 function CharacterTypeSection({
   charsSelected,
   charType,
+  targetPlayerCount,
 }: CharacterTypeSectionProps) {
-  const { game } = useGame();
-  if (!game) {
-    return;
-  }
-
-  const target =
-    getDistribution(
-      game.playerList.filter((player) => !game.travelers[player]).length,
-      charType,
-    ) ?? "?";
-
+  const target = getDistribution(targetPlayerCount, charType) ?? "?";
   return (
     <Text
       color={colorMap[charType]}
@@ -68,23 +64,38 @@ function CharacterTypeSection({
 
 export function TeamDistributionBar({
   charsSelected,
+  targetPlayerCount,
 }: TeamDistributionBarProps) {
   return (
     <>
       <Flex wrap="wrap">
         <CharacterTypeSection
+          targetPlayerCount={targetPlayerCount}
           charsSelected={charsSelected}
           charType="Townsfolk"
         />
         <CharacterTypeSection
+          targetPlayerCount={targetPlayerCount}
           charsSelected={charsSelected}
           charType="Outsider"
         />
-        <CharacterTypeSection charsSelected={charsSelected} charType="Minion" />
-        <CharacterTypeSection charsSelected={charsSelected} charType="Demon" />
+        <CharacterTypeSection
+          targetPlayerCount={targetPlayerCount}
+          charsSelected={charsSelected}
+          charType="Minion"
+        />
+        <CharacterTypeSection
+          targetPlayerCount={targetPlayerCount}
+          charsSelected={charsSelected}
+          charType="Demon"
+        />
       </Flex>
     </>
   );
+}
+
+export function allNonTravelers(game: UnifiedGame) {
+  return game.playerList.filter((player) => !game.travelers[player]);
 }
 
 function uniqueCharsByTeam(team: string, charsSelected: Role[]) {

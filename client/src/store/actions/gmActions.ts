@@ -32,7 +32,7 @@ class PlayerCountError extends Error {
 export function useDistributeRoles() {
   const { gameId } = useGame();
 
-  return useAction(async (availableRoles: Role[]) => {
+  return useAction(async () => {
     if (!gameId) {
       throw new Error("GameId not ready");
     }
@@ -40,7 +40,6 @@ export function useDistributeRoles() {
     try {
       await trpc.assignRoles.mutate({
         gameId,
-        roles: availableRoles,
       });
     } catch (e: unknown) {
       if (
@@ -53,6 +52,47 @@ export function useDistributeRoles() {
 
       throw e;
     }
+  });
+}
+
+export function useSetRoleInGame() {
+  const { gameId } = useGame();
+  return useAction(async (role: Role, count: number) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.setSetupRole.mutate({
+      gameId,
+      role,
+      count,
+    });
+  });
+}
+
+export function useSetPlayerEstimate() {
+  const { gameId } = useGame();
+  return useAction(async (estimate: number) => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.setEstimatedPlayerCount.mutate({
+      gameId,
+      count: estimate,
+    });
+  });
+}
+export function useGenerateRandomRoleSet() {
+  const { gameId } = useGame();
+  return useAction(async () => {
+    if (!gameId) {
+      throw new Error("GameId not ready");
+    }
+
+    await trpc.generateRandomRoleSet.mutate({
+      gameId,
+    });
   });
 }
 

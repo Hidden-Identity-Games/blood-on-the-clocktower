@@ -40,7 +40,7 @@ export interface ActionMap {
     isLastRole: boolean;
   };
   SeenRole: PlayerActionProperties;
-  FillRoleBag: { roles: Role[] };
+  FillRoleBag: NoAdditionalProperties;
   SetNeighbor: PlayerActionProperties & { newRightNeighbor: string | null };
   ExtractPlayerFromCircle: PlayerActionProperties;
   PlacePlayerInCircle: PlayerActionProperties & { newRightNeighbor: string };
@@ -65,6 +65,9 @@ export interface ActionMap {
   StartDay: NoAdditionalProperties;
   StartNight: { initialActionQueue: ActionQueueItem[] };
   CompleteAction: { itemId: string };
+  SetEstimatedPlayerCount: { estimatedPlayerCount: number };
+  SetSetupRoleSet: { role: Role; count: number };
+  GenerateRandomRoleSet: NoAdditionalProperties;
 }
 
 export type AnyGameAction = {

@@ -30,7 +30,10 @@ import {
 import { CharacterName } from "../../shared/RoleIcon";
 import { ScriptList } from "../../shared/ScriptList";
 import { SetCountModal } from "../../shared/SetCount";
-import { TeamDistributionBar } from "../../shared/TeamDistributionBar";
+import {
+  allNonTravelers,
+  TeamDistributionBar,
+} from "../../shared/TeamDistributionBar";
 import { useVotesToExecute } from "../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useFirstSeat } from "../../store/url";
@@ -116,7 +119,11 @@ export function PlayerInGame() {
 
       <Tabs.Content className="flex-1 overflow-y-auto" value="script">
         <Flex className="m-2" direction="column" gap="3">
-          <TeamDistributionBar />
+          <TeamDistributionBar
+            targetPlayerCount={
+              game.estimatedPlayerCount ?? allNonTravelers(game).length
+            }
+          />
           <Separator size="4" />
           <ScriptList />
         </Flex>

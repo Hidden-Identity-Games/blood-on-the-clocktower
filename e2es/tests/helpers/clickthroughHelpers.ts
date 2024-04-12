@@ -1,5 +1,6 @@
 // Functions in this file will perform a task manually, and so will add tesr coverage, but are very slow.
 import {
+  getRandomCharactersForDistribution,
   getScript,
   type Script,
   type ScriptName,
@@ -7,7 +8,7 @@ import {
 import { type BrowserContext, type Page } from "@playwright/test";
 
 import { urlFromBase } from "../productUrls";
-import { asyncMap, getRandomCharactersForDistribution } from "./utils";
+import { asyncMap } from "./utils";
 
 export const ClickthroughModel = {
   openHomePage: async function openHomePage(
@@ -131,6 +132,16 @@ export const ClickthroughModel = {
       await page.getByRole("checkbox", { name: role.name }).click();
     }
   },
+  generateRandomRoles: async function (
+    page: Page,
+    { playerCount }: { playerCount: number },
+  ) {
+    await ClickthroughModel.setPlayerEstimate(page, playerCount);
+    await page.getByRole("button", { name: "Randomize" }).click();
+    await page
+      .getByRole("button", { name: "Generate starter role set" })
+      .click();
+  },
   getAndAcknowledgeRoles: async function acknowledgeRoles(pages: PlayerPage[]) {
     await asyncMap(pages, async ({ page }, playerNumber) => {
       await page.setViewportSize({ height: 1000, width: 500 });
@@ -145,6 +156,14 @@ export const ClickthroughModel = {
       await page.getByRole("button", { name: /i know my role/i }).click();
       return null;
     });
+  },
+  setPlayerEstimate: async function setPlayerEstimate(
+    page: Page,
+    estimate: number,
+  ) {
+    await page
+      .getByRole("spinbutton", { name: "Expected player count" })
+      .fill(String(estimate));
   },
 };
 
