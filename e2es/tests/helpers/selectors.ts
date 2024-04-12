@@ -1,16 +1,28 @@
 import { type CharacterType } from "@hidden-identity/shared";
+import { expect } from "@playwright/test";
 import { type Page } from "playwright";
 
-export async function findCharacterDistributionCounts(
+export function findCharacterDistributionCounts(
   page: Page,
   team: CharacterType,
 ) {
-  const count = Number(
-    await page.getByTestId(`${team}-distribution-count`).textContent(),
-  );
-  const target = Number(
-    await page.getByTestId(`${team}-distribution-target`).textContent(),
-  );
+  const count = page.getByTestId(`${team}-distribution-count`);
+
+  const target = page.getByTestId(`${team}-distribution-target`);
 
   return { count, target };
+}
+
+export async function assertCharacterDistributions(
+  page: Page,
+  team: CharacterType,
+  target: number,
+) {
+  await expect(findCharacterDistributionCounts(page, team).count).toContainText(
+    String(target),
+  );
+
+  await expect(
+    findCharacterDistributionCounts(page, team).target,
+  ).toContainText(String(target));
 }

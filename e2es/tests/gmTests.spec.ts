@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 import { ClickthroughModel } from "./helpers/clickthroughHelpers";
 import { QuickSetupHelpers } from "./helpers/quickHelpers";
-import { findCharacterDistributionCounts } from "./helpers/selectors";
+import { assertCharacterDistributions } from "./helpers/selectors";
 import { urlFromBase } from "./productUrls";
 
 test("can create game", async ({ page }) => {
@@ -63,6 +63,7 @@ test("can start game", async ({ page }) => {
   await expect(page.getByRole("tab", { name: "night" })).toBeEnabled();
 });
 
+// eslint-disable-next-line playwright/expect-expect
 test("can use player estimates", async ({ page }) => {
   const script = "Trouble Brewing";
   const players = Array.from({ length: 12 }, (_, i) => `player${i}`);
@@ -77,27 +78,13 @@ test("can use player estimates", async ({ page }) => {
     playerCount: players.length,
   });
 
-  // Not much of a better way to wait for the network to settle.
-  // We can really only fix this by fixing loading states
-  // eslint-disable-next-line playwright/no-wait-for-timeout
-  await page.waitForTimeout(500);
-
-  expect(await findCharacterDistributionCounts(page, "Demon")).toMatchObject({
-    count: 1,
-    target: 1,
-  });
-  expect(await findCharacterDistributionCounts(page, "Minion")).toMatchObject({
-    count: 2,
-    target: 2,
-  });
-  expect(await findCharacterDistributionCounts(page, "Outsider")).toMatchObject(
-    { count: 2, target: 2 },
-  );
-  expect(
-    await findCharacterDistributionCounts(page, "Townsfolk"),
-  ).toMatchObject({ count: 7, target: 7 });
+  await assertCharacterDistributions(page, "Demon", 1);
+  await assertCharacterDistributions(page, "Minion", 2);
+  await assertCharacterDistributions(page, "Outsider", 2);
+  await assertCharacterDistributions(page, "Townsfolk", 7);
 });
 
+// eslint-disable-next-line playwright/expect-expect
 test("can generate roles for a script", async ({ page }) => {
   const players = Array.from({ length: 12 }, (_, i) => `player${i}`);
   await ClickthroughModel.createNewGame(page, "Trouble Brewing");
@@ -108,18 +95,8 @@ test("can generate roles for a script", async ({ page }) => {
     playerCount: players.length,
   });
 
-  expect(await findCharacterDistributionCounts(page, "Demon")).toMatchObject({
-    count: 1,
-    target: 1,
-  });
-  expect(await findCharacterDistributionCounts(page, "Minion")).toMatchObject({
-    count: 2,
-    target: 2,
-  });
-  expect(await findCharacterDistributionCounts(page, "Outsider")).toMatchObject(
-    { count: 2, target: 2 },
-  );
-  expect(
-    await findCharacterDistributionCounts(page, "Townsfolk"),
-  ).toMatchObject({ count: 7, target: 7 });
+  await assertCharacterDistributions(page, "Demon", 1);
+  await assertCharacterDistributions(page, "Minion", 2);
+  await assertCharacterDistributions(page, "Outsider", 2);
+  await assertCharacterDistributions(page, "Townsfolk", 7);
 });
