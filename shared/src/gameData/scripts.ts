@@ -5,7 +5,8 @@ export type ScriptName =
   | "Catfishing"
   | "🌶️ TB"
   | "No Roles Barred"
-  | "Uncertain Death";
+  | "Uncertain Death"
+  | "Fall of Rome";
 export type ScriptDefinition = {
   name: ScriptName;
   imageSrc: string;
@@ -229,6 +230,37 @@ export const SCRIPTS: ScriptDefinition[] = [
       { id: "lil_monsta" },
       { id: "legion" },
       { id: "vortox" },
+    ],
+  },
+  {
+    name: "Fall of Rome",
+    imageSrc: "",
+    characters: [
+      { id: "SCULPTOR" },
+      { id: "VESTAL_VIRGIN" },
+      { id: "PHYSICIAN" },
+      { id: "LEGIONARY" },
+      { id: "TRVMPETER" },
+      { id: "MORTICIAN" },
+      { id: "STANDARD_BEARER" },
+      { id: "CENTVRION" },
+      { id: "MERCHANT" },
+      { id: "GLADIATOR" },
+      { id: "ACTOR" },
+      { id: "BLACKSMITH" },
+      { id: "SCHOLAR" },
+      { id: "THE_TWINS" },
+      { id: "WINEMAKER" },
+      { id: "SPARTACVS" },
+      { id: "BAD_OMEN" },
+      { id: "TEMPTRESS" },
+      { id: "HARVSPEX" },
+      { id: "GLYKON" },
+      { id: "AVGVR" },
+      { id: "CLEOPATRA" },
+      { id: "CRASSUS" },
+      { id: "HANNIBAL" },
+      { id: "CAESAR" },
     ],
   },
 ];

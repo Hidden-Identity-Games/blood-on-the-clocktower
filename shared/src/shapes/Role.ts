@@ -103,3 +103,9 @@ export interface PlayerMessageCreatorMap {
 
 export type PlayerMessageCreator =
   PlayerMessageCreatorMap[keyof PlayerMessageCreatorMap];
+
+export type CharacterDefinition = Omit<Character, "id"> & {
+  id: string;
+  edition: unknown;
+  reminders: Reminder[];
+};
