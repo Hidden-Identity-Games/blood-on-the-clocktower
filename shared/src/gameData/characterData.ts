@@ -1,4 +1,5 @@
-import { type Character, type Reminder } from "../shapes/index.ts";
+import { type CharacterDefinition } from "../shapes/index.ts";
+import { ROME_CHARACTERS } from "./fallOfRome.ts";
 
 export type ReminderType =
   | "info"
@@ -14,11 +15,6 @@ export type ReminderType =
   | "abilitySpent";
 
 export type TargetType = "self" | "other";
-type CharacterDefinition = Omit<Character, "id"> & {
-  id: string;
-  edition: unknown;
-  reminders: Reminder[];
-};
 
 function abilitySpent(character: string) {
   return {
@@ -42,6 +38,7 @@ export const UNASSIGNED = {
 } satisfies CharacterDefinition;
 export const CHARACTERS: CharacterDefinition[] = [
   UNASSIGNED,
+  ...ROME_CHARACTERS,
   {
     id: "artist",
     name: "Artist",

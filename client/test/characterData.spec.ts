@@ -15,7 +15,7 @@ describe("characterData", () => {
             return false;
           }
         });
-      expect(duplicates).toHaveLength(0);
+      expect(duplicates).toEqual([]);
     });
     describe.each(allCharactersList())("character: $name", (character) => {
       test("has only defined reminders", () => {

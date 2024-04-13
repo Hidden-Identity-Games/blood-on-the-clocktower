@@ -5,7 +5,8 @@ export type ScriptName =
   | "Catfishing"
   | "🌶️ TB"
   | "No Roles Barred"
-  | "Uncertain Death";
+  | "Uncertain Death"
+  | "Fall of Rome";
 export type ScriptDefinition = {
   name: ScriptName;
   imageSrc: string;
@@ -229,6 +230,43 @@ export const SCRIPTS: ScriptDefinition[] = [
       { id: "lil_monsta" },
       { id: "legion" },
       { id: "vortox" },
+    ],
+  },
+  {
+    name: "Fall of Rome",
+    imageSrc: "https://www.bloodstar.xyz/p/AlexS/Fall_of_Rome/_meta.png",
+    characters: [
+      { id: "sculptor_fall_of_rome" },
+      { id: "vestalvirgin_fall_of_rome" },
+      { id: "physician_fall_of_rome" },
+      { id: "legionary_fall_of_rome" },
+      { id: "trumpeter_fall_of_rome" },
+      { id: "mortician_fall_of_rome" },
+      { id: "standardbearer_fall_of_rome" },
+      { id: "centurion1_fall_of_rome" },
+      { id: "merchant_fall_of_rome" },
+      { id: "gladiator_fall_of_rome" },
+      { id: "actor_fall_of_rome" },
+      { id: "blacksmith_fall_of_rome" },
+      { id: "scholar_fall_of_rome" },
+      { id: "thetwins_fall_of_rome" },
+      { id: "winemaker_fall_of_rome" },
+      { id: "spartacus_fall_of_rome" },
+      { id: "badomen_fall_of_rome" },
+      { id: "temptress_fall_of_rome" },
+      { id: "haruspex_fall_of_rome" },
+      { id: "glykon1_fall_of_rome" },
+      { id: "augur_fall_of_rome" },
+      { id: "cleopatra_fall_of_rome" },
+      { id: "crassus_fall_of_rome" },
+      { id: "hannibal_fall_of_rome" },
+      { id: "caesar_fall_of_rome" },
+      { id: "mercenary_fall_of_rome" },
+      { id: "architect_fall_of_rome" },
+      { id: "sibyl_fall_of_rome" },
+      { id: "highpriest1_fall_of_rome" },
+      { id: "highpriest2_fall_of_rome" },
+      { id: "emperor_fall_of_rome" },
     ],
   },
 ];
