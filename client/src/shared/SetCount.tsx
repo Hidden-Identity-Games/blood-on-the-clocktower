@@ -1,5 +1,7 @@
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 import { Input } from "@design-system/components/ui/input";
-import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import { Flex, Text } from "@radix-ui/themes";
 import React, { useEffect, useRef } from "react";
 import { type ReactNode } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
@@ -24,15 +26,13 @@ export function SetCount({
   }, []);
   return (
     <>
-      <IconButton
-        type="button"
-        variant="soft"
-        radius="full"
-        size="3"
+      <Button
+        className="rounded-full px-3"
+        variant="secondary"
         onClick={() => setCount((curr) => Math.max(curr - 1, min))}
       >
         <AiOutlineMinus />
-      </IconButton>
+      </Button>
       <Input
         className="mx-4 flex w-16 text-center"
         type="number"
@@ -50,15 +50,14 @@ export function SetCount({
         ref={inputRef}
         onFocus={(e) => e.target.select()}
       />
-      <IconButton
+      <Button
         type="button"
-        variant="soft"
-        radius="full"
-        size="3"
+        variant="secondary"
+        className="rounded-full px-3"
         onClick={() => setCount((curr) => Math.min(curr + 1, max))}
       >
         <AiOutlinePlus />
-      </IconButton>
+      </Button>
     </>
   );
 }
@@ -90,7 +89,7 @@ export function SetCountModal({
         setCount(defaultValue);
       }}
     >
-      <Dialog.Trigger>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content
         className="mx-3"
@@ -101,26 +100,23 @@ export function SetCountModal({
           }
         }}
       >
-        <Flex direction="column" gap="9">
-          <Dialog.Title>{title}</Dialog.Title>
+        <Dialog.Header>{title}</Dialog.Header>
+        <Dialog.Description className="my-8">
           <Text size="8">
             <Flex justify="center" align="center" gap="7">
               <SetCount count={count} setCount={setCount} min={min} max={max} />
             </Flex>
           </Text>
-          <Flex justify="between">
-            <Dialog.Close>
-              <Button variant="surface" size="3">
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close>
-              <Button size="3" onClick={() => onSet(count)}>
-                Confirm
-              </Button>
-            </Dialog.Close>
-          </Flex>
-        </Flex>
+        </Dialog.Description>
+
+        <Dialog.Footer>
+          <Dialog.Close asChild>
+            <Button variant="secondary">Cancel</Button>
+          </Dialog.Close>
+          <Dialog.Close asChild>
+            <Button onClick={() => onSet(count)}>Confirm</Button>
+          </Dialog.Close>
+        </Dialog.Footer>
       </Dialog.Content>
     </Dialog.Root>
   );

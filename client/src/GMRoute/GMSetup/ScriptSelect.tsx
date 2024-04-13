@@ -1,23 +1,21 @@
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 import {
+  asRole,
+  getCharacter,
   getScript,
   getScriptImg,
   getScriptNames,
+  isFabledRole,
+  isTravelerRole,
+  type Role,
   type ScriptName,
 } from "@hidden-identity/shared";
-import {
-  Button,
-  Callout,
-  Dialog,
-  DialogClose,
-  Flex,
-  Heading,
-  TextArea,
-} from "@radix-ui/themes";
+import { Callout, Flex, Heading, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
 import React, { type ReactNode } from "react";
 
 import scriptIcon from "../../assets/icon/feather.svg";
-import { DialogHeader } from "../../shared/DialogHeader";
 import { type Script, type ScriptItem } from "../../types/script";
 
 interface ScriptSelectProps {
@@ -131,14 +129,14 @@ function CustomScriptInputDialog({
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <ScriptOption name="custom" selected={selected} bgImageUrl={scriptIcon}>
           <Heading>CUSTOM</Heading>
         </ScriptOption>
       </Dialog.Trigger>
       <Dialog.Content className="m-2">
+        <Dialog.Header>Custom Script Input</Dialog.Header>
         <Flex direction="column" gap="3">
-          <DialogHeader>Custom Script Input</DialogHeader>
           <Dialog.Description>
             <a
               href="https://bloodontheclocktower.com/custom-scripts"
@@ -172,16 +170,16 @@ function CustomScriptInputDialog({
               </Callout.Root>
             </div>
           )}
-          <Flex justify="between" mt="1">
-            <DialogClose>
-              <Button>Cancel</Button>
-            </DialogClose>
-            <DialogClose>
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button variant="secondary">Cancel</Button>
+            </Dialog.Close>
+            <Dialog.Close asChild>
               <Button onClick={handleCustomScriptImport}>
                 Use this script
               </Button>
-            </DialogClose>
-          </Flex>
+            </Dialog.Close>
+          </Dialog.Footer>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
@@ -189,18 +187,26 @@ function CustomScriptInputDialog({
 }
 
 function ValidateCustomScript(script: string): Script {
-  const parsed = JSON.parse(script);
+  let parsed: string[] = JSON.parse(script);
   if (!Array.isArray(parsed)) {
     throw new Error("JSON is not an array.");
   }
-  const badCharacters = parsed.filter((obj) => !obj["id"]);
+
+  parsed = parsed
+    .filter((obj) => typeof obj === "string")
+    .filter((obj) => !isFabledRole(obj))
+    .filter((obj) => !isTravelerRole(asRole(obj)));
+
+  const badCharacters = parsed
+    .filter((obj) => typeof obj === "string")
+    .filter((obj) => !getCharacter(obj as Role));
+
   if (badCharacters.length > 0) {
     throw new Error(
       `"Role element ${JSON.stringify(
         badCharacters[0],
-      )} is invalid.  Should match { 'id': '<role_name>' }"`,
+      )} is invalid. Should be a string with id.  Fabled are not yet supported"`,
     );
   }
-  const parsedWithoutMeta = parsed.filter((char) => char.id[0] !== "_");
-  return parsedWithoutMeta as Script;
+  return parsed.map((obj) => ({ id: obj })) as Script;
 }

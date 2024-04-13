@@ -1,11 +1,6 @@
-import {
-  Button,
-  Callout,
-  Dialog,
-  Flex,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Callout, Flex, Text, TextField } from "@radix-ui/themes";
 import React, { useState } from "react";
 
 import { useAddPlayer } from "../../store/actions/playerActions";
@@ -69,13 +64,13 @@ function AddPlayer() {
           onOpenChange={() => setRejoinOpen(false)}
         >
           <Dialog.Content className="m-2">
-            <Flex direction="column" gap="2">
-              <Text as="div">
-                That name already exists, have you already joined and would like
-                to rejoin?
-              </Text>
-              <Dialog.Close>
-                <Button>No, I will pick a new name</Button>
+            <Text as="div">
+              That name already exists, have you already joined and would like
+              to rejoin?
+            </Text>
+            <Dialog.Footer>
+              <Dialog.Close asChild>
+                <Button variant="secondary">No, I will pick a new name</Button>
               </Dialog.Close>
               <Button
                 onClick={() => {
@@ -84,7 +79,7 @@ function AddPlayer() {
               >
                 Yes, that's me!
               </Button>
-            </Flex>
+            </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Root>
         {error && (
@@ -95,7 +90,7 @@ function AddPlayer() {
           </div>
         )}
 
-        <Button mt="2" onClick={() => void handleSubmit()}>
+        <Button className="mt-2" onClick={() => void handleSubmit()}>
           Join
         </Button>
       </Flex>

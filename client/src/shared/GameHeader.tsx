@@ -1,15 +1,7 @@
-import {
-  Button,
-  Callout,
-  Dialog,
-  Flex,
-  Heading,
-  IconButton,
-  Link,
-  Text,
-} from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Callout, Flex, Heading, Link, Text } from "@radix-ui/themes";
 import QRCode from "qrcode.react";
-import { AiOutlineClose } from "react-icons/ai";
 import { BsShare } from "react-icons/bs";
 import { Link as ReactRouterLink } from "react-router-dom";
 
@@ -87,7 +79,7 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Flex align="center" gap="1" asChild>
           <button>
             <Text color="amber">Game:</Text>
@@ -97,31 +89,18 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
         </Flex>
       </Dialog.Trigger>
 
-      <Dialog.Content className="m-6">
-        <Dialog.Title>
-          <Flex align="center" justify="between">
-            Scan to Join
-            <Dialog.Close>
-              <IconButton variant="ghost" radius="full">
-                <AiOutlineClose />
-              </IconButton>
-            </Dialog.Close>
-          </Flex>
-        </Dialog.Title>
+      <Dialog.Content className="">
+        <Dialog.Header>Scan to Join</Dialog.Header>
 
-        <Flex mt="4" direction="column" justify="center" align="center" gap="5">
-          <div className="bg-white p-1">
+        <Dialog.Description className=" flex flex-col items-center justify-around gap-2">
+          <div className="m-4 bg-white p-1">
             <QRCode value={url} size={256} fgColor="darkred" />
           </div>
-          <Button
-            className="w-full"
-            onClick={() => void handleShare()}
-            size="4"
-          >
-            <BsShare className="inline" />
+          <Button className="w-full" onClick={() => void handleShare()}>
+            <BsShare className="mr-2 inline" />
             Or share the link!
           </Button>
-        </Flex>
+        </Dialog.Description>
       </Dialog.Content>
     </Dialog.Root>
   );

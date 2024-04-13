@@ -71,7 +71,7 @@ export function GMTile({ player, index }: TileProps) {
       {showOverflowReminders && (
         <PlaceInCircle index={index} stepsIn={2 + baseReminders.length / 2}>
           <Dialog.Root>
-            <Dialog.Trigger>
+            <Dialog.Trigger asChild>
               <button className="pointer-events-auto rounded-full bg-green-600 p-1">
                 <FaEllipsis size="24" color="white" />
               </button>

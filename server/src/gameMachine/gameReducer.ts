@@ -69,17 +69,19 @@ export function createGameReducer(initialState?: BaseUnifiedGame): GameStore {
             return state;
         }
       },
-      time: (state = { time: "day", count: 0 }, action) => {
+      time: (state = { time: "day", count: 0, startTime: null }, action) => {
         switch (action.type) {
           case "StartDay":
             return {
               time: "day",
               count: state.count,
+              startTime: Date.now(),
             };
           case "StartNight": {
             return {
               time: "night",
               count: state.count + 1,
+              startTime: Date.now(),
             };
           }
           default:

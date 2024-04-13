@@ -107,12 +107,12 @@ export function PlayerNameWithRoleIcon({
   const { game } = useDefiniteGame();
   const role = game.playersToRoles[player];
   return (
-    <Flex gap="1" className={className}>
+    <div className={classNames(className, "flex items-center gap-1")}>
       {children}
       <RoleText role={role} {...textProps}>
         {player}
       </RoleText>
       <RoleIcon role={role} />
-    </Flex>
+    </div>
   );
 }

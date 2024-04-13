@@ -9,14 +9,13 @@ import {
   Text,
 } from "@radix-ui/themes";
 import classNames from "classnames";
+import { Skull, Vote } from "lucide-react";
 import React, { useState } from "react";
 import { BsFillMoonStarsFill, BsPeopleFill } from "react-icons/bs";
-import { GiAxeInStump, GiScrollQuill } from "react-icons/gi";
-import { LiaVoteYeaSolid } from "react-icons/lia";
+import { GiAxeInStump, GiRaiseZombie, GiScrollQuill } from "react-icons/gi";
 
 import { ForPlayerPlayerRoleIcon } from "../../GMRoute/GMShared/PlayerListComponents/PlayerRole";
 import { ExecutionInfo } from "../../shared/ExecutionInfo";
-import { MeaningfulIcon } from "../../shared/MeaningfulIcon";
 import {
   type PlayerFilter,
   PlayerListFilters,
@@ -34,7 +33,11 @@ import {
   allNonTravelers,
   TeamDistributionBar,
 } from "../../shared/TeamDistributionBar";
-import { useVotesToExecute } from "../../store/actions/gmPlayerActions";
+import { useDeadVote } from "../../store/actions/gmActions";
+import {
+  useDecideFate,
+  useVotesToExecute,
+} from "../../store/actions/gmPlayerActions";
 import { useDefiniteGame } from "../../store/GameContext";
 import { useFirstSeat } from "../../store/url";
 import { useMe } from "../../store/usePlayer";
@@ -53,6 +56,8 @@ export function PlayerInGame() {
   const filteredPlayers = allFilters[selectedFilter];
   const [isFirstNightSort, setIsFirstNightSort] = React.useState(false);
   const [, , , setVotesToExecute] = useVotesToExecute();
+  const [, , , setPlayerFate] = useDecideFate();
+  const [, , , setDeadVote] = useDeadVote();
 
   const nightOrder = React.useMemo(() => {
     const charactersFromScript =
@@ -179,20 +184,23 @@ export function PlayerInGame() {
           >
             {filteredPlayers.map((player) => (
               <Flex key={player} gap="1" align="center">
-                <div className="w-5">
-                  {(!game.deadPlayers[player] || !game.deadVotes[player]) && (
-                    <MeaningfulIcon
-                      size="1"
-                      color={game.deadPlayers[player] ? "violet" : "gray"}
-                      header="Player has a deadvote"
-                      explanation="Each player gets one vote after they die.  This player has not used theirs yet."
-                    >
-                      <LiaVoteYeaSolid className="h-2" />
-                    </MeaningfulIcon>
-                  )}
-                </div>
+                <Button
+                  variant={
+                    !game.deadPlayers[player] || !game.deadVotes[player]
+                      ? "solid"
+                      : "outline"
+                  }
+                  onClick={() => {
+                    if (!game.deadPlayers[player]) {
+                      return;
+                    }
+                    void setDeadVote(player, !game.deadVotes[player]);
+                  }}
+                >
+                  <Vote />
+                </Button>
+
                 <Flex
-                  justify="start"
                   gap="3"
                   className={classNames(
                     "flex-1",
@@ -202,9 +210,12 @@ export function PlayerInGame() {
                   <Text
                     color={game.travelers[player] ? "amber" : undefined}
                     as="div"
-                    className="capitalize"
+                    className="ml-2 capitalize"
                   >
                     {player}
+                    {game.deadPlayers[player] && (
+                      <Skull className="ml-2 inline" />
+                    )}
                   </Text>
                   {game.travelers[player] && (
                     <ForPlayerPlayerRoleIcon player={player}>
@@ -221,6 +232,7 @@ export function PlayerInGame() {
                     Votes: {game.onTheBlock[player]}
                   </Text>
                 )}
+
                 <SetCountModal
                   title="Votes cast"
                   onSet={(votes: number) =>
@@ -228,10 +240,19 @@ export function PlayerInGame() {
                   }
                   defaultValue={game.onTheBlock[player] ?? 0}
                 >
-                  <IconButton variant="soft" radius="large">
+                  <IconButton variant="outline" radius="large">
                     <GiAxeInStump />
                   </IconButton>
                 </SetCountModal>
+                <IconButton
+                  variant={game.deadPlayers[player] ? "solid" : "soft"}
+                  radius="large"
+                  onClick={() => {
+                    void setPlayerFate(player, !game.deadPlayers[player]);
+                  }}
+                >
+                  {game.deadPlayers[player] ? <Skull /> : <GiRaiseZombie />}
+                </IconButton>
               </Flex>
             ))}
           </Flex>

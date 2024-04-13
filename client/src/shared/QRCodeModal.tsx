@@ -1,8 +1,7 @@
-import { Button, Dialog, Flex } from "@radix-ui/themes";
+import { Button } from "@design-system/components/button";
+import { Dialog } from "@design-system/components/ui/dialog";
 import QRCode from "qrcode.react";
 import { BsShare } from "react-icons/bs";
-
-import { DialogHeader } from "./DialogHeader";
 
 export function QRCodeModal({
   message,
@@ -26,28 +25,21 @@ export function QRCodeModal({
   };
   return (
     <Dialog.Root>
-      <Dialog.Content className="m-6">
-        <DialogHeader>
-          <Flex align="center" justify="between">
-            {message}
-          </Flex>
-        </DialogHeader>
-
-        <Flex mt="4" direction="column" justify="center" align="center" gap="5">
-          <div className="bg-white p-1">
-            <QRCode value={url} size={256} fgColor="darkred" />
+      <Dialog.Content>
+        <Dialog.Header>{message}</Dialog.Header>
+        <Dialog.Description>
+          <div className="mt-4 flex flex-col items-center justify-center gap-5">
+            <div className="bg-white p-1">
+              <QRCode value={url} size={256} fgColor="darkred" />
+            </div>
+            <Button className="w-full" onClick={() => void handleShare()}>
+              <BsShare className="inline" />
+              Or share the link!
+            </Button>
           </div>
-          <Button
-            className="w-full"
-            onClick={() => void handleShare()}
-            size="4"
-          >
-            <BsShare className="inline" />
-            Or share the link!
-          </Button>
-        </Flex>
+        </Dialog.Description>
       </Dialog.Content>
-      <Dialog.Trigger>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
     </Dialog.Root>
   );
 }

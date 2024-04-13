@@ -29,7 +29,7 @@ function GMGrimoireView() {
       <div className="hidden flex-1 lg:flex">
         <GMGrimoire />
       </div>
-      <div className="flex h-full w-full min-w-[400px] shrink grow overflow-hidden empty:hidden md:grow-0 lg:w-1/4">
+      <div className="flex h-full w-full min-w-[350px] shrink grow overflow-hidden empty:hidden md:grow-0 lg:w-1/4">
         <SideBar />
       </div>
     </div>
