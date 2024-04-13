@@ -16,7 +16,7 @@ export function TeamSelect({ currentTeam, onSelect }: TeamSelectProps) {
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Button
           variant="soft"
           className="capitalize"
@@ -30,7 +30,7 @@ export function TeamSelect({ currentTeam, onSelect }: TeamSelectProps) {
       <Dialog.Content className="flex flex-col gap-1">
         <Dialog.Header>Team</Dialog.Header>
         {teamList.map((team) => (
-          <Dialog.Close key={team}>
+          <Dialog.Close asChild key={team}>
             <Button
               className="w-full capitalize"
               color={shadCnColorMap[team]}

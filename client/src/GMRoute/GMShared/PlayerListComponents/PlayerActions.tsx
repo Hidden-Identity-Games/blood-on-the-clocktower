@@ -1,5 +1,6 @@
+import { Dialog } from "@design-system/components/ui/dialog";
 import { getCharacter, type UnifiedGame } from "@hidden-identity/shared";
-import { Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import { Flex, IconButton, Text } from "@radix-ui/themes";
 import { SkullIcon } from "lucide-react";
 import { FaFeather, FaGear } from "react-icons/fa6";
 import { GiRaiseZombie } from "react-icons/gi";
@@ -35,7 +36,7 @@ export function PlayerActions({
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Content className="m-2">
         <Flex gap="2" direction="column" className="py-2 ">
           <Flex className="justify-center pb-2" align="center">

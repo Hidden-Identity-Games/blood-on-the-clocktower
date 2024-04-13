@@ -1,4 +1,5 @@
-import { Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Flex, IconButton, Text } from "@radix-ui/themes";
 import { GiBootKick } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 
@@ -47,24 +48,26 @@ export function SetupPlayerList() {
             )}
 
             <Dialog.Root>
-              <Dialog.Trigger>
+              <Dialog.Trigger asChild>
                 <IconButton variant="ghost">
                   <RxHamburgerMenu />
                 </IconButton>
               </Dialog.Trigger>
               <Dialog.Content className="m-2">
-                <Flex direction="column" gap="2">
-                  <Dialog.Close>
-                    <PlayerList.MenuItem
-                      id="kick-player"
-                      label="Kick Player"
-                      onClick={() => void handleKickPlayer(player)}
-                      disabled={kickPlayerLoading}
-                    >
-                      <GiBootKick />
-                    </PlayerList.MenuItem>
-                  </Dialog.Close>
-                </Flex>
+                <Dialog.Description>
+                  <Flex direction="column" gap="2">
+                    <Dialog.Close asChild>
+                      <PlayerList.MenuItem
+                        id="kick-player"
+                        label="Kick Player"
+                        onClick={() => void handleKickPlayer(player)}
+                        disabled={kickPlayerLoading}
+                      >
+                        <GiBootKick />
+                      </PlayerList.MenuItem>
+                    </Dialog.Close>
+                  </Flex>
+                </Dialog.Description>
               </Dialog.Content>
             </Dialog.Root>
           </Text>

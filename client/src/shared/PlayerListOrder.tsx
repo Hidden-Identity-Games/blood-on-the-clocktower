@@ -1,5 +1,6 @@
+import { Dialog } from "@design-system/components/ui/dialog";
 import { exhaustiveCheck } from "@hidden-identity/shared";
-import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
+import { Button, Flex, IconButton } from "@radix-ui/themes";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { MdSort } from "react-icons/md";
 
@@ -36,15 +37,17 @@ export function PlayerListOrder({
         {selectedOrder}
       </Button>
       <Dialog.Root>
-        <Dialog.Trigger disabled={selectedOrder !== "seat order"}>
+        <Dialog.Trigger asChild disabled={selectedOrder !== "seat order"}>
           <IconButton size="1">
             <FaArrowsRotate />
           </IconButton>
         </Dialog.Trigger>
 
         <Dialog.Content className="m-3">
-          <Dialog.Title>Choose player at the tp of the circle</Dialog.Title>
-          <ChoosePlayer player={player} setPlayer={setFirstSeat} />
+          <Dialog.Header>Choose player at the tp of the circle</Dialog.Header>
+          <Dialog.Description>
+            <ChoosePlayer player={player} setPlayer={setFirstSeat} />
+          </Dialog.Description>
         </Dialog.Content>
       </Dialog.Root>
     </Flex>
@@ -79,7 +82,7 @@ function ChoosePlayer({ player, setPlayer }: ChoosePlayerProps) {
   return (
     <Flex direction="column" gap="3">
       {orderedPlayers.map((player) => (
-        <Dialog.Close key={player}>
+        <Dialog.Close asChild key={player}>
           <Button
             className="capitalize"
             variant="soft"

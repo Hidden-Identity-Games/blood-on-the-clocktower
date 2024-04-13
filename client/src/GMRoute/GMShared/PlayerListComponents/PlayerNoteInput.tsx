@@ -1,4 +1,5 @@
-import { Button, Dialog, Flex, TextArea } from "@radix-ui/themes";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Button, Flex, TextArea } from "@radix-ui/themes";
 import React from "react";
 
 import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
@@ -26,12 +27,14 @@ export function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
         }
       }}
     >
-      <Dialog.Trigger disabled={playerNotesLoading}>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild disabled={playerNotesLoading}>
+        {children}
+      </Dialog.Trigger>
 
       {/* Place the dialog above virtual keyboard */}
       <Dialog.Content className="absolute bottom-[50%] top-[5%] m-2 min-h-[250px]">
         <Flex className="h-[100%] w-full" direction="column" gap="4">
-          <Dialog.Title className="capitalize">
+          <Dialog.Header className="capitalize">
             <Flex justify="between">
               <label className="flex-1" htmlFor="note-input">
                 <PlayerNameWithRoleIcon player={player}>
@@ -49,7 +52,7 @@ export function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
                 Clear
               </Button>
             </Flex>
-          </Dialog.Title>
+          </Dialog.Header>
           <Flex className="w-full flex-1" direction="column" gap="4" asChild>
             <form
               onSubmit={(event) => {
@@ -74,17 +77,17 @@ export function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
                 }}
               />
 
-              <Flex justify="between">
-                <Dialog.Close>
+              <Dialog.Footer>
+                <Dialog.Close asChild>
                   <Button type="reset" variant="surface">
                     Cancel
                   </Button>
                 </Dialog.Close>
 
-                <Dialog.Close>
+                <Dialog.Close asChild>
                   <Button type="submit">Submit</Button>
                 </Dialog.Close>
-              </Flex>
+              </Dialog.Footer>
             </form>
           </Flex>
         </Flex>
