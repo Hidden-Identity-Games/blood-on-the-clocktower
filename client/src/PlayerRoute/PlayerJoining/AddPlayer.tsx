@@ -64,13 +64,13 @@ function AddPlayer() {
           onOpenChange={() => setRejoinOpen(false)}
         >
           <Dialog.Content className="m-2">
+            <Text as="div">
+              That name already exists, have you already joined and would like
+              to rejoin?
+            </Text>
             <Dialog.Footer>
-              <Text as="div">
-                That name already exists, have you already joined and would like
-                to rejoin?
-              </Text>
               <Dialog.Close asChild>
-                <Button>No, I will pick a new name</Button>
+                <Button variant="secondary">No, I will pick a new name</Button>
               </Dialog.Close>
               <Button
                 onClick={() => {

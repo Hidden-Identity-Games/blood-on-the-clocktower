@@ -1,11 +1,17 @@
+import { Button } from "@design-system/components/button";
 import { Dialog } from "@design-system/components/ui/dialog";
 import {
+  asRole,
+  getCharacter,
   getScript,
   getScriptImg,
   getScriptNames,
+  isFabledRole,
+  isTravelerRole,
+  type Role,
   type ScriptName,
 } from "@hidden-identity/shared";
-import { Button, Callout, Flex, Heading, TextArea } from "@radix-ui/themes";
+import { Callout, Flex, Heading, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
 import React, { type ReactNode } from "react";
 
@@ -166,7 +172,7 @@ function CustomScriptInputDialog({
           )}
           <Dialog.Footer>
             <Dialog.Close asChild>
-              <Button>Cancel</Button>
+              <Button variant="secondary">Cancel</Button>
             </Dialog.Close>
             <Dialog.Close asChild>
               <Button onClick={handleCustomScriptImport}>
@@ -181,18 +187,26 @@ function CustomScriptInputDialog({
 }
 
 function ValidateCustomScript(script: string): Script {
-  const parsed = JSON.parse(script);
+  let parsed: string[] = JSON.parse(script);
   if (!Array.isArray(parsed)) {
     throw new Error("JSON is not an array.");
   }
-  const badCharacters = parsed.filter((obj) => !obj["id"]);
+
+  parsed = parsed
+    .filter((obj) => typeof obj === "string")
+    .filter((obj) => !isFabledRole(obj))
+    .filter((obj) => !isTravelerRole(asRole(obj)));
+
+  const badCharacters = parsed
+    .filter((obj) => typeof obj === "string")
+    .filter((obj) => !getCharacter(obj as Role));
+
   if (badCharacters.length > 0) {
     throw new Error(
       `"Role element ${JSON.stringify(
         badCharacters[0],
-      )} is invalid.  Should match { 'id': '<role_name>' }"`,
+      )} is invalid. Should be a string with id.  Fabled are not yet supported"`,
     );
   }
-  const parsedWithoutMeta = parsed.filter((char) => char.id[0] !== "_");
-  return parsedWithoutMeta as Script;
+  return parsed.map((obj) => ({ id: obj })) as Script;
 }

@@ -109,7 +109,9 @@ export function progressTimeAction(): GameThunk<void> {
       ).flatMap((role) => {
         const ability = getAbility(
           role,
-          isFirstDay ? { time: "night", count: 1 } : getGame().time,
+          isFirstDay
+            ? { time: "night", count: 1, startTime: Date.now() }
+            : getGame().time,
         );
         if (!ability) {
           return [];

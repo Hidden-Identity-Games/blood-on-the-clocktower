@@ -238,7 +238,12 @@ function AddRole({ characterSelectState }: AddRoleProps) {
         setResults([]);
       }}
     >
-      <Flex gap="5" align="center" style={{ height: "2em" }}>
+      <Flex
+        gap="5"
+        align="center"
+        style={{ height: "2em" }}
+        className="mb-[100px]"
+      >
         <Dialog.Trigger asChild>
           <IconButton variant="soft" size="1">
             <AiOutlinePlus />

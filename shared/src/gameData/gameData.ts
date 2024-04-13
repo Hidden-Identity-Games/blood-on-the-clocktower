@@ -7,6 +7,7 @@ import {
   type Script,
 } from "../shapes/index.ts";
 import { CHARACTERS as charactersList } from "./characterData.ts";
+import { FABLED_IDS } from "./fabled.ts";
 import { type ScriptDefinition, type ScriptName, SCRIPTS } from "./scripts.ts";
 
 const characters = Object.fromEntries(
@@ -106,4 +107,12 @@ export function validCharactersList() {
 }
 export function allCharactersList() {
   return charactersList;
+}
+
+export function isTravelerRole(role: Role) {
+  return allTravelers().includes(role);
+}
+
+export function isFabledRole(role: string): boolean {
+  return FABLED_IDS.includes(role);
 }

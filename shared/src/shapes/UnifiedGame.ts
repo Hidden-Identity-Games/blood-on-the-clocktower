@@ -18,6 +18,7 @@ export const dayNightShape = z.enum(["day", "night"]);
 export const timeRecordShape = z.object({
   time: dayNightShape,
   count: z.number(),
+  startTime: z.number().nullable(),
 });
 export type TimeRecord = z.TypeOf<typeof timeRecordShape>;
 

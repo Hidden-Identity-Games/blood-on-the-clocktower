@@ -1,5 +1,7 @@
+import { Button } from "@design-system/components/button";
 import { Dialog } from "@design-system/components/ui/dialog";
-import { Button, Flex, TextArea } from "@radix-ui/themes";
+import { Textarea } from "@design-system/components/ui/textarea";
+import { Flex } from "@radix-ui/themes";
 import React from "react";
 
 import { PlayerNameWithRoleIcon } from "../../../shared/RoleIcon";
@@ -32,35 +34,33 @@ export function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
       </Dialog.Trigger>
 
       {/* Place the dialog above virtual keyboard */}
-      <Dialog.Content className="absolute bottom-[50%] top-[5%] m-2 min-h-[250px]">
+      <Dialog.Content>
         <Flex className="h-[100%] w-full" direction="column" gap="4">
-          <Dialog.Header className="capitalize">
-            <Flex justify="between">
-              <label className="flex-1" htmlFor="note-input">
-                <PlayerNameWithRoleIcon player={player}>
-                  Notes:
-                </PlayerNameWithRoleIcon>
-              </label>
-              <Button
-                type="reset"
-                variant="surface"
-                onClick={() => {
-                  setNewNote("");
-                  inputRef.current?.focus();
-                }}
-              >
-                Clear
-              </Button>
-            </Flex>
+          <Dialog.Header className="flex flex-row items-center justify-between gap-1 capitalize">
+            <label className="flex-1 items-center" htmlFor="note-input">
+              <PlayerNameWithRoleIcon player={player}>
+                <span className="pr-1">Notes:</span>
+              </PlayerNameWithRoleIcon>
+            </label>
+            <Button
+              type="reset"
+              variant="secondary"
+              onClick={() => {
+                setNewNote("");
+                inputRef.current?.focus();
+              }}
+            >
+              Clear
+            </Button>
           </Dialog.Header>
-          <Flex className="w-full flex-1" direction="column" gap="4" asChild>
+          <Dialog.Description className="flex flex-col gap-4">
             <form
               onSubmit={(event) => {
                 event.preventDefault();
                 void setPlayerNote(player, newNote);
               }}
             >
-              <TextArea
+              <Textarea
                 autoFocus
                 onFocus={(e) =>
                   e.currentTarget.setSelectionRange(
@@ -76,20 +76,19 @@ export function PlayerNoteInput({ player, children }: PlayerNoteInputProps) {
                   setNewNote(event.currentTarget.value);
                 }}
               />
-
-              <Dialog.Footer>
-                <Dialog.Close asChild>
-                  <Button type="reset" variant="surface">
-                    Cancel
-                  </Button>
-                </Dialog.Close>
-
-                <Dialog.Close asChild>
-                  <Button type="submit">Submit</Button>
-                </Dialog.Close>
-              </Dialog.Footer>
             </form>
-          </Flex>
+          </Dialog.Description>
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button type="reset" variant="secondary">
+                Cancel
+              </Button>
+            </Dialog.Close>
+
+            <Dialog.Close asChild>
+              <Button type="submit">Submit</Button>
+            </Dialog.Close>
+          </Dialog.Footer>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

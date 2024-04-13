@@ -24,6 +24,7 @@ import { ExecutionMessage } from "../../../../GMShared/PlayerListComponents/Play
 import { MinionsMessages } from "../../../../GMShared/PlayerListComponents/PlayerMessage/MessageCreators/SpecialActionMessageCreators/MinionsMessage";
 import { ReminderCreator } from "../../../../GMShared/PlayerListComponents/PlayerMessage/ReminderCreator";
 import { PlayerName } from "../../../../GMShared/PlayerListComponents/PlayerName";
+import { RemindersList } from "../../../../GMShared/RemindersList";
 
 export interface ActionQueueRowProps {
   queueItem: ActionQueueItem;
@@ -46,13 +47,19 @@ export function ActionQueueRow({ queueItem }: ActionQueueRowProps) {
             <span className="flex-1 text-left">
               <RoleText role={queueItem.role} />
             </span>
-            <span className="mx-2 flex-1 text-right">
+            <div className="mx-2 flex flex-1 justify-end text-right">
               {queueItem.player ? (
-                <PlayerName player={queueItem.player} className="flex-1" />
+                <>
+                  <RemindersList
+                    player={queueItem.player}
+                    className="mr-1 flex-1 justify-end"
+                  />
+                  <PlayerName player={queueItem.player} className="" />
+                </>
               ) : (
                 "Skip"
               )}
-            </span>
+            </div>
           </>
         )}
         {queueItem.type === "game" && (

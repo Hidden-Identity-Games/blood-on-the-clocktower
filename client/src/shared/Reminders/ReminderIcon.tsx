@@ -50,6 +50,6 @@ export function getReminderColorByType(type: ReminderType) {
     case "mad":
       return "border-4 border-yellow-500";
     default:
-      return null;
+      return "bg-primary";
   }
 }
