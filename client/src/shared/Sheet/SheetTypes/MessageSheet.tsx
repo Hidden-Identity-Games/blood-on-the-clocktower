@@ -3,7 +3,7 @@ import { Textarea } from "@design-system/components/ui/textarea";
 import { groupBy, type PlayerMessage } from "@hidden-identity/shared";
 import { Heading, Text } from "@radix-ui/themes";
 import { Mail } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useIsHiddenView, useSheetView } from "../../../store/url";
@@ -37,6 +37,9 @@ function Body({ message }: MessageSheetPiecesProps) {
   const [hiddenView, setIsHiddenView] = useIsHiddenView();
   const [, setSheet] = useSheetView();
   const [plainTextMessage, setPlainTextMessage] = useState("");
+  useEffect(() => {
+    setPlainTextMessage("");
+  }, [message?.id]);
 
   return (
     <div className="flex h-full flex-col gap-2 p-2">
@@ -99,7 +102,7 @@ function Body({ message }: MessageSheetPiecesProps) {
         placeholder={
           hiddenView ? "" : "This text won't be saved to the server."
         }
-        className="min-h-[25%] flex-1"
+        className="min-h-[25%] flex-1 text-xl md:text-8xl"
       />
       {!hiddenView && (
         <Button onClick={() => setIsHiddenView(true)}>Show to player</Button>

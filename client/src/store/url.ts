@@ -202,8 +202,17 @@ export function useSafeNavigate() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const safeNavigate = useCallback(
-    (url: Route, searchParamChanges?: Partial<SearchParams>) => {
-      navigate(urlFromBase(url, { ...searchParams, ...searchParamChanges }));
+    (
+      url: Route,
+      searchParamChanges?: Partial<SearchParams>,
+      reset?: boolean,
+    ) => {
+      navigate(
+        urlFromBase(url, {
+          ...(reset ? {} : searchParams),
+          ...searchParamChanges,
+        }),
+      );
     },
     [navigate, searchParams],
   );

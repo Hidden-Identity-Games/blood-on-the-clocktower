@@ -1,5 +1,6 @@
+import { Dialog } from "@design-system/components/ui/dialog";
 import { Input } from "@design-system/components/ui/input";
-import { Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import { Button, Flex, IconButton, Text } from "@radix-ui/themes";
 import React, { useEffect, useRef } from "react";
 import { type ReactNode } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
@@ -90,7 +91,7 @@ export function SetCountModal({
         setCount(defaultValue);
       }}
     >
-      <Dialog.Trigger>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content
         className="mx-3"
@@ -102,24 +103,24 @@ export function SetCountModal({
         }}
       >
         <Flex direction="column" gap="9">
-          <Dialog.Title>{title}</Dialog.Title>
+          <Dialog.Header>{title}</Dialog.Header>
           <Text size="8">
             <Flex justify="center" align="center" gap="7">
               <SetCount count={count} setCount={setCount} min={min} max={max} />
             </Flex>
           </Text>
-          <Flex justify="between">
-            <Dialog.Close>
+          <Dialog.Footer>
+            <Dialog.Close asChild>
               <Button variant="surface" size="3">
                 Cancel
               </Button>
             </Dialog.Close>
-            <Dialog.Close>
+            <Dialog.Close asChild>
               <Button size="3" onClick={() => onSet(count)}>
                 Confirm
               </Button>
             </Dialog.Close>
-          </Flex>
+          </Dialog.Footer>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

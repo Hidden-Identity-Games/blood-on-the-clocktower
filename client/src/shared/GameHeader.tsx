@@ -1,7 +1,7 @@
+import { Dialog } from "@design-system/components/ui/dialog";
 import {
   Button,
   Callout,
-  Dialog,
   Flex,
   Heading,
   IconButton,
@@ -87,7 +87,7 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <Flex align="center" gap="1" asChild>
           <button>
             <Text color="amber">Game:</Text>
@@ -98,16 +98,16 @@ function QRCodeDialog({ gameId }: QRCodeDialogProps) {
       </Dialog.Trigger>
 
       <Dialog.Content className="m-6">
-        <Dialog.Title>
+        <Dialog.Header>
           <Flex align="center" justify="between">
             Scan to Join
-            <Dialog.Close>
+            <Dialog.Close asChild>
               <IconButton variant="ghost" radius="full">
                 <AiOutlineClose />
               </IconButton>
             </Dialog.Close>
           </Flex>
-        </Dialog.Title>
+        </Dialog.Header>
 
         <Flex mt="4" direction="column" justify="center" align="center" gap="5">
           <div className="bg-white p-1">

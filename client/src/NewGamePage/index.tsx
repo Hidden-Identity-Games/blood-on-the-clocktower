@@ -56,7 +56,7 @@ export function NewGameLanding() {
             </a>
           </Dialog.Description>
           <Dialog.Footer className="p-1">
-            <Dialog.Close>
+            <Dialog.Close asChild>
               <Button onClick={() => setHasSeenPleaseSupportGame("yes")}>
                 I supported the creators!
               </Button>
@@ -76,7 +76,7 @@ export function NewGameLanding() {
         </GameSelectModal>
         <NewGameButton className="w-full">Create game</NewGameButton>
         <GameSelectModal
-          onSubmit={(gameId) => navigate("spectator", { gameId })}
+          onSubmit={(gameId) => navigate("spectator", { gameId }, true)}
           title="Spectate game"
         >
           <Button variant="outline" className="w-full">

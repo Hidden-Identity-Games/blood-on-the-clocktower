@@ -1,8 +1,7 @@
-import { Button, Dialog, Flex } from "@radix-ui/themes";
+import { Dialog } from "@design-system/components/ui/dialog";
+import { Button, Flex } from "@radix-ui/themes";
 import QRCode from "qrcode.react";
 import { BsShare } from "react-icons/bs";
-
-import { DialogHeader } from "./DialogHeader";
 
 export function QRCodeModal({
   message,
@@ -27,11 +26,11 @@ export function QRCodeModal({
   return (
     <Dialog.Root>
       <Dialog.Content className="m-6">
-        <DialogHeader>
+        <Dialog.Header>
           <Flex align="center" justify="between">
             {message}
           </Flex>
-        </DialogHeader>
+        </Dialog.Header>
 
         <Flex mt="4" direction="column" justify="center" align="center" gap="5">
           <div className="bg-white p-1">
@@ -47,7 +46,7 @@ export function QRCodeModal({
           </Button>
         </Flex>
       </Dialog.Content>
-      <Dialog.Trigger>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
     </Dialog.Root>
   );
 }
