@@ -25,7 +25,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
         dayReminder: true,
       },
       {
-        name: "Nominated",
+        name: "Sculptor Nom",
         type: "info",
       },
     ],
@@ -211,7 +211,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [
       {
-        name: "Drunk",
+        name: "Centurion Drunk",
         type: "info",
       },
     ],
@@ -230,7 +230,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
     team: "Townsfolk",
     reminders: [
       {
-        name: "Nominated",
+        name: "Merchant Nom",
         type: "info",
       },
       abilitySpent("Merchant"),
@@ -240,7 +240,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
       reminder:
         "If the Merchant has not yet used their ability: the Merchant either shows a shake 'no' head signal, or a nod 'yes' head signal. If the Merchant chose 'yes', show the character tokens of players with a NOMINATED token (in any order). Place the NO ABILITY token.",
       order: 26,
-      setReminders: ["Nominated", abilitySpent("Merchant").name],
+      setReminders: ["Merchant Nom", abilitySpent("Merchant").name],
     },
   },
   {
@@ -394,7 +394,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
         type: "info",
       },
       {
-        name: "Drunk",
+        name: "Wine Drunk",
         type: "info",
       },
     ],
@@ -408,7 +408,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
       reminder:
         "Check which ODD or EVEN token is placed. If an odd night and the ODD token is placed, the Winemaker is drunk until dusk. If an even night and the EVEN token is placed, the Winemaker is drunk until dusk. Otherwise their Townsfolk neighbours are drunk until dusk.",
       order: 9,
-      setReminders: ["Drunk"],
+      setReminders: ["Wine Drunk"],
     },
   },
   {
@@ -494,7 +494,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
     team: "Minion",
     reminders: [
       {
-        name: "Foretold",
+        name: "Haruspex Foretold",
         type: "info",
       },
       abilitySpent("Haruspex"),
@@ -503,13 +503,13 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
       reminder:
         "The Haruspex points to a player. Show that player’s character token. Place a FORETOLD token next that player. ",
       order: 14,
-      setReminders: ["Foretold"],
+      setReminders: ["Haruspex Foretold"],
     },
     otherNight: {
       reminder:
         "The Haruspex points to a player. Show that player’s character token. Place a FORETOLD token next that player: if that player already has a FORETOLD token. That player dies, also place the CAN'T KILL token next to the Haruspex.",
       order: 16,
-      setReminders: ["ForeTold", abilitySpent("Haruspex").name],
+      setReminders: ["Haruspex Foretold", abilitySpent("Haruspex").name],
     },
   },
   {
@@ -722,11 +722,11 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [
       {
-        name: "Blessed",
+        name: "HP Blessed",
         type: "info",
       },
       {
-        name: "Failed",
+        name: "HP Failed",
         type: "info",
       },
     ],
@@ -739,7 +739,7 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
   },
   {
     id: "highpriest2_fall_of_rome",
-    name: "High Priest",
+    name: "High Priest -2",
     ability:
       "Each day, publicly choose a unique living player to bless: if a majority of players agree, tomorrow they may learn a statement. Tonight, choose if it’s true.",
     edition: "fall of rome",
@@ -749,19 +749,11 @@ export const ROME_CHARACTERS: CharacterDefinition[] = [
     team: "Traveler",
     reminders: [
       {
-        name: "Blessed",
+        name: "HP2 Blessed",
         type: "info",
       },
       {
-        name: "Failed",
-        type: "info",
-      },
-      {
-        name: "True",
-        type: "info",
-      },
-      {
-        name: "False",
+        name: "HP2 Failed",
         type: "info",
       },
     ],
