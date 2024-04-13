@@ -108,4 +108,5 @@ export type CharacterDefinition = Omit<Character, "id"> & {
   id: string;
   edition: unknown;
   reminders: Reminder[];
+  attribution?: string;
 };
