@@ -1,3 +1,4 @@
+import { Button } from "@design-system/components/button";
 import { Dialog } from "@design-system/components/ui/dialog";
 import { getCharacter, type UnifiedGame } from "@hidden-identity/shared";
 import { Flex, IconButton, Text } from "@radix-ui/themes";
@@ -15,6 +16,7 @@ import {
   useAssignRole,
   useDecideFate,
 } from "../../../store/actions/gmPlayerActions";
+import { useKickPlayer } from "../../../store/actions/playerActions";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../store/useStore";
 import { RemindersList } from "../RemindersList";
@@ -33,6 +35,7 @@ export function PlayerActions({
 
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const [, deadVoteLoading, , setDeadVote] = useDeadVote();
+  const [, , , kickPlayer] = useKickPlayer();
 
   return (
     <Dialog.Root>
@@ -90,6 +93,27 @@ export function PlayerActions({
           >
             <LiaVoteYeaSolid />
           </PlayerList.MenuItem>
+          {game.travelers[player] && (
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button>Kick Traveler</Button>
+              </Dialog.Trigger>
+              <Dialog.Content>
+                <Dialog.Header>Kick {player}?</Dialog.Header>
+                <Dialog.Description>Are you sure?</Dialog.Description>
+                <Dialog.Footer>
+                  <Dialog.Close asChild>
+                    <Button onClick={() => void kickPlayer(player)}>
+                      Kick {player}
+                    </Button>
+                  </Dialog.Close>
+                  <Dialog.Close>
+                    <Button>Cancel</Button>
+                  </Dialog.Close>
+                </Dialog.Footer>
+              </Dialog.Content>
+            </Dialog.Root>
+          )}
           <PlayerList.NoteInputModal player={player}>
             {game.playerNotes[player] ? (
               <button className="text-left">
