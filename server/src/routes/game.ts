@@ -326,12 +326,12 @@ export const gameRoutes = {
     .input(gameIdShape)
     .mutation(async ({ input: { gameId } }) => {
       const game = await retrieveGame(gameId);
-      if (
-        game.getGame().playerList.length !==
-        Object.values(game.getGame().setupRoleSet).reduce((a, b) => a + b)
-      ) {
-        throw new Error("count does not match selected roles");
-      }
+      // if (
+      //   game.getGame().playerList.length !==
+      //   Object.values(game.getGame().setupRoleSet).reduce((a, b) => a + b)
+      // ) {
+      //   throw new Error("count does not match selected roles");
+      // }
       game.dispatch({
         type: "GenerateRandomRoleSet",
       });
