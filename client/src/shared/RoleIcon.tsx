@@ -9,10 +9,13 @@ import { useGetPlayerAlignment } from "../store/useStore";
 import { type ExtnesionProps, type RadixTextProps } from "../types/radixTypes";
 import { colorMap, radixAlignmentColorMap } from "./CharacterTypes";
 
+function roleUrl(url: string) {
+  return url.startsWith("http")
+    ? url
+    : new URL(`../assets/icon/role/${url}`, import.meta.url).href;
+}
 export const getRoleIcon = (character: Character) =>
-  character.imageSrc
-    ? new URL(`../assets/icon/role/${character.imageSrc}`, import.meta.url).href
-    : DefaultRoleImageSrc;
+  character.imageSrc ? roleUrl(character.imageSrc) : DefaultRoleImageSrc;
 
 export interface RoleIconProps extends React.HTMLAttributes<HTMLImageElement> {
   role: Role;

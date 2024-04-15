@@ -1,6 +1,6 @@
+import { Button } from "@design-system/components/button";
 import { Dialog } from "@design-system/components/ui/dialog";
 import { getCharacter, type UnifiedGame } from "@hidden-identity/shared";
-import { Flex, IconButton, Text } from "@radix-ui/themes";
 import { SkullIcon } from "lucide-react";
 import { FaFeather, FaGear } from "react-icons/fa6";
 import { GiRaiseZombie } from "react-icons/gi";
@@ -15,6 +15,7 @@ import {
   useAssignRole,
   useDecideFate,
 } from "../../../store/actions/gmPlayerActions";
+import { useKickPlayer } from "../../../store/actions/playerActions";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../store/useStore";
 import { RemindersList } from "../RemindersList";
@@ -33,20 +34,21 @@ export function PlayerActions({
 
   const [, decideFateLoading, , handleDecideFate] = useDecideFate();
   const [, deadVoteLoading, , setDeadVote] = useDeadVote();
+  const [, , , kickPlayer] = useKickPlayer();
 
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Content className="m-2">
-        <Flex gap="2" direction="column" className="py-2 ">
-          <Flex className="justify-center pb-2" align="center">
+        <div className="flex flex-col gap-2 py-2">
+          <div className="flex items-center justify-center pb-2">
             {game.deadPlayers[player] && <SkullIcon height="1em" />}
             <div className="mx-3 flex items-center gap-2 text-3xl font-bold">
               <PlayerName player={player} className="flex-1" />
               <RemindersList className="h-8" player={player} clearOnClick />
             </div>
-          </Flex>
-          <Flex gap="2">
+          </div>
+          <div className="flex gap-2">
             <div className="flex-[2]">
               <RoleChangeMenuItem game={game} player={player} />
             </div>
@@ -54,13 +56,13 @@ export function PlayerActions({
             <div className="flex-1">
               <AlignmentChangeMenuItem player={player} />
             </div>
-          </Flex>
-        </Flex>
+          </div>
+        </div>
         <div className="p-2 pb-4 text-xl">
           {getCharacter(game.playersToRoles[player]).ability}
         </div>
 
-        <Flex direction="column" gap="2">
+        <div className="flex flex-col gap-3">
           <AddReminder player={player}>
             <PlayerList.MenuItem
               onClick={() => {}}
@@ -90,15 +92,36 @@ export function PlayerActions({
           >
             <LiaVoteYeaSolid />
           </PlayerList.MenuItem>
+          {game.travelers[player] && (
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button>Kick Traveler</Button>
+              </Dialog.Trigger>
+              <Dialog.Content>
+                <Dialog.Header>Kick {player}?</Dialog.Header>
+                <Dialog.Description>Are you sure?</Dialog.Description>
+                <Dialog.Footer>
+                  <Dialog.Close asChild>
+                    <Button onClick={() => void kickPlayer(player)}>
+                      Kick {player}
+                    </Button>
+                  </Dialog.Close>
+                  <Dialog.Close>
+                    <Button>Cancel</Button>
+                  </Dialog.Close>
+                </Dialog.Footer>
+              </Dialog.Content>
+            </Dialog.Root>
+          )}
           <PlayerList.NoteInputModal player={player}>
             {game.playerNotes[player] ? (
               <button className="text-left">
-                <Flex gap="4" align="center">
-                  <IconButton size="4" variant="soft" className="p-[14px]">
+                <div className="flex items-center gap-4">
+                  <Button className="rounded-full p-[14px]" variant="outline">
                     <FaFeather />
-                  </IconButton>
-                  <Text className="text-xl">Notes:</Text>
-                </Flex>
+                  </Button>
+                  <div className="text-xl">Notes:</div>
+                </div>
                 {game.playerNotes[player].split("\n").map((note, idx) => (
                   <div className="pl-[80px]" key={`note-${idx}`}>
                     {note}
@@ -111,7 +134,7 @@ export function PlayerActions({
               </PlayerList.MenuItem>
             )}
           </PlayerList.NoteInputModal>
-        </Flex>
+        </div>
       </Dialog.Content>
     </Dialog.Root>
   );

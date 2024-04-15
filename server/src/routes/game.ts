@@ -144,12 +144,6 @@ export const gameRoutes = {
     )
     .mutation(async ({ input: { gameId, player, dead } }) => {
       const game = await retrieveGame(gameId);
-      if (
-        game.getGame().playerList.length !==
-        Object.values(game.getGame().setupRoleSet).reduce((a, b) => a + b)
-      ) {
-        throw new Error("count does not match selected roles");
-      }
       game.dispatch({ type: dead ? "KillPlayer" : "RevivePlayer", player });
     }),
   addPlayerReminder: gmProcedure
@@ -332,6 +326,12 @@ export const gameRoutes = {
     .input(gameIdShape)
     .mutation(async ({ input: { gameId } }) => {
       const game = await retrieveGame(gameId);
+      // if (
+      //   game.getGame().playerList.length !==
+      //   Object.values(game.getGame().setupRoleSet).reduce((a, b) => a + b)
+      // ) {
+      //   throw new Error("count does not match selected roles");
+      // }
       game.dispatch({
         type: "GenerateRandomRoleSet",
       });
