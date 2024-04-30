@@ -13,7 +13,7 @@ import {
 } from "@hidden-identity/shared";
 import { Callout, Flex, Heading, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
-import React, { type ReactNode } from "react";
+import React, { type ReactNode, useMemo } from "react";
 
 import scriptIcon from "../../assets/icon/feather.svg";
 import { type Script, type ScriptItem } from "../../types/script";
@@ -113,17 +113,23 @@ function CustomScriptInputDialog({
   selected,
 }: CustomScriptInputDialogProps) {
   const [customScript, setCustomScript] = React.useState("");
-  const [errorMsg, setErrorMsg] = React.useState("");
+
+  const scriptError = useMemo(() => {
+    try {
+      validateCustomScript(customScript);
+      return false;
+    } catch (e) {
+      return String(e);
+    }
+  }, [customScript]);
 
   const handleCustomScriptImport = (event: React.MouseEvent) => {
     try {
-      const parsedCustomScript = ValidateCustomScript(customScript);
+      const parsedCustomScript = validateCustomScript(customScript);
       handleSubmit(parsedCustomScript);
-      setErrorMsg("");
     } catch (e) {
       event.preventDefault();
-      const error = e as Error;
-      setErrorMsg(error.message);
+      alert(`There was an error: ${String(e)}`);
     }
   };
 
@@ -158,15 +164,19 @@ function CustomScriptInputDialog({
               setCustomScript(event.currentTarget.value);
             }}
             onPaste={(event) => {
-              setCustomScript(
-                JSON.stringify(JSON.parse(event.currentTarget.value), null, 2),
-              );
+              const data =
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (event.clipboardData || (window as any).clipboardData).getData(
+                  "text",
+                );
+              setCustomScript(JSON.stringify(JSON.parse(data), null, 2));
+              event.preventDefault();
             }}
           />
-          {errorMsg && (
+          {scriptError && (
             <div className="relative h-0 w-full">
               <Callout.Root className="absolute bottom-0">
-                <Callout.Text>{errorMsg}</Callout.Text>
+                <Callout.Text>{scriptError}</Callout.Text>
               </Callout.Root>
             </div>
           )}
@@ -175,7 +185,11 @@ function CustomScriptInputDialog({
               <Button variant="secondary">Cancel</Button>
             </Dialog.Close>
             <Dialog.Close asChild>
-              <Button onClick={handleCustomScriptImport}>
+              <Button
+                type="button"
+                onClick={handleCustomScriptImport}
+                disabled={!!scriptError}
+              >
                 Use this script
               </Button>
             </Dialog.Close>
@@ -186,20 +200,30 @@ function CustomScriptInputDialog({
   );
 }
 
-function ValidateCustomScript(script: string): Script {
-  let parsed: string[] = JSON.parse(script);
+export function validateCustomScript(script: string): Script {
+  const parsed: string[] = JSON.parse(script);
   if (!Array.isArray(parsed)) {
     throw new Error("JSON is not an array.");
   }
 
-  parsed = parsed
-    .filter((obj) => typeof obj === "string")
+  const normalized = parsed
+    .map((obj) => {
+      if (typeof obj === "string") {
+        return obj;
+      }
+      if ("id" in obj) {
+        return (obj as { id: string }).id;
+      }
+      return null;
+    })
+    .filter(Boolean) as string[];
+
+  const filtered = normalized
+    .filter((obj) => !(obj.startsWith("_") || obj === "meta"))
     .filter((obj) => !isFabledRole(obj))
     .filter((obj) => !isTravelerRole(asRole(obj)));
 
-  const badCharacters = parsed
-    .filter((obj) => typeof obj === "string")
-    .filter((obj) => !getCharacter(obj as Role));
+  const badCharacters = filtered.filter((obj) => !getCharacter(obj as Role));
 
   if (badCharacters.length > 0) {
     throw new Error(
@@ -208,5 +232,5 @@ function ValidateCustomScript(script: string): Script {
       )} is invalid. Should be a string with id.  Fabled are not yet supported"`,
     );
   }
-  return parsed.map((obj) => ({ id: obj })) as Script;
+  return filtered.map((obj) => ({ id: obj })) as Script;
 }
