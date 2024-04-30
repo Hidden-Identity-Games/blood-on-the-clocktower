@@ -7,7 +7,7 @@
   "packageManager": "pnpm@8.6.12",
   "license": "GPL-3.0",
   "engines": {
-    "node": ">=16.0.0 <17.0.0"
+    "node": "18.20.2"
   },
   "exports": {
     ".": {
@@ -16,12 +16,14 @@
   },
   "scripts": {
     "build-client": "tsc --build --force",
-    "start-prod": "SERVER_PORT=3000 ts-node --esm src/index.ts",
-    "dev": "concurrently \"pnpm run build-client --watch\" \"SERVER_PORT=6001 nodemon --esm src/index.ts\" --watch ../shared/src ./src",
+    "start-prod": "SERVER_PORT=3000 pnpm run zInternal:start-node-server",
+    "dev": "concurrently \"pnpm run build-client --watch\" \"pnpm run zInternal:dev-server\" ",
     "lint": "eslint . --ext ts --report-unused-disable-directives ",
     "type-check": "tsc",
     "test": "pnpm run type-check && pnpm run lint && vitest run",
-    "vitest:dev": "TEST_MODE=1 vitest"
+    "vitest:dev": "TEST_MODE=1 vitest",
+    "zInternal:start-node-server": "node --loader ts-node/esm src/index.ts",
+    "zInternal:dev-server": "SERVER_PORT=6001 nodemon --exec 'pnpm run zInternal:start-node-server' --watch ../shared/src ./src"
   },
   "keywords": [],
   "author": "",
