@@ -6,7 +6,7 @@
   "packageManager": "pnpm@8.6.12",
   "license": "GPL-3.0",
   "engines": {
-    "node": ">=16.0.0 <17.0.0"
+    "node": "18.20.2"
   },
   "scripts": {
     "build": "tsc && vite build",
