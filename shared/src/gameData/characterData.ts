@@ -1712,7 +1712,11 @@ export const CHARACTERS: CharacterDefinition[] = [
       "You have the ability of the recently killed executee. If they are evil, you are poisoned until a good player dies by execution.",
     imageSrc: "cannibal.png",
     firstNight: null,
-    otherNight: null,
+    otherNight: {
+      reminder:
+        "If a good player dies by execution, mark them with the LUNCH reminder, and remove the Cannibal’s POISONED reminder if necessary. The Cannibal now has this good player’s ability (do not say which), and will wake at night when this good character would normally wake. If an evil player dies by execution, mark them with the LUNCH reminder and mark the Cannibal with the POISONED reminder. The Cannibal is poisoned. You may wake them when this evil character would normally wake, and pretend that they have a new ability.",
+      order: 77,
+    },
   },
   {
     id: "choirboy",
