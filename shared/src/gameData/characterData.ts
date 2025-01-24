@@ -2413,8 +2413,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "Hatter",
-    name: "hatter",
+    id: "hatter",
+    name: "Hatter",
     edition: "exp",
     team: "Outsider",
     reminders: [
@@ -2458,6 +2458,20 @@ export const CHARACTERS: CharacterDefinition[] = [
         alignmentChange: true,
       },
     },
+    otherNight: null,
+  },
+  {
+    id: "zealot",
+    name: "Zealot",
+    edition: "exp",
+    team: "Outsider",
+    reminders: [{ name: "mustvote", type: "info", causedByDeath: true }],
+    setup: false,
+    delusional: false,
+    ability:
+      "If there are 5 or more players alive, you must vote for every nomination.",
+    imageSrc: "zealot.png",
+    firstNight: null,
     otherNight: null,
   },
   {
