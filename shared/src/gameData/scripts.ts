@@ -274,8 +274,7 @@ export const SCRIPTS: ScriptDefinition[] = [
   },
   {
     name: "X-cessive Outsiders",
-    imageSrc:
-      "https://quotefancy.com/media/wallpaper/1600x900/558572-Buddha-Quote-Life-is-uncertain-death-is-certain.jpg",
+    imageSrc: "",
     characters: [
       { id: "butler" },
       { id: "goon" },
@@ -306,8 +305,7 @@ export const SCRIPTS: ScriptDefinition[] = [
   },
   {
     name: "Witchcraft by Doomduck",
-    imageSrc:
-      "https://quotefancy.com/media/wallpaper/1600x900/558572-Buddha-Quote-Life-is-uncertain-death-is-certain.jpg",
+    imageSrc: "",
     characters: [
       { id: "investigator" },
       { id: "knight" },
