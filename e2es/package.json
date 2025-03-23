@@ -14,7 +14,7 @@
   "dependencies": {
     "@hidden-identity/server": "workspace:*",
     "@hidden-identity/shared": "workspace:*",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.51.1",
     "@trpc/client": "^10.45.0",
     "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
