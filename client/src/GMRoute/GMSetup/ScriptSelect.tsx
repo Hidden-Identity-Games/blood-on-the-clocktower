@@ -24,6 +24,13 @@ interface ScriptSelectProps {
   onScriptChange: (script: ScriptItem[]) => void;
 }
 
+type DownloadedScriptItem = {
+  id: string;
+  name?: string;
+  description?: string;
+  image?: string;
+};
+type DownloadedScript = DownloadedScriptItem[];
 export const ScriptOption = React.forwardRef(function ScriptOption(
   {
     children,
@@ -125,7 +132,7 @@ function CustomScriptInputDialog({
         importFromScriptUrl.match(/https:\/\/botc-scripts\.azurewebsites\.net/i)
       ) {
         try {
-          const downloadedScript = await (
+          const downloadedScript: DownloadedScript = await (
             await fetch(`${importFromScriptUrl.trim()}/download`)
           ).json();
 
