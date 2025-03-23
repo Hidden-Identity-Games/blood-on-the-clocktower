@@ -14,7 +14,7 @@ export const FABLED = [
     id: "angel",
     firstNightReminder: "",
     otherNightReminder: "",
-    reminders: ["Protect", "Something Bad"],
+    reminders: ["Protected", "Protected", "Something Bad"],
     setup: false,
     name: "Angel",
     team: "fabled",
@@ -38,7 +38,7 @@ export const FABLED = [
     otherNightReminder: "",
     reminders: ["Something Bad"],
     setup: false,
-    name: "Hell's Librarian",
+    name: "Hell’s Librarian",
     team: "fabled",
     ability:
       "Something bad might happen to whoever talks when the Storyteller has asked for silence.",
@@ -47,12 +47,12 @@ export const FABLED = [
     id: "revolutionary",
     firstNightReminder: "",
     otherNightReminder: "",
-    reminders: ["Used"],
+    reminders: ["Register Falsely?"],
     setup: false,
     name: "Revolutionary",
     team: "fabled",
     ability:
-      "2 neighboring players are known to be the same alignment. Once per game, one of them registers falsely.",
+      "2 neighboring players are known to be the same alignment. Once per game, 1 of them registers falsely.",
   },
   {
     id: "fiddler",
@@ -68,7 +68,7 @@ export const FABLED = [
   {
     id: "toymaker",
     firstNightReminder: "",
-    otherNight: 1,
+    otherNight: 1.1,
     otherNightReminder:
       "If it is a night when a Demon attack could end the game, and the Demon is marked “Final night: No Attack,” then the Demon does not act tonight. (Do not wake them.)",
     reminders: ["Final Night: No Attack"],
@@ -82,7 +82,7 @@ export const FABLED = [
     id: "fibbin",
     firstNightReminder: "",
     otherNightReminder: "",
-    reminders: ["Used"],
+    reminders: ["No Ability"],
     setup: false,
     name: "Fibbin",
     team: "fabled",
@@ -91,10 +91,10 @@ export const FABLED = [
   {
     id: "duchess",
     firstNightReminder: "",
-    otherNight: 1,
+    otherNight: 1.2,
     otherNightReminder:
       "Wake each player marked “Visitor” or “False Info” one at a time. Show them the Duchess token, then fingers (1, 2, 3) equaling the number of evil players marked “Visitor” or, if you are waking the player marked “False Info,” show them any number of fingers except the number of evil players marked “Visitor.”",
-    reminders: ["Visitor", "False Info"],
+    reminders: ["Visitor", "Visitor", "False Info"],
     setup: false,
     name: "Duchess",
     team: "fabled",
@@ -115,7 +115,7 @@ export const FABLED = [
     id: "spiritofivory",
     firstNightReminder: "",
     otherNightReminder: "",
-    reminders: ["No extra evil"],
+    reminders: ["No More Evil"],
     setup: false,
     name: "Spirit of Ivory",
     team: "fabled",
@@ -123,8 +123,9 @@ export const FABLED = [
   },
   {
     id: "djinn",
-    firstNight: 0,
-    firstNightReminder: "",
+    firstNight: 1.1,
+    firstNightReminder:
+      "Inform the group of all Djinn special rules for this game.",
     otherNightReminder: "",
     reminders: [],
     setup: false,
@@ -134,9 +135,9 @@ export const FABLED = [
   },
   {
     id: "stormcatcher",
-    firstNight: 1,
+    firstNight: 1.3,
     firstNightReminder:
-      'Mark a good player as "Safe". Wake each evil player and show them the marked player.',
+      "Announce the good 'Safe' character. Mark the player with that character as 'Safe'. Wake each evil player and show them the marked player.",
     otherNightReminder: "",
     reminders: ["Safe"],
     setup: false,
@@ -144,6 +145,38 @@ export const FABLED = [
     team: "fabled",
     ability:
       "Name a good character. If in play, they can only die by execution, but evil players learn which player it is.",
+  },
+  {
+    id: "bootlegger",
+    firstNight: 1.2,
+    firstNightReminder:
+      "Inform the group of all homebrew characters or rules for this game.",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    name: "Bootlegger",
+    team: "fabled",
+    ability: "This script has homebrew characters or rules.",
+  },
+  {
+    id: "ferryman",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    name: "Ferryman",
+    team: "fabled",
+    ability: "On the final day, all dead players regain their vote token.",
+  },
+  {
+    id: "gardener",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    name: "Gardener",
+    team: "fabled",
+    ability: "The Storyteller assigns 1 or more players' characters.",
   },
 ];
 export const FABLED_IDS = FABLED.map((item) => item.id);

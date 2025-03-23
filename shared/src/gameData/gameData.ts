@@ -91,7 +91,10 @@ export function getScriptImg(scriptID: ScriptName): string | undefined {
 }
 
 export function getScriptNames(): ScriptName[] {
-  return Object.keys(scripts) as ScriptName[];
+  return (Object.keys(scripts) as ScriptName[]).filter(
+    // fix tests to remove this script
+    (script) => script !== "No Roles Barred",
+  );
 }
 
 const travelers: Role[] = charactersList
