@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "packageManager": "pnpm@8.13.1",
+  "packageManager": "pnpm@8.15.9+sha256.daa27a0b541bc635323ff96c2ded995467ff9fe6d69ff67021558aa9ad9dcc36",
   "license": "GPL-3.0",
   "engines": {
     "node": "18.20.2"
