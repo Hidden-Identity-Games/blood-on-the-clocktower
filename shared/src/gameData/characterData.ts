@@ -2239,7 +2239,10 @@ export const CHARACTERS: CharacterDefinition[] = [
     name: "Village Idiot",
     edition: "exp",
     team: "Townsfolk",
-    reminders: [{ name: "learn alignment", type: "reveal-role" }],
+    reminders: [
+      { name: "vidiot", type: "info" },
+      { name: "drunk idiot", type: "drunk" },
+    ],
     setup: true,
     delusional: false,
     ability:
@@ -2249,7 +2252,7 @@ export const CHARACTERS: CharacterDefinition[] = [
       reminder:
         "While setting up the game, before putting the character tokens in the bag, replace zero, one or two Townsfolk tokens with Village Idiot tokens. While preparing the first night, mark one Village Idiot with the DRUNK reminder. During each night, wake any Village Idiot. They point to a player. Give a thumbs up or a thumbs down. Put that Village Idiot to sleep. Repeat until all Village Idiots have acted.",
       order: 35,
-      setReminders: ["learn alignment"],
+      setReminders: ["drunk idiot"],
       playerMessage: {
         type: "reveal-role",
         count: 1,
