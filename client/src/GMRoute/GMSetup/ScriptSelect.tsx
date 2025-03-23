@@ -1,5 +1,6 @@
 import { Button } from "@design-system/components/button";
 import { Dialog } from "@design-system/components/ui/dialog";
+import { Input } from "@design-system/components/ui/input";
 import {
   asRole,
   getCharacter,
@@ -10,10 +11,11 @@ import {
   isTravelerRole,
   type Role,
   type ScriptName,
+  transformName,
 } from "@hidden-identity/shared";
 import { Callout, Flex, Heading, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
-import React, { type ReactNode, useMemo } from "react";
+import React, { type ReactNode, useEffect, useMemo } from "react";
 
 import scriptIcon from "../../assets/icon/feather.svg";
 import { type Script, type ScriptItem } from "../../types/script";
@@ -65,6 +67,7 @@ export function ScriptSelect({ onScriptChange }: ScriptSelectProps) {
   const [selectedScript, setSelectedScript] = React.useState<
     ScriptName | "custom"
   >("Trouble Brewing");
+
   const handleScriptChange = (
     scriptName: ScriptName | "custom",
     script: Script,
@@ -72,6 +75,7 @@ export function ScriptSelect({ onScriptChange }: ScriptSelectProps) {
     onScriptChange(script);
     setSelectedScript(scriptName);
   };
+
   return (
     <Flex
       gap="1"
@@ -112,7 +116,36 @@ function CustomScriptInputDialog({
   handleSubmit,
   selected,
 }: CustomScriptInputDialogProps) {
+  const [importFromScriptUrl, setImportFromScriptUrl] = React.useState("");
   const [customScript, setCustomScript] = React.useState("");
+
+  useEffect(() => {
+    void (async () => {
+      if (
+        importFromScriptUrl.match(/https:\/\/botc-scripts\.azurewebsites\.net/i)
+      ) {
+        try {
+          const downloadedScript = await (
+            await fetch(`${importFromScriptUrl.trim()}/download`)
+          ).json();
+
+          setCustomScript(
+            JSON.stringify(
+              downloadedScript
+                .filter((item: { id: string }) => item.id !== "meta")
+                .map((item: { id: string }) => ({
+                  id: transformName(item.id),
+                })),
+              null,
+              2,
+            ),
+          );
+        } catch (e) {
+          console.error(`could not find script ${importFromScriptUrl}`);
+        }
+      }
+    })();
+  }, [importFromScriptUrl]);
 
   const scriptError = useMemo(() => {
     try {
@@ -154,6 +187,11 @@ function CustomScriptInputDialog({
               website
             </a>
           </Dialog.Description>
+          <Input
+            placeholder="botc-scripts url"
+            value={importFromScriptUrl}
+            onChange={(e) => setImportFromScriptUrl(e.target.value)}
+          />
 
           <TextArea
             id="custom-input"
