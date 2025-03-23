@@ -13,24 +13,19 @@ import {
   type ScriptName,
   transformName,
 } from "@hidden-identity/shared";
-import { Callout, Flex, Heading, TextArea } from "@radix-ui/themes";
+import { Label } from "@radix-ui/react-label";
+import { Flex, Heading, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
 import React, { type ReactNode, useEffect, useMemo } from "react";
 
 import scriptIcon from "../../assets/icon/feather.svg";
+import { useScriptFromRepo } from "../../store/useStore";
 import { type Script, type ScriptItem } from "../../types/script";
 
 interface ScriptSelectProps {
   onScriptChange: (script: ScriptItem[]) => void;
 }
 
-type DownloadedScriptItem = {
-  id: string;
-  name?: string;
-  description?: string;
-  image?: string;
-};
-type DownloadedScript = DownloadedScriptItem[];
 export const ScriptOption = React.forwardRef(function ScriptOption(
   {
     children,
@@ -123,36 +118,24 @@ function CustomScriptInputDialog({
   handleSubmit,
   selected,
 }: CustomScriptInputDialogProps) {
-  const [importFromScriptUrl, setImportFromScriptUrl] = React.useState("");
   const [customScript, setCustomScript] = React.useState("");
-
+  const [invalidMatch, setInvalidMatch] = React.useState(false);
+  const [fetchScriptError, fetchScriptLoading, fetchScriptValue, fetchScript] =
+    useScriptFromRepo();
   useEffect(() => {
-    void (async () => {
-      if (
-        importFromScriptUrl.match(/https:\/\/botc-scripts\.azurewebsites\.net/i)
-      ) {
-        try {
-          const downloadedScript: DownloadedScript = await (
-            await fetch(`${importFromScriptUrl.trim()}/download`)
-          ).json();
-
-          setCustomScript(
-            JSON.stringify(
-              downloadedScript
-                .filter((item: { id: string }) => item.id !== "meta")
-                .map((item: { id: string }) => ({
-                  id: transformName(item.id),
-                })),
-              null,
-              2,
-            ),
-          );
-        } catch (e) {
-          console.error(`could not find script ${importFromScriptUrl}`);
-        }
-      }
-    })();
-  }, [importFromScriptUrl]);
+    if (fetchScriptValue && !fetchScriptError) {
+      setCustomScript(
+        JSON.stringify(
+          fetchScriptValue
+            .filter((item: { id: string }) => item.id !== "meta")
+            .map((item: { id: string }) => ({ id: transformName(item.id) })),
+          null,
+          4,
+        ),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchScriptLoading]);
 
   const scriptError = useMemo(() => {
     try {
@@ -180,28 +163,39 @@ function CustomScriptInputDialog({
           <Heading>CUSTOM</Heading>
         </ScriptOption>
       </Dialog.Trigger>
-      <Dialog.Content className="m-2">
+      <Dialog.Content className="flex flex-col p-2">
         <Dialog.Header>Custom Script Input</Dialog.Header>
-        <Flex direction="column" gap="3">
-          <Dialog.Description>
+        <Dialog.Description className="flex flex-col gap-2">
+          <div className="flex justify-between">
+            <Label htmlFor="scripturl">Script URL</Label>
             <a
-              href="https://bloodontheclocktower.com/custom-scripts"
+              href="https://botc-scripts.azurewebsites.net/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sky-500 underline"
             >
-              Find custom scripts on the official Blood on the Clocktower
-              website
+              Find custom scripts on botc-scripts
             </a>
-          </Dialog.Description>
+          </div>
           <Input
+            id="scripturl"
             placeholder="botc-scripts url"
-            value={importFromScriptUrl}
-            onChange={(e) => setImportFromScriptUrl(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value.match(/https:\/\/botc-scripts\.azurewebsites\.net/i)) {
+                setInvalidMatch(false);
+
+                void fetchScript(value);
+              } else {
+                setInvalidMatch(true);
+              }
+            }}
           />
+          <Label htmlFor="scriptJson">Script JSON</Label>
 
           <TextArea
-            id="custom-input"
+            disabled={fetchScriptLoading}
+            id="scriptJson"
             className="h-[30vh] rounded-l"
             placeholder="[ { 'id': 'Washerwoman' }, ... ]"
             value={customScript}
@@ -218,28 +212,35 @@ function CustomScriptInputDialog({
               event.preventDefault();
             }}
           />
-          {scriptError && (
-            <div className="relative h-0 w-full">
-              <Callout.Root className="absolute bottom-0">
-                <Callout.Text>{scriptError}</Callout.Text>
-              </Callout.Root>
-            </div>
-          )}
-          <Dialog.Footer>
-            <Dialog.Close asChild>
-              <Button variant="secondary">Cancel</Button>
-            </Dialog.Close>
-            <Dialog.Close asChild>
-              <Button
-                type="button"
-                onClick={handleCustomScriptImport}
-                disabled={!!scriptError}
-              >
-                Use this script
-              </Button>
-            </Dialog.Close>
-          </Dialog.Footer>
-        </Flex>
+          <div className="">
+            {fetchScriptError
+              ? "Error fetching Script"
+              : fetchScriptLoading
+                ? "Loading"
+                : customScript.trim() === ""
+                  ? invalidMatch
+                    ? 'URL must be "https://botc-scripts.azurewebsites.net/script/"'
+                    : ""
+                  : scriptError
+                    ? `${scriptError}`
+                    : "Looking good"}
+          </div>
+        </Dialog.Description>
+
+        <Dialog.Footer>
+          <Dialog.Close asChild>
+            <Button variant="secondary">Cancel</Button>
+          </Dialog.Close>
+          <Dialog.Close asChild>
+            <Button
+              type="button"
+              onClick={handleCustomScriptImport}
+              disabled={!!scriptError}
+            >
+              Use this script
+            </Button>
+          </Dialog.Close>
+        </Dialog.Footer>
       </Dialog.Content>
     </Dialog.Root>
   );

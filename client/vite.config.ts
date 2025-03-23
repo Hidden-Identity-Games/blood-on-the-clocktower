@@ -45,7 +45,7 @@ export default defineConfig((env) => ({
       env.command === "build"
         ? process.env.SERVER_URL ?? '"blood-on-the-clocktower.onrender.com"'
         : TEST_MODE
-          ? "''"
+          ? '"localhost:3000/testapiebsocketurl"'
           : `\`\${window.location.hostname}:${CLIENT_PORT}/api\``,
   },
 }));
