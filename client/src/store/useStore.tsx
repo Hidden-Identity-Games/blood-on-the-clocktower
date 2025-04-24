@@ -99,7 +99,7 @@ export function usePlayerOnBlock() {
     votes: number;
   }>(
     (max, current) => {
-      if (max.votes === current[1] ?? 0) {
+      if (max.votes === (current[1] ?? 0)) {
         return {
           player: max.player ? null : current[0],
           votes: max.player ? current[1] + 1 : current[1],
@@ -114,4 +114,20 @@ export function usePlayerOnBlock() {
   );
 
   return playerOnBlock;
+}
+
+export type DownloadedScriptItem = {
+  id: string;
+  name?: string;
+  description?: string;
+  image?: string;
+};
+export type DownloadedScript = DownloadedScriptItem[];
+
+export function useScriptFromRepo() {
+  return useAction(async (scriptUrl: string) => {
+    return (await (
+      await fetch(`${scriptUrl.trim()}/download`)
+    ).json()) as DownloadedScript;
+  });
 }
