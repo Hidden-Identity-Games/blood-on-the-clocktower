@@ -18,7 +18,6 @@ import { Flex, Heading, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
 import React, { type ReactNode, useEffect, useMemo } from "react";
 
-
 import scriptIcon from "../../assets/icon/feather.svg";
 import { useScriptFromRepo } from "../../store/useStore";
 import { type Script, type ScriptItem } from "../../types/script";
