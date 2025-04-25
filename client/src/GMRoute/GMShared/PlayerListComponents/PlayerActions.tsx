@@ -62,15 +62,6 @@ export function PlayerActions({
         </div>
 
         <div className="flex flex-col gap-3">
-          {/* <AddReminder player={player}>
-            <PlayerList.MenuItem
-              onClick={() => {}}
-              id={`${player}-add-reminder`}
-              label="Add Reminder"
-            >
-              <FaGear />
-            </PlayerList.MenuItem>
-          </AddReminder> */}
           <PlayerList.MenuItem
             onClick={() =>
               void handleDecideFate(player, !game.deadPlayers[player])
