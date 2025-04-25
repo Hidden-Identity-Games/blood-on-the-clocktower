@@ -143,7 +143,7 @@ export function TextAlongTopOfCircle({
             href="#circlePath"
             textAnchor="middle"
             startOffset="25%"
-            fontSize="0.75rem"
+            fontSize="1rem"
             {...props}
           >
             {children}

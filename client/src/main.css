@@ -4,7 +4,7 @@ body {
   height: 100vh;
   /* overflow: hidden; */
   max-height: -webkit-fill-available;
-  -webkit-touch-callout: none !important;
+  /* -webkit-touch-callout: none !important; */
 }
 
 * {
