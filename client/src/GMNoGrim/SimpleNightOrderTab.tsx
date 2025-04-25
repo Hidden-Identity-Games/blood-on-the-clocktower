@@ -1,5 +1,8 @@
 import { getCharacter, type Role } from "@hidden-identity/shared";
+import { IconButton } from "@radix-ui/themes";
 import classNames from "classnames";
+import { useState } from "react";
+import { AiOutlineSync } from "react-icons/ai";
 
 import { PlayerName } from "../GMRoute/GMShared/PlayerListComponents/PlayerName";
 import { RoleIcon, RoleName } from "../shared/RoleIcon";
@@ -8,12 +11,14 @@ import { useDefiniteGame } from "../store/GameContext";
 export function SimpleNightOrderTab() {
   const { game } = useDefiniteGame();
 
-  const { playerList, script, time } = game;
-  const isFirstNight = time.count === 1;
+  const { playerList, script } = game;
+  const [isFirstNight, setIsFirstNight] = useState(true);
   const nightIndex = isFirstNight ? "firstNight" : "otherNight";
-  const scriptCharacters = script.map((char) => getCharacter(char.id));
-  scriptCharacters.sort(
-    (a, b) => (a[nightIndex]?.order ?? -1) - (b[nightIndex]?.order ?? -1),
+  const nightOrderCharacters = script
+    .map((char) => getCharacter(char.id))
+    .filter((char) => !!char[nightIndex]);
+  nightOrderCharacters.sort(
+    (a, b) => a[nightIndex]!.order - b[nightIndex]!.order,
   );
   function playersOfCharacter(role: Role) {
     return playerList.filter((p) => game.playersToRoles[p] === role);
@@ -21,7 +26,13 @@ export function SimpleNightOrderTab() {
 
   return (
     <div className="flex flex-col gap-2">
-      {scriptCharacters.map((char) => (
+      <div className="flex justify-between">
+        {isFirstNight ? "First Night" : "Other Night"}{" "}
+        <IconButton onClick={() => setIsFirstNight(!isFirstNight)}>
+          <AiOutlineSync />
+        </IconButton>
+      </div>
+      {nightOrderCharacters.map((char) => (
         <div
           className={classNames(
             "flex gap-1",

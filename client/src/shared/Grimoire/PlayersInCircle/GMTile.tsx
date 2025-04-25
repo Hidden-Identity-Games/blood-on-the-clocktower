@@ -40,6 +40,9 @@ export function GMTile({ player, index }: TileProps) {
   const { game } = useDefiniteGame();
   const { ref, width = 0 } = useResizeObserver();
   const scalingTextclass = useScalingTextClassName(width);
+  const { ref: playerNameRef, width: playerNameWidth = 0 } =
+    useResizeObserver();
+  const scalingTextClassPlayerName = useScalingTextClassName(playerNameWidth);
   const role = game.playersToRoles[player];
   const activeQueueItem = game.actionQueue.find(
     (item) => item.status === "todo",
@@ -52,13 +55,13 @@ export function GMTile({ player, index }: TileProps) {
       <PlaceInCircle key={player} index={index} stepsIn={1}>
         <div className="z-10 h-full w-full p-2">
           <PlayerList.Actions player={player}>
-            <button className="pointer-events-auto relative h-full w-full">
+            <button className="pointer-events-auto h-full w-full">
               <div
                 data-testid={`tile_${player}`}
                 ref={ref}
                 className={classNames(
                   scalingTextclass,
-                  "h-full w-full group flex flex-col p-2 hover:z-30  bg-opacity-70 rounded-full justify-around items-center hover:opacity-100",
+                  "h-full w-full group flex flex-col p-1 hover:z-30  bg-opacity-70 relative rounded-full justify-around items-center hover:opacity-100",
                   {
                     "outline outline-8 outline-red-500 opacity-10":
                       game.deadPlayers[player] && game.deadVotes[player],
@@ -79,22 +82,26 @@ export function GMTile({ player, index }: TileProps) {
                   >
                     {getCharacter(role).name}
                   </TextAlongTopOfCircle>
-                  <img
-                    className="mx-auto block aspect-[15/9] flex-1 bg-cover object-cover object-[0_0%] p-1"
-                    src={getRoleIcon(getCharacter(role))}
-                  />
                 </>
 
                 <div
+                  ref={playerNameRef}
                   className={classNames(
-                    "line-clamp-1 truncate capitalize bg-transparent w-[100%] ",
+                    "line-clamp-1 truncate capitalize bg-transparent w-[100%] min-h-1 mt-auto",
                     {
                       "line-through": game.deadPlayers[player],
                     },
+                    scalingTextClassPlayerName,
                     // a temporary hack, the image and role text are not the same size, and I can't fix why
                   )}
                 >
                   {player}
+                </div>
+                <div className="absolute flex h-full w-full flex-col p-1">
+                  <img
+                    className="mx-auto block aspect-[15/9] w-full flex-1 bg-cover object-cover object-[0_0%] p-1"
+                    src={getRoleIcon(getCharacter(role))}
+                  />
                 </div>
               </div>
             </button>
