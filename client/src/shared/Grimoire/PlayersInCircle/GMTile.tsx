@@ -3,7 +3,6 @@ import classNames from "classnames";
 import React from "react";
 import useResizeObserver from "use-resize-observer";
 
-// import { PlayerStatusIcon } from "../../../GMRoute/GMInGame/NotesIcons";
 import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../store/useStore";
@@ -102,48 +101,6 @@ export function GMTile({ player, index }: TileProps) {
           </PlayerList.Actions>
         </div>
       </PlaceInCircle>
-    </>
-  );
-}
-
-interface TextAlongTopOfCircleProps extends React.SVGProps<SVGTextPathElement> {
-  children: React.ReactNode;
-}
-
-export function TextAlongTopOfCircle({
-  children,
-  stroke,
-  ...props
-}: TextAlongTopOfCircleProps) {
-  return (
-    <>
-      <svg
-        viewBox="0 0 100 100"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="none"
-        className="absolute inset-1"
-        fill="none"
-      >
-        <path
-          id="circlePath"
-          d="
-      M 10, 50
-      a 40,40 0 1,1 80,0
-      40,40 0 1,1 -80,0
-    "
-        />
-        <text stroke={stroke}>
-          <textPath
-            href="#circlePath"
-            textAnchor="middle"
-            startOffset="25%"
-            fontSize="0.75rem"
-            {...props}
-          >
-            {children}
-          </textPath>
-        </text>
-      </svg>
     </>
   );
 }
