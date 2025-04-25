@@ -2,6 +2,7 @@ import { Theme } from "@radix-ui/themes";
 import { type CSSProperties } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import { GMNoGrim } from "./GMNoGrim";
 import { GMRoute } from "./GMRoute";
 import { NewGameLanding } from "./NewGamePage";
 import { PlayerRoute } from "./PlayerRoute";
@@ -29,7 +30,8 @@ function MainRouter() {
         <GameProvider>
           <GameHeader />
           <Routes>
-            <Route path="/gm/*" Component={GMRoute} />
+            <Route path="/gm/*" Component={GMNoGrim} />
+            <Route path="/gm-grim/*" Component={GMRoute} />
             <Route path="/spectator/*" Component={SpectatorRoute} />
             <Route path="/game/*" Component={PlayerRoute} />
             <Route path="/" Component={NewGameLanding} />
