@@ -43,7 +43,11 @@ export function GMNoGrimInGame() {
           <ScrollText />
         </TabTrigger>
 
-        <TabTrigger value="night" heading="Actions" selectedTab={selectedTab}>
+        <TabTrigger
+          value="night"
+          heading="Night Order"
+          selectedTab={selectedTab}
+        >
           <BsFillMoonStarsFill />
         </TabTrigger>
         <TabTrigger value="menu" heading="Menu" selectedTab={selectedTab}>
