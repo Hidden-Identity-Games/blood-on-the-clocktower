@@ -3,7 +3,6 @@ import classNames from "classnames";
 import React from "react";
 import useResizeObserver from "use-resize-observer";
 
-// import { PlayerStatusIcon } from "../../../GMRoute/GMInGame/NotesIcons";
 import { PlayerList } from "../../../GMRoute/GMShared/PlayerListComponents";
 import { useDefiniteGame } from "../../../store/GameContext";
 import { useGetPlayerAlignment } from "../../../store/useStore";
