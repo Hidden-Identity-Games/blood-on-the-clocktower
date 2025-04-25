@@ -5,6 +5,7 @@ body {
   /* overflow: hidden; */
   max-height: -webkit-fill-available;
   /* -webkit-touch-callout: none !important; */
+  touch-action: manipulation;
 }
 
 * {
