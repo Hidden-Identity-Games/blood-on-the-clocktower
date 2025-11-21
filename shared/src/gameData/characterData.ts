@@ -271,7 +271,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "devils_advocate",
+    id: "devilsadvocate",
     name: "Devil's Advocate",
     edition: "bmr",
     team: "Minion",
@@ -368,7 +368,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "evil_twin",
+    id: "eviltwin",
     name: "Evil Twin",
     edition: "snv",
     team: "Minion",
@@ -412,7 +412,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "fang_gu",
+    id: "fanggu",
     name: "Fang Gu",
     edition: "snv",
     team: "Demon",
@@ -468,7 +468,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "fortune_teller",
+    id: "fortuneteller",
     name: "Fortune Teller",
     edition: "tb",
     team: "Townsfolk",
@@ -873,7 +873,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "no_dashii",
+    id: "nodashii",
     name: "No Dashii",
     edition: "snv",
     team: "Demon",
@@ -951,7 +951,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "pit-hag",
+    id: "pithag",
     name: "Pit-Hag",
     edition: "snv",
     team: "Minion",
@@ -1179,7 +1179,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "scarlet_woman",
+    id: "scarletwoman",
     name: "Scarlet Woman",
     edition: "tb",
     team: "Minion",
@@ -1269,7 +1269,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "snake_charmer",
+    id: "snakecharmer",
     name: "Snake Charmer",
     edition: "snv",
     team: "Townsfolk",
@@ -1356,7 +1356,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "tea_lady",
+    id: "tealady",
     name: "Tea Lady",
     edition: "bmr",
     team: "Townsfolk",
@@ -1385,7 +1385,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "town_crier",
+    id: "towncrier",
     name: "Town Crier",
     edition: "snv",
     team: "Townsfolk",
@@ -1662,7 +1662,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "bounty_hunter",
+    id: "bountyhunter",
     name: "Bounty Hunter",
     edition: "",
     team: "Townsfolk",
@@ -1744,7 +1744,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "cult_leader",
+    id: "cultleader",
     name: "Cult Leader",
     edition: "",
     team: "Townsfolk",
@@ -2059,7 +2059,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "poppy_grower",
+    id: "poppygrower",
     name: "Poppy Grower",
     edition: "",
     team: "Townsfolk",
@@ -2162,7 +2162,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "high_priestess",
+    id: "highpriestess",
     name: "High Priestess",
     edition: "exp",
     team: "Townsfolk",
@@ -2235,7 +2235,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "village_idiot",
+    id: "villageidiot",
     name: "Village Idiot",
     edition: "exp",
     team: "Townsfolk",
@@ -2364,6 +2364,25 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "heretic.png",
     firstNight: null,
     otherNight: null,
+  },
+  {
+    id: "hermit",
+    name: "Hermit",
+    edition: "",
+    team: "Outsider",
+    reminders: [],
+    setup: false,
+    delusional: false,
+    ability: "You have all Outsider abilities. [-0 or -1 Outsider]",
+    imageSrc: "heretic.png",
+    firstNight: {
+      reminder: "All outsider abilities",
+      order: 5,
+    },
+    otherNight: {
+      reminder: "All outsider abilities",
+      order: 5,
+    },
   },
   {
     id: "politician",
@@ -2496,7 +2515,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     otherNight: null,
   },
   {
-    id: "plague_doctor",
+    id: "plaguedoctor",
     name: "Plague Doctor",
     edition: "exp",
     team: "Outsider",
@@ -2735,7 +2754,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "organ_grinder",
+    id: "organgrinder",
     name: "Organ Grinder",
     edition: "exp",
     team: "Minion",
@@ -3209,7 +3228,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     imageSrc: "butcher.png",
   },
   {
-    id: "bone_collector",
+    id: "bonecollector",
     name: "Bone Collector",
     edition: "snv",
     team: "Traveler",
@@ -3329,7 +3348,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "lord_typhon",
+    id: "lordoftyphon",
     name: "Lord of Typhon",
     edition: "exp",
     team: "Demon",
@@ -3374,7 +3393,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "al_hadikhia",
+    id: "alhadikhia",
     name: "Al-Hadikhia",
     edition: "exp",
     team: "Demon",
@@ -3393,7 +3412,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
   },
   {
-    id: "lil_monsta",
+    id: "lilmonsta",
     name: "Lil' Monsta",
     edition: "",
     team: "Demon",
