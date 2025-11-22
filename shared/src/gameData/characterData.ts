@@ -3505,4 +3505,52 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
     imageSrc: "",
   },
+  {
+    id: "princess",
+    name: "Princess",
+    edition: "",
+    team: "Townsfolk",
+    firstNight: null,
+    otherNight: {
+      order: 22.5,
+      reminder:
+        "If it was the Princess' first day today, and they nominated and executed a player, the Demon doesn't kill.",
+      setReminders: ["doesn't kill"],
+    },
+    reminders: [{ name: "doesn't kill", type: "poison", dayTrigger: true }],
+    setup: false,
+    imageSrc: "",
+    ability:
+      "On your 1st day, if you nominated & executed a player, the Demon doesn't kill tonight.",
+  },
+  {
+    id: "cacklejack",
+    name: "Cacklejack",
+    edition: "",
+    team: "Traveler",
+    firstNight: null,
+    otherNight: {
+      order: 1.5,
+      reminder:
+        "Replace the character token of any player (besides the player the Cacklejack chose today).",
+    },
+    reminders: [{ name: "Not Me", type: "info", dayTrigger: true }],
+    setup: false,
+    imageSrc: "",
+    ability:
+      "Each day, choose a player: a different player changes character tonight.",
+  },
+  {
+    id: "wraith",
+    name: "Wraith",
+    edition: "",
+    team: "Minion",
+    firstNight: null,
+    otherNight: null,
+    reminders: [],
+    setup: false,
+    ability:
+      "You may choose to open your eyes at night. You wake when other evil players do.",
+    imageSrc: "",
+  },
 ];

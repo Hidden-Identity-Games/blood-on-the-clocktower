@@ -1,6 +1,9 @@
 import {
+  ALL_ROLES_SCRIPT,
+  FABLED,
   getCharacter,
   type Role,
+  type ScriptDefinitionLike,
   SCRIPTS,
   UNASSIGNED,
 } from "@hidden-identity/shared";
@@ -8,16 +11,25 @@ import { describe, expect, test } from "vitest";
 
 describe("scripts", () => {
   describe("characters", () => {
-    describe.each(SCRIPTS)("character: $name", (script) => {
-      test("all characters are valid", () => {
-        const characters = script.characters.map(({ id }) =>
-          getCharacter(id as Role),
-        );
+    describe.each([...SCRIPTS, ALL_ROLES_SCRIPT])(
+      "character: $name",
+      (script: ScriptDefinitionLike<string>) => {
+        test("all characters are valid", () => {
+          const fabledIds = new Set(FABLED.map((f) => f.id));
+          const missing = script.characters.filter(({ id }) => {
+            const character = getCharacter(id as Role);
+            if (fabledIds.has(id)) {
+              return false;
+            }
+            if (!character || character.name === UNASSIGNED.name) {
+              return true;
+            }
 
-        expect(
-          characters.filter((character) => character.name === UNASSIGNED.name),
-        ).toHaveLength(0);
-      });
-    });
+            return false;
+          });
+          expect(missing).toHaveLength(0);
+        });
+      },
+    );
   });
 });
