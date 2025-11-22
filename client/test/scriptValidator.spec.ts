@@ -9,83 +9,86 @@ describe("validateCustomScript", () => {
   });
 
   describe("example script from botc website", () => {
-    const script = `[{"id":"_meta","author":"Viva La Sam","name":"Extension Cord"},"investigator","pixie","empath","dreamer","mathematician","oracle","monk","artist","fisherman","huntsman","soldier","ravenkeeper","cannibal","puzzlemaster","recluse","mutant","damsel","barber","poisoner","spy","scarlet_woman","boomdandy","marionette","no_dashii","bishop","bone_collector","bureaucrat","butcher","matron","sentinel"]`;
+    const script = `[{"id": "_meta", "name": "Like 27 Frogs", "author": "eben", "background": "https://raw.githubusercontent.com/enthusiastick/like27frogs/main/img/background.jpg", "isOfficial": false}, {"id": "knight"}, {"id": "librarian"}, {"id": "pixie"}, {"id": "balloonist"}, {"id": "chambermaid"}, {"id": "villageidiot"}, {"id": "undertaker"}, {"id": "seamstress"}, {"id": "professor"}, {"id": "artist"}, {"id": "soldier"}, {"id": "minstrel"}, {"id": "ravenkeeper"}, {"id": "ogre"}, {"id": "sweetheart"}, {"id": "saint"}, {"id": "barber"}, {"id": "assassin"}, {"id": "xaan"}, {"id": "marionette"}, {"id": "summoner"}, {"id": "boffin"}, {"id": "nodashii"}, {"id": "shabaloth"}, {"id": "ojo"}]`;
 
     describe("raw", () => {
       it("matches snapshot", () => {
         expect(validateCustomScript(script)).toMatchInlineSnapshot(`
           [
             {
-              "id": "investigator",
+              "id": "knight",
+            },
+            {
+              "id": "librarian",
             },
             {
               "id": "pixie",
             },
             {
-              "id": "empath",
+              "id": "balloonist",
             },
             {
-              "id": "dreamer",
+              "id": "chambermaid",
             },
             {
-              "id": "mathematician",
+              "id": "villageidiot",
             },
             {
-              "id": "oracle",
+              "id": "undertaker",
             },
             {
-              "id": "monk",
+              "id": "seamstress",
+            },
+            {
+              "id": "professor",
             },
             {
               "id": "artist",
             },
             {
-              "id": "fisherman",
-            },
-            {
-              "id": "huntsman",
-            },
-            {
               "id": "soldier",
+            },
+            {
+              "id": "minstrel",
             },
             {
               "id": "ravenkeeper",
             },
             {
-              "id": "cannibal",
+              "id": "ogre",
             },
             {
-              "id": "puzzlemaster",
+              "id": "sweetheart",
             },
             {
-              "id": "recluse",
-            },
-            {
-              "id": "mutant",
-            },
-            {
-              "id": "damsel",
+              "id": "saint",
             },
             {
               "id": "barber",
             },
             {
-              "id": "poisoner",
+              "id": "assassin",
             },
             {
-              "id": "spy",
-            },
-            {
-              "id": "scarlet_woman",
-            },
-            {
-              "id": "boomdandy",
+              "id": "xaan",
             },
             {
               "id": "marionette",
             },
             {
-              "id": "no_dashii",
+              "id": "summoner",
+            },
+            {
+              "id": "boffin",
+            },
+            {
+              "id": "nodashii",
+            },
+            {
+              "id": "shabaloth",
+            },
+            {
+              "id": "ojo",
             },
           ]
         `);
@@ -98,76 +101,79 @@ describe("validateCustomScript", () => {
         ).toMatchInlineSnapshot(`
           [
             {
-              "id": "investigator",
+              "id": "knight",
+            },
+            {
+              "id": "librarian",
             },
             {
               "id": "pixie",
             },
             {
-              "id": "empath",
+              "id": "balloonist",
             },
             {
-              "id": "dreamer",
+              "id": "chambermaid",
             },
             {
-              "id": "mathematician",
+              "id": "villageidiot",
             },
             {
-              "id": "oracle",
+              "id": "undertaker",
             },
             {
-              "id": "monk",
+              "id": "seamstress",
+            },
+            {
+              "id": "professor",
             },
             {
               "id": "artist",
             },
             {
-              "id": "fisherman",
-            },
-            {
-              "id": "huntsman",
-            },
-            {
               "id": "soldier",
+            },
+            {
+              "id": "minstrel",
             },
             {
               "id": "ravenkeeper",
             },
             {
-              "id": "cannibal",
+              "id": "ogre",
             },
             {
-              "id": "puzzlemaster",
+              "id": "sweetheart",
             },
             {
-              "id": "recluse",
-            },
-            {
-              "id": "mutant",
-            },
-            {
-              "id": "damsel",
+              "id": "saint",
             },
             {
               "id": "barber",
             },
             {
-              "id": "poisoner",
+              "id": "assassin",
             },
             {
-              "id": "spy",
-            },
-            {
-              "id": "scarlet_woman",
-            },
-            {
-              "id": "boomdandy",
+              "id": "xaan",
             },
             {
               "id": "marionette",
             },
             {
-              "id": "no_dashii",
+              "id": "summoner",
+            },
+            {
+              "id": "boffin",
+            },
+            {
+              "id": "nodashii",
+            },
+            {
+              "id": "shabaloth",
+            },
+            {
+              "id": "ojo",
             },
           ]
         `);
@@ -176,7 +182,7 @@ describe("validateCustomScript", () => {
   });
 
   describe("example script from azuresites", () => {
-    const script = `[{"id": "_meta", "logo": "https://i.imgur.com/OAs1fvK.png", "name": "Extension Cord", "author": "Viva La Sam"}, {"id": "investigator"}, {"id": "pixie"}, {"id": "empath"}, {"id": "dreamer"}, {"id": "mathematician"}, {"id": "oracle"}, {"id": "monk"}, {"id": "artist"}, {"id": "fisherman"}, {"id": "huntsman"}, {"id": "soldier"}, {"id": "ravenkeeper"}, {"id": "cannibal"}, {"id": "puzzlemaster"}, {"id": "recluse"}, {"id": "mutant"}, {"id": "damsel"}, {"id": "barber"}, {"id": "poisoner"}, {"id": "spy"}, {"id": "scarlet_woman"}, {"id": "boomdandy"}, {"id": "marionette"}, {"id": "no_dashii"}, {"id": "bishop"}, {"id": "bone_collector"}, {"id": "bureaucrat"}, {"id": "butcher"}, {"id": "matron"}, {"id": "sentinel"}]`;
+    const script = `[{"id": "_meta", "logo": "https://i.imgur.com/OAs1fvK.png", "name": "Extension Cord", "author": "Viva La Sam"}, {"id": "investigator"}, {"id": "pixie"}, {"id": "empath"}, {"id": "dreamer"}, {"id": "mathematician"}, {"id": "oracle"}, {"id": "monk"}, {"id": "artist"}, {"id": "fisherman"}, {"id": "huntsman"}, {"id": "soldier"}, {"id": "ravenkeeper"}, {"id": "cannibal"}, {"id": "puzzlemaster"}, {"id": "recluse"}, {"id": "mutant"}, {"id": "damsel"}, {"id": "barber"}, {"id": "poisoner"}, {"id": "spy"}, {"id": "scarletwoman"}, {"id": "boomdandy"}, {"id": "marionette"}, {"id": "nodashii"}, {"id": "bishop"}, {"id": "bonecollector"}, {"id": "bureaucrat"}, {"id": "butcher"}, {"id": "matron"}, {"id": "sentinel"}]`;
 
     describe("raw", () => {
       it("matches snapshot", () => {
@@ -243,7 +249,7 @@ describe("validateCustomScript", () => {
               "id": "spy",
             },
             {
-              "id": "scarlet_woman",
+              "id": "scarletwoman",
             },
             {
               "id": "boomdandy",
@@ -252,7 +258,7 @@ describe("validateCustomScript", () => {
               "id": "marionette",
             },
             {
-              "id": "no_dashii",
+              "id": "nodashii",
             },
           ]
         `);
@@ -325,7 +331,7 @@ describe("validateCustomScript", () => {
               "id": "spy",
             },
             {
-              "id": "scarlet_woman",
+              "id": "scarletwoman",
             },
             {
               "id": "boomdandy",
@@ -334,7 +340,7 @@ describe("validateCustomScript", () => {
               "id": "marionette",
             },
             {
-              "id": "no_dashii",
+              "id": "nodashii",
             },
           ]
         `);

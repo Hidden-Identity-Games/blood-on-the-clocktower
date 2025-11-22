@@ -18,7 +18,6 @@ import { Flex, Heading, TextArea } from "@radix-ui/themes";
 import classNames from "classnames";
 import React, { type ReactNode, useEffect, useMemo } from "react";
 
-
 import scriptIcon from "../../assets/icon/feather.svg";
 import { useScriptFromRepo } from "../../store/useStore";
 import { type Script, type ScriptItem } from "../../types/script";
@@ -170,20 +169,20 @@ function CustomScriptInputDialog({
           <div className="flex justify-between">
             <Label htmlFor="scripturl">Script URL</Label>
             <a
-              href="https://botc-scripts.azurewebsites.net/"
+              href="https://www.botcscripts.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sky-500 underline"
             >
-              Find custom scripts on botc-scripts
+              Find custom scripts on botcscripts
             </a>
           </div>
           <Input
             id="scripturl"
-            placeholder="botc-scripts url"
+            placeholder="botcscripts url"
             onChange={(e) => {
               const value = e.target.value;
-              if (value.match(/https:\/\/botc-scripts\.azurewebsites\.net/i)) {
+              if (value.match(/https:\/\/www\.botcscripts\.com/i)) {
                 setInvalidMatch(false);
 
                 void fetchScript(value);
@@ -220,7 +219,7 @@ function CustomScriptInputDialog({
                 ? "Loading"
                 : customScript.trim() === ""
                   ? invalidMatch
-                    ? 'URL must be "https://botc-scripts.azurewebsites.net/script/"'
+                    ? 'URL must be "https://www.botcscripts.com/script/"'
                     : ""
                   : scriptError
                     ? `${scriptError}`
@@ -276,7 +275,7 @@ export function validateCustomScript(script: string): Script {
     throw new Error(
       `"Role element ${JSON.stringify(
         badCharacters[0],
-      )} is invalid. Should be a string with id.  Fabled are not yet supported"`,
+      )} is invalid. Should be a string with id.  If the it's a new character, delete from script and add a custom character in role selection"`,
     );
   }
   return filtered.map((obj) => ({ id: obj })) as Script;

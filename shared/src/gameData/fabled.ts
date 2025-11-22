@@ -178,5 +178,30 @@ export const FABLED = [
     team: "fabled",
     ability: "The Storyteller assigns 1 or more players' characters.",
   },
+  {
+    id: "tor",
+    name: "Tor",
+    // team: "loric",
+    team: "fabled",
+    firstNightReminder: "",
+    otherNightReminder:
+      "If a player died tonight, wake that player and show them the 'You are' card, their character token, and a thumbs up or thumbs down.",
+    reminders: [],
+    setup: true,
+    ability:
+      "Players don't know their character or alignment. They learn them when they die.",
+  },
+  {
+    id: "bigwig",
+    name: "Big Wig",
+    team: "fabled",
+    // team: "loric",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    ability:
+      "Each nominee chooses a player: until voting, only they may speak & they are mad the nominee is good or they might die.",
+  },
 ];
 export const FABLED_IDS = FABLED.map((item) => item.id);
