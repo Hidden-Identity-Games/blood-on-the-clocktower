@@ -462,7 +462,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     reminders: [abilitySpent("fool")],
     setup: false,
     delusional: false,
-    ability: "The first time you die, you don't.",
+    ability: "The 1st time you die, you don't.",
     imageSrc: "fool.png",
     firstNight: null,
     otherNight: null,
@@ -1573,7 +1573,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     reminders: [{ type: "info", name: "alchemist" }],
     setup: false,
     delusional: false,
-    ability: "You have a not-in-play Minion ability.",
+    ability:
+      "You have a Minion ability. When using this, the Storyteller may prompt you to choose differently.",
     imageSrc: "alchemist.png",
     firstNight: {
       setReminders: ["alchemist"],
@@ -1640,7 +1641,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: true,
     delusional: false,
     ability:
-      "Each night, you learn 1 player of each character type, until there are no more types to learn. [+1 Outsider]",
+      "Each night, you learn a player of a different character type than last night. [+0 or +1 Outsider]",
     imageSrc: "balloonist.png",
     firstNight: {
       reminder:
@@ -1811,7 +1812,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     delusional: false,
-    ability: "If you die at night, an alive good player becomes a Farmer.",
+    ability: "When you die at night, an alive good player becomes a Farmer.",
     imageSrc: "farmer.png",
     firstNight: null,
     otherNight: {
@@ -1838,7 +1839,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "Once per game, during the day, visit the Storyteller for some advice to help you win.",
+      "Once per game, during the day, visit the Storyteller for some advice to help your team win.",
     imageSrc: "fisherman.png",
     firstNight: null,
     otherNight: null,
@@ -1914,7 +1915,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "Each night, if the dead outnumber the living, you learn 1 alive character. The Demon knows who you are.",
+      "Each night, if the dead equal or outnumber the living, you learn 1 alive character. The Demon knows you are the King.",
     imageSrc: "king.png",
     firstNight: {
       reminder:
@@ -1929,7 +1930,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     },
     otherNight: {
       reminder:
-        "If there are more dead than living, show the King a character token of a living player.",
+        "If the dead equal or outnumber the living, show the King a character token of a living player.",
       order: 63,
       playerMessage: {
         type: "reveal-role",
@@ -1946,12 +1947,12 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "Each night*, choose a living player: if good, they die, but they are the only player that can die tonight.",
+      "Each night*, choose an alive player. If good, they die & the Demon doesn't kill tonight. One good player registers as evil.",
     imageSrc: "lycanthrope.png",
     firstNight: null,
     otherNight: {
       reminder:
-        "The Lycanthrope points to a living player: if good, they die and no one else can die tonight.",
+        "The Lycanthrope points to an alive player. If good, they die & the Demon doesn't kill tonight.",
       order: 22,
     },
   },
@@ -1982,7 +1983,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "Once per game, at night, choose a player: they learn who you are.",
+      "Once per game, at night, choose a player: they learn you are the Nightwatchman.",
     imageSrc: "nightwatchman.png",
     firstNight: {
       setReminders: [abilitySpent("nightwatchman").name],
@@ -2208,7 +2209,8 @@ export const CHARACTERS: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     delusional: false,
-    ability: "You start knowing 1 good player.",
+    ability:
+      "You start knowing if your closest evil player is clockwise or anti-clockwise. If equidistant, this info is arbitrary.",
     imageSrc: "shugenja.png",
     firstNight: {
       reminder:
@@ -2273,17 +2275,17 @@ export const CHARACTERS: CharacterDefinition[] = [
     id: "acrobat",
     name: "Acrobat",
     edition: "",
-    team: "Outsider",
+    team: "Townsfolk",
     reminders: [],
     setup: false,
     delusional: false,
     ability:
-      "Each night*, if either good living neighbour is drunk or poisoned, you die.",
+      "Each night*, choose a player: if they are or become drunk or poisoned tonight, you die.",
     imageSrc: "acrobat.png",
     firstNight: null,
     otherNight: {
       reminder:
-        "If a good living neighbour is drunk or poisoned, the Acrobat player dies.",
+        "The Acrobat points to a player. If that player is or becomes drunk or poisoned tonight, the Acrobat dies.",
       order: 39,
       kills: true,
     },
@@ -2423,7 +2425,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     reminders: [],
     setup: false,
     delusional: false,
-    ability: "Minions start knowing 3 not-in-play characters.",
+    ability: "Each Minion gets 3 bluffs.",
     imageSrc: "snitch.png",
     firstNight: {
       reminder:
@@ -2548,7 +2550,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "Each night, choose a player. If you nominate & execute them, their team loses. All players know if you choose a new player.",
+      "Each night, choose a player: if you nominate & execute them, their team loses. All players know if you choose a new player.",
     imageSrc: "fearmonger.png",
     firstNight: {
       setReminders: ["fear"],
@@ -2609,7 +2611,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "If more than 1 good player is executed, you win. All players know you are in play. After day 5, evil wins.",
+      "If more than 1 good player is executed, evil wins. All players know you are in play. After day 5, evil wins.",
     imageSrc: "leviathan.png",
     firstNight: {
       reminder:
@@ -2762,7 +2764,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "All players keep their eyes closed when voting & the vote tally is secret. Each night, choose if you are drunk or not.",
+      "All players keep their eyes closed when voting and the vote tally is secret. Each night, choose if you are drunk until dusk.",
     imageSrc: "organ_grinder.png",
     firstNight: {
       reminder:
@@ -2793,7 +2795,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "You get 3 bluffs. On the 3rd night, choose a player: they become an evil Demon of your choice. During the setup phase, remove the Demon and add a Townsfolk. During the first night, show the Summoner 3 not-in-play characters as bluffs. During the night, if the Summoner has a NIGHT 3 reminder, wake the Summoner. They point at a player, and to a Demon icon on the character sheet. Put the Summoner to sleep. Wake the chosen player. Show the YOU ARE info token, then the Demon token. Show the YOU ARE info token, then give a thumbs down. Replace their character token with the Demon token and put the new Demon to sleep.",
+      "You get 3 bluffs. On the 3rd night, choose a player: they become an evil Demon of your choice. [No Demon]",
     imageSrc: "summoner.png",
     firstNight: null,
     otherNight: {
@@ -2896,7 +2898,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "Each night*, choose a player: they die. You start by choosing an alive player: they are poisoned - you die if & only if they die.",
+      "Each night*, choose a player: they die. You start by choosing a player: they are poisoned. You die if & only if they are dead.",
     imageSrc: "lleech.png",
     firstNight: {
       setReminders: ["leeched"],
@@ -2919,7 +2921,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: true,
     delusional: false,
     ability:
-      "Nominees die, but may nominate again immediately (on day 3, they must). After day 3, evil wins. [All Minions are Riot]",
+      "On day 3, Minions become Riot & nominees die but nominate an alive player immediately. This must happen.",
     imageSrc: "riot.png",
     firstNight: null,
     otherNight: null,
@@ -3063,7 +3065,7 @@ export const CHARACTERS: CharacterDefinition[] = [
     setup: false,
     delusional: false,
     ability:
-      "You must use a vote token to vote. Dead players may choose to give you theirs. If so, you learn their alignment. You are sober & healthy.",
+      "You must use a vote token to vote. If a dead player gives you theirs, you learn their alignment. You are sober & healthy.",
     firstNight: null,
     otherNight: null,
     imageSrc: "beggar.png",
