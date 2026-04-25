@@ -266,10 +266,11 @@ export function validateCustomScript(script: string): Script {
 
   const filtered = normalized
     .filter((obj) => !(obj.startsWith("_") || obj === "meta"))
-    .filter((obj) => !isFabledRole(obj))
     .filter((obj) => !isTravelerRole(asRole(obj)));
 
-  const badCharacters = filtered.filter((obj) => !getCharacter(obj as Role));
+  const badCharacters = filtered.filter(
+    (obj) => !getCharacter(obj as Role) && !isFabledRole(obj),
+  );
 
   if (badCharacters.length > 0) {
     throw new Error(
