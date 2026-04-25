@@ -1,7 +1,8 @@
 import { getScript, type Role } from "@hidden-identity/shared";
 import { expect, test } from "@playwright/test";
+import { generate } from "random-words";
 
-import { QuickSetupHelpers } from "./helpers/quickHelpers";
+import { trpc } from "./api/client";
 import { urlFromBase } from "./productUrls";
 
 test("displays Fabled/Loric section on GM menu tab", async ({ page }) => {
@@ -12,15 +13,16 @@ test("displays Fabled/Loric section on GM menu tab", async ({ page }) => {
     { id: "tor" as Role },
   ];
 
-  const players = Array.from({ length: 10 }, (_, i) => `player${i}`);
-  const { gameId, game } =
-    await QuickSetupHelpers.createNewGame(scriptWithFabled);
-  await QuickSetupHelpers.populateGameWithPlayers(players, gameId);
-  await QuickSetupHelpers.assignSeats({ gameId, players });
-  await QuickSetupHelpers.fillRoleBag({
-    script: baseScript,
+  // Create a fully started game with fabled in the script
+  const gameId = generate(3).join("-").toUpperCase();
+  const game = await trpc.createGame.mutate({
     gameId,
-    playerCount: players.length,
+    script: scriptWithFabled,
+    testGameOptions: {
+      isTestGame: true,
+      players: 10,
+      randomRoles: true,
+    },
   });
 
   await page.goto(
@@ -28,13 +30,12 @@ test("displays Fabled/Loric section on GM menu tab", async ({ page }) => {
   );
 
   await page.getByRole("tab", { name: /menu/i }).click();
-  await page.getByRole("button", { name: "Start Game" }).click();
-  await page.getByRole("button", { name: "Start Game" }).click();
-
-  // After game starts, menu tab shows ScriptList
-  await page.getByRole("tab", { name: /menu/i }).click();
 
   await expect(page.getByText("Fabled/Loric")).toBeVisible();
-  await expect(page.getByText("Djinn")).toBeVisible();
-  await expect(page.getByText("Tor")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Djinn", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Tor", exact: true }),
+  ).toBeVisible();
 });
