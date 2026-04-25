@@ -203,5 +203,71 @@ export const FABLED = [
     ability:
       "Each nominee chooses a player: until voting, only they may speak & they are mad the nominee is good or they might die.",
   },
+  {
+    id: "godofug",
+    name: "God of Ug",
+    team: "fabled",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    ability:
+      "One Ug hat. When wear Ug hat, must speak one sound at a time but vote twice. If fail, pass Ug hat.",
+  },
+  {
+    id: "hindu",
+    name: "Hindu",
+    team: "fabled",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    ability:
+      "The first 4 players to die are immediately reincarnated as Travellers of the same alignment.",
+  },
+  {
+    id: "knaves",
+    name: "Knaves",
+    team: "fabled",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    ability:
+      "There are 2 Storytellers: one lies & one tells the truth. Once per game, at dusk, they might switch.",
+  },
+  {
+    id: "pope",
+    name: "Pope",
+    team: "fabled",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    ability:
+      "There are duplicate good characters in play. They might also be bluffs.",
+  },
+  {
+    id: "ventriloquist",
+    name: "Ventriloquist",
+    team: "fabled",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    ability:
+      "If a player is mad as a fresh character during their nomination, they might not die if executed today.",
+  },
+  {
+    id: "zenomancer",
+    name: "Zenomancer",
+    team: "fabled",
+    firstNightReminder: "",
+    otherNightReminder: "",
+    reminders: [],
+    setup: false,
+    ability:
+      "One or more players each have a goal. When achieved, that player learns a piece of true info.",
+  },
 ];
 export const FABLED_IDS = FABLED.map((item) => item.id);

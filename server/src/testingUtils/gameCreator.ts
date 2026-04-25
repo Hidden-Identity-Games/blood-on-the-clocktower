@@ -3,6 +3,7 @@ import {
   allTravelers,
   DistributionsByPlayerCount,
   getCharacter,
+  isFabledRole,
   pick,
   pluck,
   type Role,
@@ -90,7 +91,8 @@ export class GameCreator {
     if (!roleBagCharacters) {
       const filledScript = this.game
         .getGame()
-        .script.map(({ id }) => getCharacter(id))
+        .script.filter(({ id }) => !isFabledRole(id))
+        .map(({ id }) => getCharacter(id))
         .filter((c) => !c.delusional);
       const generatedRoles = shuffleList(
         toEntries(DistributionsByPlayerCount[playerCount])

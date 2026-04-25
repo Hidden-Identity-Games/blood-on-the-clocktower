@@ -1,6 +1,8 @@
 import {
   type Character,
   type CharacterType,
+  FABLED,
+  FABLED_IDS,
   type Role,
 } from "@hidden-identity/shared";
 import { getCharacter } from "@hidden-identity/shared";
@@ -20,7 +22,9 @@ export function ScriptList({ className }: ScriptListProps) {
   const { script } = game;
   const charactersByType = React.useMemo(() => {
     const charactersFromScript =
-      script?.map(({ id }) => getCharacter(id)) ?? [];
+      script
+        ?.filter(({ id }) => !FABLED_IDS.includes(id))
+        .map(({ id }) => getCharacter(id)) ?? [];
     const travelerCharacters = Object.values(game.playersToRoles)
       .map((role) => getCharacter(role))
       .filter(
@@ -38,6 +42,11 @@ export function ScriptList({ className }: ScriptListProps) {
       Traveler: allCharacters.filter(({ team }) => team === "Traveler"),
     } satisfies Record<CharacterType, Character[]>;
   }, [script, game.playersToRoles]);
+
+  const fabledCharacters = React.useMemo(() => {
+    const scriptIds = script?.map(({ id }) => id) ?? [];
+    return FABLED.filter((f) => scriptIds.includes(f.id as Role));
+  }, [script]);
 
   return (
     <Flex className={className} direction="column" gap="3">
@@ -66,6 +75,32 @@ export function ScriptList({ className }: ScriptListProps) {
             ))}
           </React.Fragment>
         ))}
+      {fabledCharacters.length > 0 && (
+        <>
+          <Flex justify="end">
+            <Heading size="3" align="right" color="purple" asChild>
+              <Flex gap="2">
+                <span className="scale-x-[-1]">
+                  <BsFillMoonFill />
+                </span>
+                Fabled/Loric
+              </Flex>
+            </Heading>
+          </Flex>
+          {fabledCharacters.map((fabled) => (
+            <Flex key={fabled.id} gap="2">
+              <Flex direction="column">
+                <Heading size="2" className="flex-1" color="purple">
+                  {fabled.name}
+                </Heading>
+                <Text size="1" weight="light" className="pl-5">
+                  {fabled.ability}
+                </Text>
+              </Flex>
+            </Flex>
+          ))}
+        </>
+      )}
     </Flex>
   );
 }

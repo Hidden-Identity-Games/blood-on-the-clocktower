@@ -260,6 +260,9 @@ describe("validateCustomScript", () => {
             {
               "id": "nodashii",
             },
+            {
+              "id": "sentinel",
+            },
           ]
         `);
       });
@@ -342,6 +345,9 @@ describe("validateCustomScript", () => {
             {
               "id": "nodashii",
             },
+            {
+              "id": "sentinel",
+            },
           ]
         `);
       });
@@ -369,12 +375,37 @@ describe("validateCustomScript", () => {
   });
 
   describe("fabled and travelers", () => {
-    it("filters out fabled and travelers", () => {
+    it("preserves fabled but filters out travelers", () => {
       expect(
         validateCustomScript(
           `[{ "id": "_meta" }, "washerwoman", "investigator", "doomsayer", "gunslinger"]`,
         ),
-      ).toMatchObject([{ id: "washerwoman" }, { id: "investigator" }]);
+      ).toMatchObject([
+        { id: "washerwoman" },
+        { id: "investigator" },
+        { id: "doomsayer" },
+      ]);
+    });
+
+    it("preserves multiple fabled characters", () => {
+      expect(
+        validateCustomScript(`["washerwoman", "djinn", "tor", "angel"]`),
+      ).toMatchObject([
+        { id: "washerwoman" },
+        { id: "djinn" },
+        { id: "tor" },
+        { id: "angel" },
+      ]);
+    });
+
+    it("preserves loric characters", () => {
+      expect(
+        validateCustomScript(`["washerwoman", "godofug", "zenomancer"]`),
+      ).toMatchObject([
+        { id: "washerwoman" },
+        { id: "godofug" },
+        { id: "zenomancer" },
+      ]);
     });
   });
 });
